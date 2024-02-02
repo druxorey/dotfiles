@@ -1,0 +1,40 @@
+#!/bin/bash
+
+comandos=(
+
+# config files backup
+"cp ~/.bashrc ~/Workspace/dotfiles/config/bash"
+"cp -r ~/.config/bin ~/Workspace/dotfiles/scripts/"
+"cp ~/.config/bspwm/bspwmrc ~/Workspace/dotfiles/config/bspwm"
+"cp ~/.config/sxhkd/sxhkdrc ~/Workspace/dotfiles/config/sxhkd"
+"cp ~/.config/kitty/kitty.conf ~/Workspace/dotfiles/config/kitty"
+"cp ~/.config/neofetch/config.conf ~/Workspace/dotfiles/config/neofetch"
+"cp ~/.config/cava/config ~/Workspace/dotfiles/config/cava"
+"cp ~/.config/polybar/config.ini ~/Workspace/dotfiles/config/polybar"
+"cp ~/.config/rofi/config.rasi ~/Workspace/dotfiles/config/rofi"
+"cp ~/.config/oh-my-posh/dracula.omp.json ~/Workspace/dotfiles/config/ohmyposh"
+"cp /etc/X11/xorg.conf.d/40-libunput.conf ~/Workspace/dotfiles/config/touchpad"
+# "cp ~/.config/picom/picom.conf ~/Workspace/dotfiles/config/picom"
+
+# theme backup
+""
+)
+
+successful_execution=true
+
+for comando in "${comandos[@]}"; do
+  eval $comando
+  if [ $? -ne 0 ]; then
+    echo -e """
+    \e[91m!! Execution Failed !!
+    """
+    successful_execution=false
+    break
+  fi
+done
+
+if $successful_execution ; then
+  echo -e """
+  \e[0;93m All files have been successfully backed up
+  """
+fi

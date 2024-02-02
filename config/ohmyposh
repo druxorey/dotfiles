@@ -1,0 +1,93 @@
+{
+  "$schema": "https://raw.githubusercontent.com/JanDeDobbeleer/oh-my-posh/main/themes/schema.json",
+  "blocks": [
+    {
+      "alignment": "left",
+      "segments": [
+        {
+          "background": "#6272a4",
+          "foreground": "#f8f8f2",
+          "leading_diamond": "\ue0b6",
+          "style": "diamond",
+          "template": "{{ .UserName }} ",
+          "type": "session"
+        },
+        {
+          "background": "#bd93f9",
+          "foreground": "#f8f8f2",
+          "powerline_symbol": "\ue0b0",
+          "properties": {
+            "style": "agnoster_short",
+            "folder_separator_icon": "/",
+            "hide_root_location": true,
+            "max_depth": 2
+          },
+          "style": "powerline",
+          "template": " {{ .Path }} ",
+          "type": "path"
+        },
+        {
+          "background": "#FF79C6",
+          "foreground": "#f8f8f2",
+          "powerline_symbol": "\ue0b0",
+          "properties": {
+            "branch_icon": "",
+            "fetch_stash_count": true,
+            "fetch_status": false,
+            "fetch_upstream_icon": true
+          },
+          "style": "powerline",
+          "template": " \ue725 ({{ .UpstreamIcon }}{{ .HEAD }}{{ if gt .StashCount 0 }} \ueb4b {{ .StashCount }}{{ end }}) ",
+          "type": "git"
+        },
+        {
+          "background": "#8be9fd",
+          "foreground": "#f8f8f2",
+          "powerline_symbol": "\ue0b0",
+          "style": "powerline",
+          "template": " \ue718 {{ if .PackageManagerIcon }}{{ .PackageManagerIcon }} {{ end }}{{ .Full }} ",
+          "type": "node"
+        }
+        
+      ],
+      "type": "prompt"
+    },
+    {
+      "alignment": "right",
+      "segments": [
+        {
+          "background": "#44475A",
+          "foreground": "#f8f8f2",
+          "invert_powerline": true,
+          "trailing_diamond": "\ue0b4",
+          "leading_diamond": "\ue0b2",
+          "properties": {
+            "always_enabled": true
+          },
+          "style": "diamond",
+          "template": " {{ .FormattedMs }} ",
+          "type": "executiontime"
+        }
+      ],
+      "type": "prompt"
+    },
+    {
+      "alignment": "left",
+      "newline": true,
+      "segments": [
+        {
+          "foreground": "#f8f8f2",
+          "properties": {
+            "always_enabled": true
+          },
+          "style": "plain",
+          "template": "\u276f ",
+          "type": "status"
+        }
+      ],
+      "type": "prompt"
+    }
+  ],
+  "final_space": true,
+  "version": 2
+}

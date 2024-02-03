@@ -1,2 +1,1 @@
-scripts/bin/nmcli-tawny
-scripts/bin/nmcli-ipanema
+scripts/bin/nmcli-*

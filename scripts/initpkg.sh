@@ -20,7 +20,7 @@ services=(cups)
 
 #* Instalation of the pacman packages
 
-echo -e "${LINE}${TITLE}Wellcome to the bash installer!${LINE}${END}"
+echo -e "${LINE}${TITLE}Welcome to the pacman and yay package installer!${LINE}${END}"
 echo -e "${QUESTION}The installation of the Pacman packages will begin${END}"
 
 for package in ${pacman_packages[@]}; do
@@ -87,6 +87,29 @@ if [[ $output == 'y' ]]; then
 	for service in ${services[@]}; do
 		echo -e "${RUNNING}Enabling ${END}$service"
 		sudo systemctl enable --now $service
+	done
+fi
+	
+else
+  echo -e "${FAILED}!!WARNING!! The services are not enabled, if you need them please install and enable manually, we recommend enabling the services for a good experience${END}"
+fi
+
+#* Installing zsh shell
+
+echo -e "${QUESTION}¿Do you want to install zsh and make it your default shell? (Y/n)${END}"
+read -r output
+
+output=${output,,}
+
+if [[ -z $output ]]; then
+  output='y'
+fi
+
+if [[ $output == 'y' ]]; then
+
+	echo -e "${RUNNING}Installing zsh${END}"
+	sudo pacman -S zsh
+  chsh -s /bin/zsh
 	done
 fi
 	

@@ -29,7 +29,8 @@ alias ..='cd ..'
 alias ...='cd ../..'
 
 # pacman and yay
-alias pacman='sudo pacman -Syu'
+alias update-pacman='sudo pacman -Syu'
+alias update-yay='yay -Sua --noconfirm'
 alias unlock='sudo rm /var/lib/pacman/db.lck'
 
 # git

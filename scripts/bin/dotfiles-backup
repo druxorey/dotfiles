@@ -3,18 +3,20 @@
 comandos=(
 
 # config files backup
-"cp ~/.zshrc ~/Workspace/dotfiles/config/zsh"
-"cp -r ~/.config/bin ~/Workspace/dotfiles/scripts/"
-"cp ~/.config/bspwm/bspwmrc ~/Workspace/dotfiles/config/bspwm"
-"cp ~/.config/sxhkd/sxhkdrc ~/Workspace/dotfiles/config/sxhkd"
-"cp ~/.config/kitty/kitty.conf ~/Workspace/dotfiles/config/kitty"
-"cp ~/.config/neofetch/config.conf ~/Workspace/dotfiles/config/neofetch"
-"cp ~/.config/cava/config ~/Workspace/dotfiles/config/cava"
-"cp ~/.config/polybar/config.ini ~/Workspace/dotfiles/config/polybar"
-"cp ~/.config/rofi/config.rasi ~/Workspace/dotfiles/config/rofi"
-"cp ~/.config/oh-my-posh/dracula.omp.json ~/Workspace/dotfiles/config/ohmyposh"
+"rsync -a --delete ~/.config/zsh ~/Workspace/dotfiles/config"
+"rsync -a --delete ~/.config/bspwm ~/Workspace/dotfiles/config"
+"rsync -a --delete ~/.config/sxhkd ~/Workspace/dotfiles/config"
+"rsync -a --delete ~/.config/kitty ~/Workspace/dotfiles/config"
+"rsync -a --delete ~/.config/neofetch ~/Workspace/dotfiles/config"
+"rsync -a --delete ~/.config/cava ~/Workspace/dotfiles/config"
+"rsync -a --delete ~/.config/oh-my-posh ~/Workspace/dotfiles/config"
+"rsync -a --delete ~/.config/picom ~/Workspace/dotfiles/config"
+"rsync -a --delete ~/.config/polybar ~/Workspace/dotfiles/config"
+"rsync -a --delete ~/.config/rofi ~/Workspace/dotfiles/config"
+"rsync -a --delete ~/.config/bin ~/Workspace/dotfiles/scripts"
+"rsync -a ~/.zshrc ~/Workspace/dotfiles/config/zshrc"
+"rsync -a ~/.bashrc ~/Workspace/dotfiles/config/bashrc"
 "cp /etc/X11/xorg.conf.d/40-libunput.conf ~/Workspace/dotfiles/config/touchpad"
-# "cp ~/.config/picom/picom.conf ~/Workspace/dotfiles/config/picom"
 
 # theme backup
 ""

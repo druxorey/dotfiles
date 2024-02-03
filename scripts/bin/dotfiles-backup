@@ -3,7 +3,7 @@
 comandos=(
 
 # config files backup
-"cp ~/.bashrc ~/Workspace/dotfiles/config/bash"
+"cp ~/.zshrc ~/Workspace/dotfiles/config/zsh"
 "cp -r ~/.config/bin ~/Workspace/dotfiles/scripts/"
 "cp ~/.config/bspwm/bspwmrc ~/Workspace/dotfiles/config/bspwm"
 "cp ~/.config/sxhkd/sxhkdrc ~/Workspace/dotfiles/config/sxhkd"

@@ -49,7 +49,7 @@ alias push='git push'
 # flags
 alias matrix='cmatrix -u 6 -C blue'
 
-alias hacker="kitty -c ~/.config/kitty/alt.conf --start-as=fullscreen"
+alias hacker="kitty -c ~/.config/kitty/hacker.conf --start-as=fullscreen bash"
 alias grep='grep --color=auto'
 alias peaclock="peaclock --config ~/.config/peaclock"
 alias yt-audio='youtube-dl -x --audio-format mp3'
@@ -100,6 +100,7 @@ ex ()
 #* =============================== zsh =============================== *#
 
 source ~/.config/zsh/zsh-autosuggestions/zsh-autosuggestions.zsh
+source ~/.config/zsh/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 zstyle :compinstall filename '/home/druxorey/.zshrc'
 HISTFILE=~/.config/zsh/.histfile
 HISTSIZE=1000

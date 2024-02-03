@@ -20,6 +20,7 @@ XF86AudioLowerVolume
 XF86AudioMute
 	pactl set-sink-mute @DEFAULT_SINK@ toggle
 
+# mute mic
 XF86AudioMicMute
 	amixer -D pulse sset Capture toggle
 
@@ -31,6 +32,13 @@ XF86MonBrightnessUp
 XF86MonBrightnessDown
 	brightnessctl set 5%-
 
+# activate night light
+shift + XF86MonBrightnessUp
+	redshift -O 3000
+
+# desactivate night light
+shift + XF86MonBrightnessDown
+	redshift -x
 # print the full screen
 @Print
 	scrot ~/Pictures/Screenshots/%Y-%m-%d_%H%M%S.png
@@ -47,6 +55,8 @@ Home
 
 super + Return
 	kitty
+super + alt + Return
+	kitty -c ~/.config/kitty/hacker.conf --start-as=fullscreen bash
 super + e
 	thunar
 super + c

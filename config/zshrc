@@ -47,9 +47,7 @@ alias pull='git pull'
 alias push='git push'
 
 # flags
-alias matrix='cmatrix -u 6 -C blue'
-
-alias hacker="kitty -c ~/.config/kitty/hacker.conf --start-as=fullscreen bash"
+alias matrix='cmatrix -C blue'
 alias grep='grep --color=auto'
 alias peaclock="peaclock --config ~/.config/peaclock"
 alias yt-audio='youtube-dl -x --audio-format mp3'

@@ -100,10 +100,12 @@ ex ()
 source ~/.config/zsh/zsh-autosuggestions/zsh-autosuggestions.zsh
 source ~/.config/zsh/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 zstyle :compinstall filename '/home/druxorey/.zshrc'
+zstyle ':completion:*' menu select
+_comp_options+=(globdots)
 HISTFILE=~/.config/zsh/.histfile
-HISTSIZE=1000
-SAVEHIST=1000
-bindkey -e
+HISTSIZE=10000
+SAVEHIST=10000
+bindkey -v
 
 autoload -Uz compinit
 compinit

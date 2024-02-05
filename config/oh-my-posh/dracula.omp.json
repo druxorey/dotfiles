@@ -1,5 +1,5 @@
 {
-  "$schema": "https://raw.githubusercontent.com/JanDeDobbeleer/oh-my-posh/main/themes/schema.json",
+"$schema": "https://raw.githubusercontent.com/JanDeDobbeleer/oh-my-posh/main/themes/schema.json",
   "blocks": [
     {
       "alignment": "left",
@@ -7,10 +7,13 @@
         {
           "background": "#6272a4",
           "foreground": "#f8f8f2",
-          "leading_diamond": "\ue0b6",
+          "leading_diamond": "\ue0b2",
           "style": "diamond",
-          "template": "{{ .UserName }} ",
-          "type": "session"
+          "properties": {
+            "always_enabled": true
+          },
+          "template": " {{ .FormattedMs }} ",
+          "type": "executiontime"
         },
         {
           "background": "#bd93f9",
@@ -53,25 +56,6 @@
       "type": "prompt"
     },
     {
-      "alignment": "right",
-      "segments": [
-        {
-          "background": "#44475A",
-          "foreground": "#f8f8f2",
-          "invert_powerline": true,
-          "trailing_diamond": "\ue0b4",
-          "leading_diamond": "\ue0b2",
-          "properties": {
-            "always_enabled": true
-          },
-          "style": "diamond",
-          "template": " {{ .FormattedMs }} ",
-          "type": "executiontime"
-        }
-      ],
-      "type": "prompt"
-    },
-    {
       "alignment": "left",
       "newline": true,
       "segments": [
@@ -81,7 +65,7 @@
             "always_enabled": true
           },
           "style": "plain",
-          "template": "\u276f ",
+          "template": " ~ ",
           "type": "status"
         }
       ],

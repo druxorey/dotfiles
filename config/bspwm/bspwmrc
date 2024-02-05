@@ -17,6 +17,13 @@ fi
 bspc monitor eDP-1 -d 󰊠 󰊠 󰊠 󰊠 󰊠
 bspc monitor HDMI-1 -d 󰊠 󰊠
 
+wmname LG3D
+
+bspc config pointer_modifier mod4
+bspc config pointer_action1 move
+bspc config pointer_action2 resize_side
+bspc config pointer_action2 resize_corner
+
 bspc config border_width         2
 bspc config window_gap           6
 

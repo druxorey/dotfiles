@@ -3,7 +3,6 @@
 comandos=(
 
 # config files backup
-"rsync -a --delete ~/.config/zsh ~/Workspace/dotfiles/config"
 "rsync -a --delete ~/.config/bspwm ~/Workspace/dotfiles/config"
 "rsync -a --delete ~/.config/sxhkd ~/Workspace/dotfiles/config"
 "rsync -a --delete ~/.config/kitty ~/Workspace/dotfiles/config"

@@ -61,6 +61,8 @@ super + e
 	thunar
 super + c
 	code
+super + v
+	kitty nvim
 super + d
 	discord
 super + s

@@ -16,7 +16,7 @@ pacman_packages=(xorg bspwm sxhkd lxappearance picom nitrogen kitty lightdm ligh
 
 yay_packages=(visual-studio-code-bin notion-app-electron microsoft-edge-dev-bin brave-bin peaclock cava pipes.sh tetris-terminal-git minecraft-launcher)
 
-services=(cups NetworkManager)
+services=(cups NetworkManager lightdm)
 
 #* Instalation of the pacman packages
 

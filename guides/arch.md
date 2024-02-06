@@ -246,7 +246,6 @@ Now, if we switch back to our new user and attempt to use sudo commands, we shou
 To ensure that your system can connect to the internet, you'll need to enable the Network Manager. This can be done by running the following command in the terminal:
 
     $ systemctl enable NetworkManager
-    $ systemctl enable NetworkManager.service
 
 ## 4.8) Installing the Bootloader <a name='id4.8'></a>
 

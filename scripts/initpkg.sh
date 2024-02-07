@@ -12,7 +12,7 @@ LINE="\n"
 
 #* List of packages to install
 
-pacman_packages=(xorg bspwm sxhkd lxappearance picom nitrogen kitty lightdm lightdm-gtk-greeter lightdm-gtk-greeter-settings reflector libinput timeshift blueman bluez-utils pulseaudio-bluetooth brightnessctl lsd scrot rofi cmus neovim gedit unzip p7zip unrar tar rsync htop exfat-utils fuse-exfat curl wget trash-cli ranger thefuck tldr gnome-keyring usbutils gthumb bash-completion neofetch vim git bat btop speedtest-cli imagemagick exa tmux sxiv ncdu fzf cmatrix zip alsa-utils tumbler gvfs-smb samba samba-client hplip cups cups-pdf system-config-printerbas thunar nautilus dmenu vlc polybar libreoffice-fresh gimp jdk-openjdk flatpak pdfarranger steam php redshift nodejs npm translate-shell)
+pacman_packages=(xorg bspwm sxhkd lxappearance picom nitrogen kitty lightdm lightdm-gtk-greeter lightdm-gtk-greeter-settings reflector libinput timeshift blueman bluez-utils pulseaudio-bluetooth brightnessctl lsd scrot rofi cmus neovim gedit unzip p7zip unrar tar rsync htop exfat-utils fuse-exfat curl wget trash-cli ranger thefuck tldr gnome-keyring usbutils gthumb bash-completion neofetch vim git bat btop speedtest-cli imagemagick exa tmux sxiv ncdu fzf cmatrix zip alsa-utils tumbler gvfs-smb samba samba-client hplip cups cups-pdf system-config-printerbas thunar nautilus dmenu vlc polybar libreoffice-fresh gimp jdk-openjdk flatpak pdfarranger steam php redshift nodejs npm translate-shell xsel)
 
 yay_packages=(visual-studio-code-bin notion-app-electron microsoft-edge-dev-bin brave-bin peaclock cava pipes.sh tetris-terminal-git minecraft-launcher)
 

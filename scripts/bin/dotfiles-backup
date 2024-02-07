@@ -12,6 +12,7 @@ comandos=(
 "rsync -a --delete ~/.config/picom ~/Workspace/dotfiles/config"
 "rsync -a --delete ~/.config/polybar ~/Workspace/dotfiles/config"
 "rsync -a --delete ~/.config/rofi ~/Workspace/dotfiles/config"
+"rsync -a --delete ~/.config/nvim ~/Workspace/dotfiles/config"
 "rsync -a --delete ~/.config/bin ~/Workspace/dotfiles/scripts"
 "rsync -a ~/.zshrc ~/Workspace/dotfiles/config/zshrc"
 "rsync -a ~/.bashrc ~/Workspace/dotfiles/config/bashrc"

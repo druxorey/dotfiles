@@ -9,5 +9,7 @@ augroup darken_bg | autocmd!
     autocmd! Colorscheme * call s:Colors()
 augroup END
 
+set cursorline
+
 colorscheme dracula
 let g:airline_theme = 'dracula'

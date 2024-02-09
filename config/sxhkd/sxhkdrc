@@ -84,6 +84,8 @@ super + b
 	microsoft-edge-dev
 super + alt + b
 	brave
+super + i
+	gtk-launch msedge-bdinhfjgphhmaolbmhcmidoadmkngbng-Default.desktop
 super + alt + g
 	microsoft-edge-dev github.com/druxorey
 super + alt + y

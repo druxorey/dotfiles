@@ -59,8 +59,7 @@ alias cp='cp -i'
 alias df='df -h'
 
 # scripts
-alias reload-bash='source ~/.bashrc'
-alias reload-zsh='source ~/.zshrc'
+alias reload='source ~/.zshrc && source ~/.bashrc'
 alias help='sh ~/.config/bin/help'
 
 # system

@@ -60,6 +60,7 @@ alias df='df -h'
 
 # scripts
 alias reload='source ~/.zshrc && source ~/.bashrc'
+alias hacker='cd && kitty --start-as=fullscreen --config=.config/kitty/hacker.conf bash'
 alias help='sh ~/.config/bin/help'
 
 # system

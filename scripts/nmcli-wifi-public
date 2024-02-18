@@ -1,0 +1,33 @@
+#!/bin/bash
+
+TITLE="\e[1;35m"
+RUNNING="\e[35m"
+FAILED="\e[1;31m"
+END="\e[0m"
+
+WIFI1="nmcli dev wifi connect WIFI1 password WIFI1PASSWD"
+WIFI2="nmcli dev wifi connect WIFI2 password WIFI2PASSWD hidden yes"
+
+echo -e """
+${TITLE}Which Wi-Fi network do you want to connect to?${END}
+
+    1) WIFI1
+    2) WIFI2
+"""
+
+echo -en "Choose the option: ${END}"
+read output
+
+if [[ $output == 1 ]]; then
+    while ! ${WIFI1}; do
+        echo -e "${FAILED}The command failed, retrying...${END}"
+        sleep 3
+    done
+fi
+
+if [[ $output == 2 ]]; then
+    while ! ${WIFI2}; do
+        echo -e "${FAILED}The command failed, retrying...${END}"
+        sleep 3
+    done
+fi

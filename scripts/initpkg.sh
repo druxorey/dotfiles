@@ -37,7 +37,7 @@ done
 
 #* Instalation of yay
 
-echo -e "${QUESTION}¿Do you want to install yay? (Y/n)${END}"
+echo -ne "${QUESTION}¿Do you want to install yay? (Y/n): ${END}"
 read -r output
 
 output=${output,,}
@@ -72,7 +72,7 @@ done
 
 #* Enabling Services 
 
-echo -e "${QUESTION}¿Do you want to enable the services? (Y/n)${END}"
+echo -ne "${QUESTION}¿Do you want to enable the services? (Y/n): ${END}"
 read -r output
 
 output=${output,,}
@@ -96,7 +96,7 @@ fi
 
 #* Installing zsh shell
 
-echo -e "${QUESTION}¿Do you want to install zsh and make it your default shell? (Y/n)${END}"
+echo -ne "${QUESTION}¿Do you want to install zsh and make it your default shell? (Y/n): ${END}"
 read -r output
 
 output=${output,,}

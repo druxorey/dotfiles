@@ -50,8 +50,17 @@
           "style": "powerline",
           "template": " \ue718 {{ if .PackageManagerIcon }}{{ .PackageManagerIcon }} {{ end }}{{ .Full }} ",
           "type": "node"
+        },
+        {
+          "type": "python",
+          "style": "powerline",
+          "powerline_symbol": "\uE0B0",
+          "foreground": "#f8f8f2",
+          "background": "#FFB86C",
+          "properties": {
+            "prefix": " \uE235 "
+          }
         }
-        
       ],
       "type": "prompt"
     },

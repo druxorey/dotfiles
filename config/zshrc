@@ -63,6 +63,12 @@ alias reload='source ~/.zshrc && source ~/.bashrc'
 alias hacker='cd && kitty --start-as=fullscreen --config=.config/kitty/hacker.conf bash'
 alias help='sh ~/.config/bin/help'
 
+# python
+alias venv-activate='source .venv/bin/activate'
+alias venv-requirements='pip freeze > requirements.txt'
+alias venv-create='virtualenv .venv'
+alias venv-desactivate='deactivate'
+
 # system
 alias shutdown='shutdown now'
 alias monitor-chome='xrandr --output eDP-1 --primary --mode 1920x1080 --rotate normal --output HDMI-1 --mode 1600x900 --rotate normal --right-of eDP-1'

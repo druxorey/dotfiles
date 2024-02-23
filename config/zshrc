@@ -64,6 +64,7 @@ alias hacker='cd && kitty --start-as=fullscreen --config=.config/kitty/hacker.co
 alias help='sh ~/.config/bin/help'
 
 # python
+alias py="python3"
 alias venv-activate='source .venv/bin/activate'
 alias venv-requirements='pip freeze > requirements.txt'
 alias venv-create='virtualenv .venv'

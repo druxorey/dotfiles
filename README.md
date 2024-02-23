@@ -28,4 +28,4 @@ Beyond the arch installation guide, this repository also serves as a resource fo
 
 ### Screenshots
 
-![This is an image](/resources/rices/rice-2024-01-15.png)
+![This is an image](/resources/rices/rice-2024-02-23.png)

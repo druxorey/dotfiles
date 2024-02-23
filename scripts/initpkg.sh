@@ -102,17 +102,16 @@ read -r output
 output=${output,,}
 
 if [[ -z $output ]]; then
-  output='y'
+    output='y'
 fi
 
 if [[ $output == 'y' ]]; then
 
 	echo -e "${RUNNING}Installing zsh${END}"
 	sudo pacman -S zsh
-  chsh -s /bin/zsh
-	done
+    chsh -s /bin/zsh
 fi
 	
 else
-  echo -e "${FAILED}!!WARNING!! The services are not enabled, if you need them please install and enable manually, we recommend enabling the services for a good experience${END}"
+    echo -e "${FAILED}!!WARNING!! The services are not enabled, if you need them please install and enable manually, we recommend enabling the services for a good experience${END}"
 fi

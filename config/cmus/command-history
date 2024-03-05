@@ -1,0 +1,21 @@
+q
+set format_current= %l%! - %a
+set format_current= %l%! - %a - %n. %t%= %y 
+set format_current= %a - - %n. %t%= %y 
+set format_current= %a - %l%! - %n. %t%= %y 
+set format_current= %a -  - %n. %t%= %y 
+set format_current= %t% =  %a - %l%! - %n. %t%= %y 
+set format_current=  - %l%! - %n. %t%= %y 
+set lib_sort=albumartist date album discnumber tracknumber title filename play_count
+set lib_sort=albumartist date album discnumber tracknumber title play_count
+set format_statusline= %{status} %{?show_playback_position?%{position} %{?duration?/ %{duration} }?%{?duration?%{duration} }}- %{total}  %{?bpm>0?at %{bpm} BPM }%{?volume>=0?vol: %{?lvolume!=rvolume?%{lvolume},%{rvolume} ?%{volume} }}%{?stream?buf: %{buffer} }%{?show_current_bitrate & bitrate>=0? %{bitrate} kbps }%=%{?repeat_current?repeat current?%{?play_library?%{playlist_mode} from %{?play_sorted?sorted }library?playlist}} | %1{continue}%1{follow}%1{repeat}%1{shuffle} 
+set format_statusline= %{status} %{?show_playback_position?%{position} %{?duration?/ %{duration} }?%{?duration?%{duration} }}-  %{?bpm>0?at %{bpm} BPM }%{?volume>=0?vol: %{?lvolume!=rvolume?%{lvolume},%{rvolume} ?%{volume} }}%{?stream?buf: %{buffer} }%{?show_current_bitrate & bitrate>=0? %{bitrate} kbps }%=%{?repeat_current?repeat current?%{?play_library?%{playlist_mode} from %{?play_sorted?sorted }library?playlist}} | %1{continue}%1{follow}%1{repeat}%1{shuffle} 
+set format_statusline= %{status} %{?show_playback_position?%{position} %{?duration?/ %{duration} }?%{?duration?%{duration} }}- %{total} %{?bpm>0?at %{bpm} BPM }%{?volume>=0?vol: %{?lvolume!=rvolume?%{lvolume},%{rvolume} ?%{volume} }}%{?stream?buf: %{buffer} }%{?show_current_bitrate & bitrate>=0? %{bitrate} kbps }%=%{?repeat_current?repeat current?%{?play_library?%{playlist_mode} from %{?play_sorted?sorted }library?playlist}} | %1{continue}%1{follow}%1{repeat}%1{shuffle} 
+wq
+set start_view=browser
+set start_view=tree
+bind -f common 1 view browser
+bind -f common 51 view browser
+bind -f common 5 view browser
+bind -f common 5 view browser1
+add Music/Música/

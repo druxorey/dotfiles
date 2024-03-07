@@ -1,3 +1,8 @@
+set format_current= %t%! - %a
+bind -f common 5 view tree
+bind -f common z player-prev
+pl-create 
+bind common <key> bind
 q
 set format_current= %l%! - %a
 set format_current= %l%! - %a - %n. %t%= %y 

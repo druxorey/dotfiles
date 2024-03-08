@@ -64,6 +64,8 @@ super + alt + m
 # file managment
 super + e
 	thunar
+super + alt + e
+	thunar smb://192.168.1.119/
 
 # file editor
 super + c

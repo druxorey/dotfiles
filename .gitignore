@@ -1,3 +1,4 @@
 **/.git
 
 scripts/bin/nmcli-wifi
+scripts/bin/buho

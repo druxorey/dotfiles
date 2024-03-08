@@ -1,8 +1,14 @@
 #!/bin/bash
 
-# Help function
+recursive=0
+
+complete_route=$0
+route=$(basename "$complete_route")
+
+
+# Help message
 help() {
-    echo "USAGE: $0 [ROUTE]"
+    echo "USAGE: $route [-r] [ROUTE]"
     echo
     echo "DESCRIPTION: Calculates the number of bytes occupied by files in the specified directory."
     echo
@@ -11,14 +17,27 @@ help() {
     echo
     echo "OPTIONS:"
     echo "  -h      Shows this help."
+    echo "  -r      Analyze directories recursively."
     echo
     exit 1
 }
 
-# Check if the first argument is -h
-if [ "$1" == "-h" ]; then
-    help
-fi
+# Check options
+while getopts ":rh" opt; do
+  case ${opt} in
+    r )
+      recursive=1
+      ;;
+    h )
+      help
+      ;;
+    \? )
+      echo "Invalid Option: -$OPTARG" 1>&2
+      exit 1
+      ;;
+  esac
+done
+shift $((OPTIND -1))
 
 # Check if the number of arguments is correct
 if [ $# -ne 1 ]; then
@@ -33,13 +52,19 @@ fi
 
 # Program code
 total=0
-for f in `ls $1`; do
-    name="$1/$f"
-    if [ -f $name ]; then
-        bytes=`ls -l $name | cut -d " " -f 5`
-        echo "File $name takes up $bytes bytes" | tr -s /
-        (( total = $total + $bytes ))
-    fi
-done
+function analyze_directory() {
+    for f in `ls $1`; do
+        name="$1/$f"
+        if [ -f $name ]; then
+            bytes=`ls -l $name | cut -d " " -f 5`
+            echo "File $name takes up $bytes bytes" | tr -s /
+            (( total = $total + $bytes ))
+        elif [ -d $name ] && [ $recursive -eq 1 ]; then
+            analyze_directory $name
+        fi
+    done
+}
 
-echo -e "\nTotal: $total bytes"
+analyze_directory $1
+
+echo -e "Total: $total bytes"

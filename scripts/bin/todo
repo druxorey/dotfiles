@@ -5,10 +5,10 @@ file=$(basename "$file_location")
 
 if [ -f "$file_location" ]
 then
-    vim $file_location
+    nvim $file_location
 else
     echo "El archivo "$file" no existe. Creándolo..."
     touch $file_location
     echo "Archivo creado. Abriéndolo..."
-    vim $file_location
+    nvim $file_location
 fi

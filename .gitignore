@@ -2,3 +2,5 @@
 
 scripts/bin/nmcli-wifi
 scripts/bin/buho
+
+config/cmus/cache

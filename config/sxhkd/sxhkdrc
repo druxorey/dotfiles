@@ -5,8 +5,8 @@
 #* ============================== system ============================= *#
 
 # lock the screen
-super + l
-	dm-tool lock
+#super + l
+#	dm-tool lock
 
 # increase audio volume
 XF86AudioRaiseVolume
@@ -102,6 +102,7 @@ super + alt + w
 # quit/restart bspwm and sxhkd
 #super + alt + {q,r}
 #	bspc {quit,wm -r}
+
 super + Escape
 	pkill -USR1 -x sxhkd
 
@@ -134,7 +135,7 @@ super + ctrl + {m,x,y,z}
 #* ============================ focus/swap =========================== *#
 
 # focus the node in the given direction
-super + {_,shift + }{Left,Down,Up,Right}
+super + {_,shift + }{h,j,k,l}
 	bspc node -{f,s} {west,south,north,east}
 
 # focus the node for the given path jump
@@ -166,7 +167,7 @@ super + {_,shift + }{1-9,0}
 #* ============================= preselect =========================== *#
 
 # preselect the direction
-super + ctrl + {Left,Down,Up,Right}
+super + ctrl + {h,j,k,l}
 	bspc node -p {west,south,north,east}
 
 # preselect the ratio
@@ -184,13 +185,13 @@ super + ctrl + shift + space
 #* =========================== move/resize =========================== *#
 
 # expand a window by moving one of its side outward
-super + alt + {Left,Down,Up,Right}
+super + alt + {h,j,k,l}
 	bspc node -z {left -20 0,bottom 0 20,top 0 -20,right 20 0}
 
 # contract a window by moving one of its side inward
-super + alt + shift + {Left,Down,Up,Right}
+super + alt + shift + {h,j,k,l}
 	bspc node -z {right -20 0,top 0 20,bottom 0 -20,left 20 0}
 
 # move a floating window
-super + alt + ctrl + {Left,Down,Up,Right}
+super + {Left,Down,Up,Right}
 	bspc node -v {-20 0,0 20,0 -20,20 0}

@@ -8,7 +8,7 @@
 ; mode = normal
 
 # Accepts only non-negative values.
-; framerate = 10
+; framerate = 60
 
 # 'autosens' will attempt to decrease sensitivity if the bars peak. 1 = on, 0 = off
 # new as of 0.6.0 autosens of low values (dynamic range)
@@ -22,8 +22,8 @@
 
 # The number of bars (0-512). 0 sets it to auto (fill up console).
 # Bars' width and space between bars in number of characters.
-bars = 24
-bar_width = 4
+; bars = 0
+; bar_width = 2
 ; bar_spacing = 1
 # bar_height is only used for output in "noritake" format
 ; bar_height = 32
@@ -52,8 +52,8 @@ bar_width = 4
 
 [input]
 
-# Audio capturing method. Possible methods are: 'pulse', 'alsa', 'fifo', 'sndio' or 'shmem'
-# Defaults to 'pulse', 'pipewire', 'alsa' or 'fifo', in that order, dependent on what support cava was built with.
+# Audio capturing method. Possible methods are: 'fifo', 'portaudio', 'pipewire', 'alsa', 'pulse', 'sndio', 'oss', 'jack' or 'shmem'
+# Defaults to 'oss', 'pipewire', 'sndio', 'jack', 'pulse', 'alsa', 'portaudio' or 'fifo', in that order, dependent on what support cava was built with.
 # On Mac it defaults to 'portaudio' or 'fifo'
 # On windows this is automatic and no input settings are needed.
 #
@@ -63,12 +63,22 @@ bar_width = 4
 # For pulseaudio and pipewire 'source' will be the source. Default: 'auto', which uses the monitor source of the default sink
 # (all pulseaudio sinks(outputs) have 'monitor' sources(inputs) associated with them).
 #
-# For piepwire 'source' will be the object name or object.serial of the device to capture from.
+# For pipewire 'source' will be the object name or object.serial of the device to capture from.
 # Both input and output devices are supported.
 #
 # For alsa 'source' will be the capture device.
 # For fifo 'source' will be the path to fifo-file.
 # For shmem 'source' will be /squeezelite-AA:BB:CC:DD:EE:FF where 'AA:BB:CC:DD:EE:FF' will be squeezelite's MAC address
+#
+# For sndio 'source' will be a raw recording audio descriptor or a monitoring sub-device, e.g. 'rsnd/2' or 'snd/1'. Default: 'default'.
+# README.md contains further information on how to setup CAVA for sndio.
+#
+# For oss 'source' will be the path to a audio device, e.g. '/dev/dsp2'. Default: '/dev/dsp', i.e. the default audio device.
+# README.md contains further information on how to setup CAVA for OSS on FreeBSD.
+#
+# For jack 'source' will be the name of the JACK server to connect to, e.g. 'foobar'. Default: 'default'.
+# README.md contains further information on how to setup CAVA for JACK.
+#
 ; method = pulse
 ; source = auto
 
@@ -80,8 +90,6 @@ bar_width = 4
 
 ; method = fifo
 ; source = /tmp/mpd.fifo
-; sample_rate = 44100
-; sample_bits = 16
 
 ; method = shmem
 ; source = /squeezelite-AA:BB:CC:DD:EE:FF
@@ -89,13 +97,40 @@ bar_width = 4
 ; method = portaudio
 ; source = auto
 
+; method = sndio
+; source = default
+
+; method = oss
+; source = /dev/dsp
+
+; method = jack
+; source = default
+
+# The options 'sample_rate', 'sample_bits', 'channels' and 'autoconnect' can be configured for some input methods:
+#   sample_rate: fifo, pipewire, sndio, oss
+#   sample_bits: fifo, pipewire, sndio, oss
+#   channels:    sndio, oss, jack
+#   autoconnect: jack
+# Other methods ignore these settings.
+#
+# For 'sndio' and 'oss' they are only preferred values, i.e. if the values are not supported
+# by the chosen audio device, the device will use other supported values instead.
+# Example: 48000, 32 and 2, but the device only supports 44100, 16 and 1, then it
+# will use 44100, 16 and 1.
+#
+; sample_rate = 44100
+; sample_bits = 16
+; channels = 2
+; autoconnect = 2
+
 
 [output]
 
 # Output method. Can be 'ncurses', 'noncurses', 'raw', 'noritake', 'sdl'
 # or 'sdl_glsl'.
-# 'noncurses' uses a custom framebuffer technique and prints only changes
-# from frame to frame in the terminal. 'ncurses' is default if supported.
+# 'noncurses' (default) uses a buffer and cursor movements to only print
+# changes from frame to frame in the terminal. Uses less resources and is less
+# prone to tearing (vsync issues) than 'ncurses'.
 #
 # 'raw' is an 8 or 16 bit (configurable via the 'bit_format' option) data
 # stream of the bar heights that can be used to send to other applications.
@@ -107,7 +142,7 @@ bar_width = 4
 # 'sdl' uses the Simple DirectMedia Layer to render in a graphical context.
 # 'sdl_glsl' uses SDL to create an OpenGL context. Write your own shaders or
 # use one of the predefined ones.
-; method = ncurses
+; method = noncurses
 
 # Orientation of the visualization. Can be 'bottom', 'top', 'left' or 'right'.
 # Default is 'bottom'. Other orientations are only supported on sdl and ncruses
@@ -146,6 +181,7 @@ bar_width = 4
 ; sdl_height = 500
 ; sdl_x = -1
 ; sdl_y= -1
+; sdl_full_screen = 0
 
 # set label on bars on the x-axis. Can be 'frequency' or 'none'. Default: 'none'
 # 'frequency' displays the lower cut off frequency of the bar above.
@@ -164,18 +200,22 @@ bar_width = 4
 ; for glsl output mode, keep rendering even if no audio
 ; continuous_rendering = 0
 
+# disable console blank (screen saver) in tty
+# (Not supported on FreeBSD)
+; disable_blanking = 0
+
 [color]
 
 # Colors can be one of seven predefined: black, blue, cyan, green, magenta, red, white, yellow.
 # Or defined by hex code '#xxxxxx' (hex code must be within ''). User defined colors requires
 # a terminal that can change color definitions such as Gnome-terminal or rxvt.
 # default is to keep current terminal color
-# ; background = default
-# ; foreground = '#FF0000'
+; background = default
+; foreground = default
 
 # SDL and sdl_glsl only support hex code colors, these are the default:
-; background = default
-foreground = blue
+; background = '#111111'
+; foreground = '#33ffff'
 
 
 # Gradient mode, only hex defined colors are supported,

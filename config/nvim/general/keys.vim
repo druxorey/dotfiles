@@ -1,3 +1,5 @@
+let g:telescope = "lua require('telescope.builtin')"
+
 " Remap escape
 nnoremap <C-c> <Esc>
 
@@ -30,6 +32,11 @@ nnoremap <C-h> <C-w>h
 nnoremap <C-j> <C-w>j
 nnoremap <C-k> <C-w>k
 nnoremap <C-l> <C-w>l
+
+" Telescope
+nnoremap <leader>sf :execute g:telescope . '.find_files()'<CR>
+nnoremap <leader>sg      :execute g:telescope . '.git_files()'<CR>
+nnoremap <leader>ps :execute g:telescope . ".grep_string({ search = vim.fn.input('Grep > ') })"<CR>
 
 if !exists('g:vscode')
     " TAB in general mode will move to next buffer

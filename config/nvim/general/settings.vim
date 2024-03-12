@@ -11,7 +11,7 @@ set shiftwidth=4
 set showtabline=4
 set formatoptions-=cro
 set hidden
-set nowrap
+set wrap
 set encoding=utf-8
 set fileencoding=utf-8
 set ruler

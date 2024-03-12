@@ -22,9 +22,10 @@ vnoremap < <gv
 vnoremap > >gv
 
 " Move selected line / block of text in visual mode
+
 " shift + k to move up
-" shift + j to move down
 xnoremap K :move '<-2<CR>gv-gv
+" shift + j to move down
 xnoremap J :move '>+1<CR>gv-gv
 
 " Better window navigation

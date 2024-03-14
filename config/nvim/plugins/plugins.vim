@@ -2,6 +2,8 @@ call plug#begin('~/.config/nvim/plugins/installed')
 	" general
 	Plug 'sheerun/vim-polyglot'
 	Plug 'jiangmiao/auto-pairs'
+	Plug 'folke/trouble.nvim'
+	Plug 'kylechui/nvim-surround'
 	Plug 'nvim-treesitter/nvim-treesitter', { 'as': 'TSUpdate'}
 	" telescope
 	Plug 'nvim-telescope/telescope.nvim'

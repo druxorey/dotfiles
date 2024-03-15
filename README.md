@@ -1,4 +1,4 @@
-# Welcome to the Repository of Configurations and Guides for Arch Linux!
+# BSPWM dots
 
 This repository contains configuration files, scripts, and step-by-step guides to help you install and configure Arch Linux to your needs.
 
@@ -24,8 +24,25 @@ Beyond the arch installation guide, this repository also serves as a resource fo
         $ sudo chmod +x (file)
         $ sh (file)
 
-- **themes**: Folder reserved for custom themes.
-
 ### Screenshots
 
 ![This is an image](/resources/rices/rice-2024-02-23.png)
+
+### Dependencies
+
+- **Shell**: zsh
+- **Prompt**: oh-my-posh
+- **Terminal**: kitty
+- **System Fetch**: neofetch
+- **Bar**: polybar
+- **Browser**: brave
+- **Editor**: neovim
+- **File Manager**: thunar and ranger
+- **Aplication launcher**: rofi
+- **Colorscheme**: [dracula](https://draculatheme.com/)
+- **Wallpaper**: [here](/resources/wallpapers.zip)
+- **GTK theme**: [Dracula GTK](https://draculatheme.com/gtk)
+- **Icon theme**: [Dracula Papirus](https://draculatheme.com/gtk#:~:text=Icon%20Theme%20(optional))
+- **Cursor**: [Dracula cursor](https://www.gnome-look.org/p/1669262/)
+- **GUI Font**: [Noto Sans Nerd Font](https://www.nerdfonts.com/font-downloads#:~:text=or%20straight%20lined-,Download,-Preview%20on%20ProgrammingFonts)
+- **TUI Font**: [Hack Nerd Font](https://www.nerdfonts.com/font-downloads#:~:text=at%20common%20sizes-,Download,-Preview%20on%20ProgrammingFonts)

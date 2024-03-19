@@ -14,14 +14,13 @@ yay_packages_installation="yay -S --noconfirm"
 service_installation="sudo systemctl enable"
 
 # Categories of installable Pacman packages
-declare -A pacman_packages_list
-pacman_packages_list["base"]=(xorg bspwm sxhkd lxappearance picom nitrogen kitty lightdm lightdm-gtk-greeter lightdm-gtk-greeter-settings networkmanager reflector libinput timeshift )
+base_pacman_packages_list=(xorg bspwm sxhkd lxappearance picom nitrogen kitty lightdm lightdm-gtk-greeter lightdm-gtk-greeter-settings networkmanager reflector libinput timeshift)
 
-pacman_packages_list["utils"]=(lsd scrot rofi cmus neovim unzip p7zip unrar tar rsync htop exfat-utils fuse-exfat curl wget trash-cli ranger thefuck tldr gnome-keyring usbutils bash-completion neofetch vim git bat btop speedtest-cli imagemagick exa tmux sxiv ncdu fzf cmatrix zip alsa-utils php nodejs npm translate-shell xsel ripgrep fd the_silver_searcher)
+utils_pacman_packages_list=(lsd scrot rofi cmus neovim unzip p7zip unrar tar rsync htop exfat-utils fuse-exfat curl wget trash-cli ranger thefuck tldr gnome-keyring usbutils bash-completion neofetch vim git bat btop speedtest-cli imagemagick exa tmux sxiv ncdu fzf cmatrix zip alsa-utils php nodejs npm translate-shell xsel ripgrep fd the_silver_searcher)
 
-pacman_packages_list["drivers"]=(blueman bluez-utils pulseaudio-bluetooth brightnessctl tumbler gvfs-smb samba smbclient hplip cups cups-pdf system-config-printer jdk-openjdk flatpak redshift)
+drivers_pacman_packages_list=(blueman bluez-utils pulseaudio-bluetooth brightnessctl tumbler gvfs-smb samba smbclient hplip cups cups-pdf system-config-printer jdk-openjdk flatpak redshift)
 
-pacman_packages_list["gui"]=(gedit thunar nautilus dmenu vlc polybar libreoffice-fresh gimp pdfarranger steam)
+gui_pacman_packages_list=(gedit thunar nautilus dmenu vlc polybar libreoffice-fresh gimp pdfarranger steam)
 
 # Installable Yay packages
 yay_packages_list=(visual-studio-code-bin notion-app-electron microsoft-edge-dev-bin brave-bin peaclock cava pipes.sh tetris-terminal-git minecraft-launcher gtypist)
@@ -54,17 +53,18 @@ execute_command() {
         if [ $? -eq 0 ]; then
             echo -e "${SUCCESS}The $item_type has been installed correctly${END}"
         else
-            echo -e "${FAILED}ERROR ALERT! The following $item_type could not be installed: ${END}$item"
+            echo -e "${FAILED}!!!!WARNING!!!! The following $item_type could not be installed: ${END}$item"
         fi
     done
 }
 
 
 ask_user() {
-    local question="$1"
+    local question_text="$1"
     local action="$2"
 
-    echo -ne "${QUESTION}${question} (Y/n): ${END}"
+
+    echo -ne "${QUESTION}${question_text} (Y/n): ${END}"
     read -r output
 
     output=${output,,}
@@ -77,26 +77,36 @@ ask_user() {
         echo -e "${QUESTION}The installation will begin${END}"
         eval "$action"
     else
-        echo -e "${FAILED}The action will not be executed${END}"
+        echo -e "${FAILED}!!!!WARNING!!!! The installation will not be executed${END}"
     fi
 }
 
 
 # ====================== Main code ====================== #
 
+echo -e "${LINE}${TITLE} ========== Welcome to the Arch Linux bootstrap ========== ${END}"
+
+pacman_package_categories=("base" "utils" "drivers" "gui")
+
 for category in "${pacman_package_categories[@]}"; do
-    install_command='execute_command "pacman" "${pacman_packages_list[$category][@]}"'
-    ask_user "do you want to install the ${category} pacman packages?" "$install_command"
+    install_command="${category}_pacman_packages_list[@]"
+    echo -e "${LINE}${RUNNING}The next pacman packages will be installing:${END} $(eval echo \${$install_command})${LINE}"
+    ask_user "Do you want to install them?" "execute_command \"pacman\" \"\${$install_command}\""
 done
 
 yay_install_commands='cd && git clone https://aur.archlinux.org/yay.git; cd yay/ && makepkg -si; cd .. && sudo rm -r yay'
 ask_user "Do you want to install yay?" "$yay_install_commands"
 
 yay_packages_install_commands='execute_command "yay" "${yay_packages_list[@]}"'
-ask_user "Do you want to install the yay packages?" "$yay_packages_install_commands" 
+echo -e "${LINE}${RUNNING}The next packages will be installing:${END} ${yay_packages_list[@]}${LINE}"
+ask_user "Do you want to install them?" "$yay_packages_install_commands" 
 
 service_install_commands='execute_command "service" "${services_list[@]}"'
 ask_user "Do you want to enable the services?" "$service_install_commands" 
 
 zsh_install_commands='sudo pacman -S zsh; chsh -s /bin/zsh'
 ask_user "Do you want to install zsh and make it your default shell?" "$zsh_install_commands"
+
+
+echo -e "${LINE}${TITLE} The script has finished running, enjoy your system :) ${END}"
+echo -e "${TITLE} Made by: github.com/druxorey${END}${LINE}"

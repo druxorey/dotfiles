@@ -66,6 +66,7 @@ alias help='sh ~/.config/bin/help'
 
 # python
 alias py="python3"
+alias rm-pychache="sudo rm -r __pycache__"
 alias venv-activate='source .venv/bin/activate'
 alias venv-requirements='pip freeze > requirements.txt'
 alias venv-create='virtualenv .venv'

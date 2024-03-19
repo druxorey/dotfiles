@@ -56,10 +56,10 @@ set dsp.jack.server_name=
 set dsp.oss.device=
 set follow=false
 set format_clipped_text=…
-set format_current= %t%! - %a
+set format_current= %a - %t%= %y 
 set format_playlist= %-21%a %3n. %t%= %y %d %{?X!=0?%3X ?    }
 set format_playlist_va= %-21%A %3n. %t (%a)%= %y %d %{?X!=0?%3X ?    }
-set format_statusline= %{status} %{?show_playback_position?%{position} %{?duration?/ %{duration} }?%{?duration?%{duration} }}- %{total}  %{?bpm>0?at %{bpm} BPM }%{?volume>=0?vol: %{?lvolume!=rvolume?%{lvolume},%{rvolume} ?%{volume} }}%{?stream?buf: %{buffer} }%{?show_current_bitrate & bitrate>=0? %{bitrate} kbps }%=%{?repeat_current?repeat current?%{?play_library?%{playlist_mode} from %{?play_sorted?sorted }library?playlist}} | %1{continue}%1{follow}%1{repeat}%1{shuffle} 
+set format_statusline= %{status} %{?show_playback_position?%{position} %{?duration?/ %{duration} }?%{?duration?%{duration} }}- %{total} %{?bpm>0?at %{bpm} BPM }%{?volume>=0?vol: %{?lvolume!=rvolume?%{lvolume},%{rvolume} ?%{volume} }}%{?stream?buf: %{buffer} }%{?show_current_bitrate & bitrate>=0? %{bitrate} kbps }%=%{?repeat_current?repeat current?%{?play_library?%{playlist_mode} from %{?play_sorted?sorted }library?playlist}} | %1{continue}%1{follow}%1{repeat}%1{shuffle} 
 set format_title=%a - %l - %t (%y)
 set format_trackwin=%3n. %t%= %y %d 
 set format_trackwin_album= %l %= %{albumduration} 
@@ -91,7 +91,7 @@ set output_plugin=pulse
 set passwd=
 set pause_on_output_change=false
 set pl_sort=
-set play_library=true
+set play_library=false
 set play_sorted=false
 set repeat=false
 set repeat_current=false
@@ -112,7 +112,7 @@ set skip_track_info=false
 set smart_artist_sort=true
 set softvol=false
 set softvol_state=0 0
-set start_view=browser
+set start_view=playlist
 set status_display_program=
 set stop_after_queue=false
 set time_show_leading_zero=true
@@ -129,11 +129,11 @@ bind common , seek -1m
 bind common - vol -10%
 bind common . seek +1m
 bind common / search-start
-bind common 1 view browser
+bind common 1 view tree
 bind common 2 view sorted
 bind common 3 view playlist
 bind common 4 view queue
-bind common 5 view tree
+bind common 5 view browser
 bind common 6 view filters
 bind common 7 view settings
 bind common = vol +10%

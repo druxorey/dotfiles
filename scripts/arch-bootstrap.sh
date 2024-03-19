@@ -14,13 +14,14 @@ yay_packages_installation="yay -S --noconfirm"
 service_installation="sudo systemctl enable"
 
 # Categories of installable Pacman packages
-base_pacman_packages_list=(xorg bspwm sxhkd lxappearance picom nitrogen kitty lightdm lightdm-gtk-greeter lightdm-gtk-greeter-settings networkmanager reflector libinput timeshift )
+declare -A pacman_packages_list
+pacman_packages_list["base"]=(xorg bspwm sxhkd lxappearance picom nitrogen kitty lightdm lightdm-gtk-greeter lightdm-gtk-greeter-settings networkmanager reflector libinput timeshift )
 
-utils_pacman_packages_list=(lsd scrot rofi cmus neovim unzip p7zip unrar tar rsync htop exfat-utils fuse-exfat curl wget trash-cli ranger thefuck tldr gnome-keyring usbutils bash-completion neofetch vim git bat btop speedtest-cli imagemagick exa tmux sxiv ncdu fzf cmatrix zip alsa-utils php nodejs npm translate-shell xsel ripgrep fd the_silver_searcher)
+pacman_packages_list["utils"]=(lsd scrot rofi cmus neovim unzip p7zip unrar tar rsync htop exfat-utils fuse-exfat curl wget trash-cli ranger thefuck tldr gnome-keyring usbutils bash-completion neofetch vim git bat btop speedtest-cli imagemagick exa tmux sxiv ncdu fzf cmatrix zip alsa-utils php nodejs npm translate-shell xsel ripgrep fd the_silver_searcher)
 
-drivers_pacman_packages_list=(blueman bluez-utils pulseaudio-bluetooth brightnessctl tumbler gvfs-smb samba smbclient hplip cups cups-pdf system-config-printer jdk-openjdk flatpak redshift)
+pacman_packages_list["drivers"]=(blueman bluez-utils pulseaudio-bluetooth brightnessctl tumbler gvfs-smb samba smbclient hplip cups cups-pdf system-config-printer jdk-openjdk flatpak redshift)
 
-gui_pacman_packages_list=(gedit thunar nautilus dmenu vlc polybar libreoffice-fresh gimp pdfarranger steam)
+pacman_packages_list["gui"]=(gedit thunar nautilus dmenu vlc polybar libreoffice-fresh gimp pdfarranger steam)
 
 # Installable Yay packages
 yay_packages_list=(visual-studio-code-bin notion-app-electron microsoft-edge-dev-bin brave-bin peaclock cava pipes.sh tetris-terminal-git minecraft-launcher gtypist)
@@ -49,7 +50,7 @@ execute_command() {
 
     for item in "${@}"; do
         echo -e "${RUNNING}Installing ${END}$item"
-        echo -e $command_executor $item
+        $command_executor $item
         if [ $? -eq 0 ]; then
             echo -e "${SUCCESS}The $item_type has been installed correctly${END}"
         else
@@ -83,11 +84,8 @@ ask_user() {
 
 # ====================== Main code ====================== #
 
-pacman_package_categories=("base" "utils" "drivers" "gui")
-
 for category in "${pacman_package_categories[@]}"; do
-    package_list_var="${category}_pacman_packages_list[@]"
-    install_command='execute_command "pacman" "${$package_list_var}"'
+    install_command='execute_command "pacman" "${pacman_packages_list[$category][@]}"'
     ask_user "do you want to install the ${category} pacman packages?" "$install_command"
 done
 

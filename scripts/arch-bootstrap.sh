@@ -1,7 +1,5 @@
 #!/bin/bash
 
-#* Colors for the prompts
-
 TITLE="\e[1;35m"
 RUNNING="\e[35m"
 QUESTION="\e[36m"
@@ -10,100 +8,77 @@ FAILED="\e[1;31m"
 END="\e[0m"
 LINE="\n"
 
-#* List of packages to install
+pacman_packages_installation="sudo pacman -S --noconfirm"
+yay_packages_installation="yay -S --noconfirm"
+service_installation="sudo systemctl enable"
 
-pacman_packages=(xorg bspwm sxhkd lxappearance picom nitrogen kitty lightdm lightdm-gtk-greeter lightdm-gtk-greeter-settings networkmanager reflector libinput timeshift blueman bluez-utils pulseaudio-bluetooth brightnessctl lsd scrot rofi cmus neovim gedit unzip p7zip unrar tar rsync htop exfat-utils fuse-exfat curl wget trash-cli ranger thefuck tldr gnome-keyring usbutils gthumb bash-completion neofetch vim git bat btop speedtest-cli imagemagick exa tmux sxiv ncdu fzf cmatrix zip alsa-utils tumbler gvfs-smb samba smbclient hplip cups cups-pdf system-config-printer thunar nautilus dmenu vlc polybar libreoffice-fresh gimp jdk-openjdk flatpak pdfarranger steam php redshift nodejs npm translate-shell xsel ripgrep fd the_silver_searcher)
+pacman_packages_list=(xorg bspwm sxhkd lxappearance picom nitrogen kitty lightdm lightdm-gtk-greeter lightdm-gtk-greeter-settings networkmanager reflector libinput timeshift blueman bluez-utils pulseaudio-bluetooth brightnessctl lsd scrot rofi cmus neovim gedit unzip p7zip unrar tar rsync htop exfat-utils fuse-exfat curl wget trash-cli ranger thefuck tldr gnome-keyring usbutils gthumb bash-completion neofetch vim git bat btop speedtest-cli imagemagick exa tmux sxiv ncdu fzf cmatrix zip alsa-utils tumbler gvfs-smb samba smbclient hplip cups cups-pdf system-config-printer thunar nautilus dmenu vlc polybar libreoffice-fresh gimp jdk-openjdk flatpak pdfarranger steam php redshift nodejs npm translate-shell xsel ripgrep fd the_silver_searcher)
 
-yay_packages=(visual-studio-code-bin notion-app-electron microsoft-edge-dev-bin brave-bin peaclock cava pipes.sh tetris-terminal-git minecraft-launcher gtypist)
+yay_packages_list=(visual-studio-code-bin notion-app-electron microsoft-edge-dev-bin brave-bin peaclock cava pipes.sh tetris-terminal-git minecraft-launcher gtypist)
 
-services=(cups NetworkManager lightdm bluetooth.service)
+services_list=(cups NetworkManager lightdm bluetooth.service)
 
-#* Instalation of the pacman packages
+
+execute_command() {
+    local command_type="$1"
+    shift
+
+    if [ "$command_type" == "pacman" ]; then
+        command_executor="$pacman_packages_installation"
+        item_type="package"
+    elif [ "$command_type" == "yay" ]; then
+        command_executor="$yay_packages_installation"
+        item_type="package"
+    elif [ "$command_type" == "service" ]; then
+        command_executor="$service_installation"
+        item_type="service"
+    fi
+
+    for item in "${@}"; do
+        echo -e "${RUNNING}Installing ${END}$item"
+        echo -e $command_executor $item
+        if [ $? -eq 0 ]; then
+            echo -e "${SUCCESS}The $item_type has been installed correctly${END}"
+        else
+            echo -e "${FAILED}ERROR ALERT! The following $item_type could not be installed: ${END}$item"
+        fi
+    done
+}
+
+
+ask_user() {
+    local question="$1"
+    local action="$2"
+
+    echo -ne "${QUESTION}${question} (Y/n): ${END}"
+    read -r output
+
+    output=${output,,}
+
+    if [[ -z $output ]]; then
+        output='y'
+    fi
+
+    if [[ $output == 'y' ]]; then
+        eval "$action"
+    else
+        echo -e "${FAILED}La acción no se ejecutará${END}"
+    fi
+}
+
 
 echo -e "${LINE}${TITLE}Welcome to the pacman and yay package installer!${LINE}${END}"
+
 echo -e "${QUESTION}The installation of the Pacman packages will begin${END}"
+ask_user "¿Do you want to install the pacman packages?" 'execute_command "pacman" "${pacman_packages_list[@]}"'
 
-for package in ${pacman_packages[@]}; do
-    echo -e "${RUNNING}Installing ${END}$package"
-    sudo pacman -S --noconfirm $package
-
-    if [ $? -eq 0 ]; then
-    	echo -e "${SUCCESS}Installed the correctly${END}"
-    else
-    	echo -e "${FAILED}!!!ERROR ALERT!!! The following package could not be installed: ${END}$package"
-    fi
-done
-
-#* Instalation of yay
-
-echo -ne "${QUESTION}¿Do you want to install yay? (Y/n): ${END}"
-read -r output
-
-output=${output,,}
-
-if [[ -z $output ]]; then
-  output='y'
-fi
-
-if [[ $output == 'y' ]]; then
-    cd && git clone https://aur.archlinux.org/yay.git
-    cd yay/ && makepkg -si
-    cd .. && sudo rm -r yay
-else
-	echo -e "${FAILED}Yay will not be installed${END}"
-fi
-
-#* Instalation of yay packages
+yay_install_commands='cd && git clone https://aur.archlinux.org/yay.git; cd yay/ && makepkg -si; cd .. && sudo rm -r yay'
+ask_user "¿Do you want to install yay?" "$yay_install_commands"
 
 echo -e "${QUESTION}The installation of the Yay packages will begin${END}"
+ask_user "¿Do you want to install the pacman packages?" 'execute_command "yay" "${yay_packages_list[@]}"'
 
-for package in ${yay_packages[@]}; do
-    echo -e "${RUNNING}Installing ${END}$package"
-    yay -S --noconfirm $package
+ask_user "¿Do you want to enable the services?" 'execute_command "service" "${services_list[@]}"'
 
-    if [ $? -eq 0 ]; then
-    	echo -e "${SUCCESS}Installed the correctly${END}"
-    else
-    	echo -e "${FAILED}!!!ERROR ALERT!!! The following package could not be installed: ${END}$package"
-    fi
-done
-
-#* Enabling Services 
-
-echo -ne "${QUESTION}¿Do you want to enable the services? (Y/n): ${END}"
-read -r output
-
-output=${output,,}
-
-if [[ -z $output ]]; then
-  output='y'
-fi
-
-if [[ $output == 'y' ]]; then
-	echo -e "${RUNNING}Enabling Services${END}"
-	for service in ${services[@]}; do
-		echo -e "${RUNNING}Enabling ${END}$service"
-		sudo systemctl enable $service
-	done
-else
-	echo -e "${FAILED}!!WARNING!! The services are not enabled, if you need them please install and enable manually, we recommend enabling the services for a good experience${END}"
-fi
-
-#* Installing zsh shell
-
-echo -ne "${QUESTION}¿Do you want to install zsh and make it your default shell? (Y/n): ${END}"
-read -r output
-
-output=${output,,}
-
-if [[ -z $output ]]; then
-    output='y'
-fi
-
-if [[ $output == 'y' ]]; then
-	echo -e "${RUNNING}Installing zsh${END}"
-	sudo pacman -S zsh
-    chsh -s /bin/zsh
-else
-    echo -e "${FAILED}!!WARNING!! The services are not enabled, if you need them please install and enable manually, we recommend enabling the services for a good experience${END}"
-fi
+zsh_install_commands='sudo pacman -S zsh; chsh -s /bin/zsh'
+ask_user "¿Do you want to install zsh and make it your default shell?" "$zsh_install_commands"

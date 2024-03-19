@@ -17,7 +17,7 @@ Beyond the arch installation guide, this repository also serves as a resource fo
 
     - `bin`: This directory contains several scripts that are added to the `$PATH` so that they can be executed at any time.
 
-    - `initpkg.sh`: A script for installing essential packages and necessary repositories.
+    - `arch-bootstrap`: A script for installing essential packages and necessary repositories.
 
     To run the files you have to use the following commands:
 

@@ -8,15 +8,28 @@ FAILED="\e[1;31m"
 END="\e[0m"
 LINE="\n"
 
+# Each of the commands that can be executed to install a package or service
 pacman_packages_installation="sudo pacman -S --noconfirm"
 yay_packages_installation="yay -S --noconfirm"
 service_installation="sudo systemctl enable"
 
-pacman_packages_list=(xorg bspwm sxhkd lxappearance picom nitrogen kitty lightdm lightdm-gtk-greeter lightdm-gtk-greeter-settings networkmanager reflector libinput timeshift blueman bluez-utils pulseaudio-bluetooth brightnessctl lsd scrot rofi cmus neovim gedit unzip p7zip unrar tar rsync htop exfat-utils fuse-exfat curl wget trash-cli ranger thefuck tldr gnome-keyring usbutils gthumb bash-completion neofetch vim git bat btop speedtest-cli imagemagick exa tmux sxiv ncdu fzf cmatrix zip alsa-utils tumbler gvfs-smb samba smbclient hplip cups cups-pdf system-config-printer thunar nautilus dmenu vlc polybar libreoffice-fresh gimp jdk-openjdk flatpak pdfarranger steam php redshift nodejs npm translate-shell xsel ripgrep fd the_silver_searcher)
+# Categories of installable Pacman packages
+base_pacman_packages_list=(xorg bspwm sxhkd lxappearance picom nitrogen kitty lightdm lightdm-gtk-greeter lightdm-gtk-greeter-settings networkmanager reflector libinput timeshift )
 
+utils_pacman_packages_list=(lsd scrot rofi cmus neovim unzip p7zip unrar tar rsync htop exfat-utils fuse-exfat curl wget trash-cli ranger thefuck tldr gnome-keyring usbutils bash-completion neofetch vim git bat btop speedtest-cli imagemagick exa tmux sxiv ncdu fzf cmatrix zip alsa-utils php nodejs npm translate-shell xsel ripgrep fd the_silver_searcher)
+
+drivers_pacman_packages_list=(blueman bluez-utils pulseaudio-bluetooth brightnessctl tumbler gvfs-smb samba smbclient hplip cups cups-pdf system-config-printer jdk-openjdk flatpak redshift)
+
+gui_pacman_packages_list=(gedit thunar nautilus dmenu vlc polybar libreoffice-fresh gimp pdfarranger steam)
+
+# Installable Yay packages
 yay_packages_list=(visual-studio-code-bin notion-app-electron microsoft-edge-dev-bin brave-bin peaclock cava pipes.sh tetris-terminal-git minecraft-launcher gtypist)
 
+# Habilitable services
 services_list=(cups NetworkManager lightdm bluetooth.service)
+
+
+# ====================== Functions ====================== #
 
 
 execute_command() {
@@ -60,25 +73,32 @@ ask_user() {
     fi
 
     if [[ $output == 'y' ]]; then
+        echo -e "${QUESTION}The installation will begin${END}"
         eval "$action"
     else
-        echo -e "${FAILED}La acción no se ejecutará${END}"
+        echo -e "${FAILED}The action will not be executed${END}"
     fi
 }
 
 
-echo -e "${LINE}${TITLE}Welcome to the pacman and yay package installer!${LINE}${END}"
+# ====================== Main code ====================== #
 
-echo -e "${QUESTION}The installation of the Pacman packages will begin${END}"
-ask_user "¿Do you want to install the pacman packages?" 'execute_command "pacman" "${pacman_packages_list[@]}"'
+pacman_package_categories=("base" "utils" "drivers" "gui")
+
+for category in "${pacman_package_categories[@]}"; do
+    package_list_var="${category}_pacman_packages_list[@]"
+    install_command='execute_command "pacman" "${$package_list_var}"'
+    ask_user "do you want to install the ${category} pacman packages?" "$install_command"
+done
 
 yay_install_commands='cd && git clone https://aur.archlinux.org/yay.git; cd yay/ && makepkg -si; cd .. && sudo rm -r yay'
-ask_user "¿Do you want to install yay?" "$yay_install_commands"
+ask_user "Do you want to install yay?" "$yay_install_commands"
 
-echo -e "${QUESTION}The installation of the Yay packages will begin${END}"
-ask_user "¿Do you want to install the pacman packages?" 'execute_command "yay" "${yay_packages_list[@]}"'
+yay_packages_install_commands='execute_command "yay" "${yay_packages_list[@]}"'
+ask_user "Do you want to install the yay packages?" "$yay_packages_install_commands" 
 
-ask_user "¿Do you want to enable the services?" 'execute_command "service" "${services_list[@]}"'
+service_install_commands='execute_command "service" "${services_list[@]}"'
+ask_user "Do you want to enable the services?" "$service_install_commands" 
 
 zsh_install_commands='sudo pacman -S zsh; chsh -s /bin/zsh'
-ask_user "¿Do you want to install zsh and make it your default shell?" "$zsh_install_commands"
+ask_user "Do you want to install zsh and make it your default shell?" "$zsh_install_commands"

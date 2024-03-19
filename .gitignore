@@ -1,4 +1,5 @@
 **/.git
+config/cmus/lib.pl
 config/nvim/plugins/installed/*
 
 scripts/bin/nmcli-wifi

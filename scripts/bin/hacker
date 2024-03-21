@@ -1,3 +1,0 @@
-#! /bin/bash
-
-cd && kitty --start-as=fullscreen --config=.config/kitty/hacker.conf bash

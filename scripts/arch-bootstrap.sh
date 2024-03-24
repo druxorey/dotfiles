@@ -64,8 +64,9 @@ ask_user() {
     local action="$2"
 
 
-    echo -ne "${QUESTION}${question_text} (Y/n): ${END}"
+    echo -ne "${LINE}${QUESTION}${question_text} (Y/n): ${END}"
     read -r output
+    echo ""
 
     output=${output,,}
 
@@ -84,13 +85,16 @@ ask_user() {
 
 # ====================== Main code ====================== #
 
-echo -e "${LINE}${TITLE} ========== Welcome to the Arch Linux bootstrap ========== ${END}"
+echo -e "${LINE}${TITLE} ========== Welcome to the Arch Linux bootstrap ========== ${END}${LINE}"
+
+echo -e "First we will have to update the system to be able to ensure that there are no problems in the installation"
+ask_user "Do you wanna update your system?" "sudo pacman -Syu"
 
 pacman_package_categories=("base" "utils" "drivers" "gui")
 
 for category in "${pacman_package_categories[@]}"; do
     install_command="${category}_pacman_packages_list[@]"
-    echo -e "${LINE}${RUNNING}The next pacman packages will be installing:${END} $(eval echo \${$install_command})${LINE}"
+    echo -e "${LINE}${RUNNING}The next pacman packages will be installing:${END} $(eval echo \${$install_command})"
     ask_user "Do you want to install them?" "execute_command \"pacman\" \"\${$install_command}\""
 done
 
@@ -98,7 +102,7 @@ yay_install_commands='cd && git clone https://aur.archlinux.org/yay.git; cd yay/
 ask_user "Do you want to install yay?" "$yay_install_commands"
 
 yay_packages_install_commands='execute_command "yay" "${yay_packages_list[@]}"'
-echo -e "${LINE}${RUNNING}The next packages will be installing:${END} ${yay_packages_list[@]}${LINE}"
+echo -e "${LINE}${RUNNING}The next packages will be installing:${END} ${yay_packages_list[@]}"
 ask_user "Do you want to install them?" "$yay_packages_install_commands" 
 
 service_install_commands='execute_command "service" "${services_list[@]}"'
@@ -106,7 +110,6 @@ ask_user "Do you want to enable the services?" "$service_install_commands"
 
 zsh_install_commands='sudo pacman -S zsh; chsh -s /bin/zsh'
 ask_user "Do you want to install zsh and make it your default shell?" "$zsh_install_commands"
-
 
 echo -e "${LINE}${TITLE} The script has finished running, enjoy your system :) ${END}"
 echo -e "${TITLE} Made by: github.com/druxorey${END}${LINE}"

@@ -5,6 +5,8 @@ call plug#begin('~/.config/nvim/plugins/installed')
 	Plug 'folke/trouble.nvim'
 	Plug 'kylechui/nvim-surround'
 	Plug 'nvim-treesitter/nvim-treesitter', { 'as': 'TSUpdate'}
+	Plug 'nvim-tree/nvim-web-devicons' " optional
+	Plug 'nvim-tree/nvim-tree.lua'
 	" telescope
 	Plug 'nvim-telescope/telescope.nvim'
     Plug 'nvim-lua/plenary.nvim'

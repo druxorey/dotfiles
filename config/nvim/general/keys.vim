@@ -33,6 +33,7 @@ nnoremap <C-h> <C-w>h
 nnoremap <C-j> <C-w>j
 nnoremap <C-k> <C-w>k
 nnoremap <C-l> <C-w>l
+nnoremap <leader>e :NvimTreeToggl<CR>
 
 " Telescope
 nnoremap <leader>sf :execute g:telescope . '.find_files()'<CR>
@@ -45,3 +46,4 @@ if !exists('g:vscode')
     " SHIFT-TAB will go to prev buffer
     nnoremap <S-TAB> :bprevious<CR>
 endif
+

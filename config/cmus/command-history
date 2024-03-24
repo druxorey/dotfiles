@@ -1,7 +1,8 @@
+live-filter 
+add Music/J-Pop/
 add Music/Phonk/
 add Music/Dubstep/
 add Music/Hip-Hop/
-add Music/J-Pop/
 pl-create Favorites
 pl-create Dubstep & Phonk
 add Music/Lo-Fi/
@@ -13,6 +14,5 @@ set format_current= %a - %t%= %y
 set start_view=playlist
 pl-create Hip-Hop
 c
-live-filter 
 add Music/
 add 34

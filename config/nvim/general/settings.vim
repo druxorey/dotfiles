@@ -22,6 +22,7 @@ set splitright
 set clipboard=unnamedplus
 set background=dark
 set autochdir
+
 syntax enable
 filetype on
 filetype indent on

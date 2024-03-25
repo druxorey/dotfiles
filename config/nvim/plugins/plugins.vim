@@ -7,6 +7,7 @@ call plug#begin('~/.config/nvim/plugins/installed')
 	Plug 'nvim-treesitter/nvim-treesitter', { 'as': 'TSUpdate'}
 	Plug 'nvim-tree/nvim-web-devicons' " optional
 	Plug 'nvim-tree/nvim-tree.lua'
+	Plug 'lukas-reineke/indent-blankline.nvim'	
 	" telescope
 	Plug 'nvim-telescope/telescope.nvim'
     Plug 'nvim-lua/plenary.nvim'
@@ -27,4 +28,3 @@ call plug#begin('~/.config/nvim/plugins/installed')
 call plug#end()
 
 luafile ~/.config/nvim/config.lua
-

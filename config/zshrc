@@ -49,6 +49,9 @@ alias pull='git pull'
 alias push='git push'
 
 # flags
+alias setkeys="setxkbmap us -variant intl"
+alias reload='source ~/.zshrc && source ~/.bashrc'
+alias lock="dm-tool lock"
 alias matrix='cmatrix -C blue'
 alias grep='grep --color=auto'
 alias peaclock="peaclock --config ~/.config/peaclock"
@@ -58,11 +61,6 @@ alias yt-720='youtube-dl -f "bestvideo[height<=720]+bestaudio/best[height<=480]"
 alias yt-480='youtube-dl -f "bestvideo[height<=480]+bestaudio/best[height<=480]"'
 alias cp='cp -i'
 alias df='df -h'
-
-# scripts
-alias reload='source ~/.zshrc && source ~/.bashrc'
-alias hacker='cd && kitty --start-as=fullscreen --config=.config/kitty/hacker.conf bash'
-alias help='sh ~/.config/bin/help'
 
 # python
 alias py="python3"

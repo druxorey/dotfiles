@@ -23,7 +23,7 @@ alias vim='nvim'
 alias cat='bat'
 alias ls='lsd --group-directories-first'
 alias la='lsd -a --group-directories-first'
-alias ll='lsd -al --group-directories-first'
+alias ll='lsd -l --group-directories-first'
 alias lt='lsd --tree --group-directories-first'
 alias dotfiles='cd ~/Workspace/dotfiles/'
 alias dotfiles-code='code ~/Workspace/dotfiles/'
@@ -52,6 +52,7 @@ alias push='git push'
 alias setkeys="setxkbmap us -variant intl"
 alias reload='source ~/.zshrc && source ~/.bashrc'
 alias lock="dm-tool lock"
+alias logout="bspc quit"
 alias matrix='cmatrix -C blue'
 alias grep='grep --color=auto'
 alias peaclock="peaclock --config ~/.config/peaclock"

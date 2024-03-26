@@ -4,10 +4,6 @@
 
 #* ============================== system ============================= *#
 
-# lock the screen
-#super + l
-#	dm-tool lock
-
 # increase audio volume
 XF86AudioRaiseVolume
 	pactl set-sink-volume @DEFAULT_SINK@ +5%
@@ -56,8 +52,6 @@ Home
 # kitty
 super + Return
 	kitty
-super + alt + Return
-	kitty -c ~/.config/kitty/hacker.conf --start-as=fullscreen bash
 super + alt + m
 	kitty cmus
 
@@ -99,10 +93,6 @@ super + alt + w
 #!                                bspwm                                !#
 #! =================================================================== !#
 
-# quit/restart bspwm and sxhkd
-#super + alt + {q,r}
-#	bspc {quit,wm -r}
-
 super + Escape
 	pkill -USR1 -x sxhkd
 
@@ -118,9 +108,6 @@ super + m
 super + y
 	bspc node newest.marked.local -n newest.!automatic.local
 
-# swap the current node and the biggest window
-super + g
-	bspc node -s biggest.window
 
 #* =========================== states/flags ========================== *#
 
@@ -153,12 +140,6 @@ super + bracket{left,right}
 # focus the last node/desktop
 super + {grave,shift grave}
 	bspc {node,desktop} -f last
-
-# focus the older or newer node in the focus history
-super + {o,i}
-	bspc wm -h off; \
-	bspc node {older,newer} -f; \
-	bspc wm -h on
 
 # focus or send to the given desktop
 super + {_,shift + }{1-5,9,0}

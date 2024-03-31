@@ -74,6 +74,8 @@ super + s
 	steam
 super + n
 	notion-app
+super + o
+	obsidian
 
 # browser
 super + b

@@ -21,14 +21,14 @@ export GIT_EDITOR=nvim
 # files and directories
 alias vim='nvim'
 alias cat='bat'
-alias ls='lsd --group-directories-first'
-alias la='lsd -a --group-directories-first'
-alias ll='lsd -l --group-directories-first'
-alias lt='lsd --tree --group-directories-first'
+alias ls='exa --icons --group-directories-first'
+alias la='exa --icons -a --group-directories-first'
+alias ll='exa --icons -l --group-directories-first'
+alias lt='exa --icons --tree --group-directories-first'
 alias dotfiles='cd ~/Workspace/dotfiles/'
 alias dotfiles-code='code ~/Workspace/dotfiles/'
 alias vim-cheatsheets='vim ~/Workspace/dotfiles/resources/vim-cheatsheets'
-alias l.='lsd -a | grep -E "^\."'
+alias l.='exa -a | grep -E "^\."'
 alias ..='cd ..'
 alias ...='cd ../..'
 
@@ -51,6 +51,7 @@ alias push='git push'
 # flags
 alias setkeys="setxkbmap us -variant intl"
 alias reload='source ~/.zshrc && source ~/.bashrc'
+alias obsidian-backup='cd ~/Documents/Obsidian;add .;commit -m "backup commit";push;cd'
 alias lock="dm-tool lock"
 alias logout="bspc quit"
 alias matrix='cmatrix -C blue'

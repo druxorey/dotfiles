@@ -14,19 +14,19 @@ yay_packages_installation="yay -S --noconfirm"
 service_installation="sudo systemctl enable"
 
 # Categories of installable Pacman packages
-base_pacman_packages_list=(xorg bspwm sxhkd lxappearance picom nitrogen kitty lightdm lightdm-gtk-greeter lightdm-gtk-greeter-settings networkmanager reflector libinput timeshift)
+base_pacman_packages_list=(bspwm git kitty libinput lightdm lightdm-gtk-greeter lightdm-gtk-greeter-settings lxappearance networkmanager nitrogen picom polybar reflector sxhkd timeshift ufw xorg)
 
-utils_pacman_packages_list=(lsd scrot rofi cmus neovim unzip p7zip unrar tar rsync htop exfat-utils fuse-exfat curl wget trash-cli ranger thefuck tldr gnome-keyring usbutils bash-completion neofetch vim git bat btop speedtest-cli imagemagick exa tmux sxiv ncdu fzf cmatrix zip alsa-utils php nodejs npm translate-shell xsel ripgrep fd the_silver_searcher)
+utils_pacman_packages_list=(bash-completion bat btop cmatrix cmus curl exa exfat-utils fd flatpak fuse-exfat fzf github-cli gnome-keyring hugo imagemagick ncdu neofetch neovim nodejs npm p7zip php ranger redshift ripgrep rofi rsync rust scrot sl speedtest-cli sxiv tar the_silver_searcher thefuck tldr tmux translate-shell trash-cli unrar unzip usbutils vim viu wget xsel zip zoxide)
 
-drivers_pacman_packages_list=(blueman bluez-utils pulseaudio-bluetooth brightnessctl tumbler gvfs-smb samba smbclient hplip cups cups-pdf system-config-printer jdk-openjdk flatpak redshift)
+drivers_pacman_packages_list=(alsa-utils blueman bluez-utils brightnessctl cups cups-pdf gvfs-smb hplip jdk-openjdk noto-fonts noto-fonts-cjk noto-fonts-emoji ntfs-3g papirus-icon-theme pulseaudio-bluetooth python-pip python-setuptools python-virtualenv samba smbclient system-config-printer tumbler)
 
-gui_pacman_packages_list=(gedit thunar nautilus dmenu vlc polybar libreoffice-fresh gimp pdfarranger steam)
+gui_pacman_packages_list=(code discord gedit gimp gthumb libreoffice-fresh nautilus obsidian pdfarranger sigil steam thunar vlc)
 
 # Installable Yay packages
-yay_packages_list=(visual-studio-code-bin notion-app-electron microsoft-edge-dev-bin brave-bin peaclock cava pipes.sh tetris-terminal-git minecraft-launcher gtypist)
+yay_packages_list=(brave-bin cava googler gtypist microsoft-edge-dev-bin minecraft-launcher notion-app-electron obs-studio oh-my-posh peaclock pipes.sh tetris-terminal-git tumbler-extra-thumbnailers)
 
 # Habilitable services
-services_list=(cups NetworkManager lightdm bluetooth.service)
+services_list=(ufw.service cups NetworkManager lightdm bluetooth.service)
 
 
 # ====================== Functions ====================== #
@@ -84,6 +84,7 @@ ask_user() {
 
 
 # ====================== Main code ====================== #
+
 
 echo -e "${LINE}${TITLE} ========== Welcome to the Arch Linux bootstrap ========== ${END}${LINE}"
 

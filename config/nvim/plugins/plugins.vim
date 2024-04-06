@@ -8,6 +8,9 @@ call plug#begin('~/.config/nvim/plugins/installed')
 	Plug 'nvim-tree/nvim-web-devicons' " optional
 	Plug 'nvim-tree/nvim-tree.lua'
 	Plug 'lukas-reineke/indent-blankline.nvim'	
+	Plug 'williamboman/mason.nvim'
+	Plug 'williamboman/mason-lspconfig.nvim'
+	Plug 'WhoIsSethDaniel/mason-tool-installer.nvim'
 	" telescope
 	Plug 'nvim-telescope/telescope.nvim'
     Plug 'nvim-lua/plenary.nvim'
@@ -27,4 +30,7 @@ call plug#begin('~/.config/nvim/plugins/installed')
 	Plug 'dracula/vim', { 'as': 'dracula' }
 call plug#end()
 
-luafile ~/.config/nvim/config.lua
+for luafile in glob("~/.config/nvim/config/lua/*.lua", v:true, v:true)
+    execute 'luafile' luafile
+endfor
+

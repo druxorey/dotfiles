@@ -1,4 +1,6 @@
 let g:mapleader = "\<Space>"
+let g:loaded_netrw = 1
+let g:loaded_netrwPlugin = 1
 
 set number relativenumber
 set laststatus=0

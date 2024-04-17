@@ -26,7 +26,8 @@
    1. [Extra Configurations](#id-5.1)
    2. [Establishing the Internet Connection](#id-5.2)
    3. [Configuring the DNS](#id-5.3)
-   4. [Battery Optimization](#id-5.4)
+   4. [Firewall Configuration](#id-5.4)
+   5. [Battery Optimization](#id-5.5)
 
 ---
 
@@ -160,7 +161,7 @@ Lastly, the **swap** partition does not need to be mounted in the traditional se
 
 The installation process involves selecting the desired packages and mounting them in the `/mnt` directory. It is recommended to install at least the following packages: `base`, `linux`, `linux-firmware`, `base-devel`, `grub`, `efibootmgr`, `nano`, `networkmanager`, `git`, `pulseaudio` and `intel-ucode`.
 
-*Note: For those using an AMD processor, it's necessary to install the `amd-ucode` package instead of `intel-ucode`. This will ensure your system has the latest microcode updates from AMD.*
+*- **Note**: For those using an AMD processor, it's necessary to install the `amd-ucode` package instead of `intel-ucode`. This will ensure your system has the latest microcode updates from AMD.*
 
 To install these packages, use the command below:
 
@@ -355,14 +356,31 @@ Once you have the name of your connection (referred to as `<ssid>`), you can mod
 
 Replace `<ssid>` with the name of your connection. This command sets the DNS servers for your specified connection to Google's DNS servers.
 
-## 5.4) Battery Optimization <a name='id-5.4'></a>
+## 5.4) Firewall Configuration <a name='id-5.4'></a>
+
+Configuring the Firewall is a very important step if you want to have a secure system, the easiest way is using the `ufw` package, you can install it with the following command:
+
+    $ sudo pacman -S ufw
+
+Once installed, you need to configure some rules to set it up:
+
+    $ sudo ufw limit 22/tcp
+    $ sudo ufw allow 80/tcp
+    $ sudo ufw allow 443/tcp
+    $ sudo ufw default deny incoming
+    $ sudo ufw default allow outgoing
+    $ sudo ufw enable
+
+These commands limit the connection attempts to port 22, and allow all incoming connections to ports 80 and 443, which are the standard ports for HTTP requests. It also sets the default policy to deny all incoming connections. It also sets the default policy to allow all outgoing connections. And finally, it enables the firewall.
+
+## 5.5) Battery Optimization <a name='id-5.5'></a>
 
 If you're installing Arch Linux on a laptop, optimizing battery life is crucial. One effective tool for this purpose is `auto-cpufreq`. This utility dynamically adjusts the frequency of your CPU based on load and power source. Here's how you can install and use it:
 
 First, clone the repository from GitHub:
 
     $ git clone https://github.com/AdnanHodzic/auto-cpufreq.git
-
+    
 Next, navigate to the cloned directory and run the installer:
 
     $ cd auto-cpufreq && sudo ./auto-cpufreq-installer

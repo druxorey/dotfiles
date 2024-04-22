@@ -334,7 +334,7 @@ To connect to a wireless network, use:
 
 *- **Note**: If your Wi-Fi connection is hidden, you must add the `hidden yes` parameter to the end of the previous command.*
 
-### Deleting a a existing wireless connection
+### Deleting a existing wireless connection
 
 If you need to delete a connection, you can do so with:
 

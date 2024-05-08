@@ -1,8 +1,6 @@
 #!/bin/bash
 
 comandos=(
-
-# config files backup
 "rsync -a --delete ~/.config/bspwm ~/Workspace/dotfiles/config"
 "rsync -a --delete ~/.config/sxhkd ~/Workspace/dotfiles/config"
 "rsync -a --delete ~/.config/kitty ~/Workspace/dotfiles/config"
@@ -18,10 +16,8 @@ comandos=(
 "rsync -a --delete ~/.config/bin ~/Workspace/dotfiles/scripts"
 "rsync -a ~/.zshrc ~/Workspace/dotfiles/config/zshrc"
 "rsync -a ~/.bashrc ~/Workspace/dotfiles/config/bashrc"
-"cp /etc/X11/xorg.conf.d/40-libunput.conf ~/Workspace/dotfiles/config/touchpad"
-
-# theme backup
-""
+"rsync -a ~/.config/libinput-gestures.conf ~/Workspace/dotfiles/config/touchpad-gestures"
+"cp /etc/X11/xorg.conf.d/40-libunput.conf ~/Workspace/dotfiles/config/touchpad-configuration"
 )
 
 successful_execution=true
@@ -29,16 +25,12 @@ successful_execution=true
 for comando in "${comandos[@]}"; do
   eval $comando
   if [ $? -ne 0 ]; then
-    echo -e """
-    \e[91m!! Execution Failed !!
-    """
+    echo -e """\n \e[1;91m!! Execution Failed !!\n"""
     successful_execution=false
     break
   fi
 done
 
 if $successful_execution ; then
-  echo -e """
-  \e[0;93m All files have been successfully backed up
-  """
+  echo -e """\n \e[0;93m► All files have been successfully backed up\n"""
 fi

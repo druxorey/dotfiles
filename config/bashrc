@@ -9,56 +9,90 @@
 
 #* ============================= startup ============================= *#
 
+function roundseconds() {
+    echo "m=$1; h=0.5; scale=4; t=1000; if (m<0) h=-0.5; a=m*t+h; scale=3; a/t;" | bc
+}
+
+function bash_getstarttime() {
+    date +%s.%N > "/dev/shm/${USER}.bashtime.${1}"
+}
+
+function bash_getstoptime() {
+    local endtime=$(date +%s.%N)
+    local starttime=$(cat /dev/shm/${USER}.bashtime.${1})
+    roundseconds $(echo $(eval echo "$endtime - $starttime") | bc)
+}
+
+ROOTPID=$BASHPID
+bash_getstarttime $ROOTPID
+
 [[ $- != *i* ]] && return
+PS0='$(bash_getstarttime $ROOTPID)' 
+PS1='[\u@\h \W]\$ $(bash_getstoptime $ROOTPID)ms > '
+eval "$(zoxide init bash)"
 eval "$(thefuck --alias)"
+export PATH=$PATH:~/.config/bin/
+export GIT_EDITOR=nvim
 
 #* ============================= aliases ============================= *#
 
-# files and directories
-alias vim='nvim'
+# directory navigation
 alias cat='bat'
-alias ls='lsd --group-directories-first'
-alias la='lsd -a --group-directories-first'
-alias ll='lsd -al --group-directories-first'
-alias lt='lsd --tree'
-alias dotfiles='cd ~/Workspace/dotfiles/'
-alias dotfiles-code='code ~/Workspace/dotfiles/'
-alias l.='lsd -a | grep -E "^\."'
-alias ..='cd ..'
-alias ...='cd ../..'
+alias l.='exa -a | grep -E "^\."'
+alias cdi='zi'
+alias ..='z ..'
+alias ...='z ../..'
+
+# shortcuts
+alias fk='fuck'
+alias cp='cp -i'
+alias th='trash'
+alias thl='trash-list'
+alias thr='trash-restore'
+alias matrix='cmatrix -C blue'
+alias grep='grep --color=auto'
+alias peaclock="peaclock --config ~/.config/peaclock"
 
 # pacman and yay
-alias update-pacman='sudo pacman -Syu'
-alias update-yay='yay -Sua --noconfirm'
+alias sysupdate='sudo pacman -Syu ; yay -Sua --noconfirm'
 alias unlock='sudo rm /var/lib/pacman/db.lck'
 
 # git
-alias status='git status'
-alias add='git add'
-alias commit='git commit -m'
-alias log='git log --oneline'
-alias checkout='git checkout'
-alias branch='git branch'
-alias merge='git merge'
-alias pull='git pull'
-alias push='git push'
+alias gstatus='git status'
+alias gadd='git add'
+alias grestore='git restore --staged'
+alias gcommit='git commit'
+alias glog='git log --oneline -n 10'
+alias gcheckout='git checkout'
+alias gbranch='git branch'
+alias gmerge='git merge'
+alias gpull='git pull'
+alias gpush='git push'
 
-# flags
-alias matrix='cmatrix -u 6 -C blue'
-alias grep='grep --color=auto'
-alias peaclock="peaclock --config ~/.config/peaclock"
-alias yt-audio='youtube-dl -x --audio-format mp3'
-alias yt-1080='youtube-dl -f "bestvideo[height<=1080]+bestaudio/best[height<=480]"'
-alias yt-720='youtube-dl -f "bestvideo[height<=720]+bestaudio/best[height<=480]"'
-alias yt-480='youtube-dl -f "bestvideo[height<=480]+bestaudio/best[height<=480]"'
-alias cp='cp -i'
-alias df='df -h'
+# macros
+alias hs='cat ~/.config/zsh/.histfile | fzf'
+alias dotfiles='cd ~/Workspace/dotfiles/'
+alias dotfiles-code='code ~/Workspace/dotfiles/'
+alias setkeys="setxkbmap us -variant intl"
+alias reload='source ~/.bashrc ; source ~/.zshrc'
+alias yt-audio='yt-dlp -x --audio-format mp3'
+alias yt-1080='yt-dlp -f "bestvideo[height<=480]+bestaudio/best[height<=480]"'
+alias yt-720='yt-dlp -f "bestvideo[height<=720]+bestaudio/best[height<=720]"'
+alias yt-480='yt-dlp -f "bestvideo[height<=480]+bestaudio/best[height<=480]"'
+alias vim-cheatsheets='vim ~/Workspace/dotfiles/resources/vim-cheatsheets'
 
-# scripts
-alias reload-bash='source ~/.bashrc'
-alias help='sh ~/.config/bin/help'
+# python
+alias py="python3"
+alias rm-pychache="sudo rm -r __pycache__"
+alias venv-activate='source .venv/bin/activate'
+alias venv-requirements='pip freeze > requirements.txt'
+alias venv-create='virtualenv .venv'
+alias venv-desactivate='deactivate'
 
 # system
+alias reload='source ~/.bashrc ; source ~/.zshrc'
+alias lock="dm-tool lock"
+alias logout="bspc quit"
 alias shutdown='shutdown now'
 alias monitor-chome='xrandr --output eDP-1 --primary --mode 1920x1080 --rotate normal --output HDMI-1 --mode 1600x900 --rotate normal --right-of eDP-1'
 alias monitor-dhome='xrandr --output HDMI-1 --off'
@@ -90,7 +124,3 @@ ex ()
     echo "'$1' is not a valid file"
   fi
 }
-
-export PATH=$PATH:~/.config/bin/
-
-PS1='[\u@\h \W]\$ '

@@ -17,7 +17,7 @@ commandList=(
 "rsync -a --delete ~/.config/ranger ~/Workspace/dotfiles/config"
 "rsync -a --delete ~/.config/cmus ~/Workspace/dotfiles/config"
 "rsync -a --delete ~/.config/Vencord ~/Workspace/dotfiles/config"
-"rsync -a --delete ~/.config/bin ~/Workspace/dotfiles/scripts"
+"rsync -a --delete ~/.config/bin ~/Workspace/dotfiles/config"
 "rsync -a ~/.zshrc ~/Workspace/dotfiles/config/zshrc"
 "rsync -a ~/.bashrc ~/Workspace/dotfiles/config/bashrc"
 "cp ~/.config/libinput-gestures.conf ~/Workspace/dotfiles/config/touchpad-gestures"

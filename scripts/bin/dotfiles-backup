@@ -1,6 +1,10 @@
 #!/bin/bash
 
-comandos=(
+FAIL="\e[1;91m"
+SUCCESS="\e[0;93m"
+END="\e[0m"
+
+commandList=(
 "rsync -a --delete ~/.config/bspwm ~/Workspace/dotfiles/config"
 "rsync -a --delete ~/.config/sxhkd ~/Workspace/dotfiles/config"
 "rsync -a --delete ~/.config/kitty ~/Workspace/dotfiles/config"
@@ -20,17 +24,17 @@ comandos=(
 "cp /etc/X11/xorg.conf.d/40-libunput.conf ~/Workspace/dotfiles/config/touchpad-configuration"
 )
 
-successful_execution=true
+isSuccessful=true
 
-for comando in "${comandos[@]}"; do
-  eval $comando
+for command in "${commandList[@]}"; do
+  eval $command
   if [ $? -ne 0 ]; then
-    echo -e """\n \e[1;91m!! Execution Failed !!\n"""
-    successful_execution=false
+    echo -e "\n$FAIL!! An error occurred while backing up your files !!$END\n"
+    isSuccessful=false
     break
   fi
 done
 
-if $successful_execution ; then
-  echo -e """\n \e[0;93m► All files have been successfully backed up\n"""
+if $isSuccessful; then
+  echo -e """\n$SUCCESS ► All files have been successfully backed up$END\n"""
 fi

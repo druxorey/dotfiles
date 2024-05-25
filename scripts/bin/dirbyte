@@ -10,7 +10,7 @@ sizeInBytes=0
 totalFiles=0
 memoryUnit=none
 
-help() {
+function help() {
     echo
     echo "USAGE: dirbyte [-r] [ROUTE]"
     echo
@@ -98,5 +98,5 @@ else
 fi
 
 echo 
-echo -e " ► $FILES$totalFiles files$END occupy a total of $SIZE$finalSize $finalMemoryUnit"
+echo -e " ► $FILES$totalFiles files$END occupy a total of $SIZE$finalSize $finalMemoryUnit$END"
 echo 

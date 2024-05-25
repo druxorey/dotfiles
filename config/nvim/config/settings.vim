@@ -24,6 +24,7 @@ set splitright
 set clipboard=unnamedplus
 set background=dark
 set autochdir
+set termguicolors
 
 syntax enable
 filetype on

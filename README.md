@@ -1,34 +1,34 @@
-# BSPWM dots
+# BSPWM DOTFILES
 
-This repository contains configuration files, scripts, and step-by-step guides to help you install and configure Arch Linux to your needs.
+These dotfiles are designed to customize and optimize your working environment on Arch Linux. They include configurations for BSPWM, Kitty, file managers (such as Ranger or Thunar), and other essential tools. Additionally, you’ll find shortcuts, themes, and specific tweaks to enhance productivity and the overall user experience.
 
-Beyond the arch installation guide, this repository also serves as a resource for system customization. Included in this repository you will find various configuration files and program scripts that you can utilize to rice your system to your needs once the installation is complete.
+## Dotfiles Structure
 
-### Repository Structure
+### arch-bootstrap script
 
-- **config**: A folder that contains custom configuration files.
+The scripts have been moved to a separate repository, you can be find them [here](https://github.com/druxorey/pybash-scripts/), however there is a script that was left here due to its importance and it is 'arch-bootstrap'.
 
-- **guides**: Here you'll find detailed guides to make your experience with Arch Linux easier.
+The `arch-bootstrap` script automates the initial installation and configuration of an Arch Linux system. It updates the system, installs essential packages (both from Pacman and AUR), and enables necessary services like the firewall and the login manager. 
 
-    - `arch.md`: A step-by-step guide to installing Arch Linux.
-    - `bspwm.md`: Detailed instructions for configuring the bspwm window manager.
+It’s particularly useful for users who want a quick and straightforward installation process. You can find the script [here](arch-bootstrap.sh).
 
-- **scripts**: Useful scripts that automate common tasks during installation and configuration.
+### config
 
-    - `bin`: This directory contains several scripts that are added to the `$PATH` so that they can be executed at any time.
+This directory contains specific configuration files for different programs and tools. Here you can find the `bin` directory which contains several scripts that are added to the `$PATH` so that they can be executed at any time.
 
-    - `arch-bootstrap`: A script for installing essential packages and necessary repositories.
+### guides 
 
-    To run the files you have to use the following commands:
+Here you'll find the [arch linux installation guide](guides/arch-linux-installation.md), a step-by-step guide to installing Arch Linux, and the [bspwm installation guide](guides/bspwm-arch-installation.md), and detailed instruction guide for configuring the bspwm window manager. You can also find them in [CIPAL](https://cipalonline.github.io/).
 
-        $ sudo chmod +x (file)
-        $ sh (file)
+### resources
 
-### Screenshots
+Directory where screenshots, documents and some other files are stored.
+
+## Screenshots
 
 ![This is an image](/resources/rices/rice-2024-02-23.png)
 
-### Dependencies
+## Dependencies
 
 - **Shell**: zsh
 - **Prompt**: oh-my-posh

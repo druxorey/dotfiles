@@ -1,7 +1,6 @@
-config/cmus/lib.pl
+config/cmus/*
+!config/cmus/autosave
+
 config/nvim/plugins/installed/*
 
 scripts/bin/nmcli-wifi
-scripts/bin/buho
-
-config/cmus/cache

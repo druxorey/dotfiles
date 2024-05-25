@@ -8,8 +8,7 @@ commandList=(
 "rsync -a --delete ~/.config/bspwm ~/Workspace/dotfiles/config"
 "rsync -a --delete ~/.config/sxhkd ~/Workspace/dotfiles/config"
 "rsync -a --delete ~/.config/kitty ~/Workspace/dotfiles/config"
-"rsync -a --delete ~/.config/neofetch ~/Workspace/dotfiles/config"
-"rsync -a --delete ~/.config/cava ~/Workspace/dotfiles/config"
+"rsync -a --delete ~/.config/fastfetch ~/Workspace/dotfiles/config"
 "rsync -a --delete ~/.config/oh-my-posh ~/Workspace/dotfiles/config"
 "rsync -a --delete ~/.config/picom ~/Workspace/dotfiles/config"
 "rsync -a --delete ~/.config/polybar ~/Workspace/dotfiles/config"
@@ -17,10 +16,11 @@ commandList=(
 "rsync -a --delete ~/.config/nvim ~/Workspace/dotfiles/config"
 "rsync -a --delete ~/.config/ranger ~/Workspace/dotfiles/config"
 "rsync -a --delete ~/.config/cmus ~/Workspace/dotfiles/config"
+"rsync -a --delete ~/.config/Vencord ~/Workspace/dotfiles/config"
 "rsync -a --delete ~/.config/bin ~/Workspace/dotfiles/scripts"
 "rsync -a ~/.zshrc ~/Workspace/dotfiles/config/zshrc"
 "rsync -a ~/.bashrc ~/Workspace/dotfiles/config/bashrc"
-"rsync -a ~/.config/libinput-gestures.conf ~/Workspace/dotfiles/config/touchpad-gestures"
+"cp ~/.config/libinput-gestures.conf ~/Workspace/dotfiles/config/touchpad-gestures"
 "cp /etc/X11/xorg.conf.d/40-libunput.conf ~/Workspace/dotfiles/config/touchpad-configuration"
 )
 

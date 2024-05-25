@@ -1,8 +1,9 @@
-#! =================================================================== !#
-#!                               general                               !#
-#! =================================================================== !#
 
-#* ============================== system ============================= *#
+#! ================================================================== !#
+#!                              general                               !#
+#! ================================================================== !#
+
+#* ============================= system ============================= *#
 
 # increase audio volume
 XF86AudioRaiseVolume
@@ -30,24 +31,29 @@ XF86MonBrightnessDown
 
 # activate night light
 shift + XF86MonBrightnessUp
-	redshift -O 3000
+	redshift -O 4000
 
 # desactivate night light
 shift + XF86MonBrightnessDown
 	redshift -x
+
 # print the full screen
 @Print
 	scrot ~/Pictures/Screenshots/%Y-%m-%d_%H%M%S.png
 
 # print a selected area
 super + Print
-	scrot -s --line mode=edge ~/Pictures/Screenshots/%Y-%m-%d_%H%M%S.png
+	scrot -s --line mode=edge ~/Pictures/Screenshots/%Y-%m-%d_%H%M%S.png -e 'xclip -selection clipboard -target image/png -i $f'
 
 # app launcher
-Home
+super + Home
 	rofi -show drun
 
-#* =========================== applications ========================== *#
+# wifi menu
+super + alt + Home
+	sh ~/.config/polybar/scripts/rofi-wifi-menu.sh
+
+#* ========================== applications ========================== *#
 
 # kitty
 super + Return
@@ -83,7 +89,7 @@ super + b
 super + alt + b
 	brave
 super + i
-	gtk-launch msedge-bdinhfjgphhmaolbmhcmidoadmkngbng-Default.desktop
+	gtk-launch msedge-ojhonpiapjcbbglfjbeciifjoeljdaob-Default.desktop
 super + alt + g
 	microsoft-edge-dev github.com/druxorey
 super + alt + y
@@ -91,10 +97,11 @@ super + alt + y
 super + alt + w
 	microsoft-edge-dev web.whatsapp.com
 
-#! =================================================================== !#
-#!                                bspwm                                !#
-#! =================================================================== !#
+#! ================================================================== !#
+#!                               bspwm                                !#
+#! ================================================================== !#
 
+# make sxhkd reload its configuration files:
 super + Escape
 	pkill -USR1 -x sxhkd
 
@@ -104,14 +111,14 @@ super + {_,shift + }w
 
 # alternate between the tiled and monocle layout
 super + m
-	bspc desktop -l next
+	bspc desktop -l next && ./.config/polybar/change_layout.sh
 
 # send the newest marked node to the newest preselected node
 super + y
 	bspc node newest.marked.local -n newest.!automatic.local
 
 
-#* =========================== states/flags ========================== *#
+#* ========================== states/flags ========================== *#
 
 # set the window state
 super + alt + {7,8,9,0}
@@ -121,7 +128,7 @@ super + alt + {7,8,9,0}
 super + ctrl + {m,x,y,z}
 	bspc node -g {marked,locked,sticky,private}
 
-#* ============================ focus/swap =========================== *#
+#* =========================== focus/swap =========================== *#
 
 # focus the node in the given direction
 super + {_,shift + }{h,j,k,l}
@@ -133,7 +140,7 @@ super + {p,b,comma,period}
 
 # focus the next/previous window in the current desktop
 super + Tab
-	bspc node -f {next,prev}.local.!hidden.window
+    bspc node -f next.local.window
 
 # focus the next/previous desktop in the current monitor
 super + bracket{left,right}
@@ -147,7 +154,7 @@ super + {grave,shift grave}
 super + {_,shift + }{1-5,9,0}
 	bspc {desktop -f,node -d} '^{1-9,10}'
 
-#* ============================= preselect =========================== *#
+#* ============================ preselect =========================== *#
 
 # preselect the direction
 super + ctrl + {h,j,k,l}
@@ -165,7 +172,7 @@ super + ctrl + space
 super + ctrl + shift + space
 	bspc query -N -d | xargs -I id -n 1 bspc node id -p cancel
 
-#* =========================== move/resize =========================== *#
+#* ========================== move/resize =========================== *#
 
 # expand a window by moving one of its side outward
 super + alt + {h,j,k,l}

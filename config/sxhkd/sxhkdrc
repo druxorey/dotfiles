@@ -51,7 +51,7 @@ super + Home
 
 # wifi menu
 super + alt + Home
-	sh ~/.config/polybar/scripts/rofi-wifi-menu.sh
+	sh ~/.config/rofi/scripts/rofi-wifi-menu.sh
 
 #* ========================== applications ========================== *#
 

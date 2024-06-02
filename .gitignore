@@ -2,5 +2,5 @@ config/cmus/*
 config/cmus/playlist/*
 !config/cmus/autosave
 config/nvim/plugins/installed/*
-resources/documents/todo
+resources/documents/todo.md
 scripts/bin/nmcli-wifi

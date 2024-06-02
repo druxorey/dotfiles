@@ -5,11 +5,6 @@ ROUTE="\e[0;36m"
 SIZE="\e[0;32m"
 END="\e[0m"
 
-isRecursive=0
-sizeInBytes=0
-totalFiles=0
-memoryUnit=none
-
 function help() {
     echo
     echo "USAGE: dirbyte [-r] [ROUTE]"
@@ -31,37 +26,6 @@ function help() {
     exit 1
 }
 
-while getopts ":rhkmg" opt; do
-  case ${opt} in
-    r )
-      isRecursive=1
-      ;;
-    h )
-      help
-      ;;
-    k )
-      memoryUnit="kb"
-      ;;
-    m )
-      memoryUnit="mb"
-      ;;
-    g )
-      memoryUnit="gb"
-      ;;
-    \? )
-      echo "Invalid Option: -$OPTARG" 1>&2
-      exit 1
-      ;;
-  esac
-done
-shift $((OPTIND -1))
-
-if [ $# -ne 1 ]; then
-    help
-elif [ ! -d $1 ]; then
-    echo "Error: directory does not exist"
-    exit 1
-fi
 
 function analyze_directory() {
     for f in "$1"/*; do
@@ -77,26 +41,67 @@ function analyze_directory() {
     done
 }
 
-analyze_directory $1
 
-(( sizeInKilobytes = $sizeInBytes / 1000 ))
-(( sizeInMegabytes = $sizeInBytes / 1000000 ))
-(( sizeInGigabytes = $sizeInBytes / 1000000000 ))
+function main() {
+    isRecursive=0
+    sizeInBytes=0
+    totalFiles=0
+    memoryUnit=none
 
-if [ $memoryUnit = "kb" ]; then
-  finalMemoryUnit="kilobytes"
-  finalSize=$sizeInKilobytes
-elif [ $memoryUnit = "mb" ]; then
-  finalMemoryUnit="megabytes"
-  finalSize=$sizeInMegabytes
-elif [ $memoryUnit = "gb" ]; then
-  finalMemoryUnit="gigabytes"
-  finalSize=$sizeInGigabytes
-else
-  finalMemoryUnit="bytes"
-  finalSize=$sizeInBytes
-fi
+    while getopts ":rhkmg" opt; do
+        case ${opt} in
+            r )
+                isRecursive=1
+                ;;
+            h )
+                help
+                ;;
+            k )
+                memoryUnit="kb"
+                ;;
+            m )
+                memoryUnit="mb"
+                ;;
+            g )
+                memoryUnit="gb"
+                ;;
+            \? )
+                echo "Invalid Option: -$OPTARG" 1>&2
+                exit 1
+                ;;
+        esac
+    done
+    shift $((OPTIND -1))
 
-echo 
-echo -e " ► $FILES$totalFiles files$END occupy a total of $SIZE$finalSize $finalMemoryUnit$END"
-echo 
+    if [ $# -ne 1 ]; then
+        help
+    elif [ ! -d $1 ]; then
+        echo "Error: directory does not exist"
+        exit 1
+    fi
+
+    analyze_directory $1
+
+    if [ $memoryUnit = "kb" ]; then
+        finalMemoryUnit="kilobytes"
+        sizeInKilobytes=$(($sizeInBytes / 1000))
+        finalSize=$sizeInKilobytes
+    elif [ $memoryUnit = "mb" ]; then
+        finalMemoryUnit="megabytes"
+        sizeInMegabytes=$(($sizeInBytes / 1000000))
+        finalSize=$sizeInMegabytes
+    elif [ $memoryUnit = "gb" ]; then
+        finalMemoryUnit="gigabytes"
+        sizeInGigabytes=$(($sizeInBytes / 1000000000))
+        finalSize=$sizeInGigabytes
+    else
+        finalMemoryUnit="bytes"
+        finalSize=$sizeInBytes
+    fi
+
+    echo 
+    echo -e " ► $FILES$totalFiles files$END occupy a total of $SIZE$finalSize $finalMemoryUnit$END"
+    echo 
+}
+
+main $@

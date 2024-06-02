@@ -320,9 +320,6 @@
         "OverrideForumDefaults": {
             "enabled": false
         },
-        "Party mode 🎉": {
-            "enabled": false
-        },
         "PauseInvitesForever": {
             "enabled": false
         },
@@ -523,6 +520,9 @@
         },
         "XSOverlay": {
             "enabled": false
+        },
+        "PartyMode": {
+            "enabled": false
         }
     },
     "notifications": {
@@ -535,6 +535,6 @@
         "authenticated": false,
         "url": "https://api.vencord.dev/",
         "settingsSync": false,
-        "settingsSyncVersion": 1715808795410
+        "settingsSyncVersion": 1716659653322
     }
 }

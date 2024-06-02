@@ -23,16 +23,15 @@ servicesList=(ufw.service cups NetworkManager lightdm bluetooth.service)
 
 
 installPackage() {
-    pacmanPackageInstallation="sudo pacman -S --noconfirm"
-    yayPackageInstallation="yay -S --noconfirm"
-
+    local pacman="sudo pacman -S --noconfirm"
+    local yay="yay -S --noconfirm"
     local packageManager="$1"
     shift
 
     if [ "$packageManager" == "pacman" ]; then
-        commandExecutor="$pacmanPackageInstallation"
+        commandExecutor="$pacman"
     elif [ "$packageManager" == "yay" ]; then
-        commandExecutor="$yayPackageInstallation"
+        commandExecutor="$yay"
     fi
 
     for package in "${@}"; do

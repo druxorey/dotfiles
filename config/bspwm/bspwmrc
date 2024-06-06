@@ -17,7 +17,7 @@ if [[ $(xrandr -1 | grep 'HDMI-1 connected') ]]; then
 fi
 
 bspc monitor eDP-1 -d 󰊠 󰊠 󰊠 󰊠 󰊠
-bspc monitor HDMI-1 -d 󰮯 󰮯
+bspc monitor HDMI-1 -d 󰮯 󰮯 󰮯
 
 wmname LG3D
 

@@ -6,3 +6,4 @@
 - Introducción al Bash Scripting
 - Clean Code
 - Introducción a samba y smbclient
+- Introducción a systemd y systemctl

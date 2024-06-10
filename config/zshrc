@@ -16,7 +16,8 @@ eval "$(thefuck --alias)"
 eval "$(oh-my-posh init zsh --config ~/.config/oh-my-posh/dracula.omp.json)"
 export PATH=$PATH:~/.config/bin/
 export GIT_EDITOR=nvim
-#fastfetch --load-config ~/.config/fastfetch/init.jsonc
+fastfetch --load-config ~/.config/fastfetch/init.jsonc
+echo
 
 #* ============================= aliases ============================= *#
 

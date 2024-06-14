@@ -28,6 +28,7 @@ alias ls='eza --icons --group-directories-first'
 alias la='eza --icons -a --group-directories-first'
 alias lt='eza --icons --tree --group-directories-first'
 alias ll='eza --icons -l --group-directories-first'
+alias labc='eza --icons -la'
 alias l.='eza -a | grep -E "^\."'
 alias cd='z'
 alias cdd='z $2 ; ls'
@@ -38,6 +39,7 @@ alias ...='z ../..'
 # shortcuts
 alias fk='fuck'
 alias cp='cp -i'
+alias cpv='rsync -avh --info=progress2'
 alias th='trash'
 alias thl='trash-list'
 alias thr='trash-restore'
@@ -63,6 +65,7 @@ alias gpush='git push'
 
 # macros
 alias hs='cat ~/.config/zsh/.histfile | fzf'
+alias zshrc='nvim ~/.zshrc'
 alias dotfiles='cd ~/Workspace/dotfiles/'
 alias dotfiles-code='code ~/Workspace/dotfiles/'
 alias setkeys="setxkbmap us -variant intl"
@@ -122,6 +125,14 @@ bindkey "^[[3~"   delete-char
 
 
 #* ============================ functions ============================ *#
+
+rsudo() { # do sudo, or sudo the last command if no argument given
+    if [[ $# == 0 ]]; then
+        sudo $(history -p '!!')
+    else
+        sudo "$@"
+    fi
+}
 
 # extract files depending on the extension
 ex ()

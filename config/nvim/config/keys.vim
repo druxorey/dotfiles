@@ -38,6 +38,8 @@ nnoremap <leader>sf :execute g:telescope . '.find_files()'<CR>
 nnoremap <leader>sg :execute g:telescope . '.git_files()'<CR>
 nnoremap <leader>ff :Telescope current_buffer_fuzzy_find<CR>
 
+nnoremap <leader>g :vertical Git<CR>
+
 " TAB in general mode will move to next buffer
 if !exists('g:vscode')
     nnoremap <TAB> :bnext<CR>

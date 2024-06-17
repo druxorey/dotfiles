@@ -34,6 +34,9 @@ call plug#begin('~/.config/nvim/plugins/installed')
 	Plug 'williamboman/mason-lspconfig.nvim'
 	Plug 'WhoIsSethDaniel/mason-tool-installer.nvim'
 
+	" Git Plugins
+	Plug 'tpope/vim-fugitive'
+
 call plug#end()
 
 for luafile in glob("~/.config/nvim/config/lua/*.lua", v:true, v:true)

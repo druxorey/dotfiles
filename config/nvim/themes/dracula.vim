@@ -1,8 +1,8 @@
 set termguicolors
 
 function! s:Colors()
-  highlight Normal cterm=NONE ctermbg=233 gui=NONE guibg=NONE
-  highlight CursorLine cterm=NONE ctermbg=234 gui=NONE guibg=NONE
+    highlight Normal cterm=NONE ctermbg=233 gui=NONE guibg=NONE
+    highlight CursorLine cterm=NONE ctermbg=234 gui=NONE guibg=NONE
 endfunction
 
 augroup darken_bg | autocmd!

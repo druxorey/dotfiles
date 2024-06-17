@@ -1,12 +1,46 @@
 require("mason").setup()
 require("mason-lspconfig").setup()
+
 local lspconfig = require'lspconfig'
-lspconfig.pyright.setup{}
+
+lspconfig.pyright.setup{
+    settings = {
+        python = {
+            analysis = {
+                autoSearchPaths = true,
+                useLibraryCodeForTypes = true
+            }
+        }
+    }
+}
 lspconfig.html.setup{}
 lspconfig.cssls.setup{}
-lspconfig.gopls.setup{}
+lspconfig.gopls.setup{
+    settings = {
+        gopls = {
+            analyses = {
+                unusedparams = true,
+            },
+            staticcheck = true,
+        },
+    },
+}
 lspconfig.bashls.setup{}
 lspconfig.clangd.setup{}
-lspconfig.omnisharp_mono.setup{}
-lspconfig.rust_analyzer.setup{}
+lspconfig.rust_analyzer.setup{
+    settings = {
+        ["rust-analyzer"] = {
+            assist = {
+                importMergeBehavior = "last",
+                importPrefix = "by_self",
+            },
+            cargo = {
+                loadOutDirsFromCheck = true,
+            },
+            procMacro = {
+                enable = true,
+            },
+        },
+    },
+}
 lspconfig.vimls.setup{}

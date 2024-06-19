@@ -35,6 +35,7 @@ alias cdd='z $2 ; ls'
 alias cdi='zi'
 alias ..='z ..'
 alias ...='z ../..'
+alias convert='magick'
 
 # shortcuts
 alias fk='fuck'
@@ -69,12 +70,11 @@ alias zshrc='nvim ~/.zshrc'
 alias dotfiles='cd ~/Workspace/dotfiles/'
 alias dotfiles-code='code ~/Workspace/dotfiles/'
 alias setkeys="setxkbmap us -variant intl"
-alias reload='source ~/.bashrc ; source ~/.zshrc'
+alias reload='clear ; source ~/.bashrc ; source ~/.zshrc'
 alias yt-audio='yt-dlp -x --audio-format mp3'
 alias yt-1080='yt-dlp -f "bestvideo[height<=1080][ext=mp4]+bestaudio[ext=m4a]"'
 alias yt-720='yt-dlp -f "bestvideo[height<=720][ext=mp4]+bestaudio[ext=m4a]"'
 alias yt-480='yt-dlp -f "bestvideo[height<=480][ext=mp4]+bestaudio[ext=m4a]"'
-alias vim-cheatsheets='vim ~/Workspace/dotfiles/resources/vim-cheatsheets'
 
 # python
 alias py="python3"
@@ -121,12 +121,11 @@ bindkey "^a"      beginning-of-line
 bindkey "^e"      end-of-line
 bindkey "^k"      kill-line
 bindkey "^[[3~"   delete-char
-#bindkey '\C-r'    hs 
 
 
 #* ============================ functions ============================ *#
 
-rsudo() { # do sudo, or sudo the last command if no argument given
+rsudo() {
     if [[ $# == 0 ]]; then
         sudo $(history -p '!!')
     else
@@ -134,28 +133,39 @@ rsudo() { # do sudo, or sudo the last command if no argument given
     fi
 }
 
-# extract files depending on the extension
-ex ()
-{
-  if [ -f "$1" ] ; then
-    case $1 in
-      *.tar.bz2)   tar xjf $1   ;;
-      *.tar.gz)    tar xzf $1   ;;
-      *.bz2)       bunzip2 $1   ;;
-      *.rar)       unrar x $1   ;;
-      *.gz)        gunzip $1    ;;
-      *.tar)       tar xf $1    ;;
-      *.tbz2)      tar xjf $1   ;;
-      *.tgz)       tar xzf $1   ;;
-      *.zip)       unzip $1     ;;
-      *.Z)         uncompress $1;;
-      *.7z)        7z x $1      ;;
-      *.deb)       ar x $1      ;;
-      *.tar.xz)    tar xf $1    ;;
-      *.tar.zst)   unzstd $1    ;;
-      *)           echo "'$1' cannot be extracted via ex()" ;;
+
+compress() {
+    case $3 in
+        1) compression=25 ;;
+        2) compression=30 ;;
+        3) compression=35 ;;
+        4) compression=40 ;;
+        *) compression=20 ;;
     esac
-  else
-    echo "'$1' is not a valid file"
-  fi
+    ffmpeg -i "$1" -vcodec libx264 -crf $compression "$2"
+}
+
+
+ex () {
+    if [ -f "$1" ] ; then
+        case $1 in
+            *.tar.bz2)   tar xjf $1   ;;
+            *.tar.gz)    tar xzf $1   ;;
+            *.bz2)       bunzip2 $1   ;;
+            *.rar)       unrar x $1   ;;
+            *.gz)        gunzip $1    ;;
+            *.tar)       tar xf $1    ;;
+            *.tbz2)      tar xjf $1   ;;
+            *.tgz)       tar xzf $1   ;;
+            *.zip)       unzip $1     ;;
+            *.Z)         uncompress $1;;
+            *.7z)        7z x $1      ;;
+            *.deb)       ar x $1      ;;
+            *.tar.xz)    tar xf $1    ;;
+            *.tar.zst)   unzstd $1    ;;
+            *)           echo "'$1' cannot be extracted via ex()" ;;
+        esac
+    else
+        echo "'$1' is not a valid file"
+    fi
 }

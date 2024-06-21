@@ -135,14 +135,22 @@ rsudo() {
 
 
 compress() {
-    case $3 in
+
+    [[ "$2" =~ ^[0-9]+$ ]] && set -- "$1" "" "$2"
+
+    local date=$(date +%d-%m-%Y_%H-%M-%S)
+    local compressionLevel="${3:-0}"
+    local outputFile="${2:-${compressionLevel}_${date}.${1#*.}}"
+
+    case $compressionLevel in
+        0) compression=20 ;;
         1) compression=25 ;;
         2) compression=30 ;;
         3) compression=35 ;;
-        4) compression=40 ;;
-        *) compression=20 ;;
+        *) echo "Wrong compression level." ; return ;;
     esac
-    ffmpeg -i "$1" -vcodec libx264 -crf $compression "$2"
+
+    ffmpeg -i "$1" -vcodec libx264 -crf $compression "$outputFile"
 }
 
 

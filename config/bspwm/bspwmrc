@@ -21,6 +21,7 @@ nitrogen --restore %
 polybar &
 picom --config ~/.config/picom/picom.conf &
 setxkbmap us -variant intl &
+libinput-gestures-setup start &
 thunar --daemon &
 
 #* ====================== monitor configuration ===================== *#

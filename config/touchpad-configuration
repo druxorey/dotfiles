@@ -1,0 +1,5 @@
+Section "InputClass"
+    Identifier "touchpad"
+    Driver "libinput"
+    Option "Tapping" "on"
+EndSection

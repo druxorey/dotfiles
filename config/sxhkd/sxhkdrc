@@ -52,11 +52,11 @@ shift + XF86MonBrightnessDown
 
 # print the full screen
 @Print
-	scrot ~/Pictures/Screenshots/%Y-%m-%d_%H%M%S.png
+	scrot ~/Pictures/screenshots/%Y-%m-%d_%H%M%S.png
 
 # print a selected area
 super + Print
-	scrot -s --line mode=edge ~/Pictures/Screenshots/%Y-%m-%d_%H%M%S.png -e 'xclip -selection clipboard -target image/png -i $f'
+	scrot -s --line mode=edge ~/Pictures/screenshots/%Y-%m-%d_%H%M%S.png -e 'xclip -selection clipboard -target image/png -i $f'
 
 # app launcher
 super + Home
@@ -64,7 +64,7 @@ super + Home
 
 # wifi menu
 super + alt + Home
-	sh ~/.config/rofi/scripts/rofi-wifi-menu.sh
+	sh ~/.config/rofi/scripts/wifi-rofi.sh
 
 #* ========================== applications ========================== *#
 

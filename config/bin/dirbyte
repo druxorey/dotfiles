@@ -27,16 +27,43 @@ function help() {
 }
 
 
-function analyze_directory() {
+function setMemoryUnit() {
+    if [ $1 = "kb" ]; then
+        memoryUnit="kilobytes"
+        decimalFactor=2
+        scaleFactor=1000
+    elif [ $1 = "mb" ]; then
+        memoryUnit="megabytes"
+        decimalFactor=4
+        scaleFactor=1000000
+    elif [ $1 = "gb" ]; then
+        memoryUnit="gigabytes"
+        decimalFactor=8
+        scaleFactor=1000000000
+    else
+        memoryUnit="bytes"
+        decimalFactor=0
+        scaleFactor=1
+    fi
+}
+
+
+function analyzeDirectory() {
     for f in "$1"/*; do
         fileName="$f"
+
         if [ -f "$fileName" ]; then
-            fileSize=$(ls -l "$fileName" | awk '{print $5}')
-            echo -e "File$ROUTE $fileName$END takes up$SIZE $fileSize$END bytes" | tr -s /
-            (( sizeInBytes += fileSize ))
+            fileBytesSize=$(ls -l "$fileName" | awk '{print $5}')
+
+            scaledSize=$(printf "%.*f" $decimalFactor $(echo "$fileBytesSize / $scaleFactor" | bc -l))
+            sizeInBytes=$(echo "$sizeInBytes + $scaledSize" | bc)
+
+            echo -e "File$ROUTE $fileName$END takes up$SIZE $scaledSize$END $memoryUnit" | tr -s /
             (( totalFiles += 1 ))
+
         elif [ -d "$fileName" ] && [ $isRecursive -eq 1 ]; then
-            analyze_directory "$fileName"
+            analyzeDirectory "$fileName"
+
         fi
     done
 }
@@ -46,7 +73,7 @@ function main() {
     isRecursive=0
     sizeInBytes=0
     totalFiles=0
-    memoryUnit=none
+    inputMemoryUnit=none
 
     while getopts ":rhkmg" opt; do
         case ${opt} in
@@ -57,13 +84,13 @@ function main() {
                 help
                 ;;
             k )
-                memoryUnit="kb"
+                inputMemoryUnit="kb"
                 ;;
             m )
-                memoryUnit="mb"
+                inputMemoryUnit="mb"
                 ;;
             g )
-                memoryUnit="gb"
+                inputMemoryUnit="gb"
                 ;;
             \? )
                 echo "Invalid Option: -$OPTARG" 1>&2
@@ -80,27 +107,11 @@ function main() {
         exit 1
     fi
 
-    analyze_directory $1
-
-    if [ $memoryUnit = "kb" ]; then
-        finalMemoryUnit="kilobytes"
-        sizeInKilobytes=$(($sizeInBytes / 1000))
-        finalSize=$sizeInKilobytes
-    elif [ $memoryUnit = "mb" ]; then
-        finalMemoryUnit="megabytes"
-        sizeInMegabytes=$(($sizeInBytes / 1000000))
-        finalSize=$sizeInMegabytes
-    elif [ $memoryUnit = "gb" ]; then
-        finalMemoryUnit="gigabytes"
-        sizeInGigabytes=$(($sizeInBytes / 1000000000))
-        finalSize=$sizeInGigabytes
-    else
-        finalMemoryUnit="bytes"
-        finalSize=$sizeInBytes
-    fi
-
+    setMemoryUnit $inputMemoryUnit
+    analyzeDirectory $1
+    
     echo 
-    echo -e " ► $FILES$totalFiles files$END occupy a total of $SIZE$finalSize $finalMemoryUnit$END"
+    echo -e " ► $FILES$totalFiles files$END occupy a total of $SIZE$sizeInBytes$END $memoryUnit"
     echo 
 }
 

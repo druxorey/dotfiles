@@ -16,8 +16,8 @@ set color_error=lightred
 set color_info=lightyellow
 set color_separator=blue
 set color_statusline_attr=default
-set color_statusline_bg=gray
-set color_statusline_fg=black
+set color_statusline_bg=lightblue
+set color_statusline_fg=white
 set color_titleline_attr=default
 set color_titleline_bg=blue
 set color_titleline_fg=white
@@ -26,16 +26,16 @@ set color_trackwin_album_bg=default
 set color_trackwin_album_fg=default
 set color_win_attr=default
 set color_win_bg=default
-set color_win_cur=lightyellow
+set color_win_cur=white
 set color_win_cur_attr=default
 set color_win_cur_sel_attr=default
 set color_win_cur_sel_bg=blue
-set color_win_cur_sel_fg=lightyellow
+set color_win_cur_sel_fg=white
 set color_win_dir=lightblue
 set color_win_fg=default
 set color_win_inactive_cur_sel_attr=default
 set color_win_inactive_cur_sel_bg=gray
-set color_win_inactive_cur_sel_fg=lightyellow
+set color_win_inactive_cur_sel_fg=black
 set color_win_inactive_sel_attr=default
 set color_win_inactive_sel_bg=gray
 set color_win_inactive_sel_fg=black
@@ -56,7 +56,7 @@ set dsp.jack.server_name=
 set dsp.oss.device=
 set follow=false
 set format_clipped_text=…
-set format_current= %a - %t%= %y 
+set format_current= %t%=%a 
 set format_playlist= %-21%a %3n. %t%= %y %d %{?X!=0?%3X ?    }
 set format_playlist_va= %-21%A %3n. %t (%a)%= %y %d %{?X!=0?%3X ?    }
 set format_statusline= %{status} %{?show_playback_position?%{position} %{?duration?/ %{duration} }?%{?duration?%{duration} }}- %{total} %{?bpm>0?at %{bpm} BPM }%{?volume>=0?vol: %{?lvolume!=rvolume?%{lvolume},%{rvolume} ?%{volume} }}%{?stream?buf: %{buffer} }%{?show_current_bitrate & bitrate>=0? %{bitrate} kbps }%=%{?repeat_current?repeat current?%{?play_library?%{playlist_mode} from %{?play_sorted?sorted }library?playlist}} | %1{continue}%1{follow}%1{repeat}%1{shuffle} 

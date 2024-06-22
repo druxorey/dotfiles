@@ -26,7 +26,7 @@ call plug#begin('~/.config/nvim/plugins/installed')
 	Plug 'jiangmiao/auto-pairs'
 	Plug 'kylechui/nvim-surround'
 	Plug 'folke/trouble.nvim', { 'on': 'TroubleToggle' }
-	Plug 'nvim-telescope/telescope.nvim', { 'on': 'Telescope' }
+	Plug 'nvim-telescope/telescope.nvim'
 	Plug 'nvim-lua/plenary.nvim'
 
 	" Mason Plugins

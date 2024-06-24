@@ -2,7 +2,7 @@
 
 These dotfiles are designed to customize and optimize your working environment on Arch Linux. They include configurations for BSPWM, Kitty, file managers (such as Ranger or Thunar), and other essential tools. Additionally, you’ll find shortcuts, themes, and specific tweaks to enhance productivity and the overall user experience.
 
-*- *Note*: The scripts have been moved to a separate repository, you can be find them [here](https://github.com/druxorey/pybash-scripts/), however there is a script that was left here due to its importance and it is 'arch-bootstrap'.*
+*- **Note**: All my bash scripts have been moved to a separate repository, you can be find them [here](https://github.com/druxorey/pybash-scripts/), however there is a script that was left here due to its importance and it is 'arch-bootstrap'.*
 
 ## Dotfiles Structure
 

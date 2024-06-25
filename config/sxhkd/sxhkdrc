@@ -18,6 +18,10 @@
 
 #* ============================= system ============================= *#
 
+# lock screen
+super + Escape
+	dm-tool lock
+
 # increase audio volume
 XF86AudioRaiseVolume
 	pactl set-sink-volume @DEFAULT_SINK@ +5%
@@ -115,7 +119,7 @@ super + alt + w
 #! ================================================================== !#
 
 # make sxhkd reload its configuration files:
-super + Escape
+super + shift + Escape
 	pkill -USR1 -x sxhkd
 
 # close and kill

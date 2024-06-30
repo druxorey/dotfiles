@@ -1,0 +1,78 @@
+:root {
+  --color-dracula-background: #282a36;
+  --color-dracula-selection: #44475a;
+  --color-dracula-foreground: #f8f8f2;
+  --color-dracula-comment: #6272a4;
+
+  --color-dracula-cyan: #8be9fd;
+  --color-dracula-green: #50fa7b;
+  --color-dracula-orange: #ffb86c;
+  --color-dracula-pink: #ff79c6;
+  --color-dracula-purple: #bd93f9;
+  --color-dracula-red: #ff5555;
+  --color-dracula-yellow: #f1fa8c;
+
+  --color-dracula-yellow-ish: #f4f9bf;
+}
+
+body {
+  --accent-h: 225;
+  --accent-s: 27%;
+  --accent-l: 51%;
+  --bold-color: var(--color-base-60);
+  --code-normal: var(--text-muted);
+  --code-comment: var(--color-dracula-comment);
+  --code-function: var(--color-dracula-green);
+  --code-important: var(--color-dracula-red);
+  --code-keyword: var(--color-dracula-pink);
+  --code-operator: var(--color-dracula-foreground);
+  --code-property: var(--color-dracula-orange);
+  --code-punctuation: var(--text-muted);
+  --code-string: var(--color-dracula-yellow);
+  --code-tag: var(--color-dracula-red);
+  --code-value: var(--color-dracula-purple);
+
+  --tag-size: var(--font-text-size);
+  --tag-color: var(--color-dracula-pink);
+  --tag-color-hover: var(--color-dracula-pink);
+  --tag-background: hsla(var(--interactive-accent-hsl), 0.2);
+  --tag-background-hover: hsla(var(--interactive-accent-hsl), 0.4);
+
+  --link-color: var(--color-dracula-pink);
+  --link-color-hover: var(--color-dracula-purple);
+  --link-external-color: var(--color-dracula-pink);
+  --link-external-color-hover: var(--color-dracula-purple);
+  --link-unresolved-color: var(--color-dracula-pink);
+  --link-unresolved-opacity: 0.5;
+  --link-unresolved-decoration-color: var(--color-dracula-pink);
+  --table-header-background: var(--color-base-20);
+}
+
+body.theme-dark {
+  --color-base-00: var(--color-dracula-background);
+  --color-base-10: hsl(231, 15%, 22%);
+  --color-base-20: hsl(231, 15%, 24%);
+  --color-base-25: hsl(231, 15%, 27%);
+  --color-base-30: hsl(231, 15%, 30%);
+  --color-base-35: hsl(231, 15%, 33%);
+  --color-base-40: hsl(231, 15%, 40%);
+  --color-base-50: hsl(231, 15%, 50%);
+  --color-base-60: hsl(231, 15%, 65%);
+  --color-base-70: hsl(231, 15%, 84%);
+  --color-base-100: var(--color-dracula-foreground);
+
+  --text-selection: var(--color-dracula-selection);
+
+  --checklist-done-decoration: none; /* line-through */
+  --checklist-done-color: var(--text-faint); /* --text-muted */
+}
+
+body.theme-dark.is-mobile {
+  --color-base-00: hsl(231, 15%, 12%); /* 6pp lower than Desktop, default was #000000 */
+  --color-base-10: hsl(231, 15%, 17%); /* 5pp lower than Desktop, default was #121212 */
+  --color-base-20: hsl(231, 15%, 20%); /* 4pp lower than Desktop, default was #1e1e1e */
+}
+
+.markdown-source-view .cm-string.cm-url {
+  color: var(--color-dracula-cyan);
+}

@@ -1,7 +1,8 @@
 let g:mapleader = "\<Space>"
 let g:loaded_netrw = 1
 let g:loaded_netrwPlugin = 1
-
+let g:vimtex_view_method = 'zathura'
+let g:vimtex_quickfix_mode = 0
 set number relativenumber
 set laststatus=0
 set smartindent

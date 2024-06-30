@@ -9,6 +9,7 @@ call plug#begin('~/.config/nvim/plugins/installed')
 	Plug 'nvim-tree/nvim-tree.lua', { 'on': 'NvimTreeToggle' }
 	Plug 'nvim-tree/nvim-web-devicons'
 	Plug 'norcalli/nvim-colorizer.lua'
+	Plug 'lervag/vimtex'
 
 	" Language Support and Syntax Highlighting Plugins
 	Plug 'sheerun/vim-polyglot'

@@ -3,7 +3,7 @@
 bashExample=$(cat << EOF
 #!/bin/bash
 
-function main(){
+function main() {
     echo "Hello World"
 }
 
@@ -16,7 +16,7 @@ cppExample=$(cat << EOF
 
 using namespace std;
 
-int main(){
+int main() {
     cout << "Hello World" << endl;
     return 0;
 }
@@ -39,6 +39,27 @@ fn main() {
 EOF
 )
 
+latexExample=$(cat << EOF
+\documentclass[12pt]{article}
+
+\title{Example Documtent}
+\author{Author Name}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+\section{Title}
+text
+
+\subsection{Subtitle}
+text
+
+\end{document}
+EOF
+)
+
 
 function help() {
     echo
@@ -47,7 +68,7 @@ function help() {
     echo "DESCRIPTION: Creates a default file in a specific programming language."
     echo
     echo "ARGUMENTS:"
-    echo "  FILE TYPE: bash, c++, python, rust."
+    echo "  FILE TYPE: bash, c++, python, rust, latex."
     echo "  FILE NAME: (Optional) The name of the file."
     echo
     echo "EXAMPLES:"
@@ -64,18 +85,11 @@ function main() {
     fileType=$1
     fileName=${2:-"default"}
     case $fileType in
-        "bash")
-            echo "$bashExample" > $fileName.sh
-        ;;
-        "c++")
-            echo "$cppExample" > $fileName.cpp
-        ;;
-        "python")
-            echo "$pythonExample" > $fileName.py
-        ;;
-        "rust")
-            echo "$rustExample" > $fileName.rs
-        ;;
+        "bash") echo "$bashExample" > $fileName.sh      ;;
+        "c++") echo "$cppExample" > $fileName.cpp       ;;
+        "python") echo "$pythonExample" > $fileName.py  ;;
+        "rust") echo "$rustExample" > $fileName.rs      ;;
+        "latex") echo "$latexExample" > $fileName.tex   ;;
         *)
             help
             exit 1

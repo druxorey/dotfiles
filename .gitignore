@@ -1,5 +1,6 @@
 config/cmus/*
 config/cmus/playlist/*
+config/obsidian/plugins/*
 !config/cmus/autosave
 config/nvim/plugins/installed/*
 resources/documents/todo.md

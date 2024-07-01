@@ -2,8 +2,8 @@ call plug#begin('~/.config/nvim/plugins/installed')
 
 	" UI Plugins
 	Plug 'goolord/alpha-nvim'
-	Plug 'vim-airline/vim-airline'
-	Plug 'vim-airline/vim-airline-themes'
+	Plug 'akinsho/bufferline.nvim', { 'tag': '*' }
+	Plug 'nvim-lualine/lualine.nvim'
 	Plug 'dracula/vim', { 'as': 'dracula' }
 	Plug 'lukas-reineke/indent-blankline.nvim'
 	Plug 'nvim-tree/nvim-tree.lua', { 'on': 'NvimTreeToggle' }

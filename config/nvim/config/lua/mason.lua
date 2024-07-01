@@ -14,7 +14,6 @@ lspconfig.pyright.setup{
     }
 }
 lspconfig.html.setup{}
-lspconfig.cssls.setup{}
 lspconfig.gopls.setup{
     settings = {
         gopls = {

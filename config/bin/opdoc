@@ -1,6 +1,6 @@
 #!/bin/bash
 
-documentLocation=~/Workspace/dotfiles/resources/documents/
+documentLocation=~/Documents/Obsidian/Workspace/Cheatsheets
 
 function errorMessage() {
     echo -e "\e[0;31m ► the file you are trying to access does not exist.\e[0m"
@@ -23,19 +23,14 @@ function todo() {
 
 function main() {
     file=$1
-    fileList=("todo" "vim-cheatsheets" "guides-ideas")
 
-    for i in "${fileList[@]}"; do
-        if [ "$i" == "$file" ]; then
-            if [ "$file" == "todo" ]; then
-                todo             
-                exit 0
-            else
-                nvim $documentLocation$file.md
-                exit 0
-            fi
-        fi
-    done
+    if [ "$file" == "todo" ]; then
+        todo             
+        exit 0
+    else
+        nvim $documentLocation$file.md
+        exit 0
+    fi
     errorMessage
 }
 

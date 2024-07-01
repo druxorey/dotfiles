@@ -21,6 +21,7 @@ commandList=(
 "rsync -a ~/.zshrc ~/Workspace/dotfiles/config/zshrc"
 "rsync -a ~/.bashrc ~/Workspace/dotfiles/config/bashrc"
 "rsync -a --delete ~/Documents/Obsidian/Academic/.obsidian/* ~/Workspace/dotfiles/config/obsidian"
+"rsync -a --delete ~/Documents/Obsidian/Workspace/'Simply Guides'/* ~/Workspace/dotfiles/guides"
 "cp ~/.config/libinput-gestures.conf ~/Workspace/dotfiles/config/touchpad-gestures"
 "cp /etc/X11/xorg.conf.d/40-libunput.conf ~/Workspace/dotfiles/config/touchpad-configuration"
 )

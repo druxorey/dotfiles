@@ -8,5 +8,8 @@
     "downscalePercent": 100
   },
   "showRibbon": false,
-  "showLineNumber": true
+  "showLineNumber": true,
+  "attachmentFolderPath": "./assets",
+  "readableLineLength": true,
+  "showInlineTitle": false
 }

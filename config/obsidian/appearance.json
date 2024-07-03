@@ -1,5 +1,6 @@
 {
   "accentColor": "#bd93f9",
-  "cssTheme": "Dracula Gemini",
-  "theme": "obsidian"
+  "cssTheme": "Dracula for Obsidian",
+  "theme": "obsidian",
+  "nativeMenus": false
 }

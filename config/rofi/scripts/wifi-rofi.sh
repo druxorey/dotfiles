@@ -35,13 +35,13 @@ function main() {
     nameWifi=$(echo "$rofiOption" | sed 's/^   //' | awk -F ":" '{print $1}')
     passwordWifi=$(echo "$rofiOption" | sed 's/^   //' | awk -F ":" '{print $2}')
 
-    if [ "$rofiOption" = "󰤨    Toggle on" ]; then
+    if [ "$rofiOption" = "󰤨    Enable Wi-Fi" ]; then
         nmcli radio wifi on
-    elif [ "$rofiOption" = "󰤮    Toggle off" ]; then
+    elif [ "$rofiOption" = "󰤮    Disable Wi-Fi" ]; then
         nmcli radio wifi off
+    else 
+        [[ -n $rofiOption ]] && connectToWifi $nameWifi $passwordWifi
     fi
-
-    [[ -n $rofiOption ]] && connectToWifi $nameWifi $passwordWifi
 }
 
 main $@

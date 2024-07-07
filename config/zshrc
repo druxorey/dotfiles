@@ -1,9 +1,17 @@
+
 #! =================================================================== !#
 #!
-#! - Made by Druxorey -
-#! 
-#! https://github.com/druxorey
-#! https://www.reddit.com/user/Druxorey
+#!                ███████╗███████╗██╗  ██╗██████╗  ██████╗
+#!                ╚══███╔╝██╔════╝██║  ██║██╔══██╗██╔════╝
+#!                  ███╔╝ ███████╗███████║██████╔╝██║     
+#!                 ███╔╝  ╚════██║██╔══██║██╔══██╗██║     
+#!                ███████╗███████║██║  ██║██║  ██║╚██████╗
+#!                ╚══════╝╚══════╝╚═╝  ╚═╝╚═╝  ╚═╝ ╚═════╝
+#!
+#!                        - Made by Druxorey -
+#!
+#!                    https://github.com/druxorey
+#!                https://www.reddit.com/user/Druxorey
 #! 
 #! =================================================================== !#
 
@@ -11,16 +19,17 @@
 
 [[ $- != *i* ]] && return
 PS1='[\u@\h \W]\$ '
-eval "$(zoxide init zsh)"
-eval "$(thefuck --alias)"
-eval "$(oh-my-posh init zsh --config ~/.config/oh-my-posh/dracula.omp.json)"
-export PATH=$PATH:~/.config/bin/
-export GIT_EDITOR=nvim
 fastfetch --load-config ~/.config/fastfetch/init.jsonc
 echo
 
-#* ============================= aliases ============================= *#
+eval "$(zoxide init zsh)"
+eval "$(thefuck --alias)"
+eval "$(oh-my-posh init zsh --config ~/.config/oh-my-posh/dracula.omp.json)"
 
+export PATH=$PATH:~/.config/bin/
+export GIT_EDITOR=nvim
+
+#* ============================= aliases ============================= *#
 # directory navigation
 alias vim='nvim'
 alias cat='bat'
@@ -47,6 +56,7 @@ alias thr='trash-restore'
 alias matrix='cmatrix -C blue'
 alias grep='grep --color=auto'
 alias peaclock="peaclock --config ~/.config/peaclock"
+alias mdtopdf='pandoc $1 -o default.pdf --pdf-engine=xelatex -V mainfont="Arial" monofont="Arial"'
 
 # pacman and yay
 alias sysupdate='sudo pacman -Syu ; yay -Sua --noconfirm'
@@ -122,6 +132,14 @@ bindkey "^a"      beginning-of-line
 bindkey "^e"      end-of-line
 bindkey "^k"      kill-line
 bindkey "^[[3~"   delete-char
+
+# fzf settings
+export FZF_ALT_C_OPTS="--preview 'tree -C {} | head -200'"
+export FZF_CTRL_T_OPTS="
+  --walker-skip .git,node_modules,target,.local,.steam
+  --preview 'bat -n --color=always {}'
+  --bind 'ctrl-/:change-preview-window(down|hidden|)'"
+source <(fzf --zsh)
 
 
 #* ============================ functions ============================ *#

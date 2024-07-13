@@ -1,6 +1,6 @@
 #!/bin/bash
 
-runRofi='rofi -dmenu -p "Direct Connection: " -config ~/.config/rofi/wifi.rasi'
+runRofi='rofi -dmenu -p -i -config ~/.config/rofi/wifi.rasi'
 
 function connectToWifi() {
     local nameWifi="$1"
@@ -9,16 +9,19 @@ function connectToWifi() {
 
     [[ -n "$passwordWifi" ]] && command="nmcli dev wifi con $nameWifi password $passwordWifi"
 
-    (sleep 15; kill -15 $$) &
+    (
+        sleep 15
+        kill -15 $$
+    ) &
 
-    for (( i=1; i <= 5; i++ )); do
+    for ((i = 1; i <= 5; i++)); do
         if $command; then
             break
         fi
-        echo "The command failed, retrying..." ; sleep 3
+        echo "The command failed, retrying..."
+        sleep 3
     done
 }
-
 
 function main() {
     wifiStatus=$(nmcli -fields WIFI g)
@@ -39,7 +42,7 @@ function main() {
         nmcli radio wifi on
     elif [ "$rofiOption" = "󰤮    Disable Wi-Fi" ]; then
         nmcli radio wifi off
-    else 
+    else
         [[ -n $rofiOption ]] && connectToWifi $nameWifi $passwordWifi
     fi
 }

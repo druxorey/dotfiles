@@ -21,7 +21,7 @@ configuration {
     padding:                        0;
     width:                          15%;
     y-offset:                       -30.5%;
-    x-offset:                       -41.6%;
+    x-offset:                       0%;
 }
 
 #mainbox {

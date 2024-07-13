@@ -66,9 +66,9 @@ super + Print
 super + Home
 	rofi -show drun
 
-# wifi menu
+# general menu
 super + alt + Home
-	sh ~/.config/rofi/scripts/wifi-rofi.sh
+	sh ~/.config/rofi/scripts/general-rofi.sh
 
 #* ========================== applications ========================== *#
 

@@ -27,7 +27,7 @@ return {
             lualine_a = {{
                 "mode",
                 separator = {
-                    left = "",
+                    left = "",
                     right = ""
                 },
                 right_padding = 2
@@ -40,7 +40,7 @@ return {
                 "location",
                 separator = {
                     left = "",
-                    right = ""
+                    right = ""
                 },
                 left_padding = 2
             }}

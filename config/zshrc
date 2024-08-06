@@ -26,17 +26,20 @@ eval "$(zoxide init zsh)"
 eval "$(thefuck --alias)"
 eval "$(oh-my-posh init zsh --config ~/.config/oh-my-posh/dracula.omp.json)"
 
+#* =========================== path export =========================== *#
+
 export PATH=$PATH:~/.config/bin/
 export GIT_EDITOR=nvim
 
 #* ============================= aliases ============================= *#
+
 # directory navigation
 alias vim='nvim'
 alias cat='bat'
 alias ls='eza --icons --group-directories-first'
 alias la='eza --icons -a --group-directories-first'
 alias lt='eza --icons --tree --group-directories-first'
-alias ll='eza --icons -l --group-directories-first'
+alias ll='eza --icons -alh --group-directories-first'
 alias labc='eza --icons -la'
 alias l.='eza -a | grep -E "^\."'
 alias cd='z'
@@ -44,9 +47,9 @@ alias cdd='z $2 ; ls'
 alias cdi='zi'
 alias ..='z ..'
 alias ...='z ../..'
-alias convert='magick'
 
 # shortcuts
+alias convert='magick'
 alias fk='fuck'
 alias cp='cp -i'
 alias cpv='rsync -avh --info=progress2'
@@ -81,6 +84,7 @@ alias dotfiles='cd ~/Workspace/dotfiles/'
 alias dotfiles-code='code ~/Workspace/dotfiles/'
 alias setkeys="setxkbmap us -variant intl"
 alias reload='clear ; source ~/.bashrc ; source ~/.zshrc'
+alias wgetm='xargs -n 1 wget --limit-rate=2500k <'
 alias yt-audio='yt-dlp -x --audio-format mp3'
 alias yt-1080='yt-dlp -f "bestvideo[height<=1080][ext=mp4]+bestaudio[ext=m4a]"'
 alias yt-720='yt-dlp -f "bestvideo[height<=720][ext=mp4]+bestaudio[ext=m4a]"'
@@ -141,7 +145,6 @@ export FZF_CTRL_T_OPTS="
   --bind 'ctrl-/:change-preview-window(down|hidden|)'"
 source <(fzf --zsh)
 
-
 #* ============================ functions ============================ *#
 
 function rsudo() {
@@ -197,6 +200,7 @@ function ex() {
     fi
 }
 
+
 function open() {
     if [ -f "$1" ] ; then
         case $1 in
@@ -210,7 +214,7 @@ function open() {
             *.jpeg)     sxiv $1    ;;
             *.jpg)      sxiv $1    ;;
             *.pdf)      zathura $1 ;;
-            *) echo "'$1' cannot be open via ex()\n Use: [mpv, sxiv or zathura]" ;;
+            *) echo "'$1' cannot be open via open()\n Use: [mpv, sxiv or zathura]" ;;
         esac
     else
         echo "'$1' is not a valid file"

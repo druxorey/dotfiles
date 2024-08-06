@@ -56,11 +56,11 @@ shift + XF86MonBrightnessDown
 
 # print the full screen
 @Print
-	scrot ~/Pictures/screenshots/%Y-%m-%d_%H%M%S.png
+	scrot ~/Pictures/screenshots/%Y-%m-%d_%H%M%S.webp
 
 # print a selected area
 super + Print
-	scrot -s --line mode=edge ~/Pictures/screenshots/%Y-%m-%d_%H%M%S.png -e 'xclip -selection clipboard -target image/png -i $f'
+	scrot -s --line mode=edge ~/Pictures/screenshots/%Y-%m-%d_%H%M%S.webp -e 'xclip -selection clipboard -target image/png -i $f'
 
 # app launcher
 super + Home
@@ -75,13 +75,19 @@ super + alt + Home
 # kitty
 super + Return
 	kitty
-super + alt + m
+
+# music player
+super + m
 	kitty cmus
 
 # file managment
 super + e
 	thunar
 super + alt + e
+	kitty yazi
+
+# server managment
+super + s
 	thunar smb://192.168.1.119/
 
 # file editor
@@ -93,8 +99,6 @@ super + v
 # independent apps
 super + d
 	discord
-super + s
-	steam
 super + n
 	notion-app
 super + o
@@ -107,11 +111,11 @@ super + alt + b
 	brave
 super + i
 	gtk-launch msedge-ojhonpiapjcbbglfjbeciifjoeljdaob-Default.desktop
-super + alt + g
+super + alt + 1
 	microsoft-edge-dev github.com/druxorey
-super + alt + y
+super + alt + 2
 	microsoft-edge-dev youtube.com
-super + alt + w
+super + alt + 3
 	microsoft-edge-dev web.whatsapp.com
 
 #! ================================================================== !#
@@ -126,20 +130,22 @@ super + shift + Escape
 super + {_,shift + }w
 	bspc node -{c,k}
 
-# alternate between the tiled and monocle layout
-super + m
-	bspc desktop -l next && ./.config/polybar/change_layout.sh
-
 # send the newest marked node to the newest preselected node
 super + y
 	bspc node newest.marked.local -n newest.!automatic.local
-
 
 #* ========================== states/flags ========================== *#
 
 # set the window state
 super + alt + {7,8,9,0}
 	bspc node -t {tiled,pseudo_tiled,floating,fullscreen}
+
+
+super + comma
+    bsp-layout previous --layouts tall,rtall,wide,rwide,grid,rgrid,even,tiled
+
+super + period
+    bsp-layout next --layouts monocle,tall,rtall,wide,rwide,grid,rgrid,even,tiled
 
 # set the node flags
 super + ctrl + {m,x,y,z}

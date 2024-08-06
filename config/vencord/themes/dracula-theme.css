@@ -1,16 +1,11 @@
-/**
- * @name Dracula for Discord
- * @description A dark, rounded discord theme.
- * @author Druxorey
- * @version 0.0.1
- * @invite nz87hXyvcy
- * @website https://github.com/refact0r/midnight-discord
- * @source https://github.com/refact0r/midnight-discord/blob/master/midnight.theme.css
- * @authorId 508863359777505290
- * @authorLink https://www.refact0r.dev
+/*
+@name             Dracula for Discord
+@namespace        github.com/druxorey
+@version          0.1.1
+@description      Are you tired of the same boring colors on Discrotd? Then try this modern color style based on the Dracula theme
+@author           Druxorey
+@license          GNU General Public License v3.0
 */
-
-/* IMPORTANT: make sure to enable dark mode in discord settings for the theme to apply properly!!! */
 
 @import url('https://refact0r.github.io/midnight-discord/midnight.css');
 

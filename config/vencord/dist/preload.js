@@ -1,4 +1,4 @@
-// Vencord 5c05443
+// Vencord 5160f90
 // Standalone: true
 // Platform: Universal
 // Updater Disabled: false

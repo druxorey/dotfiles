@@ -7,7 +7,7 @@
         {
           "background": "#6272a4",
           "foreground": "#f8f8f2",
-          "leading_diamond": "\ue0b2",
+          "leading_diamond": "\ue0b6",
           "style": "diamond",
           "properties": {
             "always_enabled": true
@@ -18,7 +18,7 @@
         {
           "background": "#bd93f9",
           "foreground": "#f8f8f2",
-          "powerline_symbol": "\ue0b0",
+          "powerline_symbol": "\ue0b4",
           "properties": {
             "style": "agnoster_short",
             "folder_separator_icon": "/",
@@ -32,7 +32,7 @@
         {
           "background": "#FF79C6",
           "foreground": "#f8f8f2",
-          "powerline_symbol": "\ue0b0",
+          "powerline_symbol": "\ue0b4",
           "properties": {
             "branch_icon": "",
             "fetch_stash_count": true,
@@ -46,7 +46,7 @@
         {
           "background": "#8be9fd",
           "foreground": "#f8f8f2",
-          "powerline_symbol": "\ue0b0",
+          "powerline_symbol": "\ue0b4",
           "style": "powerline",
           "template": " \ue718 {{ if .PackageManagerIcon }}{{ .PackageManagerIcon }} {{ end }}{{ .Full }} ",
           "type": "node"
@@ -54,7 +54,7 @@
         {
           "type": "python",
           "style": "powerline",
-          "powerline_symbol": "\uE0B0",
+          "powerline_symbol": "\uE0B4",
           "foreground": "#f8f8f2",
           "background": "#FFB86C",
           "properties": {

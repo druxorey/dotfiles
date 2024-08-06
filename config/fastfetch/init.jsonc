@@ -9,7 +9,7 @@
     },
     "display": {
         "separator": "",
-        "keyWidth": 17
+        "key": { "width": 17}
     },
     "modules": [
         {
@@ -17,9 +17,8 @@
             "type": "custom"
         },
         {
-            "key": "│             │\u001b[13D{#34}  user",
-            "type": "title",
-            "format": "{1}"
+            "key": "│             │\u001b[13D{#34}  host",
+            "type": "host",
         },
         {
             "key": "│             │\u001b[13D{#31}󰅐  uptime",

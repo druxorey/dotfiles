@@ -26,7 +26,7 @@ Directory where screenshots, documents and some other files are stored.
 
 ## Screenshots
 
-![This is an image](/resources/rices/rice-2024-06-09.webp)
+![This is an image](/resources/rices/rice-2024-08-07.webp)
 
 ## Dependencies
 

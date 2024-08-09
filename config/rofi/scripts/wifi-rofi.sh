@@ -1,6 +1,6 @@
 #!/bin/bash
 
-runRofi='rofi -dmenu -p -i -config ~/.config/rofi/wifi.rasi'
+runRofi='rofi -dmenu -p -i -config ~/.config/rofi/styles/wifi-rofi.rasi'
 
 function connectToWifi() {
     local nameWifi="$1"

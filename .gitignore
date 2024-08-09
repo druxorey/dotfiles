@@ -2,6 +2,7 @@ config/cmus/*
 config/cmus/playlist/*
 config/obsidian/plugins/*
 !config/cmus/autosave
+config/obsidian/themes/*
 config/nvim/plugins/installed/*
 resources/documents/todo.md
 resources/documents/guides-ideas.md

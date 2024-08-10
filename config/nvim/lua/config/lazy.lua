@@ -23,7 +23,7 @@ require("lazy").setup({
         version = false
     },
     install = {
-        colorscheme = {"tokyonight", "habamax"}
+        colorscheme = {"dracula"}
     },
     checker = {
         enabled = false

@@ -61,7 +61,7 @@ opt.sidescrolloff = 8
 opt.signcolumn = "yes"
 opt.smartcase = true
 opt.smartindent = true
-opt.spelllang = {"en"}
+opt.spelllang = {"en", "es"}
 opt.spelloptions:append("noplainbuffer")
 opt.splitbelow = true
 opt.splitkeep = "screen"

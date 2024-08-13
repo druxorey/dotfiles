@@ -1,118 +1,72 @@
-#!/bin/bash
+#!/usr/bin/env python3
 
-FILES="\e[0;35m"
-ROUTE="\e[0;36m"
-SIZE="\e[0;32m"
-END="\e[0m"
+import os
+import argparse
 
-function help() {
-    echo
-    echo "USAGE: dirbyte [-r] [ROUTE]"
-    echo
-    echo "DESCRIPTION: Calculates the number of bytes occupied by files in the specified directory."
-    echo
-    echo "ARGUMENTS:"
-    echo "  route  Directory path to analyze."
-    echo
-    echo "OPTIONS:"
-    echo "  -h      Shows this help."
-    echo "  -r      Analyze directories recursively."
-    echo "  -k      Shows the final size value en Kilobytes."
-    echo "  -m      Shows the final size value en Megabytes."
-    echo "  -g      Shows the final size value en Gigabytes."
-    echo
-    echo "Report bugs to https://github.com/druxorey/pybash-scripts/issues"
-    echo
-    exit 1
-}
+SIZE = '\033[32m'
+FILE = '\033[35m'
+ROUTE = '\033[36m'
+END = '\033[0m'
+
+QUANTITY_TOTAL = 0
+SIZE_TOTAL = 0
+
+def unitConverter(fileSize, memoryUnit):
+    if memoryUnit == 'kilobytes': 
+        fileSize = round(fileSize / 1000, 2)
+    elif memoryUnit == 'megabytes': 
+        fileSize = round(fileSize / 1000000, 2)
+    elif memoryUnit == 'gigabytes': 
+        fileSize = round(fileSize / 1000000000, 2)
+    return fileSize
 
 
-function setMemoryUnit() {
-    if [ $1 = "kb" ]; then
-        memoryUnit="kilobytes"
-        decimalFactor=2
-        scaleFactor=1000
-    elif [ $1 = "mb" ]; then
-        memoryUnit="megabytes"
-        decimalFactor=4
-        scaleFactor=1000000
-    elif [ $1 = "gb" ]; then
-        memoryUnit="gigabytes"
-        decimalFactor=8
-        scaleFactor=1000000000
-    else
-        memoryUnit="bytes"
-        decimalFactor=0
-        scaleFactor=1
-    fi
-}
+def analyzeDirectory(directoryPath, memoryUnit, isRecursive, isHidden):
+    global QUANTITY_TOTAL
+    global SIZE_TOTAL
+
+    try:
+        fileList = os.listdir(directoryPath)
+    except FileNotFoundError:
+        print(f"Directory {ROUTE}{directoryPath}{END} not found")
+        return
+
+    for file in fileList:
+        if file.startswith('.') and not isHidden:
+            continue
+
+        filePath = os.path.join(directoryPath, file)
+
+        try:
+            if os.path.isfile(filePath):
+                fileSize = unitConverter(os.path.getsize(filePath), memoryUnit)
+                print(f"File {ROUTE}{filePath}{END} takes up {SIZE}{fileSize}{END} {memoryUnit}")
+                QUANTITY_TOTAL += 1
+                SIZE_TOTAL += fileSize
+
+            elif isRecursive:
+                analyzeDirectory(filePath,memoryUnit, isRecursive, isHidden)
+
+        except FileNotFoundError:
+            print(f"File {ROUTE}{filePath}{END} not found")
+            continue
 
 
-function analyzeDirectory() {
-    for f in "$1"/*; do
-        fileName="$f"
+def main():
+    parser = argparse.ArgumentParser(description='List files in a directory.')
 
-        if [ -f "$fileName" ]; then
-            fileBytesSize=$(ls -l "$fileName" | awk '{print $5}')
+    parser.add_argument('-r', action='store_true', help='Analyze directories recursively')
+    parser.add_argument('-d', action='store_true', help='Analyze hidden directories')
+    parser.add_argument('-k', action='store_const', const='kilobytes', dest='unit', default='bytes', help='Shows the final size value en Kilobytes')
+    parser.add_argument('-m', action='store_const', const='megabytes', dest='unit', default='bytes', help='Shows the final size value en Megabytes')
+    parser.add_argument('-g', action='store_const', const='gigabytes', dest='unit', default='bytes', help='Shows the final size value en Gigabytes')
+    parser.add_argument('path', type=str, help='The dictory path to analyze')
 
-            scaledSize=$(printf "%.*f" $decimalFactor $(echo "$fileBytesSize / $scaleFactor" | bc -l))
-            sizeInBytes=$(echo "$sizeInBytes + $scaledSize" | bc)
+    args = parser.parse_args()
 
-            echo -e "File$ROUTE $fileName$END takes up$SIZE $scaledSize$END $memoryUnit" | tr -s /
-            (( totalFiles += 1 ))
+    analyzeDirectory(args.path, args.unit, args.r, args.d)
 
-        elif [ -d "$fileName" ] && [ $isRecursive -eq 1 ]; then
-            analyzeDirectory "$fileName"
+    print(f"\n ► {FILE}{QUANTITY_TOTAL} files{END} occupy a total of {SIZE}{round(SIZE_TOTAL,2)}{END} {args.unit}\n")
 
-        fi
-    done
-}
-
-
-function main() {
-    isRecursive=0
-    sizeInBytes=0
-    totalFiles=0
-    inputMemoryUnit=none
-
-    while getopts ":rhkmg" opt; do
-        case ${opt} in
-            r )
-                isRecursive=1
-                ;;
-            h )
-                help
-                ;;
-            k )
-                inputMemoryUnit="kb"
-                ;;
-            m )
-                inputMemoryUnit="mb"
-                ;;
-            g )
-                inputMemoryUnit="gb"
-                ;;
-            \? )
-                echo "Invalid Option: -$OPTARG" 1>&2
-                exit 1
-                ;;
-        esac
-    done
-    shift $((OPTIND -1))
-
-    if [ $# -ne 1 ]; then
-        help
-    elif [ ! -d $1 ]; then
-        echo "Error: directory does not exist"
-        exit 1
-    fi
-
-    setMemoryUnit $inputMemoryUnit
-    analyzeDirectory $1
-    
-    echo 
-    echo -e " ► $FILES$totalFiles files$END occupy a total of $SIZE$sizeInBytes$END $memoryUnit"
-    echo 
-}
-
-main $@
+if __name__ == "__main__":
+    main()

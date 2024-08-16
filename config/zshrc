@@ -29,6 +29,8 @@ eval "$(oh-my-posh init zsh --config ~/.config/oh-my-posh/dracula.omp.json)"
 #* =========================== path export =========================== *#
 
 export PATH=$PATH:~/.config/bin/
+export CARGO_HOME="$XDG_DATA_HOME"/cargo
+export GTK2_RC_FILES="$XDG_CONFIG_HOME"/gtk-2.0/gtkrc
 export GIT_EDITOR=nvim
 
 #* ============================= aliases ============================= *#

@@ -33,7 +33,7 @@ eval "$(zoxide init bash)"
 eval "$(thefuck --alias)"
 export PATH=$PATH:~/.config/bin/
 export GIT_EDITOR=nvim
-
+export HISTFILE="${XDG_STATE_HOME}"/bash/history
 #* ============================= aliases ============================= *#
 
 # directory navigation

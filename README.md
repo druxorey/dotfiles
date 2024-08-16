@@ -2,33 +2,35 @@
 
 These dotfiles are designed to customize and optimize your working environment on Arch Linux. They include configurations for BSPWM, Kitty, file managers (such as Ranger or Thunar), and other essential tools. Additionally, you’ll find shortcuts, themes, and specific tweaks to enhance productivity and the overall user experience.
 
-*- **Note**: All my bash scripts have been moved to a separate repository, you can be find them [here](https://github.com/druxorey/pybash-scripts/), however there is a script that was left here due to its importance and it is 'arch-bootstrap'.*
+# REPOSITORY STRUCTURE
 
-## Dotfiles Structure
+## ARCH-BOOTSTRAP.SH
 
-### arch-bootstrap script
-
-The `arch-bootstrap` script automates the initial installation and configuration of an Arch Linux system. It updates the system, installs essential packages (both from Pacman and AUR), and enables necessary services like the firewall and the login manager. 
+The `arch-bootstrap.sh` script automates the initial installation and configuration of an Arch Linux system. It updates the system, installs essential packages (both from Pacman and AUR), and enables necessary services like the firewall and the login manager. 
 
 It’s particularly useful for users who want a quick and straightforward installation process. You can find the script [here](arch-bootstrap.sh).
 
-### config
+## ASSETS
 
-This directory contains specific configuration files for different programs and tools. Here you can find the `bin` directory which contains several scripts that are added to the `$PATH` so that they can be executed at any time.
+Contains files needed for the repository, such as screenshots.
 
-### guides 
+## CONFIG
 
-Here you'll find the [arch linux installation guide](guides/arch-linux-installation.md), a step-by-step guide to installing Arch Linux, and the [bspwm installation guide](guides/bspwm-arch-installation.md), and detailed instruction guide for configuring the bspwm window manager. You can also find them in [CIPAL](https://cipalonline.github.io/).
+This directory contains specific configuration files for different programs and tools.
 
-### resources
+## SCRIPTS
 
-Directory where screenshots, documents and some other files are stored.
+Here you can find several scripts that are added to the `$PATH` so that they can be executed at any time.
 
-## Screenshots
+## RESOURCES
 
-![This is an image](/resources/rices/rice-2024-08-07.webp)
+Directory where wallpapers and some other files are stored.
 
-## Dependencies
+# SCREENSHOTS
+
+![This is an image](/assets/rice-2024-08-07.webp)
+
+# Dependencies
 
 - **Shell**: zsh
 - **Prompt**: oh-my-posh
@@ -37,7 +39,7 @@ Directory where screenshots, documents and some other files are stored.
 - **Bar**: polybar
 - **Browser**: brave
 - **Editor**: neovim
-- **File Manager**: thunar and ranger
+- **File Manager**: thunar and yazi
 - **Aplication launcher**: rofi
 - **Colorscheme**: [dracula](https://draculatheme.com/)
 - **Wallpaper**: [here](/resources/wallpapers.zip)

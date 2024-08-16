@@ -13,7 +13,7 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "Daily Notes/2024-07-21 - Síntesis sobre UML.md",
+                "file": "Daily Notes/2024-08-11.md",
                 "mode": "source",
                 "source": false
               }
@@ -96,7 +96,7 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "Daily Notes/2024-07-21 - Síntesis sobre UML.md"
+                "file": "Daily Notes/2024-08-11.md"
               }
             }
           },
@@ -106,7 +106,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "Daily Notes/2024-07-21 - Síntesis sobre UML.md",
+                "file": "Daily Notes/2024-08-11.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -123,7 +123,7 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "Daily Notes/2024-07-21 - Síntesis sobre UML.md",
+                "file": "Daily Notes/2024-08-11.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               }
@@ -177,9 +177,13 @@
   },
   "active": "6bde0373073301e7",
   "lastOpenFiles": [
-    "Daily Notes/2024-07-26.md",
     "Daily Notes/2024-08-02.md",
+    "Daily Notes/2024-08-11.md",
     "Daily Notes/2024-08-03.md",
+    "Daily Notes/2024-08-09.md",
+    "Daily Notes/2024-08-10.md",
+    "Daily Notes/2024-07-21 - Síntesis sobre UML.md",
+    "Daily Notes/2024-07-26.md",
     "Daily Notes/2024-07-26 - S01-elemental-actions.md",
     "Daily Notes/2024-07-26 - S02-conditional-structure-control.md",
     "Daily Notes/2024-07-26 - S06-structs-and-files.md",
@@ -187,7 +191,6 @@
     "Daily Notes/2024-07-26 - S05-arrays.md",
     "Daily Notes/2024-07-26 - S04-functions.md",
     "Daily Notes/2024-07-26 - S03-iterative-structure-control.md",
-    "Daily Notes/2024-07-21 - Síntesis sobre UML.md",
     "Daily Notes/2024-07-30.md",
     "Daily Notes/2024-07-27.md",
     "Classroom/AyP/1- Introducción a Algoritmos Y Programación.md",
@@ -200,12 +203,9 @@
     "Classroom/INTIF/AlgoByte/C++/2024-07-24 - Teoría 2 - Estructuras de Control.md",
     "Classroom/INTIF/AlgoByte/C++/2024-07-24 - C++ Para Principiantes.md",
     "Classroom/INTIF/AlgoByte/Introducción.md",
-    "Classroom/AyP/2- Variables y Condicionales.md",
-    "Classroom/INTIF/AlgoByte/Python/2024-07-20 - Introducción a Python de AlgoByte.md",
     "Classroom/INTIF/AlgoByte/Python",
     "Classroom/INTIF/AlgoByte/C++",
     "Classroom/INTIF/AlgoByte",
-    "Daily Notes/2024-07-23.md",
     "Templates",
     "Classroom",
     "Daily Notes",

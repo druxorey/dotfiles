@@ -9,6 +9,7 @@ commandList=(
 "rsync -a --delete ~/.config/sxhkd ~/Workspace/dotfiles/config"
 "rsync -a --delete ~/.config/kitty ~/Workspace/dotfiles/config"
 "rsync -a --delete ~/.config/fastfetch ~/Workspace/dotfiles/config"
+"rsync -a --delete ~/.config/tmux ~/Workspace/dotfiles/config"
 "rsync -a --delete ~/.config/oh-my-posh ~/Workspace/dotfiles/config"
 "rsync -a --delete ~/.config/picom ~/Workspace/dotfiles/config"
 "rsync -a --delete ~/.config/polybar ~/Workspace/dotfiles/config"

@@ -2,35 +2,28 @@
 
 These dotfiles are designed to customize and optimize your working environment on Arch Linux. They include configurations for BSPWM, Kitty, file managers (such as Ranger or Thunar), and other essential tools. Additionally, you’ll find shortcuts, themes, and specific tweaks to enhance productivity and the overall user experience.
 
-# REPOSITORY STRUCTURE
-
-## ARCH-BOOTSTRAP.SH
+# ARCH-BOOTSTRAP.SH
 
 The `arch-bootstrap.sh` script automates the initial installation and configuration of an Arch Linux system. It updates the system, installs essential packages (both from Pacman and AUR), and enables necessary services like the firewall and the login manager. 
 
 It’s particularly useful for users who want a quick and straightforward installation process. You can find the script [here](arch-bootstrap.sh).
 
-## ASSETS
+# REPOSITORY STRUCTURE
 
-Contains files needed for the repository, such as screenshots.
 
-## CONFIG
+- `assets`: Contains files needed for the repository, such as screenshots.
 
-This directory contains specific configuration files for different programs and tools.
+- `config`: This directory contains specific configuration files for different programs and tools.
 
-## SCRIPTS
+- `scripts`: Here you can find several scripts that are added to the `$PATH` so that they can be executed at any time.
 
-Here you can find several scripts that are added to the `$PATH` so that they can be executed at any time.
-
-## RESOURCES
-
-Directory where wallpapers and some other files are stored.
+- `resources`: Directory where wallpapers and some other files are stored.
 
 # SCREENSHOTS
 
 ![This is an image](/assets/rice-2024-08-07.webp)
 
-# Dependencies
+# DEPENDENCIES
 
 - **Shell**: zsh
 - **Prompt**: oh-my-posh

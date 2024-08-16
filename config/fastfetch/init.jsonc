@@ -4,7 +4,8 @@
         "type": "small",
         "padding": {
             "top": 1,
-            "left": 4,
+            "left": 3,
+            "right": 3
         }
     },
     "display": {
@@ -18,7 +19,7 @@
         },
         {
             "key": "│             │\u001b[13D{#34}  host",
-            "type": "host",
+            "type": "host"
         },
         {
             "key": "│             │\u001b[13D{#31}󰅐  uptime",
@@ -26,7 +27,7 @@
         },
         {
             "key": "│             │\u001b[13D{#32}  processes",
-            "type": "processes",
+            "type": "processes"
         },
         {
             "key": "│             │\u001b[13D{#33}󰇄  packages",
@@ -34,7 +35,7 @@
         },
         {
             "key": "│             │\u001b[13D{#34}󰍛  cpu",
-            "type": "cpu",
+            "type": "cpu"
         },
         {
             "key": "│             │\u001b[13D{#35}󰉉  disk",

@@ -5,33 +5,33 @@
       "alignment": "left",
       "segments": [
         {
-          "background": "#6272a4",
-          "foreground": "#f8f8f2",
+          "background": "#6272A4",
+          "foreground": "#F8F8F2",
           "leading_diamond": "\ue0b6",
           "style": "diamond",
           "properties": {
             "always_enabled": true
           },
-          "template": " {{ .FormattedMs }} ",
+          "template": " {{ .FormattedMs }} ",
           "type": "executiontime"
         },
         {
-          "background": "#bd93f9",
-          "foreground": "#f8f8f2",
+          "background": "#BD93F9",
+          "foreground": "#F8F8F2",
           "powerline_symbol": "\ue0b4",
           "properties": {
             "style": "agnoster_short",
             "folder_separator_icon": "/",
             "hide_root_location": true,
-            "max_depth": 2
+            "max_depth": 1
           },
           "style": "powerline",
-          "template": " {{ .Path }} ",
+          "template": "  {{ .Path }} ",
           "type": "path"
         },
         {
           "background": "#FF79C6",
-          "foreground": "#f8f8f2",
+          "foreground": "#F8F8F2",
           "powerline_symbol": "\ue0b4",
           "properties": {
             "branch_icon": "",
@@ -44,8 +44,8 @@
           "type": "git"
         },
         {
-          "background": "#8be9fd",
-          "foreground": "#f8f8f2",
+          "background": "#8BE9FD",
+          "foreground": "#F8F8F2",
           "powerline_symbol": "\ue0b4",
           "style": "powerline",
           "template": " \ue718 {{ if .PackageManagerIcon }}{{ .PackageManagerIcon }} {{ end }}{{ .Full }} ",
@@ -55,8 +55,8 @@
           "type": "python",
           "style": "powerline",
           "powerline_symbol": "\uE0B4",
-          "foreground": "#f8f8f2",
           "background": "#FFB86C",
+          "foreground": "#F8F8F2",
           "properties": {
             "prefix": " \uE235 "
           }
@@ -69,7 +69,7 @@
       "newline": true,
       "segments": [
         {
-          "foreground": "#f8f8f2",
+          "foreground": "#F8F8F2",
           "properties": {
             "always_enabled": true
           },

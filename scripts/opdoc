@@ -25,7 +25,7 @@ function main() {
     file=$1
 
     if [ "$file" == "todo" ]; then
-        todo             
+        todo
         exit 0
     else
         nvim $documentLocation$file.md

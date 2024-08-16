@@ -64,11 +64,11 @@ super + Print
 
 # app launcher
 super + Home
-	rofi -show drun
+    rofi -show drun -config ~/.config/rofi/styles/application-rofi.rasi
 
 # general menu
 super + alt + Home
-	sh ~/.config/rofi/scripts/general-rofi.sh
+	sh ~/.config/rofi/scripts/start-rofi.sh
 
 #* ========================== applications ========================== *#
 
@@ -106,9 +106,9 @@ super + o
 
 # browser
 super + b
-	microsoft-edge-dev
-super + alt + b
 	brave
+super + alt + b
+	microsoft-edge-dev
 super + i
 	gtk-launch msedge-ojhonpiapjcbbglfjbeciifjoeljdaob-Default.desktop
 super + alt + 1

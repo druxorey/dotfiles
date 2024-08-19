@@ -10,7 +10,7 @@
 #* ============================= startup ============================= *#
 
 function roundseconds() {
-    echo "m=$1; h=0.5; scale=4; t=1000; if (m<0) h=-0.5; a=m*t+h; scale=3; a/t;" | bc
+    echo "scale=3; $1/1" | bc
 }
 
 function bash_getstarttime() {
@@ -20,7 +20,8 @@ function bash_getstarttime() {
 function bash_getstoptime() {
     local endtime=$(date +%s.%N)
     local starttime=$(cat /dev/shm/${USER}.bashtime.${1})
-    roundseconds $(echo $(eval echo "$endtime - $starttime") | bc)
+    local elapsed=$(echo "$endtime - $starttime" | bc)
+    printf "%.3f\n" $(roundseconds $elapsed)
 }
 
 ROOTPID=$BASHPID
@@ -31,6 +32,7 @@ PS0='$(bash_getstarttime $ROOTPID)'
 PS1='[\u@\h \W]\$ $(bash_getstoptime $ROOTPID)ms > '
 eval "$(zoxide init bash)"
 eval "$(thefuck --alias)"
+
 export PATH=$PATH:~/.config/bin/
 export GIT_EDITOR=nvim
 export HISTFILE="${XDG_STATE_HOME}"/bash/history

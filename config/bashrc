@@ -1,13 +1,19 @@
-#! =================================================================== !#
-#!
-#! - Made by Druxorey -
-#! 
-#! https://github.com/druxorey
-#! https://www.reddit.com/user/Druxorey
-#! 
-#! =================================================================== !#
 
-#* ============================= startup ============================= *#
+#! ========================================================================== !#
+#!
+#!                       ██████╗  █████╗ ███████╗██╗  ██╗
+#!                       ██╔══██╗██╔══██╗██╔════╝██║  ██║
+#!                       ██████╔╝███████║███████╗███████║
+#!                       ██╔══██╗██╔══██║╚════██║██╔══██║
+#!                       ██████╔╝██║  ██║███████║██║  ██║
+#!                       ╚═════╝ ╚═╝  ╚═╝╚══════╝╚═╝  ╚═╝
+#!
+#!                            - Made by Druxorey -
+#!                         https://github.com/druxorey
+#!
+#! ========================================================================== !#
+
+#* ================================= startup ================================ *#
 
 function roundseconds() {
     echo "scale=3; $1/1" | bc
@@ -33,10 +39,13 @@ PS1='[\u@\h \W]\$ $(bash_getstoptime $ROOTPID)ms > '
 eval "$(zoxide init bash)"
 eval "$(thefuck --alias)"
 
+#* =============================== path export ============================== *#
+
 export PATH=$PATH:~/.config/bin/
 export GIT_EDITOR=nvim
 export HISTFILE="${XDG_STATE_HOME}"/bash/history
-#* ============================= aliases ============================= *#
+
+#* ================================= aliases ================================ *#
 
 # directory navigation
 alias ls='ls --group-directories-first'
@@ -103,7 +112,7 @@ alias shutdown='shutdown now'
 alias monitor-chome='xrandr --output eDP-1 --primary --mode 1920x1080 --rotate normal --output HDMI-1 --mode 1600x900 --rotate normal --right-of eDP-1'
 alias monitor-dhome='xrandr --output HDMI-1 --off'
 
-#* ============================ functions ============================ *#
+#* ================================ functions =============================== *#
 
 function rsudo() {
     if [[ $# == 0 ]]; then

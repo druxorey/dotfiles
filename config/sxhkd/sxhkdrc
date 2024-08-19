@@ -40,11 +40,11 @@ XF86AudioMicMute
 
 # increase brightness
 XF86MonBrightnessUp
-	brightnessctl set +5%
+	brightnessctl set +1000
 
 # decrease brightness
 XF86MonBrightnessDown
-	brightnessctl set 5%-
+	brightnessctl set 1000-
 
 # activate night light
 shift + XF86MonBrightnessUp
@@ -111,12 +111,12 @@ super + alt + b
 	microsoft-edge-dev
 super + i
 	gtk-launch msedge-ojhonpiapjcbbglfjbeciifjoeljdaob-Default.desktop
-super + alt + 1
-	microsoft-edge-dev github.com/druxorey
-super + alt + 2
-	microsoft-edge-dev youtube.com
-super + alt + 3
-	microsoft-edge-dev web.whatsapp.com
+super + XF86AudioMute
+	brave github.com/druxorey
+super + XF86AudioLowerVolume
+	brave youtube.com
+super + XF86AudioRaiseVolume
+	brave web.whatsapp.com
 
 #! ================================================================== !#
 #!                               bspwm                                !#

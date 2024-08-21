@@ -1,9 +1,12 @@
 #!/bin/bash
 
+ERROR="\e[1;31m"
+END="\e[0m"
+
 documentLocation=~/Documents/Obsidian/Workspace/Cheatsheets/
 
 function errorMessage() {
-    echo -e "\e[0;31m ► the file you are trying to access does not exist.\e[0m"
+    echo -e "$ERROR ► the file you are trying to access does not exist$END"
     exit 0
 }
 
@@ -22,15 +25,23 @@ function todo() {
 
 
 function main() {
+    if [ -z "$1" ]; then
+        errorMessage
+        exit 1
+    fi
+
     file=$1
 
-    if [ "$file" == "todo" ]; then
+    if [ "$file" == "todo.md" ] || [ "$file" == "todo" ]; then
         todo
         exit 0
-    else
-        nvim $documentLocation$file.md
+    fi
+
+    if [ -f "$documentLocation$file" ]; then
+        nvim "$documentLocation$file"
         exit 0
     fi
+
     errorMessage
 }
 

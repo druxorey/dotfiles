@@ -54,14 +54,35 @@ window {
 mainbox {
     spacing:                        1em;
     padding:                        1.5em;
-    children:                       [ "inputbar", "listview" ];
+    children:                       [ "inputbar", "message", "listview" ];
 }
 
 /* ================================ inpurbar ================================ */
 
 inputbar {
-    spacing:                        0.5em;
+    spacing:                        0.5 em;
     children:                       [ "entry", "mode-switcher"];
+}
+
+message {
+    enabled:                        true;
+    margin:                         0px;
+    padding:                        0.25em 0.5em 0.25em 0.5em;
+    border:                         0px solid;
+    border-radius:                  @border-radius-2;
+    background-color:               @color-background-2;
+}
+
+textbox {
+    enabled:                        true;
+    padding:                        0.25em 0.5em 0.25em 0.5em;
+    background-color:               @color-background-2;
+    text-color:                     @color-foreground-1;
+    vertical-align:                 0.5;
+    horizontal-align:               0.0;
+    highlight:                      none;
+    blink:                          true;
+    markup:                         true;
 }
 
 entry {
@@ -86,7 +107,7 @@ button {
 
     background-color:               @color-background-2;
     text-color:                     @color-foreground-1;
-    border-color:                   @border-colour;
+    border-color:                   @border-color;
 }
 
 button selected {

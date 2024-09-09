@@ -1,9 +1,32 @@
+# ======================================================================#
+#
+#
+#   ██████╗ ██╗████████╗██╗ ██████╗ ███╗   ██╗ ██████╗ ██████╗ ███████╗
+#  ██╔════╝ ██║╚══██╔══╝██║██╔════╝ ████╗  ██║██╔═══██╗██╔══██╗██╔════╝
+#  ██║  ███╗██║   ██║   ██║██║  ███╗██╔██╗ ██║██║   ██║██████╔╝█████╗  
+#  ██║   ██║██║   ██║   ██║██║   ██║██║╚██╗██║██║   ██║██╔══██╗██╔══╝  
+#  ╚██████╔╝██║   ██║   ██║╚██████╔╝██║ ╚████║╚██████╔╝██║  ██║███████╗
+#   ╚═════╝ ╚═╝   ╚═╝   ╚═╝ ╚═════╝ ╚═╝  ╚═══╝ ╚═════╝ ╚═╝  ╚═╝╚══════╝
+#
+#
+# ======================================================================#
+
+# cmus configurations
+!config/cmus/autosave
+
 config/cmus/*
 config/cmus/playlist/*
+
+# obsidian configurations
 config/obsidian/plugins/*
-!config/cmus/autosave
 config/obsidian/themes/*
+
+# nvim configurations
 config/nvim/plugins/installed/*
+
+# Resource documents
 resources/documents/todo.md
 resources/documents/guides-ideas.md
+
+# Scripts
 scripts/bin/nmcli-wifi

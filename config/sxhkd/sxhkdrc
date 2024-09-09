@@ -110,7 +110,7 @@ super + b
 super + alt + b
 	microsoft-edge-dev
 super + i
-	gtk-launch msedge-ojhonpiapjcbbglfjbeciifjoeljdaob-Default.desktop
+	gtk-launch brave-idglgibfmafffbkljkkkknpgkkcdjekk-Default.desktop
 super + XF86AudioMute
 	brave github.com/druxorey
 super + XF86AudioLowerVolume

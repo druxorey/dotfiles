@@ -10,7 +10,6 @@ It’s particularly useful for users who want a quick and straightforward instal
 
 # REPOSITORY STRUCTURE
 
-
 - `assets`: Contains files needed for the repository, such as screenshots.
 
 - `config`: This directory contains specific configuration files for different programs and tools.
@@ -21,7 +20,7 @@ It’s particularly useful for users who want a quick and straightforward instal
 
 # SCREENSHOTS
 
-![This is an image](/assets/rice-2024-08-07.webp)
+![Desktop Screenshot](/assets/rice-2024-10-04.webp)
 
 # DEPENDENCIES
 

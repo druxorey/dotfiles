@@ -1,14 +1,16 @@
-# BSPWM DOTFILES
+<h1 align="center">Dotfiles</h1>
 
-These dotfiles are designed to customize and optimize your working environment on Arch Linux. They include configurations for BSPWM, Kitty, file managers (such as Ranger or Thunar), and other essential tools. Additionally, you’ll find shortcuts, themes, and specific tweaks to enhance productivity and the overall user experience.
+<p align="center">A minimalist repository of my dotfiles for arch linux</p>
 
-# ARCH-BOOTSTRAP.SH
+![Desktop Screenshot](/assets/rice-2024-10-04.webp)
 
-The `arch-bootstrap.sh` script automates the initial installation and configuration of an Arch Linux system. It updates the system, installs essential packages (both from Pacman and AUR), and enables necessary services like the firewall and the login manager. 
+<p align="center">
+<a href="#repository-structure"><img src="https://img.shields.io/badge/structure-BD93F9?style=for-the-badge"></a>
+<a href="#repository-structure"><img src="https://img.shields.io/badge/installation-FF79C6?style=for-the-badge"></a>
+<a href="#repository-structure"><img src="https://img.shields.io/badge/dependencies-BD93F9?style=for-the-badge"></a>
+</p>
 
-It’s particularly useful for users who want a quick and straightforward installation process. You can find the script [here](arch-bootstrap.sh).
-
-# REPOSITORY STRUCTURE
+## Repository Structure
 
 - `assets`: Contains files needed for the repository, such as screenshots.
 
@@ -18,25 +20,92 @@ It’s particularly useful for users who want a quick and straightforward instal
 
 - `resources`: Directory where wallpapers and some other files are stored.
 
-# SCREENSHOTS
+## Installation
 
-![Desktop Screenshot](/assets/rice-2024-10-04.webp)
+The `arch-bootstrap.sh` script automates the initial installation and configuration of an Arch Linux system. It updates the system, installs essential packages (both from Pacman and AUR), and enables necessary services like the firewall and the login manager.
 
-# DEPENDENCIES
+It’s particularly useful for users who want a quick and straightforward installation process. You can find the script [here](arch-bootstrap.sh).
 
-- **Shell**: zsh
-- **Prompt**: oh-my-posh
-- **Terminal**: kitty
-- **System Fetch**: fastfetch
-- **Bar**: polybar
-- **Browser**: brave
-- **Editor**: neovim
-- **File Manager**: thunar and yazi
-- **Aplication launcher**: rofi
-- **Colorscheme**: [dracula](https://draculatheme.com/)
-- **Wallpaper**: [here](/resources/wallpapers.zip)
-- **GTK theme**: [Dracula GTK](https://draculatheme.com/gtk)
-- **Icon theme**: [Dracula Papirus](https://draculatheme.com/gtk#:~:text=Icon%20Theme%20(optional))
-- **Cursor**: [Dracula cursor](https://www.gnome-look.org/p/1669262/)
-- **GUI Font**: [Noto Sans Nerd Font](https://www.nerdfonts.com/font-downloads#:~:text=or%20straight%20lined-,Download,-Preview%20on%20ProgrammingFonts)
-- **TUI Font**: [Hack Nerd Font](https://www.nerdfonts.com/font-downloads#:~:text=at%20common%20sizes-,Download,-Preview%20on%20ProgrammingFonts)
+## Dependencies
+
+In this repository are the configuration files for my work environment, below is a list of the most important programs.
+
+<table align="center">
+	<tr>
+		<th>Program</th>
+		<th>Link</th>
+	</tr>
+	<tr>
+		<td>Linux Distribution</td>
+		<td><a href="https://github.com/archlinux/linux">arch</a></td>
+	</tr>
+	<tr>
+		<td>Window Manager</td>
+		<td><a href="https://github.com/baskerville/bspwm">bspwm</a></td>
+	</tr>
+	<tr>
+		<td>Shell</td>
+		<td><a href="https://github.com/zsh-users/zsh">zsh</a></td>
+	</tr>
+	<tr>
+		<td>Prompt</td>
+		<td><a href="https://github.com/JanDeDobbeleer/oh-my-posh">oh my posh</a></td>
+	</tr>
+	<tr>
+		<td>Terminal</td>
+		<td><a href="https://github.com/kovidgoyal/kitty">kitty</a></td>
+	</tr>
+	<tr>
+		<td>System Fetch</td>
+		<td><a href="https://github.com/fastfetch-cli/fastfetch">fastfetch</a></td>
+	</tr>
+	<tr>
+		<td>Bar</td>
+		<td><a href="https://github.com/polybar/polybar">polybar</a></td>
+	</tr>
+	<tr>
+		<td>Browser</td>
+		<td><a href="https://github.com/brave/brave-browser">brave</a></td>
+	</tr>
+	<tr>
+		<td>Editor</td>
+		<td><a href="https://github.com/neovim/neovim">neovim</a></td>
+	</tr>
+	<tr>
+		<td>File Manager</td>
+		<td><a href="https://github.com/sxyazi/yazi">yazi</a></td>
+	</tr>
+	<tr>
+		<td>Application Launcher</td>
+		<td><a href="https://github.com/adi1090x/rofi">rofi</a></td>
+	</tr>
+	<tr>
+		<td>Colorscheme</td>
+		<td><a href="https://draculatheme.com/">dracula</a></td>
+	</tr>
+	<tr>
+		<td>Wallpaper</td>
+		<td><a href="https://github.com/druxorey/dotfiles/raw/refs/heads/main/resources/wallpapers.zip">download</a></td>
+	</tr>
+	<tr>
+		<td>GTK Theme</td>
+		<td><a href="https://draculatheme.com/gtk">dracula gtk</a></td>
+	</tr>
+	<tr>
+		<td>Icon Theme</td>
+		<td><a href="https://draculatheme.com/gtk">dracula papirus</a></td>
+	</tr>
+	<tr>
+		<td>Cursor</td>
+		<td><a href="https://www.gnome-look.org/p/1669262/">dracula cursor</a></td>
+	</tr>
+	<tr>
+		<td>GUI Font</td>
+		<td><a href="https://github.com/ryanoasis/nerd-fonts/releases/download/v3.2.1/Noto.zip">noto sans nerd font</a>
+		</td>
+	</tr>
+	<tr>
+		<td>TUI Font</td>
+		<td><a href="https://github.com/ryanoasis/nerd-fonts/releases/download/v3.2.1/Hack.zip">hack nerd font</a></td>
+	</tr>
+</table>

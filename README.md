@@ -6,8 +6,8 @@
 
 <p align="center">
 <a href="#repository-structure"><img src="https://img.shields.io/badge/structure-BD93F9?style=for-the-badge"></a>
-<a href="#repository-structure"><img src="https://img.shields.io/badge/installation-FF79C6?style=for-the-badge"></a>
-<a href="#repository-structure"><img src="https://img.shields.io/badge/dependencies-BD93F9?style=for-the-badge"></a>
+<a href="#installation"><img src="https://img.shields.io/badge/installation-FF79C6?style=for-the-badge"></a>
+<a href="#dependencies"><img src="https://img.shields.io/badge/dependencies-BD93F9?style=for-the-badge"></a>
 </p>
 
 ## Repository Structure

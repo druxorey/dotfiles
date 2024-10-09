@@ -2,7 +2,7 @@
 
 <p align="center">A minimalist repository of my dotfiles for arch linux</p>
 
-![Desktop Screenshot](/assets/rice-2024-10-04.webp)
+![Desktop Screenshot](/assets/main-rice.webp)
 
 <p align="center">
 <a href="#repository-structure"><img src="https://img.shields.io/badge/structure-BD93F9?style=for-the-badge"></a>

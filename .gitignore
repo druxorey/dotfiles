@@ -21,12 +21,15 @@ config/cmus/playlist/*
 config/obsidian/plugins/*
 config/obsidian/themes/*
 
+# vencord configurations
+config/vencord/dist
+
 # nvim configurations
 config/nvim/plugins/installed/*
 
-# Resource documents
+# resource documents
 resources/documents/todo.md
 resources/documents/guides-ideas.md
 
-# Scripts
+# scripts
 scripts/bin/nmcli-wifi

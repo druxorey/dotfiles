@@ -1,45 +1,52 @@
 #!/bin/bash
 
-FAIL="\e[1;91m"
-SUCCESS="\e[0;93m"
+. $(dirname $0)/lib/shload.sh
+
+ERROR="\e[1;91m"
+SUCCESS="\e[1;92m"
 END="\e[0m"
 
-#"rsync -a --delete ~/Documents/Obsidian/Workspace/'Cozy Guides'/ ~/Workspace/dotfiles/guides"
+function main() {
 
-commandList=(
-"rsync -a --delete ~/.config/bspwm ~/Workspace/dotfiles/config"
-"rsync -a --delete ~/.config/sxhkd ~/Workspace/dotfiles/config"
-"rsync -a --delete ~/.config/kitty ~/Workspace/dotfiles/config"
-"rsync -a --delete ~/.config/fastfetch ~/Workspace/dotfiles/config"
-"rsync -a --delete ~/.config/tmux ~/Workspace/dotfiles/config"
-"rsync -a --delete ~/.config/oh-my-posh ~/Workspace/dotfiles/config"
-"rsync -a --delete ~/.config/picom ~/Workspace/dotfiles/config"
-"rsync -a --delete ~/.config/polybar ~/Workspace/dotfiles/config"
-"rsync -a --delete ~/.config/rofi ~/Workspace/dotfiles/config"
-"rsync -a --delete ~/.config/nvim ~/Workspace/dotfiles/config"
-"rsync -a --delete ~/.config/autorandr ~/Workspace/dotfiles/config"
-"rsync -a --delete ~/.config/yazi ~/Workspace/dotfiles/config"
-"rsync -a --delete ~/.config/cmus ~/Workspace/dotfiles/config"
-"rsync -a --delete ~/.config/Vencord/ ~/Workspace/dotfiles/config/vencord"
-"rsync -a --delete ~/.config/bin/ ~/Workspace/dotfiles/scripts"
-"rsync -a --delete ~/Documents/Obsidian/Academic/.obsidian/* ~/Workspace/dotfiles/config/obsidian"
-"rsync -a ~/.zshrc ~/Workspace/dotfiles/config/zshrc"
-"rsync -a ~/.bashrc ~/Workspace/dotfiles/config/bashrc"
-"rsync -a ~/.config/libinput-gestures.conf ~/Workspace/dotfiles/config/touchpad-gestures"
-"rsync -a /etc/X11/xorg.conf.d/40-libunput.conf ~/Workspace/dotfiles/config/touchpad-configuration"
-)
+	commandList=(
+	"rsync -a --delete ~/.config/bspwm ~/Workspace/dotfiles/config"
+	"rsync -a --delete ~/.config/sxhkd ~/Workspace/dotfiles/config"
+	"rsync -a --delete ~/.config/kitty ~/Workspace/dotfiles/config"
+	"rsync -a --delete ~/.config/fastfetch ~/Workspace/dotfiles/config"
+	"rsync -a --delete ~/.config/tmux ~/Workspace/dotfiles/config"
+	"rsync -a --delete ~/.config/oh-my-posh ~/Workspace/dotfiles/config"
+	"rsync -a --delete ~/.config/picom ~/Workspace/dotfiles/config"
+	"rsync -a --delete ~/.config/polybar ~/Workspace/dotfiles/config"
+	"rsync -a --delete ~/.config/rofi ~/Workspace/dotfiles/config"
+	"rsync -a --delete ~/.config/nvim ~/Workspace/dotfiles/config"
+	"rsync -a --delete ~/.config/autorandr ~/Workspace/dotfiles/config"
+	"rsync -a --delete ~/.config/yazi ~/Workspace/dotfiles/config"
+	"rsync -a --delete ~/.config/cmus ~/Workspace/dotfiles/config"
+	"rsync -a --delete ~/.config/Vencord/ ~/Workspace/dotfiles/config/vencord"
+	"rsync -a --delete ~/.config/bin/ ~/Workspace/dotfiles/scripts"
+	"rsync -a --delete ~/Documents/Obsidian/Academic/.obsidian/* ~/Workspace/dotfiles/config/obsidian"
+	"rsync -a ~/.zshrc ~/Workspace/dotfiles/config/zshrc"
+	"rsync -a ~/.bashrc ~/Workspace/dotfiles/config/bashrc"
+	"rsync -a ~/.config/libinput-gestures.conf ~/Workspace/dotfiles/config/touchpad-gestures"
+	"rsync -a /etc/X11/xorg.conf.d/40-libunput.conf ~/Workspace/dotfiles/config/touchpad-configuration"
+	)
 
-isSuccessful=true
+	setupShload ${#commandList[@]} "Progress"
+	count=0
 
-for command in "${commandList[@]}"; do
-  eval $command
-  if [ $? -ne 0 ]; then
-    echo -e "\n$FAIL!! An error occurred while backing up your files !!$END\n"
-    isSuccessful=false
-    break
-  fi
-done
+	for command in "${commandList[@]}"; do
+		count=$(($count + 1))
+		eval $command
 
-if $isSuccessful; then
-  echo -e """\n$SUCCESS ► All files have been successfully backed up$END\n"""
-fi
+		if [ $? -ne 0 ]; then
+			echo -e "\n$ERROR ⚠ Error: Unexpected interruption during backup. Please try again$END\n"
+			exit 1
+		fi
+
+		updateShload $count
+	done
+
+	echo -e "\n${SUCCESS}All files have been successfully backed up$END"
+}
+
+main $@

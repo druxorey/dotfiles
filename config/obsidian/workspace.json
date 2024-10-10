@@ -4,16 +4,28 @@
     "type": "split",
     "children": [
       {
-        "id": "533d49cee1410229",
+        "id": "94093a9b74cbb30d",
         "type": "tabs",
         "children": [
           {
-            "id": "68a20ac85134bdbf",
+            "id": "20e2de121553429e",
             "type": "leaf",
             "state": {
               "type": "markdown",
               "state": {
-                "file": "Templates/university-template.md",
+                "file": "Daily Notes/2024-08-02 - Sistema de Apuestas.md",
+                "mode": "source",
+                "source": false
+              }
+            }
+          },
+          {
+            "id": "14f8ec9c60612e18",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "Vault/MDI/3- Ejercicios.md",
                 "mode": "source",
                 "source": false
               }
@@ -64,6 +76,14 @@
               "type": "bookmarks",
               "state": {}
             }
+          },
+          {
+            "id": "85cd2b465561a4d1",
+            "type": "leaf",
+            "state": {
+              "type": "trash-explorer",
+              "state": {}
+            }
           }
         ]
       }
@@ -96,7 +116,7 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "Templates/university-template.md"
+                "file": "Daily Notes/2024-08-02 - Sistema de Apuestas.md"
               }
             }
           },
@@ -106,7 +126,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "Templates/university-template.md",
+                "file": "Daily Notes/2024-08-02 - Sistema de Apuestas.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -123,37 +143,36 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "Templates/university-template.md",
+                "file": "Daily Notes/2024-08-02 - Sistema de Apuestas.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               }
             }
           }
         ],
-        "currentTab": 2
+        "currentTab": 3
       },
       {
-        "id": "657664a0361b6005",
+        "id": "6942e01142bb7fe7",
         "type": "tabs",
         "children": [
           {
-            "id": "0071443376348677",
-            "type": "leaf",
-            "state": {
-              "type": "calendar",
-              "state": {}
-            }
-          },
-          {
-            "id": "a21efe97666072aa",
+            "id": "ff85685d1c2554ec",
             "type": "leaf",
             "state": {
               "type": "timer-view",
               "state": {}
             }
+          },
+          {
+            "id": "5ba9ee0cc121038d",
+            "type": "leaf",
+            "state": {
+              "type": "calendar",
+              "state": {}
+            }
           }
-        ],
-        "currentTab": 1
+        ]
       }
     ],
     "direction": "horizontal",
@@ -173,27 +192,35 @@
       "pomodoro-timer:Toggle timer panel": false,
       "templater-obsidian:Templater": false,
       "obsidian-kanban:Create new board": false,
-      "audio-recorder:Start/stop recording": false
+      "audio-recorder:Start/stop recording": false,
+      "omnisearch:Omnisearch": false,
+      "markdown-importer:Open format converter": false,
+      "obsidian-git:Open Git source control": false,
+      "obsidian-trash-explorer:Open trash explorer": false
     }
   },
-  "active": "68a20ac85134bdbf",
+  "active": "20e2de121553429e",
   "lastOpenFiles": [
-    "Daily Notes/2024-09-18 - Redscape Script.md",
+    "Daily Notes/2024-09-17 - Temas para Matemáticas.md",
+    "Daily Notes/2024-09-18 - Redscape Development.md",
+    "Daily Notes/2024-09-20 - Redscape Script.md",
+    "Vault/MDI/3- Ejercicios.md",
+    "Vault/MDI/2- Lógica proposicional.md",
+    "Assets",
+    "comida.md",
+    "Vault/AyP/2- Variables y Condicionales.md",
+    "Untitled.md",
     "Templates/daily-note-template.md",
     "Templates/university-template.md",
-    "Daily Notes/2024-09-17 - Temas para Matemáticas.md",
     "Daily Notes/2024-09-18.md",
     "Daily Notes/Invalid date.md",
     "Daily Notes/2024-08-02 - Sistema de Apuestas.md",
     "Vault",
     "Classroom/Materias Terminadas",
     "Vault/AyP/P1 - Conceptos básicos de programación.md",
-    "Vault/AyP/2- Variables y Condicionales.md",
     "Vault/AyP/1- Introducción a Algoritmos Y Programación.md",
     "Vault/MDI/5- Definiciones.md",
-    "Vault/MDI/3- Ejercicios.md",
     "Vault/MDI/4- Leyes de Equivalencias Lógicas.md",
-    "Vault/MDI/2- Lógica proposicional.md",
     "Vault/MDI/1- Introducción a Matemáticas Discretas.md",
     "Vault/Introducción a la Informática/Conceptos Básicos.md",
     "Classroom/INTIF/Prácticas.md",
@@ -202,18 +229,13 @@
     "Vault/Introducción a la Informática/AlgoByte/Python/2024-07-20 - Introducción a Python de AlgoByte.md",
     "Vault/Introducción a la Informática/AlgoByte/C++/2024-07-24 - Teoría 3 - Funciones.md",
     "Vault/Introducción a la Informática/AlgoByte/C++/2024-07-24 - Teoría 2 - Estructuras de Control.md",
-    "Vault/Introducción a la Informática/AlgoByte/C++/2024-07-24 - Teoría 1 - Variables, Constantes y Tipos de Datos.md",
-    "Vault/Introducción a la Informática/AlgoByte/C++/2024-07-24 - C++ Para Principiantes.md",
-    "Daily Notes/2024-09-17.md",
     "Daily Notes/assets/Recording 20240917192135.webm",
     "Daily Notes/assets/Recording 20240917192049.webm",
     "Daily Notes/assets",
     "options.lua",
     "keymaps.lua",
-    "Daily Notes/2024-07-26.md",
     "Vault/Introducción a la Informática/AlgoByte/Python",
     "Vault/Introducción a la Informática/AlgoByte/C++",
-    "Vault/Introducción a la Informática/AlgoByte",
     "assets/Pasted image 20240629212803.png",
     "Untitled.canvas",
     "Pasted image 20240519010037.png",

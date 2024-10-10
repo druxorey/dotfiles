@@ -9,7 +9,7 @@
   },
   "showRibbon": false,
   "showLineNumber": true,
-  "attachmentFolderPath": "./assets",
+  "attachmentFolderPath": "Assets",
   "readableLineLength": true,
   "showInlineTitle": false
 }

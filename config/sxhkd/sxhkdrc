@@ -18,6 +18,9 @@
 
 #* ============================= system ============================= *#
 
+super + t
+	bspc rule -a "*" -o state=floating && kitty opdoc todo
+
 # lock screen
 super + Escape
 	dm-tool lock

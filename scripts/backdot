@@ -47,6 +47,7 @@ function main() {
 	done
 
 	echo -e "\n${SUCCESS}All files have been successfully backed up$END"
+
 }
 
 main $@

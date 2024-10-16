@@ -5,7 +5,7 @@
 ![Desktop Screenshot](/assets/main-rice.webp)
 
 <p align="center">
-<a href="#repository-structure"><img src="https://img.shields.io/badge/structure-BD93F9?style=for-the-badge"></a>
+<a href="https://www.deviantart.com/druxorey/gallery/94231956/wallpapers-for-dracula"><img src="https://img.shields.io/badge/wallpapers-BD93F9?style=for-the-badge"></a>
 <a href="#installation"><img src="https://img.shields.io/badge/installation-FF79C6?style=for-the-badge"></a>
 <a href="#dependencies"><img src="https://img.shields.io/badge/dependencies-BD93F9?style=for-the-badge"></a>
 </p>
@@ -17,8 +17,6 @@
 - `config`: This directory contains specific configuration files for different programs and tools.
 
 - `scripts`: Here you can find several scripts that are added to the `$PATH` so that they can be executed at any time.
-
-- `resources`: Directory where wallpapers and some other files are stored.
 
 ## Installation
 

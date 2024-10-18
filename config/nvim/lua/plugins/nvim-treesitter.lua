@@ -9,6 +9,7 @@ return {
                 "html",
                 "javascript",
                 "json",
+				"rust",
                 "lua",
                 "markdown",
                 "markdown_inline",

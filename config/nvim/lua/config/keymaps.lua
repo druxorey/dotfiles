@@ -1,10 +1,6 @@
 -- Remap escape
 vim.keymap.set("n", "<C-c>", "<Esc>", { noremap = true, silent = true })
 
--- Split vertical y horizontal
-vim.keymap.set("n", "<leader>vs", ":vsplit<CR>", { noremap = true, silent = true })
-vim.keymap.set("n", "<leader>hs", ":split<CR>", { noremap = true, silent = true })
-
 -- Usar alt + hjkl para redimensionar ventanas
 vim.keymap.set("n", "<M-j>", ":resize -2<CR>", { noremap = true, silent = true })
 vim.keymap.set("n", "<M-k>", ":resize +2<CR>", { noremap = true, silent = true })

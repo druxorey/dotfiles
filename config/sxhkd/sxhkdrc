@@ -67,11 +67,11 @@ super + Print
 
 # app launcher
 super + Home
-    rofi -show drun -config ~/.config/rofi/styles/application-rofi.rasi
+	sh ~/.config/rofi/scripts/start-rofi.sh
 
 # general menu
 super + alt + Home
-	sh ~/.config/rofi/scripts/start-rofi.sh
+    rofi -show drun -config ~/.config/rofi/styles/application-rofi.rasi
 
 #* ========================== applications ========================== *#
 

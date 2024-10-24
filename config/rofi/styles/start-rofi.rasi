@@ -21,6 +21,10 @@
 
 configuration {
     show-icons:                     false;
+    kb-row-up: "k";
+    kb-row-down: "j";
+    kb-row-left: "h";
+    kb-row-right: "l";
 }
 
 /* ============================== main window =============================== */

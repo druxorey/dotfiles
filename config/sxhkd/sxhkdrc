@@ -66,11 +66,11 @@ super + Print
 	scrot -s --line mode=edge ~/Pictures/screenshots/%Y-%m-%d_%H%M%S.webp -e 'xclip -selection clipboard -target image/png -i $f'
 
 # app launcher
-super + Home
+super + space
 	sh ~/.config/rofi/scripts/start-rofi.sh
 
 # general menu
-super + alt + Home
+super + Home
     rofi -show drun -config ~/.config/rofi/styles/application-rofi.rasi
 
 #* ========================== applications ========================== *#

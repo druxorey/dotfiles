@@ -17,12 +17,16 @@
 
 /* ============================== configuration ============================= */
 
-@import                             "shared/theme.rasi"
+@import                             "../shared/theme.rasi"
 
 configuration {
     show-icons:                     false;
     disable-history:                false;
     case-sensitive:                 false;
+    kb-row-up: "k";
+    kb-row-down: "j";
+    kb-row-left: "h";
+    kb-row-right: "l";
 }
 
 /* ============================== main window =============================== */
@@ -47,26 +51,8 @@ window {
 mainbox {
     spacing:                        1em;
     padding:                        1.5em;
-    children:                       [ "inputbar", "listview" ];
+    children:                       [ "listview" ];
 }
-
-/* ================================ inpurbar ================================ */
-
-inputbar {
-    spacing:                        0.5em;
-    children:                       [ "entry" ];
-}
-
-entry {
-    padding:                        0.25em 0.5em 0.25em 0.5em;
-    border-radius:                  @border-radius-2;
-    placeholder:                    "SSID:PASSWD";
-
-    background-color:               @color-background-2;
-    text-color:                     @color-foreground-1;
-    placeholder-color:              @color-disabled;
-}
-
 
 /* ================================ listview ================================ */
 

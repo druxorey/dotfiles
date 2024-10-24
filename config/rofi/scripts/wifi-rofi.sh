@@ -1,6 +1,8 @@
 #!/bin/bash
 
-runRofi='rofi -dmenu -p -i -config ~/.config/rofi/styles/wifi-rofi.rasi'
+rofiMenu='rofi -dmenu -p -i -config ~/.config/rofi/styles/wifi/wifi-rofi.rasi'
+rofiNewSSID='rofi -dmenu -p -i -config ~/.config/rofi/styles/wifi/wifi-newssid.rasi'
+rofiNewPassword='rofi -dmenu -p -i -config ~/.config/rofi/styles/wifi/wifi-newpassword.rasi'
 
 function connectToWifi() {
     local nameWifi="$1"
@@ -28,23 +30,32 @@ function main() {
     savedConnections=$(nmcli -t -f NAME connection show | awk 'NR!=2 {print "   " $0}')
 
     if [[ "$wifiStatus" =~ "enabled" ]]; then
-        isToggled="󰤮    Disable Wi-Fi"
+        isToggled="󰤮   Disable Wi-Fi"
     elif [[ "$wifiStatus" =~ "disabled" ]]; then
-        isToggled="󰤨    Enable Wi-Fi"
+        isToggled="󰤨   Enable Wi-Fi"
     fi
 
-    rofiOption=$(echo -e "$isToggled\n$savedConnections" | $runRofi)
+    rofiOption=$(echo -e "󱛃   New Connection\n$isToggled\n$savedConnections" | $rofiMenu)
+
+    if [ "$rofiOption" = "󰤨   Enable Wi-Fi" ]; then
+        nmcli radio wifi on
+        exit
+    elif [ "$rofiOption" = "󰤮   Disable Wi-Fi" ]; then
+        nmcli radio wifi off
+        exit
+    fi
+
+    if [ "$rofiOption" = "󱛃   New Connection" ]; then
+        nameWifi=$($rofiNewSSID)
+        passwordWifi=$($rofiNewPassword)
+		kitty --hold echo "$nameWifi $passwordWifi"
+		exit
+    fi
 
     nameWifi=$(echo "$rofiOption" | sed 's/^   //' | awk -F ":" '{print $1}')
     passwordWifi=$(echo "$rofiOption" | sed 's/^   //' | awk -F ":" '{print $2}')
 
-    if [ "$rofiOption" = "󰤨    Enable Wi-Fi" ]; then
-        nmcli radio wifi on
-    elif [ "$rofiOption" = "󰤮    Disable Wi-Fi" ]; then
-        nmcli radio wifi off
-    else
-        [[ -n $rofiOption ]] && connectToWifi $nameWifi $passwordWifi
-    fi
+    [[ -n $rofiOption ]] && connectToWifi $nameWifi $passwordWifi
 }
 
 main $@

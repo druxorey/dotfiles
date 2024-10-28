@@ -59,11 +59,11 @@ shift + XF86MonBrightnessDown
 
 # print the full screen
 @Print
-	scrot ~/Pictures/screenshots/%Y-%m-%d_%H%M%S.webp
+	scrot -q 100 ~/Pictures/screenshots/%Y-%m-%d_%H%M%S.webp
 
 # print a selected area
 super + Print
-	scrot -s --line mode=edge ~/Pictures/screenshots/%Y-%m-%d_%H%M%S.webp -e 'xclip -selection clipboard -target image/png -i $f'
+	scrot -q 100 -s --line mode=edge ~/Pictures/screenshots/%Y-%m-%d_%H%M%S.webp -e 'xclip -selection clipboard -target image/png -i $f'
 
 # app launcher
 super + space

@@ -1,34 +1,24 @@
 {
   "main": {
-    "id": "30f64698e41d7ed1",
+    "id": "2da6371348246d29",
     "type": "split",
     "children": [
       {
-        "id": "94093a9b74cbb30d",
+        "id": "1f66a20dac2e1337",
         "type": "tabs",
         "children": [
           {
-            "id": "20e2de121553429e",
+            "id": "0424c03521980e34",
             "type": "leaf",
             "state": {
               "type": "markdown",
               "state": {
-                "file": "Daily Notes/2024-08-02 - Sistema de Apuestas.md",
+                "file": "Class Notes/- (ORGA) Organización y Estructura del Computador/Evaluaciones/Quiz 3.md",
                 "mode": "source",
-                "source": false
-              }
-            }
-          },
-          {
-            "id": "14f8ec9c60612e18",
-            "type": "leaf",
-            "state": {
-              "type": "markdown",
-              "state": {
-                "file": "Vault/MDI/3- Ejercicios.md",
-                "mode": "source",
-                "source": false
-              }
+                "source": true
+              },
+              "icon": "lucide-file",
+              "title": "Quiz 3"
             }
           }
         ]
@@ -37,96 +27,74 @@
     "direction": "vertical"
   },
   "left": {
-    "id": "f741ef8612bffffa",
+    "id": "600f75ccb1d7210c",
     "type": "split",
     "children": [
       {
-        "id": "252cb855112daedd",
+        "id": "c2668da730739d3b",
         "type": "tabs",
         "children": [
           {
-            "id": "164b3431d2fd11c8",
+            "id": "71cc379162df0e91",
             "type": "leaf",
             "state": {
               "type": "file-explorer",
               "state": {
                 "sortOrder": "alphabetical"
-              }
+              },
+              "icon": "lucide-folder-closed",
+              "title": "Files"
             }
           },
           {
-            "id": "2fd2977cacd02555",
+            "id": "9e8808f9cc42f0e5",
             "type": "leaf",
             "state": {
               "type": "search",
               "state": {
-                "query": "",
+                "query": "tag:#default",
                 "matchingCase": false,
                 "explainSearch": false,
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical"
-              }
+              },
+              "icon": "lucide-search",
+              "title": "Search"
             }
           },
           {
-            "id": "213f7593dbc71f6f",
+            "id": "ffa52b67017b2656",
             "type": "leaf",
             "state": {
               "type": "bookmarks",
-              "state": {}
-            }
-          },
-          {
-            "id": "85cd2b465561a4d1",
-            "type": "leaf",
-            "state": {
-              "type": "trash-explorer",
-              "state": {}
+              "state": {},
+              "icon": "lucide-bookmark",
+              "title": "Bookmarks"
             }
           }
         ]
       }
     ],
     "direction": "horizontal",
-    "width": 275.5
+    "width": 270.5
   },
   "right": {
-    "id": "9381ce9bac69d187",
+    "id": "7ab1278d6f5956f0",
     "type": "split",
     "children": [
       {
-        "id": "f0dae30a5b63c795",
+        "id": "52238de626c91fa9",
         "type": "tabs",
+        "dimension": 43.94977168949772,
         "children": [
           {
-            "id": "16fbe68ca82a8e8b",
-            "type": "leaf",
-            "state": {
-              "type": "tag",
-              "state": {
-                "sortOrder": "frequency",
-                "useHierarchy": false
-              }
-            }
-          },
-          {
-            "id": "e4df0ab26be390cd",
-            "type": "leaf",
-            "state": {
-              "type": "outline",
-              "state": {
-                "file": "Daily Notes/2024-08-02 - Sistema de Apuestas.md"
-              }
-            }
-          },
-          {
-            "id": "cc83042d5056a136",
+            "id": "f7eaff2844637db6",
             "type": "leaf",
             "state": {
               "type": "backlink",
               "state": {
-                "file": "Daily Notes/2024-08-02 - Sistema de Apuestas.md",
+                "file": "Class Notes/- (AyED) Algoritmos y Estructuras de Datos/Permutaciones y Combinatoria.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -134,111 +102,144 @@
                 "searchQuery": "",
                 "backlinkCollapsed": false,
                 "unlinkedCollapsed": true
-              }
+              },
+              "icon": "links-coming-in",
+              "title": "Backlinks for Permutaciones y Combinatoria"
             }
           },
           {
-            "id": "7473394af45d9dd3",
+            "id": "5afc72d2adf00bea",
             "type": "leaf",
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "Daily Notes/2024-08-02 - Sistema de Apuestas.md",
+                "file": "Class Notes/- (AyED) Algoritmos y Estructuras de Datos/Permutaciones y Combinatoria.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
-              }
-            }
-          }
-        ],
-        "currentTab": 3
-      },
-      {
-        "id": "6942e01142bb7fe7",
-        "type": "tabs",
-        "children": [
-          {
-            "id": "ff85685d1c2554ec",
-            "type": "leaf",
-            "state": {
-              "type": "timer-view",
-              "state": {}
+              },
+              "icon": "links-going-out",
+              "title": "Outgoing links from Permutaciones y Combinatoria"
             }
           },
           {
-            "id": "5ba9ee0cc121038d",
+            "id": "a4c71690a0f5e30e",
+            "type": "leaf",
+            "state": {
+              "type": "tag",
+              "state": {
+                "sortOrder": "frequency",
+                "useHierarchy": true
+              },
+              "icon": "lucide-tags",
+              "title": "Tags"
+            }
+          },
+          {
+            "id": "6ed81c7d7056e0f7",
+            "type": "leaf",
+            "state": {
+              "type": "outline",
+              "state": {
+                "file": "Class Notes/- (ORGA) Organización y Estructura del Computador/Evaluaciones/Quiz 3.md"
+              },
+              "icon": "lucide-list",
+              "title": "Outline of Quiz 3"
+            }
+          },
+          {
+            "id": "6b96704eb240596b",
             "type": "leaf",
             "state": {
               "type": "calendar",
-              "state": {}
+              "state": {},
+              "icon": "calendar-with-checkmark",
+              "title": "Calendar"
+            }
+          }
+        ],
+        "currentTab": 2
+      },
+      {
+        "id": "f0a791301157f084",
+        "type": "tabs",
+        "dimension": 56.05022831050228,
+        "children": [
+          {
+            "id": "5237582847f3fa54",
+            "type": "leaf",
+            "state": {
+              "type": "timer-view",
+              "state": {},
+              "icon": "timer",
+              "title": "Timer"
             }
           }
         ]
       }
     ],
     "direction": "horizontal",
-    "width": 269.5,
+    "width": 300,
     "collapsed": true
   },
   "left-ribbon": {
     "hiddenItems": {
-      "table-editor-obsidian:Advanced Tables Toolbar": true,
       "switcher:Open quick switcher": false,
       "graph:Open graph view": false,
       "canvas:Create new canvas": false,
       "daily-notes:Open today's daily note": false,
       "templates:Insert template": false,
       "command-palette:Open command palette": false,
+      "markdown-importer:Open format converter": false,
+      "audio-recorder:Start/stop recording": false,
+      "table-editor-obsidian:Advanced Tables Toolbar": false,
       "obsidian-excalidraw-plugin:Create new drawing": false,
       "pomodoro-timer:Toggle timer panel": false,
       "templater-obsidian:Templater": false,
       "obsidian-kanban:Create new board": false,
-      "audio-recorder:Start/stop recording": false,
-      "omnisearch:Omnisearch": false,
-      "markdown-importer:Open format converter": false,
       "obsidian-git:Open Git source control": false,
+      "omnisearch:Omnisearch": false,
       "obsidian-trash-explorer:Open trash explorer": false
     }
   },
-  "active": "20e2de121553429e",
+  "active": "0424c03521980e34",
   "lastOpenFiles": [
+    "Class Notes/- (ORGA) Organización y Estructura del Computador/Evaluaciones/Quiz 2.md",
+    "Class Notes/- (ORGA) Organización y Estructura del Computador/Evaluaciones/Quiz 3.md",
+    "Class Notes/- (ORGA) Organización y Estructura del Computador/Evaluaciones/Quiz 1.md",
+    "Class Notes/- (ORGA) Organización y Estructura del Computador/Evaluaciones/Parcial de Ejemplo 2.md",
+    "Class Notes/- (ORGA) Organización y Estructura del Computador/Evaluaciones/Parcial de Ejemplo 1.md",
+    "Class Notes/- (ORGA) Organización y Estructura del Computador/Abstracciones e Interfaces.md",
+    "Class Notes/- (AyED) Algoritmos y Estructuras de Datos/Big O Notation.md",
+    "Class Notes/- (AyED) Algoritmos y Estructuras de Datos/Ejercicios de cálculo de complejidad de Tiempo.md",
+    "Class Notes/- (AyED) Algoritmos y Estructuras de Datos/Algoritmos de Fuerza Bruta.md",
+    "Class Notes/- (AyED) Algoritmos y Estructuras de Datos/Recursividad.md",
+    "Class Notes/- (ORGA) Organización y Estructura del Computador/Apuntes de las Lecturas/Problemas Prácticos.md",
+    "Class Notes/- (ORGA) Organización y Estructura del Computador/Evaluaciones/Parciales",
+    "Class Notes/- (ORGA) Organización y Estructura del Computador/Apuntes de las Lecturas/2 - Representation of Information.md",
+    "Class Notes/- (ORGA) Organización y Estructura del Computador/Apuntes de las Lecturas/1 - A Tour of Computer Systems.md",
+    "Class Notes/- (ORGA) Organización y Estructura del Computador/Investigación - Historia del Computador.md",
+    "Class Notes/- (ORGA) Organización y Estructura del Computador/Bites y Cómo se Representan en un Computador.md",
+    "Investigations/Maratón de Programación/Algoritmos Básicos.md",
     "Daily Notes/2024-09-17 - Temas para Matemáticas.md",
     "Daily Notes/2024-09-18 - Redscape Development.md",
     "Daily Notes/2024-09-20 - Redscape Script.md",
-    "Vault/MDI/3- Ejercicios.md",
-    "Vault/MDI/2- Lógica proposicional.md",
-    "Assets",
-    "comida.md",
-    "Vault/AyP/2- Variables y Condicionales.md",
-    "Untitled.md",
-    "Templates/daily-note-template.md",
-    "Templates/university-template.md",
-    "Daily Notes/2024-09-18.md",
-    "Daily Notes/Invalid date.md",
     "Daily Notes/2024-08-02 - Sistema de Apuestas.md",
-    "Vault",
-    "Classroom/Materias Terminadas",
-    "Vault/AyP/P1 - Conceptos básicos de programación.md",
-    "Vault/AyP/1- Introducción a Algoritmos Y Programación.md",
-    "Vault/MDI/5- Definiciones.md",
-    "Vault/MDI/4- Leyes de Equivalencias Lógicas.md",
-    "Vault/MDI/1- Introducción a Matemáticas Discretas.md",
-    "Vault/Introducción a la Informática/Conceptos Básicos.md",
-    "Classroom/INTIF/Prácticas.md",
-    "Vault/Introducción a la Informática/Síntesis sobre UML.md",
-    "Vault/Introducción a la Informática/AlgoByte/C++/2024-07-24 - Teoría 4 - Programación Orientada a Objetos.md",
-    "Vault/Introducción a la Informática/AlgoByte/Python/2024-07-20 - Introducción a Python de AlgoByte.md",
-    "Vault/Introducción a la Informática/AlgoByte/C++/2024-07-24 - Teoría 3 - Funciones.md",
-    "Vault/Introducción a la Informática/AlgoByte/C++/2024-07-24 - Teoría 2 - Estructuras de Control.md",
-    "Daily Notes/assets/Recording 20240917192135.webm",
-    "Daily Notes/assets/Recording 20240917192049.webm",
-    "Daily Notes/assets",
-    "options.lua",
-    "keymaps.lua",
-    "Vault/Introducción a la Informática/AlgoByte/Python",
-    "Vault/Introducción a la Informática/AlgoByte/C++",
-    "assets/Pasted image 20240629212803.png",
-    "Untitled.canvas",
-    "Pasted image 20240519010037.png",
-    "Pasted image 20240510204616.png"
+    "Class Notes/- (AyED) Algoritmos y Estructuras de Datos/Permutaciones y Combinatoria.md",
+    "Class Notes/- (AyED) Algoritmos y Estructuras de Datos/Backtraking.md",
+    "Investigations/Maratón de Programación/lib - chrono.md",
+    "Templates/Class Note.md",
+    "Vault/i - (MDI) Matemáticas Discretas I/3- Ejercicios.md",
+    "Daily Notes/Complejidad de O.md",
+    "Class Notes/- (ORGA) Organización y Estructura del Computador/Apuntes de las Lecturas",
+    "Assets/Pasted image 20241110132008.png",
+    "Class Notes/- (ORGA) Organización y Estructura del Computador/Evaluaciones",
+    "Assets/Pasted image 20241101173442.png",
+    "Assets",
+    "Investigations",
+    "Class Notes",
+    "Class Notes/- (MCII) Matemáticas II",
+    "Class Notes/- (ORGA) Organización y Estructura del Computador",
+    "Class Notes/- (AyED) Algoritmos y Estructuras de Datos",
+    "Class Notes/- (MDII) Matemáticas Discretas II"
   ]
 }

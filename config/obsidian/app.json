@@ -11,5 +11,9 @@
   "showLineNumber": true,
   "attachmentFolderPath": "Assets",
   "readableLineLength": true,
-  "showInlineTitle": false
+  "showInlineTitle": false,
+  "livePreview": false,
+  "newFileLocation": "folder",
+  "newFileFolderPath": "Daily Notes",
+  "trashOption": "local"
 }

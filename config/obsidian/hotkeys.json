@@ -50,7 +50,14 @@
       "key": "E"
     }
   ],
-  "markdown:toggle-preview": [],
+  "markdown:toggle-preview": [
+    {
+      "modifiers": [
+        "Mod"
+      ],
+      "key": "\\"
+    }
+  ],
   "omnisearch:show-modal": [
     {
       "modifiers": [

@@ -34,7 +34,7 @@ window {
     border:                         @border-size-1;
     border-radius:                  @border-radius-1;
     padding:                        0;
-    width:                          14em;
+    width:                          16em;
     y-offset:                       +6%;
 
     background-color:               @color-background-1;
@@ -58,7 +58,7 @@ listview {
     scrollbar:                      false;
     layout:                         vertical;
     border:                         0;
-    columns:                        4;
+    columns:                        5;
     lines:                          1;
     spacing:                        1em;
     padding:                        1em;

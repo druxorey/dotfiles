@@ -48,7 +48,6 @@ function main() {
     if [ "$rofiOption" = "󱛃   New Connection" ]; then
         nameWifi=$($rofiNewSSID)
         passwordWifi=$($rofiNewPassword)
-		kitty --hold echo "$nameWifi $passwordWifi"
 		exit
     fi
 

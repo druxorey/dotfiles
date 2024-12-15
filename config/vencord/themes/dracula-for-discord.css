@@ -69,8 +69,8 @@
 	--accent-3: var(--color-background-1);
 	--accent-4: var(--color-background-2);
 	--accent-5: var(--color-purple-2);
-	--mention: red;
-	--mention-hover: red;
+	--mention: var(--color-background-3);
+	--mention-hover: var(--color-background-2);
 
 	--text-0: var(--color-foreground-1);
 	--text-1: var(--color-foreground-1);

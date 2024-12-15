@@ -19,10 +19,6 @@ vim.g.maplocalleader = "\\"
 vim.g.lazyvim_picker = "auto"
 vim.g.root_spec = {"lsp", {".git", "lua"}, "cwd"}
 vim.g.lazygit_config = true
-vim.g.lazyvim_statuscolumn = {
-    folds_open = false,
-    folds_githl = false
-}
 vim.g.deprecation_warnings = false
 vim.g.bigfile_size = 1024 * 1024 * 1.5
 vim.g.trouble_lualine = true
@@ -92,7 +88,6 @@ opt.spelloptions:append("noplainbuffer")
 opt.splitbelow = true
 opt.splitkeep = "screen"
 opt.splitright = true
-opt.statuscolumn = [[%!v:lua.require'lazyvim.util'.ui.statuscolumn()]]
 opt.timeoutlen = vim.g.vscode and 1000 or 300
 opt.virtualedit = "block"
 opt.wildmode = "longest:full,full"

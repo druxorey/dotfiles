@@ -34,6 +34,6 @@ vim.keymap.set("n", "<leader>gg", ":vertical Git<CR>", { noremap = true, silent 
 
 -- TAB para moverse al siguiente buffer, solo si no estamos en VSCode
 if vim.g.vscode == nil then
-    vim.keymap.set("n", "<TAB>", ":bnext<CR>", { noremap = true, silent = true })
-    vim.keymap.set("n", "<S-TAB>", ":bprevious<CR>", { noremap = true, silent = true })
+	vim.keymap.set("n", "<TAB>", ":bnext<CR>", { noremap = true, silent = true })
+	vim.keymap.set("n", "<S-TAB>", ":bprevious<CR>", { noremap = true, silent = true })
 end

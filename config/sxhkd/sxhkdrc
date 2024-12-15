@@ -149,11 +149,11 @@ super + m
 
 # change the window layer to the previous
 super + comma
-    bsp-layout previous --layouts tall,rtall,wide,rwide,grid,rgrid,even,tiled
+    bsp-layout previous --layouts tall,rtall,wide,rwide,grid,rgrid,even,tiled && notify-send "Layer: $(bsp-layout get)"
 
 # change the window layer to the next
 super + period
-    bsp-layout next --layouts tall,rtall,wide,rwide,grid,rgrid,even,tiled
+    bsp-layout next --layouts tall,rtall,wide,rwide,grid,rgrid,even,tiled && notify-send "Layer: $(bsp-layout get)"
 
 # set the node flags
 super + ctrl + {m,x,y,z}

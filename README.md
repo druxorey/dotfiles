@@ -107,3 +107,7 @@ In this repository are the configuration files for my work environment, below is
 		<td><a href="https://github.com/ryanoasis/nerd-fonts/releases/download/v3.2.1/Hack.zip">hack nerd font</a></td>
 	</tr>
 </table>
+
+## License
+
+This project is licensed under the GPL-3.0 License. See the [LICENSE](LICENSE) file for more details.

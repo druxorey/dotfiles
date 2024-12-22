@@ -12,6 +12,9 @@
 # ======================================================================#
 
 # cmus configurations
+config/zsh/.histfile
+
+# cmus configurations
 !config/cmus/autosave
 
 config/cmus/*

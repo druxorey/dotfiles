@@ -79,6 +79,7 @@ alias gmerge='git merge --no-ff'
 alias gpull='git pull'
 alias gpush='git push'
 alias greset='git reset'
+alias gfix='gitFix'
 alias grestore='git restore'
 alias gstatus='git status -sb'
 
@@ -149,6 +150,14 @@ source <(fzf --zsh)
 source ~/.config/zsh/autocomplete-opdoc.sh
 
 #* ================================ functions =============================== *#
+
+function gitFix() {
+	echo "The commit: "
+	git log --oneline --graph --decorate -n 1
+	git reset --soft HEAD~1
+	echo "\nWas restarted to previous commit: "
+	git log --oneline --graph --decorate -n 1
+}
 
 function rsudo() {
     if [[ $# == 0 ]]; then

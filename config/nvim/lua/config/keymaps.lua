@@ -29,6 +29,10 @@ vim.keymap.set("n", "<C-l>", "<C-w>l", { noremap = true, silent = true })
 -- Neotree toggle
 vim.keymap.set("n", "<leader>e", ":Neotree toggle<CR>", { noremap = true, silent = true })
 
+-- Copilot Chat toggle
+vim.keymap.set("n", "<leader>ai", ":CopilotChat<CR>", { noremap = true, silent = true, desc = "Open Copilot Chat"})
+vim.keymap.set("v", "<leader>ai", ":'<,'>CopilotChat<CR>", { noremap = true, silent = true, desc = "Open Copilot Chat" })
+
 -- Git vertical
 vim.keymap.set("n", "<leader>gg", ":vertical Git<CR>", { noremap = true, silent = true, desc = "Git Changes" })
 

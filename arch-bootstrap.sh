@@ -10,8 +10,6 @@ LINE="\n"
 
 isAutomated=0
 
-source "$(dirname "$0")/arch-packages.sh"
-
 function help() {
     echo
     echo "USAGE: arch-bootstrap [OPTION]"
@@ -29,6 +27,12 @@ function help() {
     echo "Report bugs to https://github.com/druxorey/dotfiles"
     echo
     exit 1
+}
+
+
+function initialize() {
+    test -f arch-packages.sh || wget -O arch-packages.sh https://raw.githubusercontent.com/druxorey/dotfiles/master/arch-packages.sh
+    source "$(dirname "$0")/arch-packages.sh"
 }
 
 
@@ -112,13 +116,16 @@ function askUser() {
 
 function main() {
 
-    while getopts ":ha" opt; do
+    while getopts ":ah" opt; do
         case ${opt} in
-            a ) isAutomated=1 ;;
+            a ) isAutomated = 1 ;;
             h ) help ;;
             * ) echo "Invalid Option: -$OPTARG" 1>&2 ; exit 1 ;;
         esac
     done
+
+	initialize
+
     shift $((OPTIND -1))
 
     echo -e "${LINE}${TITLE} [========== WELCOME TO DRUXOREY'S ARCH LINUX BOOTSTRAP ==========] ${END}${LINE}"
@@ -151,6 +158,7 @@ function main() {
     askUser "► Proceed copying the dotfiles?" "copyDotfiles"
 
     clear
+
     echo -e "${LINE}${TITLE} The script has finished running, enjoy your system :) ${END}"
     echo -e "${TITLE} Made by: github.com/druxorey${END}${LINE}"
 }

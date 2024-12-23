@@ -13,6 +13,8 @@
 
 # cmus configurations
 config/zsh/.histfile
+config/zsh/zsh-autosuggestions/*
+config/zsh/zsh-syntax-highlighting/*
 
 # cmus configurations
 !config/cmus/autosave

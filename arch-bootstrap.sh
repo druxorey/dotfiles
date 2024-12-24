@@ -33,6 +33,7 @@ function help() {
 function initialize() {
     test -f arch-packages.sh || wget -O arch-packages.sh https://raw.githubusercontent.com/druxorey/dotfiles/master/arch-packages.sh
     source "$(dirname "$0")/arch-packages.sh"
+	clear
 }
 
 

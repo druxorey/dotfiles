@@ -1,30 +1,48 @@
+
+-- ======================================================================#
+--
+--
+--		  ██╗      █████╗ ███████╗██╗   ██╗██╗   ██╗██╗███╗   ███╗
+--		  ██║     ██╔══██╗╚══███╔╝╚██╗ ██╔╝██║   ██║██║████╗ ████║
+--		  ██║     ███████║  ███╔╝  ╚████╔╝ ██║   ██║██║██╔████╔██║
+--		  ██║     ██╔══██║ ███╔╝    ╚██╔╝  ╚██╗ ██╔╝██║██║╚██╔╝██║
+--		  ███████╗██║  ██║███████╗   ██║    ╚████╔╝ ██║██║ ╚═╝ ██║
+--		  ╚══════╝╚═╝  ╚═╝╚══════╝   ╚═╝     ╚═══╝  ╚═╝╚═╝     ╚═╝
+--
+--
+-- ======================================================================#
+
+--* ============================ general =========================== *--
+
 -- Remap escape
 vim.keymap.set("n", "<C-c>", "<Esc>", { noremap = true, silent = true })
 
--- Usar alt + hjkl para redimensionar ventanas
+-- Use alt + hjkl to resize windows
 vim.keymap.set("n", "<M-j>", ":resize -2<CR>", { noremap = true, silent = true })
 vim.keymap.set("n", "<M-k>", ":resize +2<CR>", { noremap = true, silent = true })
 vim.keymap.set("n", "<M-h>", ":vertical resize -2<CR>", { noremap = true, silent = true })
 vim.keymap.set("n", "<M-l>", ":vertical resize +2<CR>", { noremap = true, silent = true })
 
--- Manera alternativa de guardar
+-- Alternative way to save
 vim.keymap.set("n", "<C-s>", ":w<CR>", { noremap = true, silent = true })
 vim.keymap.set("n", "<C-q>", ":wq!<CR>", { noremap = true, silent = true })
 vim.keymap.set("n", "<C-b>", ":bd<CR>", { noremap = true, silent = true })
 
--- < o > para tabular
+-- < or > to indent
 vim.keymap.set("v", "<", "<gv", { noremap = true, silent = true })
 vim.keymap.set("v", ">", ">gv", { noremap = true, silent = true })
 
--- shift + k/j para mover la línea seleccionada arriba/abajo
+-- shift + k/j to move the selected line up/down
 vim.keymap.set("x", "K", ":move '<-2<CR>gv-gv", { noremap = true, silent = true })
 vim.keymap.set("x", "J", ":move '>+1<CR>gv-gv", { noremap = true, silent = true })
 
--- Usar Ctrl + hjkl para moverse entre ventanas
+-- Use Ctrl + hjkl to move between windows
 vim.keymap.set("n", "<C-h>", "<C-w>h", { noremap = true, silent = true })
 vim.keymap.set("n", "<C-j>", "<C-w>j", { noremap = true, silent = true })
 vim.keymap.set("n", "<C-k>", "<C-w>k", { noremap = true, silent = true })
 vim.keymap.set("n", "<C-l>", "<C-w>l", { noremap = true, silent = true })
+
+--* ==================== pluggins configurations =================== *--
 
 -- Neotree toggle
 vim.keymap.set("n", "<leader>e", ":Neotree toggle<CR>", { noremap = true, silent = true })

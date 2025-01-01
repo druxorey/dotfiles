@@ -1,6 +1,6 @@
 return {
 	"nvimdev/dashboard-nvim",
-	lazy = false,
+	event = "VeryLazy",
 	opts = function()
 		local logo = [[
 ███╗   ██╗███████╗ ██████╗ ██╗   ██╗██╗███╗   ███╗

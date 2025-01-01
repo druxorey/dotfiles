@@ -1,6 +1,6 @@
 return {
 	"folke/noice.nvim",
-	event = "VeryLazy",
+	dependencies = {"MunifTanjim/nui.nvim", "rcarriga/nvim-notify"},
 	opts = {
 		lsp = {
 			override = {
@@ -17,5 +17,4 @@ return {
 			lsp_doc_border = false -- add a border to hover docs and signature help
 		}
 	},
-	dependencies = {"MunifTanjim/nui.nvim", "rcarriga/nvim-notify"}
 }

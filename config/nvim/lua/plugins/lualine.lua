@@ -11,7 +11,7 @@ return {
 				right = ""
 			},
 			disabled_filetypes = {
-				statusline = {"neo-tree"},
+				statusline = {"neo-tree", "dashboard"},
 				winbar = {"neo-tree"}
 			},
 			ignore_focus = {},

@@ -19,9 +19,5 @@ return {
 			"yaml",
 		},
 	},
-
-	"Fymyte/rasi.vim",
-	ft = 'rasi',
-	lazy = true
 }
 

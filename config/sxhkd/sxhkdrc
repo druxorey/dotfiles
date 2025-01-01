@@ -111,7 +111,7 @@ super + o
 super + b
 	brave
 super + alt + b
-	microsoft-edge-dev
+	zen-browser
 super + i
 	gtk-launch brave-idglgibfmafffbkljkkkknpgkkcdjekk-Default.desktop
 super + F1
@@ -120,6 +120,8 @@ super + F2
 	brave youtube.com
 super + F3
 	brave web.whatsapp.com
+super + F4
+	brave remotedesktop.google.com/access
 
 #! ================================================================== !#
 #!                               bspwm                                !#

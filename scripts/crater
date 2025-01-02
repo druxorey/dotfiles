@@ -14,7 +14,7 @@ EOF
 cppExample=$(cat << EOF
 #include <iostream>
 
-int main() {
+int main(int argc, char *argv[]) {
 	std::cout << "Hello World" << '\n';
 	return 0;
 }
@@ -24,7 +24,7 @@ EOF
 cExample=$(cat << EOF
 #include <stdio.h>
 
-int main() {
+int main(int argc, char *argv[]) {
 	printf("Hello World\n");
 	return 0;
 }

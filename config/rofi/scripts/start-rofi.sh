@@ -26,7 +26,7 @@ function main() {
     "") sh $scriptLocation/wifi-rofi.sh ;;
     "󰀻") rofi -show drun -config ~/.config/rofi/styles/application-rofi.rasi ;;
 	"$bluetoothIcon") $bluetoothCommand ;;
-    "") rofi -show calc -modi calc -no-show-match -no-sort -config ~/.config/rofi/styles/application-rofi.rasi ;;
+	"") rofi -show calc -modi calc -no-show-match -no-sort -config $STYLE_PATH -calc-command "echo -n '{result}' | xclip -selection clipboard" ;;
     "⏻") sh $scriptLocation/power-rofi.sh ;;
     *) exit 1 ;;
     esac

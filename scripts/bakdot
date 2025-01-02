@@ -24,7 +24,7 @@ function main() {
 	"rsync -a --delete ~/.config/cmus ~/Workspace/dotfiles/config"
 	"rsync -a --delete ~/.config/zsh ~/Workspace/dotfiles/config"
 	"rsync -a --delete ~/.config/Vencord/ ~/Workspace/dotfiles/config/vencord"
-	"rsync -a --delete ~/.config/bin/ ~/Workspace/dotfiles/scripts"
+	"rsync -a --delete --exclude '_test' --exclude 'custom' ~/.config/bin/ ~/Workspace/dotfiles/scripts"
 	"rsync -a --delete ~/Documents/Obsidian/Academic/.obsidian/* ~/Workspace/dotfiles/config/obsidian"
 	"rsync -a ~/.zshrc ~/Workspace/dotfiles/config/zshrc"
 	"rsync -a ~/.bashrc ~/Workspace/dotfiles/config/bashrc"

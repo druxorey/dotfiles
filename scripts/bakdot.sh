@@ -49,11 +49,12 @@ function main() {
 		updateShload $count
 	done
 
-	scripts=$(ls ~/Workspace/dotfiles/scripts/ -p | grep -v /)
+	scripts=$(ls $DOTFILES_DIR/scripts/ -p | grep -v /)
+	scriptsDir=$DOTFILES_DIR/scripts
 
 	for i in $scripts; do
-		chmod -x $i
-		mv $i $i.sh
+		chmod -x $scriptsDir/$i
+		mv $scriptsDir/$i $scriptsDir/$i.sh
 	done
 
 	echo -e "\n${SUCCESS}All files have been successfully backed up$END"

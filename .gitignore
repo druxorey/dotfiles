@@ -36,5 +36,5 @@ config/nvim/plugins/installed/*
 resources/documents/todo.md
 resources/documents/guides-ideas.md
 
-# scripts
-scripts/bin/nmcli-wifi
+# experiments
+*/_experiments

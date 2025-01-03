@@ -25,6 +25,7 @@ config/cmus/playlist/*
 # obsidian configurations
 config/obsidian/plugins/*
 config/obsidian/themes/*
+config/obsidian/workspace.json
 
 # vencord configurations
 config/vencord/dist

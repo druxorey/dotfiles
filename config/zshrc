@@ -84,8 +84,6 @@ alias grestore='git restore'
 alias gstatus='git status -sb'
 
 # macros
-alias zshrc='nvim ~/.zshrc'
-alias dotfiles='cd ~/Workspace/dotfiles/'
 alias setkeys='setxkbmap us -variant intl'
 alias reload='clear && source ~/.zshrc'
 alias yt-mp3='yt-dlp -x --audio-format mp3'

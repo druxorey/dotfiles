@@ -139,15 +139,18 @@ function main() {
     echo -e "It is necessary to update the system to ensure the correct functioning of the script."
     askUser "► Proceed with the update?" "$installCommand"
 
+    installCommand="cd && git clone https://aur.archlinux.org/yay.git && cd yay/ && makepkg -si && cd .. && sudo rm -r yay/"
+    askUser "► Do you want to install yay?" "$installCommand"
+
+	clear
+	echo -e "${TITLE} [========== PACKAGE INSTALLATION ==========]"
+
     pacmanCategories=("core" "essential" "utils" "drivers" "customization" "gui")
     for category in "${pacmanCategories[@]}"; do
         installCommand="installPackage "pacman" "\${${category}_Packages[@]}""
         echo -e "${LINE}${RUNNING}The next pacman packages will be installing:${END} $(eval echo \${${category}_Packages[@]})"
         askUser "► Proceed with the installation?" "$installCommand"
     done
-
-    installCommand="cd && git clone https://aur.archlinux.org/yay.git && cd yay/ && makepkg -si && cd .. && sudo rm -r yay/"
-    askUser "► Do you want to install yay?" "$installCommand"
 
     aurCategories=("terminal" "gui")
     for category in "${aurCategories[@]}"; do
@@ -156,11 +159,20 @@ function main() {
         askUser "► Proceed with the installation?" "$installCommand"
     done
 
+	clear
+	echo -e "${TITLE} [========== SERVICE ENABLEMENT ==========]"
+
     installCommand='enableService "${drivers_Services[@]}"'
     askUser "► Proceed enabling the services?" "$installCommand"
 
+	clear
+	echo -e "${TITLE} [========== ZSH INSTALLATION ==========]"
+
     installCommand='sudo pacman -S --noconfirm zsh && chsh -s /bin/zsh'
     askUser "► Proceed installing zsh and make it the default shell?" "$installCommand"
+
+	clear
+	echo -e "${TITLE} [========== CUSTOMIZATION ==========]"
 
     echo -e "${FAILED} ⚠ !WARNING THE NEXT COMMAND WILL OVERRIDE EXISTING FILES!${END}"
     askUser "► Proceed copying the dotfiles?" "copyDotfiles"

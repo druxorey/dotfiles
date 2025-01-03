@@ -135,21 +135,24 @@ function main() {
     echo -e "It is necessary to update the system to ensure the correct functioning of the script."
     askUser "► Proceed with the update?" "$installCommand"
 
-    pacmanCategories=("base" "utils" "drivers" "gui")
+    pacmanCategories=("core" "essential" "utils" "drivers" "customization" "gui")
     for category in "${pacmanCategories[@]}"; do
-        installCommand="installPackage "pacman" "\${${category}PacmanList[@]}""
-        echo -e "${LINE}${RUNNING}The next pacman packages will be installing:${END} $(eval echo \${${category}PacmanList[@]})"
+        installCommand="installPackage "pacman" "\${${category}_Packages[@]}""
+        echo -e "${LINE}${RUNNING}The next pacman packages will be installing:${END} $(eval echo \${${category}_Packages[@]})"
         askUser "► Proceed with the installation?" "$installCommand"
     done
 
     installCommand="cd && git clone https://aur.archlinux.org/yay.git && cd yay/ && makepkg -si && cd .. && sudo rm -r yay/"
     askUser "► Do you want to install yay?" "$installCommand"
 
-    installCommand='installPackage "yay" "${yayPackagesList[@]}"'
-    echo -e "${LINE}${RUNNING}The next packages will be installing:${END} ${yayPackagesList[@]}"
-    askUser "► Proceed with the installation?" "$installCommand"
+    aurCategories=("terminal" "gui")
+    for category in "${aurCategories[@]}"; do
+        installCommand="installPackage "yay" "\${${category}_AurPackages[@]}""
+        echo -e "${LINE}${RUNNING}The next pacman packages will be installing:${END} $(eval echo \${${category}_AurPackages[@]})"
+        askUser "► Proceed with the installation?" "$installCommand"
+    done
 
-    installCommand='enableService "${servicesList[@]}"'
+    installCommand='enableService "${drivers_Services[@]}"'
     askUser "► Proceed enabling the services?" "$installCommand"
 
     installCommand='sudo pacman -S --noconfirm zsh && chsh -s /bin/zsh'

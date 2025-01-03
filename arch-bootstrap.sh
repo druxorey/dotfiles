@@ -31,6 +31,10 @@ function help() {
 
 
 function initialize() {
+	if ! command -v wget &> /dev/null; then
+		sudo pacman -S --noconfirm wget
+	fi
+
     test -f arch-packages.sh || wget -O arch-packages.sh https://raw.githubusercontent.com/druxorey/dotfiles/master/arch-packages.sh
     source "$(dirname "$0")/arch-packages.sh"
 	clear

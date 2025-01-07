@@ -9,20 +9,18 @@ function connectToWifi() {
     local passwordWifi="$2"
     local command="nmcli dev wifi con $nameWifi hidden yes"
 
-    [[ -n "$passwordWifi" ]] && command="nmcli dev wifi con $nameWifi password $passwordWifi"
-
-    (
-        sleep 15
-        kill -15 $$
-    ) &
+    [[ -n "$passwordWifi" ]] && command="nmcli dev wifi con $nameWifi password $passwordWifi hidden yes"
 
     for ((i = 1; i <= 5; i++)); do
         if $command; then
-            break
+			notify-send -u low "Successfully connected to the WiFi network '$nameWifi'."
+			exit
         fi
         echo "The command failed, retrying..."
         sleep 3
     done
+
+	notify-send -u critical "Failed to establish connection. Please check the WiFi name and password."
 }
 
 function main() {
@@ -48,11 +46,14 @@ function main() {
     if [ "$rofiOption" = "󱛃   New Connection" ]; then
         nameWifi=$($rofiNewSSID)
         passwordWifi=$($rofiNewPassword)
-		exit
-    fi
 
-    nameWifi=$(echo "$rofiOption" | sed 's/^   //' | awk -F ":" '{print $1}')
-    passwordWifi=$(echo "$rofiOption" | sed 's/^   //' | awk -F ":" '{print $2}')
+		if [ -z "$nameWifi" ] || [ -z "$passwordWifi" ]; then
+			exit
+		fi
+	else
+		nameWifi=$(echo "$rofiOption" | sed 's/^   //' | awk -F ":" '{print $1}')
+		passwordWifi=$(echo "$rofiOption" | sed 's/^   //' | awk -F ":" '{print $2}')
+    fi
 
     [[ -n $rofiOption ]] && connectToWifi $nameWifi $passwordWifi
 }

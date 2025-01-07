@@ -1,20 +1,16 @@
 return {
 	{
 		"zbirenbaum/copilot-cmp",
-		dependencies = {},
-		lazy = true,
-		opts = {}
 	},
 	{
 		"zbirenbaum/copilot.lua",
-		dependencies = {},
-		lazy = true,
-		opts = {}
 	},
 	{
 		"CopilotC-Nvim/CopilotChat.nvim",
-		dependencies = {},
-		lazy = true,
-		opts = {}
+		opts = {
+			prompts = {
+				Commit = "> /COPILOT_GENERATE\n\nWrite 3 versions of commit messages for the change following the 'Conventional Commits' convention. Ensure the title has a maximum of 50 characters and the message is wrapped at 72 characters.",
+			}
+		}
 	},
 }

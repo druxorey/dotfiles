@@ -78,3 +78,8 @@ vim.keymap.set('n', '<leader>fh', builtin.help_tags, { desc = 'Telescope help ta
 vim.keymap.set('n', '<leader>fx', function()
 	builtin.find_files({ cwd = '~' })
 end, { desc = 'Telescope find files (Home Dir)' })
+
+-- LaTex
+vim.api.nvim_set_keymap('n', '<leader>vc', '<cmd>VimtexCompile<CR>', { noremap = true, silent = true })
+vim.api.nvim_set_keymap('n', '<leader>vv', '<cmd>VimtexView<CR>', { noremap = true, silent = true })
+vim.api.nvim_set_keymap('n', '<leader>vs', '<cmd>VimtexStop<CR>', { noremap = true, silent = true })

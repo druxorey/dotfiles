@@ -1,73 +1,5 @@
 #!/bin/bash
 
-bashExample=$(cat << EOF
-#!/bin/bash
-
-function main() {
-	echo "Hello World"
-}
-
-main \$@
-EOF
-)
-
-cppExample=$(cat << EOF
-#include <iostream>
-
-int main(int argc, char *argv[]) {
-	std::cout << "Hello World" << '\n';
-	return 0;
-}
-EOF
-)
-
-cExample=$(cat << EOF
-#include <stdio.h>
-
-int main(int argc, char *argv[]) {
-	printf("Hello World\n");
-	return 0;
-}
-EOF
-)
-
-pythonExample=$(cat << EOF
-def main():
-	print("Hello World")
-
-if __name__ == "__main__":
-	main()
-EOF
-)
-
-rustExample=$(cat << EOF
-fn main() {
-	println!("Hello World");
-}
-EOF
-)
-
-latexExample=$(cat << EOF
-\documentclass[12pt]{article}
-
-\title{Example Documtent}
-\author{Author Name}
-\date{\today}
-
-\begin{document}
-
-\maketitle
-
-\section{Title}
-text
-
-\subsection{Subtitle}
-text
-
-\end{document}
-EOF
-)
-
 
 function help() {
 	echo
@@ -83,7 +15,7 @@ function help() {
 	echo "  crater c++ helloWorld"
 	echo "  crater python"
 	echo
-	echo "Report bugs to https://github.com/druxorey/pybash-scripts/issues"
+	echo "Report bugs to https://github.com/druxorey/dotfiles/issues"
 	echo
 	exit 1
 }
@@ -92,16 +24,22 @@ function help() {
 function main() {
 	fileType=$1
 	fileName=${2:-"default"}
+
 	case $fileType in
-		"bash") echo "$bashExample" > $fileName.sh;;
-		"c++") echo "$cppExample" > $fileName.cpp;;
-		"c") echo "$cExample" > $fileName.c;;
-		"python") echo "$pythonExample" > $fileName.py;;
-		"rust") echo "$rustExample" > $fileName.rs;;
-		"latex") echo "$latexExample" > $fileName.tex;;
+		"bash") extension="sh";;
+		"c++") extension="cpp";;
+		"c") extension="c";;
+		"python") extension="py";;
+		"rust") extension="rs";;
+		"latex") extension="tex";;
 		*) help
 		;;
 	esac
+
+	. $(dirname $0)/lib/languages-templates/${extension}-template.sh
+
+	eval "content=\$${extension}BasicTemplate"
+	echo "$content" > ${fileName}.${extension}
 }
 
 main $@

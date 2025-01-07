@@ -1,6 +1,6 @@
 #!/bin/bash
 
-texBasicTemplate=$(cat << EOF
+basicTemplate=$(cat << EOF
 \documentclass[12pt]{article}
 
 \title{Example Documtent}

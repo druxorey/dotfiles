@@ -1,6 +1,6 @@
 #!/bin/bash
 
-htmlBasicTemplate=$(cat << EOF
+basicTemplate=$(cat << EOF
 <!DOCTYPE html>
 <html lang="en">
 <head>

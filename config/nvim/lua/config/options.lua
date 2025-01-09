@@ -116,6 +116,11 @@ vim.cmd[[ autocmd FileType python setlocal noexpandtab ]]
 vim.cmd[[ autocmd FileType python setlocal tabstop=4 ]]
 vim.cmd[[ autocmd FileType python setlocal shiftwidth=4 ]]
 
+-- Setting php tab settings
+vim.cmd[[ autocmd FileType php setlocal expandtab ]]
+vim.cmd[[ autocmd FileType php setlocal tabstop=4 ]]
+vim.cmd[[ autocmd FileType php setlocal shiftwidth=4 ]]
+
 vim.g.autoformat = false
 vim.g.markdown_recommended_style = 0
 opt.updatetime = 200

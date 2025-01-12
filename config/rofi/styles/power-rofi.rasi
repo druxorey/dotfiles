@@ -35,8 +35,8 @@ window {
     border-radius:                  @border-radius-1;
     padding:                        0;
     width:                          14em;
-    y-offset:                       +6%;
-    x-offset:                       +1%;
+    y-offset:                       6%;
+    x-offset:                       1%;
 
     background-color:               @color-background-1;
     border-color:                   @color-accent-1;

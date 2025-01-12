@@ -35,7 +35,7 @@ window {
     border-radius:                  @border-radius-1;
     padding:                        0;
     width:                          16em;
-    y-offset:                       +6%;
+    y-offset:                       6%;
 
     background-color:               @color-background-1;
     border-color:                   @color-accent-1;

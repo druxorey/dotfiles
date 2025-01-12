@@ -37,7 +37,7 @@ window {
     border-radius:                  @border-radius-1;
     padding:                        0;
     width:                          12em;
-    y-offset:                       +6%;
+    y-offset:                       6%;
     x-offset:                       -1%;
 
     background-color:               @color-background-1;

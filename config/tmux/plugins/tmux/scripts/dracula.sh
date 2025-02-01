@@ -5,13 +5,12 @@ export LC_ALL=en_US.UTF-8
 current_dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 source $current_dir/utils.sh
 
-main()
-{
+main() {
   # set configuration option variables
   show_krbtgt_label=$(get_tmux_option "@dracula-krbtgt-context-label" "")
   krbtgt_principal=$(get_tmux_option "@dracula-krbtgt-principal" "")
   show_kubernetes_context_label=$(get_tmux_option "@dracula-kubernetes-context-label" "")
-  show_only_kubernetes_context=$(get_tmux_option "@dracula-show-only-kubernetes-context" "")
+  show_only_kubernetes_context=$(get_tmux_option "@dracula-show-only-kubernetes-context" false)
   eks_hide_arn=$(get_tmux_option "@dracula-kubernetes-eks-hide-arn" false)
   eks_extract_account=$(get_tmux_option "@dracula-kubernetes-eks-extract-account" false)
   hide_kubernetes_user=$(get_tmux_option "@dracula-kubernetes-hide-user" false)
@@ -62,15 +61,27 @@ main()
 
   # Set transparency variables - Colors and window dividers
   if $transparent_powerline_bg; then
-    bg_color="default"
-    window_sep_fg=${dark_purple}
-    window_sep_bg=default
-    window_sep="$show_inverse_divider"
+	bg_color="default"
+	if $show_edge_icons; then
+	  window_sep_fg=${dark_purple}
+	  window_sep_bg=default
+	  window_sep="$show_right_sep"
+	else
+	  window_sep_fg=${dark_purple}
+	  window_sep_bg=default
+	  window_sep="$show_inverse_divider"
+	fi
   else
     bg_color=${gray}
-    window_sep_fg=${gray}
-    window_sep_bg=${dark_purple}
-    window_sep="$show_left_sep"
+    if $show_edge_icons; then
+      window_sep_fg=${dark_purple}
+      window_sep_bg=${gray}
+      window_sep="$show_inverse_divider"
+    else
+      window_sep_fg=${gray}
+      window_sep_bg=${dark_purple}
+      window_sep="$show_left_sep"
+    fi
   fi
 
   # Handle left icon configuration
@@ -152,7 +163,7 @@ main()
   # Status left
   if $show_powerline; then
     if $show_edge_icons; then
-      tmux set-option -g status-left "#[bg=${dark_gray},fg=${light_purple},bold]#{?client_prefix,#[fg=${yellow}],}${show_right_sep}#[bg=${light_purple},fg=${dark_gray}]#{?client_prefix,#[bg=${yellow}],} ${left_icon} #[fg=${light_purple},bg=${bg_color}]#{?client_prefix,#[fg=${yellow}],}${left_sep} "
+      tmux set-option -g status-left "#[bg=${bg_color},fg=${green},bold]#{?client_prefix,#[fg=${yellow}],}${show_right_sep}#[bg=${green},fg=${dark_gray}]#{?client_prefix,#[bg=${yellow}],} ${left_icon} #[fg=${green},bg=${bg_color}]#{?client_prefix,#[fg=${yellow}],}${left_sep} "
     else
       tmux set-option -g status-left "#[bg=${dark_gray},fg=${green}]#[bg=${green},fg=${dark_gray}]#{?client_prefix,#[bg=${yellow}],} ${left_icon} #[fg=${green},bg=${bg_color}]#{?client_prefix,#[fg=${yellow}],}${left_sep}"
     fi
@@ -305,6 +316,10 @@ main()
       IFS=' ' read -r -a colors <<< $(get_tmux_option "@dracula-ssh-session-colors" "green dark_gray")
       script="#($current_dir/ssh_session.sh $show_ssh_session_port)"
 
+    elif [ $plugin = "network-public-ip" ]; then
+      IFS=' ' read -r -a colors <<<$(get_tmux_option "@dracula-network-public-ip-colors" "cyan dark_gray")
+      script="#($current_dir/network-public-ip.sh)"
+
     else
       continue
     fi
@@ -314,16 +329,20 @@ main()
       script="#($current_dir/sys_temp.sh)"
     fi
 
+    # edge styling
+    if $show_edge_icons; then
+      right_edge_icon="#[bg=${bg_color},fg=${!colors[0]}]${show_left_sep}"
+      background_color=${bg_color}
+    else
+      background_color=${powerbg}
+    fi
+
     if $show_powerline; then
       if $show_empty_plugins; then
-        if $show_edge_icons; then
-          tmux set-option -ga status-right " #[fg=${!colors[0]},bg=${dark_gray},bold,nounderscore,noitalics]${right_sep}#[fg=${!colors[1]},bg=${!colors[0]}] $script #[bg=${dark_gray},fg=${!colors[0]}]${show_left_sep}"
-        else
-          tmux set-option -ga status-right "#[fg=${!colors[0]},bg=${powerbg},nobold,nounderscore,noitalics]${right_sep}#[fg=${!colors[1]},bg=${!colors[0]}] $script "
-        fi
+        tmux set-option -ga status-right " #[fg=${!colors[0]},bg=${background_color},nobold,nounderscore,noitalics]${right_sep}#[fg=${!colors[1]},bg=${!colors[0]}] $script $right_edge_icon"
       else
-        tmux set-option -ga status-right "#{?#{==:$script,},,#[fg=${!colors[0]},nobold,nounderscore,noitalics]${right_sep}#[fg=${!colors[1]},bg=${!colors[0]}] $script }"
-      fi
+    tmux set-option -ga status-right "#{?#{==:$script,},,#[fg=${!colors[0]},nobold,nounderscore,noitalics] ${right_sep}#[fg=${!colors[1]},bg=${!colors[0]}] $script $right_edge_icon}"
+    fi
       powerbg=${!colors[0]}
     else
       if $show_empty_plugins; then
@@ -332,6 +351,7 @@ main()
         tmux set-option -ga status-right "#{?#{==:$script,},,#[fg=${!colors[1]},bg=${!colors[0]}] $script }"
       fi
     fi
+
   done
 
   # Window option

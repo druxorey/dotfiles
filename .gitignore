@@ -11,31 +11,30 @@
 #
 # ======================================================================#
 
-# cmus configurations
-config/zsh/.histfile
-config/zsh/zsh-autosuggestions/*
-config/zsh/zsh-syntax-highlighting/*
-
-# cmus configurations
+# cmus
 !config/cmus/autosave
-
 config/cmus/*
-config/cmus/playlist/*
 
-# obsidian configurations
+# nvim
+config/nvim/plugins/installed/*
+
+# obsidian
 config/obsidian/plugins/*
 config/obsidian/themes/*
 config/obsidian/workspace.json
 
-# vencord configurations
+# tmux
+!config/tmux/plugins/tmux/dracula.tmux
+!config/tmux/plugins/tmux/scripts
+config/tmux/plugins/tmux/
+
+# vencord
 config/vencord/dist
 
-# nvim configurations
-config/nvim/plugins/installed/*
-
-# resource documents
-resources/documents/todo.md
-resources/documents/guides-ideas.md
+# zsh
+config/zsh/.histfile
+config/zsh/zsh-autosuggestions/*
+config/zsh/zsh-syntax-highlighting/*
 
 # experiments
 */_experiments

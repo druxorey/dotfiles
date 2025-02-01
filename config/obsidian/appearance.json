@@ -1,6 +1,7 @@
 {
   "accentColor": "#bd93f9",
-  "cssTheme": "dracula-for-obsidian",
+  "cssTheme": "Minimal Dracula",
   "theme": "obsidian",
-  "nativeMenus": false
+  "nativeMenus": false,
+  "showRibbon": false
 }

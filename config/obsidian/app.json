@@ -7,7 +7,6 @@
     "margin": "0",
     "downscalePercent": 90
   },
-  "showRibbon": false,
   "showLineNumber": true,
   "attachmentFolderPath": "Assets",
   "readableLineLength": true,

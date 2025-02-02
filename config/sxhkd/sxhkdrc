@@ -18,6 +18,7 @@
 
 #* ============================= system ============================= *#
 
+# open todo list
 super + t
 	bspc rule -a "*" -o state=floating && kitty opdoc todo
 
@@ -171,9 +172,13 @@ super + {_,shift + }{h,j,k,l}
 super + {p,b,comma,period}
 	bspc node -f @{parent,brother,first,second}
 
-# focus the next/previous window in the current desktop
+# focus the next window in the current desktop
 super + Tab
     bspc node -f next.local.window
+
+# focus the previous window in the current desktop
+super + shift + Tab
+    bspc node -f prev.local.window
 
 # focus the next/previous desktop in the current monitor
 super + bracket{left,right}

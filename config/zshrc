@@ -60,6 +60,7 @@ alias grep='grep --color=auto'
 alias peaclock='peaclock --config ~/.config/peaclock'
 alias mdtopdf='pandoc $1 -o default.pdf --pdf-engine=xelatex -V mainfont="Arial" monofont="Arial"'
 alias todo='bspc rule -a "*" -o state=floating && kitty opdoc todo'
+alias trans-es='trans -s english -t spanish'
 
 # pacman and yay
 alias sysupdate='sudo pacman -Syu ; yay -Sua --noconfirm'
@@ -104,8 +105,6 @@ alias venv-desactivate='deactivate'
 alias lock='dm-tool lock'
 alias logout='bspc quit'
 alias shutdown='shutdown now'
-alias monitor-chome='xrandr --output eDP-1 --primary --mode 1920x1080 --rotate normal --output HDMI-1 --mode 1600x900 --rotate normal --right-of eDP-1'
-alias monitor-dhome='xrandr --output HDMI-1 --off'
 
 #* ================================ zsh setup =============================== *#
 
@@ -223,10 +222,25 @@ function open() {
             *.webp)     sxiv $1    ;;
             *.jpeg)     sxiv $1    ;;
             *.jpg)      sxiv $1    ;;
+            *.svg)      sxiv $1    ;;
             *.pdf)      zathura $1 ;;
             *) echo '"$1" cannot be open via open()\n Use: [mpv, sxiv or zathura]' ;;
         esac
     else
         echo '"$1" is not a valid file'
     fi
+}
+
+
+function hdmi-connect() {
+	local resolution="${1:-1920x1080}"
+	echo "Setting HDMI resolution to $resolution"
+	xrandr --output eDP-1 --primary --mode 1920x1080 --rotate normal --output HDMI-1 --mode $resolution --rotate normal --right-of eDP-1
+	bspc wm -r
+}
+
+
+function hdmi-disconnect() {
+	echo "Turning off HDMI"
+	xrandr --output HDMI-1 --off
 }

@@ -44,18 +44,26 @@ XF86AudioMicMute
 
 # increase brightness
 XF86MonBrightnessUp
+	brightnessctl set +10000
+
+# increase brightness slowly
+shift + XF86MonBrightnessUp
 	brightnessctl set +1000
 
 # decrease brightness
 XF86MonBrightnessDown
+	brightnessctl set 10000-
+
+# decrease brightness slowly
+shift + XF86MonBrightnessDown
 	brightnessctl set 1000-
 
 # activate night light
-shift + XF86MonBrightnessUp
+super + XF86MonBrightnessUp
 	redshift -O 4000
 
 # desactivate night light
-shift + XF86MonBrightnessDown
+super + XF86MonBrightnessDown
 	redshift -x
 
 # print the full screen

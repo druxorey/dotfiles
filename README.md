@@ -82,8 +82,8 @@ In this repository are the configuration files for my work environment, below is
 		<td><a href="https://draculatheme.com/">dracula</a></td>
 	</tr>
 	<tr>
-		<td>Wallpaper</td>
-		<td><a href="https://github.com/druxorey/dotfiles/raw/refs/heads/main/resources/wallpapers.zip">download</a></td>
+		<td>Wallpapers</td>
+		<td><a href="https://www.deviantart.com/druxorey">deviantart</a></td>
 	</tr>
 	<tr>
 		<td>GTK Theme</td>

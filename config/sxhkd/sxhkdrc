@@ -42,6 +42,22 @@ XF86AudioMute
 XF86AudioMicMute
 	amixer -D pulse sset Capture toggle
 
+# previous song
+XF86AudioPrev
+	playerctl previous
+
+# next song
+XF86AudioNext
+	playerctl next
+
+# play/pause song
+XF86AudioPlay
+	playerctl play-pause
+
+# stop song
+XF86AudioStop
+	playerctl stop
+
 # increase brightness
 XF86MonBrightnessUp
 	brightnessctl set +10000

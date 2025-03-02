@@ -15,6 +15,7 @@ function main() {
 	"rsync -a --delete ~/.config/sxhkd $DOTFILES_DIR/config"
 	"rsync -a --delete ~/.config/kitty $DOTFILES_DIR/config"
 	"rsync -a --delete ~/.config/fastfetch $DOTFILES_DIR/config"
+	"rsync -a --delete ~/.config/flameshot $DOTFILES_DIR/config"
 	"rsync -a --delete ~/.config/tmux $DOTFILES_DIR/config"
 	"rsync -a --delete ~/.config/oh-my-posh $DOTFILES_DIR/config"
 	"rsync -a --delete ~/.config/picom $DOTFILES_DIR/config"
@@ -27,12 +28,12 @@ function main() {
 	"rsync -a --delete ~/.config/zsh $DOTFILES_DIR/config"
 	"rsync -a --delete ~/.config/Vencord/ $DOTFILES_DIR/config/vencord"
 	"rsync -a --delete ~/.config/dunst/ $DOTFILES_DIR/config/dunst"
-	"rsync -a --delete --exclude '_test' --exclude 'custom' ~/.config/bin/ $DOTFILES_DIR/scripts"
+	"rsync -a --delete --exclude '_test' --exclude 'custom' ~/.local/bin/ $DOTFILES_DIR/scripts"
 	"rsync -a --delete ~/Documents/Obsidian/Academic/.obsidian/* $DOTFILES_DIR/config/obsidian"
 	"rsync -a ~/.zshrc $DOTFILES_DIR/config/zshrc"
 	"rsync -a ~/.bashrc $DOTFILES_DIR/config/bashrc"
 	"rsync -a ~/.config/libinput-gestures.conf $DOTFILES_DIR/config/touchpad-gestures"
-	"rsync -a /etc/X11/xorg.conf.d/40-libunput.conf $DOTFILES_DIR/config/touchpad-configuration"
+	"rsync -a /etc/X11/xorg.conf.d/40-libinput.conf $DOTFILES_DIR/config/touchpad-configuration"
 	)
 
 	setupShload ${#commandList[@]} "Progress"

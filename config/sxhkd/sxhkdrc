@@ -88,7 +88,7 @@ super + XF86MonBrightnessDown
 
 # print a selected area
 super + Print
-	scrot -q 100 -s --line mode=edge ~/Pictures/screenshots/%Y-%m-%d_%H%M%S.webp -e 'xclip -selection clipboard -target image/png -i $f'
+	flameshot gui
 
 # app launcher
 super + space
@@ -123,6 +123,8 @@ super + c
 	code
 super + v
 	kitty nvim
+super + shift + i
+	kitty nvim -c "CopilotChat" -c "wincmd h | q"
 
 # independent apps
 super + d
@@ -138,7 +140,7 @@ super + b
 super + alt + b
 	zen-browser
 super + i
-	gtk-launch brave-idglgibfmafffbkljkkkknpgkkcdjekk-Default.desktop
+	gtk-launch brave-gdfaincndogidkdcdkhapmbffkckdkhn-Default.desktop
 super + F1
 	brave github.com/druxorey
 super + F2

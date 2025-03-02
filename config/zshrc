@@ -25,10 +25,11 @@ eval "$(oh-my-posh init zsh --config ~/.config/oh-my-posh/dracula.omp.json)"
 
 #* =============================== path export ============================== *#
 
-export PATH=$PATH:~/.config/bin/
+export PATH=$PATH:~/.local/bin
 export CARGO_HOME='$XDG_DATA_HOME'/cargo
 export GTK2_RC_FILES='$XDG_CONFIG_HOME'/gtk-2.0/gtkrc
 export GIT_EDITOR=nvim
+export EDITOR=nvim
 
 #* ================================= aliases ================================ *#
 
@@ -42,28 +43,23 @@ alias ll='eza --icons -alh --group-directories-first'
 alias labc='eza --icons -la'
 alias l.='eza -a | grep -E "^\."'
 alias cd='z'
-alias cdd='z $2 ; ls'
 alias cdi='zi'
 alias ..='z ..'
 alias ...='z ../..'
 
-# shortcuts
-alias convert='magick'
+# remaping
 alias fk='fuck'
 alias cp='cp -i'
-alias cpv='rsync -avh --info=progress2'
 alias th='trash'
 alias thl='trash-list'
 alias thr='trash-restore'
-alias matrix='cmatrix -C blue'
+alias convert='magick'
 alias grep='grep --color=auto'
+alias matrix='cmatrix -C blue'
 alias peaclock='peaclock --config ~/.config/peaclock'
-alias mdtopdf='pandoc $1 -o default.pdf --pdf-engine=xelatex -V mainfont="Arial" monofont="Arial"'
-alias todo='bspc rule -a "*" -o state=floating && kitty opdoc todo'
-alias trans-es='trans -s english -t spanish'
 
 # pacman and yay
-alias sysupdate='sudo pacman -Syu ; yay -Sua --noconfirm'
+alias sysupdate='sudo pacman -Syu ; yay -Sua --noconfirm; vencord'
 alias unlock='sudo rm /var/lib/pacman/db.lck'
 
 # git
@@ -76,6 +72,7 @@ alias gcommit='git commit -v'
 alias gdiff='git diff'
 alias gfetch='git fetch'
 alias glog='git log --oneline --graph --decorate -n 10'
+alias glogl='git log --oneline --graph --decorate'
 alias gmerge='git merge --no-ff'
 alias gpull='git pull'
 alias gpush='git push'
@@ -83,8 +80,14 @@ alias greset='git reset'
 alias gfix='gitFix'
 alias grestore='git restore'
 alias gstatus='git status -sb'
+alias gvim='nvim -c "vertical Git" -c "wincmd h | q" '
 
 # macros
+alias copilot='nvim -c "CopilotChat" -c "wincmd h | q" '
+alias cpv='rsync -avh --info=progress2'
+alias mdtopdf='pandoc $1 -o default.pdf --pdf-engine=xelatex -V mainfont="Arial" monofont="Arial"'
+alias todo='bspc rule -a "*" -o state=floating && kitty opdoc todo'
+alias trans-es='trans -s english -t spanish'
 alias setkeys='setxkbmap us -variant intl'
 alias reload='clear && source ~/.zshrc'
 alias yt-mp3='yt-dlp -x --audio-format mp3'
@@ -155,6 +158,7 @@ function gitFix() {
 	echo "\nWas restarted to previous commit: "
 	git log --oneline --graph --decorate -n 1
 }
+
 
 function rsudo() {
     if [[ $# == 0 ]]; then

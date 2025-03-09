@@ -1,0 +1,2 @@
+0 22 * * * DISPLAY=:0.0 /usr/bin/redshift -O 4000
+0 20 * * * /home/druxorey/.local/bin/bakdot

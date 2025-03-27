@@ -36,6 +36,7 @@ export EDITOR=nvim
 # directory navigation
 alias vim='nvim'
 alias cat='bat'
+alias fzf='fzf --preview "bat --color=always {}"'
 alias ls='eza --icons --group-directories-first'
 alias la='eza --icons -a --group-directories-first'
 alias lt='eza --icons --tree --group-directories-first'
@@ -77,7 +78,6 @@ alias gmerge='git merge --no-ff'
 alias gpull='git pull'
 alias gpush='git push'
 alias greset='git reset'
-alias gfix='gitFix'
 alias grestore='git restore'
 alias gstatus='git status -sb'
 alias gvim='nvim -c "vertical Git" -c "wincmd h | q" '
@@ -151,7 +151,7 @@ source ~/.config/zsh/autocomplete-opdoc.sh
 
 #* ================================ functions =============================== *#
 
-function gitFix() {
+function gfix() {
 	echo "The commit: "
 	git log --oneline --graph --decorate -n 1
 	git reset --soft HEAD~1
@@ -247,4 +247,27 @@ function hdmi-connect() {
 function hdmi-disconnect() {
 	echo "Turning off HDMI"
 	xrandr --output HDMI-1 --off
+}
+
+
+function clean-obsidian() {
+	local vaultPath="${HOME}/Documents/Obsidian"
+
+	if [ ! -d "${vaultPath}/.git" ]; then
+		echo "Error: Obsidian vault not found."
+		return
+	fi
+
+	(
+		cd "${vaultPath}" || { echo "Error: Failed to change directory."; return; }
+
+		echo "Cleaning Obsidian vault..."
+
+		git checkout --orphan temp_branch || { echo "Error: Failed to create orphan branch."; return; }
+		git add -A || { echo "Error: Failed to add files."; return; }
+		git commit -m "Initial commit" || { echo "Error: Failed to commit."; return; }
+		git branch -D main || { echo "Error: Failed to delete main branch."; return; }
+		git branch -m main || { echo "Error: Failed to rename branch to main."; return; }
+		git push -f origin main || { echo "Error: Failed to push to origin."; return; }
+	)
 }

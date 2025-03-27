@@ -2,36 +2,57 @@
   "collapse-filter": false,
   "search": "",
   "showTags": true,
-  "showAttachments": false,
-  "hideUnresolved": false,
+  "showAttachments": true,
+  "hideUnresolved": true,
   "showOrphans": true,
   "collapse-color-groups": false,
   "colorGroups": [
     {
-      "query": "Dino",
+      "query": "tag:#unsolved  ",
       "color": {
         "a": 1,
         "rgb": 14701138
       }
     },
     {
-      "query": "",
+      "query": "tag:#maraton-de-programacion  ",
       "color": {
         "a": 1,
         "rgb": 14725458
       }
+    },
+    {
+      "query": "tag:#algoritmos-y-estructura-de-datos  ",
+      "color": {
+        "a": 1,
+        "rgb": 14570208
+      }
+    },
+    {
+      "query": "tag:#matematicas-ii  ",
+      "color": {
+        "a": 1,
+        "rgb": 5427424
+      }
+    },
+    {
+      "query": "tag:#organizacion-y-estructura-del-computador  ",
+      "color": {
+        "a": 1,
+        "rgb": 5397472
+      }
     }
   ],
-  "collapse-display": true,
+  "collapse-display": false,
   "showArrow": false,
   "textFadeMultiplier": 0,
   "nodeSizeMultiplier": 1,
   "lineSizeMultiplier": 1,
-  "collapse-forces": true,
-  "centerStrength": 0.518713248970312,
-  "repelStrength": 10,
-  "linkStrength": 1,
+  "collapse-forces": false,
+  "centerStrength": 0.418050130208333,
+  "repelStrength": 11.2776692708333,
+  "linkStrength": 0.595133463541667,
   "linkDistance": 250,
-  "scale": 1,
+  "scale": 0.09753014318362216,
   "close": true
 }

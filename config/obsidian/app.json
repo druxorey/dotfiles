@@ -2,17 +2,22 @@
   "vimMode": true,
   "pdfExportSettings": {
     "includeName": false,
-    "pageSize": "Letter",
+    "pageSize": "A4",
     "landscape": false,
     "margin": "0",
-    "downscalePercent": 90
+    "downscalePercent": 75
   },
   "showLineNumber": true,
-  "attachmentFolderPath": "Assets",
+  "attachmentFolderPath": "Vault/_assets",
   "readableLineLength": true,
   "showInlineTitle": false,
-  "livePreview": false,
+  "livePreview": true,
   "newFileLocation": "folder",
   "newFileFolderPath": "Daily Notes",
-  "trashOption": "local"
+  "trashOption": "local",
+  "strictLineBreaks": false,
+  "propertiesInDocument": "hidden",
+  "defaultViewMode": "source",
+  "alwaysUpdateLinks": true,
+  "showUnsupportedFiles": true
 }

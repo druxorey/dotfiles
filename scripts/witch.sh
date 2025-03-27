@@ -53,6 +53,7 @@ function showUtilitiesTools() {
 	echo -e "${BOLD}${BLUE}Utilities Tools:${RESET}"
 	echo -e "  - ${GREEN}googler${RESET} - A command-line tool to search Google."
 	echo -e "  - ${GREEN}gtypist${RESET} - A typing tutor for the terminal."
+	echo -e "  - ${GREEN}lutgen${RESET} - A LUT generator and applicator for color palettes."
 	echo
 }
 
@@ -71,6 +72,8 @@ function showVisualTools() {
 	echo -e "  - ${GREEN}cmatrix${RESET} - A simple command-line matrix effect."
 	echo -e "  - ${GREEN}pipes.sh${RESET} - A terminal screensaver that draws pipes."
 	echo -e "  - ${GREEN}peaclock${RESET} - A beautiful and customizable clock for the terminal."
+	echo -e "  - ${GREEN}no-more-secrets${RESET} - A tool to recreate the famous 'decrypting text' effect."
+	echo -e "  - ${GREEN}genact${RESET} - A nonsense activity generator."
 	echo
 }
 

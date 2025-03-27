@@ -25,7 +25,14 @@ return {
 		},
 		sections = {
 			lualine_a = {{
-				"mode",
+				function()
+					local recording_register = vim.fn.reg_recording()
+					if recording_register == '' then
+						return 'MODE'
+					else
+						return 'Recording @' .. recording_register
+					end
+				end,
 				separator = {
 					left = "",
 					right = ""

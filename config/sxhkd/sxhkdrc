@@ -20,7 +20,7 @@
 
 # open todo list
 super + t
-	bspc rule -a "*" -o state=floating && kitty opdoc todo
+	bspc rule -a "*" -o state=floating rectangle=1280x720+300+150 && kitty opdoc todo
 
 # lock screen
 super + Escape
@@ -123,7 +123,7 @@ super + c
 	code
 super + v
 	kitty nvim
-super + shift + i
+super + alt + i
 	kitty nvim -c "CopilotChat" -c "wincmd h | q"
 
 # independent apps

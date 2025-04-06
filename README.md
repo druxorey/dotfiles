@@ -2,7 +2,7 @@
 
 <p align="center">A minimalist repository of my dotfiles for arch linux</p>
 
-![Desktop Screenshot](/assets/main-rice.webp)
+![Desktop Screenshot](/assets/rice-2025-04-06.webp)
 
 <p align="center">
 <a href="https://www.deviantart.com/druxorey/gallery/94231956/wallpapers-for-dracula"><img src="https://img.shields.io/badge/wallpapers-BD93F9?style=for-the-badge"></a>

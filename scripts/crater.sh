@@ -7,7 +7,7 @@ function help() {
 	echo "DESCRIPTION: Creates a default file in a specific programming language."
 	echo
 	echo "ARGUMENTS:"
-	echo "  FILE TYPE: bash, c, c++, go, html, latex, lua, python, rust."
+	echo "  FILE TYPE: bash, c, c++, go, html, java, latex, lua, python, rust."
 	echo "  FILE NAME: (Optional) The name of the file."
 	echo "  TEMPLATE TYPE: (Optional) basic, code."
 	echo
@@ -35,6 +35,7 @@ function main() {
 		"golang") extension="go";;
 		"go") extension="go";;
 		"html") extension="html";;
+		"java") extension="java";;
 		"latex") extension="tex";;
 		"lua") extension="lua";;
 		"python") extension="py";;

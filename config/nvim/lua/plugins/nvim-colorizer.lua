@@ -1,6 +1,7 @@
 return {
 	"norcalli/nvim-colorizer.lua",
 	dependencies = {},
+    lazy = false,
 	opts = {
 		-- The filetypes that should be colorized
 		'*';

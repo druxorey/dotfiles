@@ -14,6 +14,10 @@
 
 --* ============================ general =========================== *--
 
+-- Add + and - to increment and decrement numbers
+vim.keymap.set("n", "-", "<C-x>")
+vim.keymap.set("n", "+", "<C-a>")
+
 -- Remap escape
 vim.keymap.set("n", "<C-c>", "<Esc>", { noremap = true, silent = true })
 
@@ -45,7 +49,7 @@ vim.keymap.set("n", "<C-l>", "<C-w>l", { noremap = true, silent = true })
 --* ==================== pluggins configurations =================== *--
 
 -- Neotree toggle
-vim.keymap.set("n", "<leader>e", ":Neotree toggle<CR>", { noremap = true, silent = true })
+vim.keymap.set("n", "<leader>e", ":Neotree toggle<CR>", { noremap = true, silent = true, desc = "Toggle Neotree" })
 
 -- Copilot Chat toggle
 vim.keymap.set("n", "<leader>ai", ":CopilotChat<CR>", { noremap = true, silent = true, desc = "Open Copilot Chat"})
@@ -61,8 +65,8 @@ vim.keymap.set("n", "<leader>gs", ":Git status<CR>", { noremap = true, silent = 
 vim.keymap.set("n", "<leader>gl", ":Git log<CR>", { noremap = true, silent = true, desc = "Git Log" })
 vim.keymap.set("n", "<leader>gp", ":Gitsigns preview_hunk<CR>", { noremap = true, silent = true, desc = "Git Preview Hunk" })
 vim.keymap.set("n", "<leader>gC", "<cmd>FzfLua git_commits<CR>", { noremap = true, silent = true, desc = "Git Commits History" })
-vim.keymap.set("n", "<leader>gS", "<cmd>FzfLua git_status<CR>", { noremap = true, silent = true, desc = "Git Status History" })
 vim.keymap.set("n", "<leader>gP", ":Git push<CR>", { noremap = true, silent = true, desc = "Git Push" })
+vim.keymap.set("n", "<leader>gS", "<cmd>FzfLua git_status<CR>", { noremap = true, silent = true, desc = "Git Status History" })
 
 -- TAB to move to the next buffer
 if vim.g.vscode == nil then
@@ -81,6 +85,7 @@ vim.keymap.set('n', '<leader>fx', function()
 end, { desc = 'Telescope find files (Home Dir)' })
 
 -- LaTex
-vim.api.nvim_set_keymap('n', '<leader>vc', '<cmd>VimtexCompile<CR>', { noremap = true, silent = true })
-vim.api.nvim_set_keymap('n', '<leader>vv', '<cmd>VimtexView<CR>', { noremap = true, silent = true })
-vim.api.nvim_set_keymap('n', '<leader>vs', '<cmd>VimtexStop<CR>', { noremap = true, silent = true })
+vim.api.nvim_set_keymap('n', '<leader>cx', '', { noremap = true, silent = true, desc = 'LaTeX' })
+vim.api.nvim_set_keymap('n', '<leader>cxc', '<cmd>VimtexCompile<CR>', { noremap = true, silent = true, desc = 'LaTeX Compile' })
+vim.api.nvim_set_keymap('n', '<leader>cxv', '<cmd>VimtexView<CR>', { noremap = true, silent = true, desc = 'LaTeX View' })
+vim.api.nvim_set_keymap('n', '<leader>cxs', '<cmd>VimtexStop<CR>', { noremap = true, silent = true, desc = 'LaTeX Stop' })

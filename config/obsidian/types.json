@@ -24,6 +24,9 @@
     "excalidraw-embeddable-theme": "text",
     "excalidraw-open-md": "checkbox",
     "Notas del día": "date",
-    "Materia": "number"
+    "Materia": "number",
+    "date": "date",
+    "created": "datetime",
+    "author": "text"
   }
 }

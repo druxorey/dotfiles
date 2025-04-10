@@ -21,7 +21,7 @@
         "Mod",
         "Shift"
       ],
-      "key": "H"
+      "key": "F"
     }
   ],
   "editor:toggle-checklist-status": [
@@ -58,15 +58,14 @@
       "key": "\\"
     }
   ],
-  "omnisearch:show-modal": [
+  "switcher:open": [
     {
       "modifiers": [
         "Mod"
       ],
-      "key": "O"
+      "key": "K"
     }
   ],
-  "switcher:open": [],
   "obsidian-excalidraw-plugin:save": [],
   "auto-card-link:auto-card-link-enhance-selected-url": [],
   "auto-card-link:auto-card-link-paste-and-enhance": [
@@ -76,6 +75,106 @@
         "Shift"
       ],
       "key": "V"
+    }
+  ],
+  "app:delete-file": [
+    {
+      "modifiers": [
+        "Alt"
+      ],
+      "key": "Delete"
+    }
+  ],
+  "editor:toggle-source": [
+    {
+      "modifiers": [
+        "Mod",
+        "Shift"
+      ],
+      "key": "\\"
+    }
+  ],
+  "file-explorer:move-file": [
+    {
+      "modifiers": [
+        "Mod"
+      ],
+      "key": "M"
+    }
+  ],
+  "copilot:chat-toggle-window": [
+    {
+      "modifiers": [
+        "Mod",
+        "Shift"
+      ],
+      "key": "I"
+    }
+  ],
+  "markdown:add-metadata-property": [],
+  "editor:add-cursor-below": [
+    {
+      "modifiers": [
+        "Alt",
+        "Mod"
+      ],
+      "key": "J"
+    }
+  ],
+  "editor:add-cursor-above": [
+    {
+      "modifiers": [
+        "Alt",
+        "Mod"
+      ],
+      "key": "K"
+    }
+  ],
+  "editor:delete-paragraph": [],
+  "graph:open": [],
+  "obsidian-icon-folder:iconize:set-icon-for-file": [],
+  "editor:insert-link": [],
+  "app:open-help": [],
+  "global-search:open": [
+    {
+      "modifiers": [
+        "Mod",
+        "Shift"
+      ],
+      "key": "S"
+    }
+  ],
+  "editor:toggle-code": [
+    {
+      "modifiers": [
+        "Mod"
+      ],
+      "key": ";"
+    }
+  ],
+  "editor:set-heading": [
+    {
+      "modifiers": [
+        "Mod",
+        "Shift"
+      ],
+      "key": "3"
+    }
+  ],
+  "editor:toggle-bullet-list": [
+    {
+      "modifiers": [
+        "Alt"
+      ],
+      "key": "-"
+    }
+  ],
+  "omnisearch:show-modal": [
+    {
+      "modifiers": [
+        "Mod"
+      ],
+      "key": "O"
     }
   ]
 }

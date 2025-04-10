@@ -1,7 +1,6 @@
 [
   "table-editor-obsidian",
   "calendar",
-  "obsidian-excalidraw-plugin",
   "url-into-selection",
   "pomodoro-timer",
   "obsidian-relative-line-numbers",
@@ -16,5 +15,9 @@
   "obsidian-trash-explorer",
   "obsidian-git",
   "home-tab",
-  "tag-wrangler"
+  "tag-wrangler",
+  "dataview",
+  "copilot",
+  "obsidian-importer",
+  "obsidian-vimrc-support"
 ]

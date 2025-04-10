@@ -16,7 +16,7 @@
   "newFileFolderPath": "Daily Notes",
   "trashOption": "local",
   "strictLineBreaks": false,
-  "propertiesInDocument": "hidden",
+  "propertiesInDocument": "visible",
   "defaultViewMode": "source",
   "alwaysUpdateLinks": true,
   "showUnsupportedFiles": true

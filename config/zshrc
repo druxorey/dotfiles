@@ -151,6 +151,11 @@ source ~/.config/zsh/autocomplete-opdoc.sh
 
 #* ================================ functions =============================== *#
 
+local ERROR="\e[1;31mERROR:"
+local WARN="\e[1;33mWARNING:"
+local SUCCESS="\e[1;32mSUCCESS:"
+local END="\e[0m"
+
 function gfix() {
 	echo "The commit: "
 	git log --oneline --graph --decorate -n 1
@@ -250,24 +255,44 @@ function hdmi-disconnect() {
 }
 
 
-function clean-obsidian() {
+function obsidian-clean() {
 	local vaultPath="${HOME}/Documents/Obsidian"
 
 	if [ ! -d "${vaultPath}/.git" ]; then
-		echo "Error: Obsidian vault not found."
+		echo "$ERROR Obsidian vault not found."
 		return
 	fi
 
 	(
-		cd "${vaultPath}" || { echo "Error: Failed to change directory."; return; }
-
-		echo "Cleaning Obsidian vault..."
-
-		git checkout --orphan temp_branch || { echo "Error: Failed to create orphan branch."; return; }
-		git add -A || { echo "Error: Failed to add files."; return; }
-		git commit -m "Initial commit" || { echo "Error: Failed to commit."; return; }
-		git branch -D main || { echo "Error: Failed to delete main branch."; return; }
-		git branch -m main || { echo "Error: Failed to rename branch to main."; return; }
-		git push -f origin main || { echo "Error: Failed to push to origin."; return; }
+		cd "${vaultPath}" || { echo "$ERROR Failed to change directory.$END"; return; }
+		git checkout --orphan temp_branch || { echo "$ERROR Failed to create orphan branch.$END"; return; }
+        git add -A && git commit -m "Clean branch - $(date +%d-%m-%Y_%H-%M-%S)" || { echo "$ERROR Failed to commit changes.$END"; return; }
+		git branch -D main || { echo "$ERROR Failed to delete main branch.$END"; return; }
+		git branch -m main || { echo "$ERROR Failed to rename branch to main.$END"; return; }
+		git push -f origin main || { echo "$ERROR Failed to push to origin.$END"; return; }
 	)
+}
+
+
+function obsidian-vim() {
+
+	if [ $# -eq 0 ]; then
+		echo "Error: No arguments provided."
+		return
+	fi
+
+	local vaultPath="${HOME}/Documents/Obsidian"
+    local vaults=("${(f)$(find "${vaultPath}" -mindepth 1 -maxdepth 1 -type d -not -name '.git' -exec basename {} \;)}")
+
+	for vault in "${vaults[@]}"; do
+		if [[ "${1:l}" = "${vault:l}" ]]; then
+			(
+			cd $vaultPath
+			nvim $vault
+			)
+			return
+		fi
+	done
+
+	echo "$ERROR Vault not found.$END"
 }

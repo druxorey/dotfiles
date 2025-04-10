@@ -16,7 +16,7 @@ return {
 		shadow_color = "#282A36",
 
 		output = function()
-			local png_path = "~/Pictures/screenshots/code-screenshots/" .. os.date("!%Y-%m-%d_%H%M%S") .. "_code.png"
+			local png_path = "~/Pictures/Screenshots/code-screenshots/" .. os.date("!%Y-%m-%d_%H%M%S") .. "_code.png"
 			local webp_path = png_path:gsub(".png$", ".webp")
 			vim.schedule_wrap(function()
 				os.execute("magick -quality 100 " .. png_path .. " " .. webp_path)
@@ -30,5 +30,3 @@ return {
 		end
 	}
 }
-
-

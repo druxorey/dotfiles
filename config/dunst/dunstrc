@@ -1,5 +1,3 @@
-# See dunst(5) for all configuration options
-
 [global]
     ### Display ###
 
@@ -39,7 +37,7 @@
     scale = 0
 
     # Maximum number of notification (0 means no limit)
-    notification_limit = 3
+    notification_limit = 5
 
     ### Progress bar ###
 
@@ -52,14 +50,13 @@
     progress_bar_height = 10
 
     # Set the frame width of the progress bar
-    progress_bar_frame_width = 4
+    progress_bar_frame_width = 2
 
     # Set the minimum width for the progress bar
     progress_bar_min_width = 150
 
     # Set the maximum width for the progress bar
     progress_bar_max_width = 300
-
 
     # Show how many messages are currently hidden (because of
     # notification_limit).
@@ -107,7 +104,7 @@
     # Set to 0 to disable.
     # A client can set the 'transient' hint to bypass this. See the rules
     # section for how to disable this if necessary
-    idle_threshold = 120
+    idle_threshold = 0
 
     ### Text ###
 
@@ -151,7 +148,7 @@
     #   %n  progress value if set without any extra characters
     #   %%  Literal %
     # Markup is allowed
-    format = "%s %p\n%b"
+    format = "%s\n%p\n%b"
 
     # Alignment of message text.
     # Possible values are "left", "center" and "right".
@@ -174,7 +171,7 @@
     ignore_newline = no
 
     # Stack together notifications with the same content
-    stack_duplicates = true
+    stack_duplicates = false
 
     # Hide the count of stacked notifications with the same content
     hide_duplicate_count = false
@@ -294,14 +291,14 @@
     # Otherwise the "#" and following would be interpreted as a comment.
     background = "#bd93f9"
     foreground = "#f8f8f2"
-    timeout = 10
+    timeout = 5
     # Icon for notifications with low urgency, uncomment to enable
     #new_icon = /path/to/icon
 
 [urgency_normal]
     background = "#282a36"
     foreground = "#f8f8f2"
-    timeout = 10
+    timeout = 5
     # Icon for notifications with normal urgency, uncomment to enable
     #new_icon = /path/to/icon
 

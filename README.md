@@ -20,9 +20,21 @@
 
 ## Installation
 
-The `arch-bootstrap.sh` script automates the initial installation and configuration of an Arch Linux system. It updates the system, installs essential packages (both from Pacman and AUR), and enables necessary services like the firewall and the login manager.
+The `drxboot-arch.sh` script automates the initial installation and configuration of an Arch Linux system. It updates the system, installs essential packages (both from Pacman and AUR), and enables necessary services like the firewall and the login manager.
 
-It’s particularly useful for users who want a quick and straightforward installation process. You can find the script [here](arch-bootstrap.sh).
+It’s particularly useful for users who want a quick and straightforward installation process. You can find the script [here](drxboot-arch.sh).
+
+To download and execute the script directly, run:
+
+```bash
+curl -O https://raw.githubusercontent.com/druxorey/dotfiles/refs/heads/main/drxboot-arch.sh && bash drxboot-arch.sh
+```
+
+To execute the script directly without downloading it, run:
+
+```bash
+bash <(curl -s https://raw.githubusercontent.com/druxorey/dotfiles/refs/heads/main/drxboot-arch.sh)
+```
 
 ## Dependencies
 

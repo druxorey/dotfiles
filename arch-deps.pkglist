@@ -8,4 +8,4 @@ minimal_aur_packages=(oh-my-posh peaclock pipes.sh cava googler gtypist)
 
 desktop_aur_packages=(ani-cli bsp-layout lutgen-bin manga-cli-git tetris-terminal-git tumbler-extra-thumbnailers brave-bin deemix-gui-git minecraft-launcher notion-app-electron proton-vpn-gtk-app visual-studio-code-bin)
 
-drivers_services=(bluetooth.service cups lightdm NetworkManager tlp ufw.service)
+drivers_services=(bluetooth.service cups.service lightdm.service NetworkManager.service tlp.service ufw.service)

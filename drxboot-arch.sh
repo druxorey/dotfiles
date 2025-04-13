@@ -192,6 +192,17 @@ function copyDotfiles() {
 		else
 			echo -e "${FAILED} !WARNING! The tmux plugin could not be cloned"
 		fi
+
+		# Download and set wallpaper
+		wget -O image.png "https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/b4e7c8d7-7c38-48d5-bbb7-c77ad1088d81/dje4t3w-b2ab79c6-de7c-4d59-835c-346b46ea387d.png?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7InBhdGgiOiJcL2ZcL2I0ZTdjOGQ3LTdjMzgtNDhkNS1iYmI3LWM3N2FkMTA4OGQ4MVwvZGplNHQzdy1iMmFiNzljNi1kZTdjLTRkNTktODM1Yy0zNDZiNDZlYTM4N2QucG5nIn1dXSwiYXVkIjpbInVybjpzZXJ2aWNlOmZpbGUuZG93bmxvYWQiXX0.1moV0pK662rX4bVdC07B0BR9ls4Zchu8jP3cQL3aj5o"
+
+		[[ ! -d "$HOME/Pictures/Wallpapers/" ]] && mkdir "$HOME/Pictures/Wallpapers/"
+		mv -f image.png "$HOME/Pictures/Wallpapers/"
+
+		if ! command -v nitrogen &> /dev/null; then
+			nitrogen "$HOME/Pictures/Wallpapers/" > /dev/null 2>&0
+			nitrogen --set-zoom-fill "$HOME/Pictures/Wallpapers/image.png" > /dev/null 2>&1
+		fi
 	)
 }
 

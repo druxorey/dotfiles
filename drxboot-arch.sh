@@ -1,6 +1,5 @@
 #!/bin/bash
 
-
 TITLE="\e[1;35m"
 RUNNING="\e[34m"
 QUESTION="\e[36m"
@@ -14,19 +13,19 @@ IS_YAY_INSTALLED=0
 
 function help() {
 	echo
-	echo "USAGE: arch-bootstrap [OPTION]"
+	echo -e "${TITLE}USAGE:${END} arch-bootstrap [OPTION]"
 	echo
-	echo "DESCRIPTION: The arch-bootstrap script automates the initial installation and configuration"
+	echo -e "${TITLE}DESCRIPTION:${END} The arch-bootstrap script automates the initial installation and configuration"
 	echo "        of an Arch Linux system. It updates the system, installs essential packages"
 	echo "        (both from Pacman and AUR), and enables necessary services like the firewall"
 	echo "        and the login manager. It’s particularly useful for users who want a quick and"
 	echo "        straightforward installation process."
 	echo
-	echo "OPTIONS:"
+	echo -e "${TITLE}OPTIONS:${END}"
 	echo "  -h    Shows this help."
 	echo "  -a    Automated mode. The script will not ask for user confirmation."
 	echo
-	echo "Report bugs to https://github.com/druxorey/dotfiles"
+	echo -e "${TITLE}Report bugs to https://github.com/druxorey/dotfiles${END}"
 	echo
 	exit 1
 }

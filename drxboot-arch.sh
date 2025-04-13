@@ -5,7 +5,7 @@ sudo -v
 while true; do sudo -n true; sleep 60; kill -0 "$$" || exit; done 2>/dev/null &
 
 TITLE="\e[1;35m"
-RUNNING="\e[35m"
+RUNNING="\e[34m"
 QUESTION="\e[36m"
 SUCCESS="\e[1;32m"
 FAILED="\e[1;31m"
@@ -13,6 +13,7 @@ END="\e[0m"
 LINE="\n"
 
 IS_AUTOMATED=0
+IS_YAY_INSTALLED=0
 
 function help() {
 	echo
@@ -35,18 +36,11 @@ function help() {
 
 # Function to display a waiting screen using dialog
 function waitScreen() {
-	local title="$1"
-	dialog --title "$title" --infobox "\n           Installing, please wait..." 5 50
+	dialog --title "$1" --infobox "\n           Installing, please wait..." 5 50
 }
 
 # Function to install essential dependencies
 function installDependencies() {
-
-	# Remove pacman lock file if it exists
-	if [[ -f /var/lib/pacman/db.lck ]]; then
-		sudo rm /var/lib/pacman/db.lck
-	fi
-
 	local dependencies=(
 		"git"
 		"wget"
@@ -54,10 +48,14 @@ function installDependencies() {
 		"unzip"
 	)
 
-	local totalDependencies=$(( ${#dependencies[@]} + 1))
+	local totalDependencies=$(( ${#dependencies[@]}))
 	local titleStart="  WELCOME TO DRUXOREY'S ARCH LINUX BOOTSTRAP  "
 	local descriptionStart="\n               Starting Script..."
+
 	dialog --title "$titleStart" --gauge "$descriptionStart" 8 50 0 < <(
+		# Remove pacman lock file if it exists
+		[[ -f /var/lib/pacman/db.lck ]] && sudo rm /var/lib/pacman/db.lck
+
 		for index in "${!dependencies[@]}"; do
 			local package="${dependencies[$index]}"
 
@@ -69,6 +67,9 @@ function installDependencies() {
 			echo $(( (index + 1) * 100 / totalDependencies))
 			sleep 0.125
 		done
+
+		# Install yay if not already installed
+		command -v yay &> /dev/null && IS_YAY_INSTALLED=1
 	)
 
 	# Fetch additional dependencies from a remote package list
@@ -91,11 +92,13 @@ function installPackages() {
 	dialog --title "INSTALLING PACMAN PACKAGES" --gauge "$descInstallation" 8 50 0 < <(
 		for index in "${!main_packages[@]}"; do
 			package="${main_packages[$index]}"
-			echo $(( (index + 1) * 100 / totalPackages))
 			$pacman $package > /dev/null 2>&1
+			echo $(( (index + 1) * 100 / totalPackages))
 			sleep 0.125
 		done
 	)
+
+	[[ $IS_YAY_INSTALLED == 0 ]] && return
 
 	local -n aur_packages="${type}_aur_packages"
 	local totalPackages=${#aur_packages[@]}
@@ -103,8 +106,8 @@ function installPackages() {
 	dialog --title "INSTALLING YAY PACKAGES" --gauge "$descInstallation" 8 50 0 < <(
 		for index in "${!aur_packages[@]}"; do
 			package="${aur_packages[$index]}"
-			echo $(( (index + 1) * 100 / totalPackages))
 			$yay $package > /dev/null 2>&1
+			echo $(( (index + 1) * 100 / totalPackages))
 			sleep 0.125
 		done
 	)
@@ -221,7 +224,7 @@ function main() {
 	dialog --clear --title "" --yesno "$descUpdateSystem" 10 50
 	local responseUpdateSystem=$?
 
-	if ! command -v yay &> /dev/null; then
+	if [[ $IS_YAY_INSTALLED == 0 ]]; then
 		local titleAurInstallation="AUR INSTALLATION REQUIRED"
 		local descAurInstallation="\n         Do you want to install yay?"
 		dialog --clear --title "" --yesno "$descAurInstallation" 7 50
@@ -255,6 +258,7 @@ function main() {
 			git clone https://aur.archlinux.org/yay.git
 			cd yay
 			makepkg -si --noconfirm
+			IS_YAY_INSTALLED=1
 		)
 	fi
 

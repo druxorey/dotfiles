@@ -1,8 +1,5 @@
 #!/bin/bash
 
-# Elevate privileges and keep sudo session alive
-sudo -v
-while true; do sudo -n true; sleep 60; kill -0 "$$" || exit; done 2>/dev/null &
 
 TITLE="\e[1;35m"
 RUNNING="\e[34m"
@@ -211,6 +208,10 @@ function main() {
 	done
 
 	shift $((OPTIND -1))
+
+	# Elevate privileges and keep sudo session alive
+	sudo -v
+	while true; do sudo -n true; sleep 60; kill -0 "$$" || exit; done 2>/dev/null &
 
 	# Ensure dialog is installed
 	if ! command -v dialog &> /dev/null; then

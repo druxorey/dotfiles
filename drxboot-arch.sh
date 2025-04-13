@@ -101,10 +101,10 @@ function installPackages() {
 	local totalPackages=${#aur_packages[@]}
 
 	dialog --title "INSTALLING YAY PACKAGES" --gauge "$descInstallation" 8 50 0 < <(
-		for index in "${!main_packages[@]}"; do
-			package="${main_packages[$index]}"
+		for index in "${!aur_packages[@]}"; do
+			package="${aur_packages[$index]}"
 			echo $(( (index + 1) * 100 / totalPackages))
-			$pacman $package > /dev/null 2>&1
+			$yay $package > /dev/null 2>&1
 			sleep 0.125
 		done
 	)

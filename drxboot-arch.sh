@@ -1,5 +1,6 @@
 #!/bin/bash
 
+# Elevate privileges and keep sudo session alive
 sudo -v
 while true; do sudo -n true; sleep 60; kill -0 "$$" || exit; done 2>/dev/null &
 
@@ -32,19 +33,21 @@ function help() {
 	exit 1
 }
 
+# Function to display a waiting screen using dialog
 function waitScreen() {
 	local title="$1"
 	dialog --title "$title" --infobox "\n           Installing, please wait..." 5 50
 }
 
-
+# Function to install essential dependencies
 function installDependencies() {
 
+	# Remove pacman lock file if it exists
 	if [[ -f /var/lib/pacman/db.lck ]]; then
 		sudo rm /var/lib/pacman/db.lck
 	fi
 
-	dependencies=(
+	local dependencies=(
 		"git"
 		"wget"
 		"rsync"
@@ -56,8 +59,9 @@ function installDependencies() {
 	local descriptionStart="\n               Starting Script..."
 	dialog --title "$titleStart" --gauge "$descriptionStart" 8 50 0 < <(
 		for index in "${!dependencies[@]}"; do
-			package="${dependencies[$index]}"
+			local package="${dependencies[$index]}"
 
+			# Install package if not already installed
 			if ! command -v $package &> /dev/null; then
 				sudo pacman -S --noconfirm --needed $package > /dev/null 2>&1
 			fi
@@ -67,22 +71,24 @@ function installDependencies() {
 		done
 	)
 
-	arch_deps_content=$(curl -s https://raw.githubusercontent.com/druxorey/dotfiles/master/arch-deps.pkglist)
-	eval "$arch_deps_content"
+	# Fetch additional dependencies from a remote package list
+	local scriptDependencies=$(curl -s https://raw.githubusercontent.com/druxorey/dotfiles/master/arch-deps.pkglist)
+	eval "$scriptDependencies"
 }
 
-
+# Function to install packages (Pacman and AUR)
 function installPackages() {
 	local type="$1"
+	local descInstallation="\n                 Please wait..."
+
 	local pacman="sudo pacman -S --noconfirm --needed"
 	local yay="yay -S --noconfirm"
 
 	local -n main_packages="${type}_main_packages"
 	local totalPackages=${#main_packages[@]}
-	local descInstallation="\n                 Please wait..."
 
-	local titleInstallation="INSTALLING PACMAN PACKAGES"
-	dialog --title "$titleInstallation" --gauge "$descInstallation" 8 50 0 < <(
+	local titleInstallation=
+	dialog --title "INSTALLING PACMAN PACKAGES" --gauge "$descInstallation" 8 50 0 < <(
 		for index in "${!main_packages[@]}"; do
 			package="${main_packages[$index]}"
 			echo $(( (index + 1) * 100 / totalPackages))
@@ -92,10 +98,9 @@ function installPackages() {
 	)
 
 	local -n aur_packages="${type}_aur_packages"
-	local totalPackages=${#main_packages[@]}
+	local totalPackages=${#aur_packages[@]}
 
-	local titleInstallation="INSTALLING YAY PACKAGES"
-	dialog --title "$titleInstallation" --gauge "$descInstallation" 8 50 0 < <(
+	dialog --title "INSTALLING YAY PACKAGES" --gauge "$descInstallation" 8 50 0 < <(
 		for index in "${!main_packages[@]}"; do
 			package="${main_packages[$index]}"
 			echo $(( (index + 1) * 100 / totalPackages))
@@ -105,15 +110,14 @@ function installPackages() {
 	)
 }
 
-
+# Function to enable necessary system services
 function enableServices() {
 	local enableCommand="sudo systemctl enable"
 	local totalServices=${#drivers_Services[@]}
 
-	local titleServices="ENABLING SERVICES"
-	local desc="Please wait..."
+	local descInstallation="\n                 Please wait..."
 
-	dialog --title "$titleServices" --gauge "$descInstallation" 8 50 0 < <(
+	dialog --title "ENABLING SERVICES" --gauge "$descInstallation" 8 50 0 < <(
 		for index in "${!drivers_services[@]}"; do
 			service="${drivers_Services[$index]}"
 
@@ -127,18 +131,21 @@ function enableServices() {
 	)
 }
 
-
+# Function to clone and configure dotfiles
 function copyDotfiles() {
 	(
+		# Define paths and clone dotfiles repository
 		local dotfilesPath="6PYqO7W9oEQJb04nSoqajW26Xexnbw3z/"
 		local gitClone="git clone https://github.com/druxorey/dotfiles.git $dotfilesPath"
 
+		# Ensure necessary directories exist
 		[ ! -d "$HOME/.config" ] && mkdir "$HOME/.config"
 		[ ! -d "$HOME/.local" ] && mkdir "$HOME/.local"
 		[ ! -d "$HOME/.local/share" ] && mkdir "$HOME/.local/share"
 		[ ! -d "$HOME/.local/share/icons" ] && mkdir "$HOME/.local/share/icons"
 		[ ! -d "$HOME/.local/share/themes" ] && mkdir "$HOME/.local/share/themes"
 
+		# Clone and copy dotfiles
 		if $gitClone; then
 			rsync -av --delete $dotfilesPath/config/* $HOME/.config/
 			mv -f $HOME/.config/zshrc $HOME/.zshrc
@@ -149,6 +156,7 @@ function copyDotfiles() {
 			echo -e "${FAILED} !WARNING! The dotfiles could not be cloned"
 		fi
 
+		# Download and install GTK themes
 		wget "https://github.com/dracula/gtk/archive/master.zip" -O master.zip
 		wget "https://github.com/dracula/gtk/files/5214870/Dracula.zip" -O Dracula.zip
 
@@ -165,6 +173,7 @@ function copyDotfiles() {
 			echo -e "${FAILED} !WARNING! The gtk theme could not be cloned"
 		fi
 
+		# Clone Zsh plugins
 		git clone https://github.com/zsh-users/zsh-syntax-highlighting
 		git clone https://github.com/zsh-users/zsh-autosuggestions
 
@@ -176,6 +185,7 @@ function copyDotfiles() {
 			echo -e "${FAILED} !WARNING! The zsh plugins could not be cloned"
 		fi
 
+		# Clone Tmux plugin manager
 		git clone https://github.com/tmux-plugins/tpm $HOME/.config/tmux/plugins/tpm
 
 		if [[ -d "$HOME/.config/tmux/plugins/tpm" ]]; then
@@ -188,6 +198,7 @@ function copyDotfiles() {
 
 
 function main() {
+	# Parse command-line options
 	while getopts ":ah" opt; do
 		case ${opt} in
 			a ) IS_AUTOMATED=1 ;;
@@ -198,6 +209,7 @@ function main() {
 
 	shift $((OPTIND -1))
 
+	# Ensure dialog is installed
 	if ! command -v dialog &> /dev/null; then
 		echo -e "Waiting for dialog to be installed..."
 		sudo pacman -S --noconfirm --needed dialog > /dev/null 2>&1

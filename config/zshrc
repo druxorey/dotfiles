@@ -296,3 +296,13 @@ function obsidian-vim() {
 
 	echo "$ERROR Vault not found.$END"
 }
+
+function gtest() {
+
+	if [[ $# -eq 0 ]]; then
+		echo "Error: No arguments provided."
+		return
+	fi
+
+	g++ -DENABLE_TESTS $1 -o output.out && ./output.out --verbosity=2 --success
+}

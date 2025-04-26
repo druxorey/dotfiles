@@ -137,17 +137,25 @@ super + o
 # browser shortcuts
 super + b
 	brave
-super + alt + b
-	zen-browser
 super + i
 	gtk-launch brave-gdfaincndogidkdcdkhapmbffkckdkhn-Default.desktop
 super + F1
-	brave github.com/druxorey
+	brave tasks.google.com/tasks
 super + F2
-	brave youtube.com
+	brave gmail.com
 super + F3
-	brave web.whatsapp.com
+	brave calendar.google.com
 super + F4
+	brave drive.google.com
+super + F5
+	brave web.whatsapp.com
+super + F6
+	brave youtube.com
+super + F7
+	brave github.com/druxorey
+super + F8
+	brave notion.so
+super + F12
 	brave remotedesktop.google.com/access
 
 #! ================================================================== !#

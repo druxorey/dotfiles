@@ -133,11 +133,11 @@ bindkey -v
 export KEYTIMEOUT=1
 
 # key bindings
-bindkey '^?'      backward-delete-char
-bindkey '^u'      backward-kill-line
-bindkey '^a'      beginning-of-line
-bindkey '^e'      end-of-line
-bindkey '^k'      kill-line
+bindkey '^?'	  backward-delete-char
+bindkey '^u'	  backward-kill-line
+bindkey '^a'	  beginning-of-line
+bindkey '^e'	  end-of-line
+bindkey '^k'	  kill-line
 bindkey '^[[3~'   delete-char
 
 # fzf settings
@@ -151,93 +151,12 @@ source ~/.config/zsh/autocomplete-opdoc.sh
 
 #* ================================ functions =============================== *#
 
-local ERROR="\e[1;31mERROR:"
-local WARN="\e[1;33mWARNING:"
-local SUCCESS="\e[1;32mSUCCESS:"
-local END="\e[0m"
-
 function gfix() {
 	echo "The commit: "
 	git log --oneline --graph --decorate -n 1
 	git reset --soft HEAD~1
 	echo "\nWas restarted to previous commit: "
 	git log --oneline --graph --decorate -n 1
-}
-
-
-function rsudo() {
-    if [[ $# == 0 ]]; then
-        sudo $(history -p '!!')
-    else
-        sudo '$@'
-    fi
-}
-
-
-function compress() {
-
-    [[ "$2" =~ ^[0-9]+$ ]] && set -- "$1" "" "$2"
-
-    local date=$(date +%d-%m-%Y_%H-%M-%S)
-    local compressionLevel="${3:-0}"
-    local outputFile="${2:-${compressionLevel}_${date}.${1#*.}}"
-
-    case $compressionLevel in
-        0) compression=20 ;;
-        1) compression=25 ;;
-        2) compression=30 ;;
-        3) compression=35 ;;
-        *) echo 'Wrong compression level.' ; return ;;
-    esac
-
-    ffmpeg -i "$1" -vcodec libx264 -crf $compression "$outputFile"
-}
-
-
-function ex() {
-    if [ -f "$1" ] ; then
-        case $1 in
-            *.tar.bz2)  xjf $1   ;;
-            *.tar.gz)   tar xzf $1   ;;
-            *.bz2)      bunzip2 $1   ;;
-            *.rar)      unrar x $1   ;;
-            *.gz)       gunzip $1    ;;
-            *.tar)      tar xf $1    ;;
-            *.tbz2)     tar xjf $1   ;;
-            *.tgz)      tar xzf $1   ;;
-            *.zip)      unzip $1     ;;
-            *.Z)        uncompress $1;;
-            *.7z)       7z x $1      ;;
-            *.deb)      ar x $1      ;;
-            *.tar.xz)   tar xf $1    ;;
-            *.tar.zst)  unzstd $1    ;;
-            *) echo '"$1" cannot be extracted via ex()' ;;
-        esac
-    else
-        echo '"$1" is not a valid file'
-    fi
-}
-
-
-function open() {
-    if [ -f "$1" ] ; then
-        case $1 in
-            *.mp4)      mpv $1     ;;
-            *.mkv)      mpv $1     ;;
-            *.mp3)      mpv $1     ;;
-            *.avi)      mpv $1     ;;
-            *.flac)     mpv $1     ;;
-            *.png)      sxiv $1    ;;
-            *.webp)     sxiv $1    ;;
-            *.jpeg)     sxiv $1    ;;
-            *.jpg)      sxiv $1    ;;
-            *.svg)      sxiv $1    ;;
-            *.pdf)      zathura $1 ;;
-            *) echo '"$1" cannot be open via open()\n Use: [mpv, sxiv or zathura]' ;;
-        esac
-    else
-        echo '"$1" is not a valid file'
-    fi
 }
 
 
@@ -255,53 +174,10 @@ function hdmi-disconnect() {
 }
 
 
-function obsidian-clean() {
-	local vaultPath="${HOME}/Documents/Obsidian"
-
-	if [ ! -d "${vaultPath}/.git" ]; then
-		echo "$ERROR Obsidian vault not found."
-		return
-	fi
-
-	(
-		cd "${vaultPath}" || { echo "$ERROR Failed to change directory.$END"; return; }
-		git checkout --orphan temp_branch || { echo "$ERROR Failed to create orphan branch.$END"; return; }
-        git add -A && git commit -m "Clean branch - $(date +%d-%m-%Y_%H-%M-%S)" || { echo "$ERROR Failed to commit changes.$END"; return; }
-		git branch -D main || { echo "$ERROR Failed to delete main branch.$END"; return; }
-		git branch -m main || { echo "$ERROR Failed to rename branch to main.$END"; return; }
-		git push -f origin main || { echo "$ERROR Failed to push to origin.$END"; return; }
-	)
-}
-
-
-function obsidian-vim() {
-
-	if [ $# -eq 0 ]; then
-		echo "Error: No arguments provided."
-		return
-	fi
-
-	local vaultPath="${HOME}/Documents/Obsidian"
-    local vaults=("${(f)$(find "${vaultPath}" -mindepth 1 -maxdepth 1 -type d -not -name '.git' -exec basename {} \;)}")
-
-	for vault in "${vaults[@]}"; do
-		if [[ "${1:l}" = "${vault:l}" ]]; then
-			(
-			cd $vaultPath
-			nvim $vault
-			)
-			return
-		fi
-	done
-
-	echo "$ERROR Vault not found.$END"
-}
-
 function gtest() {
-
 	if [[ $# -eq 0 ]]; then
-		echo "Error: No arguments provided."
-		return
+		echo -e "\e[1;31mERROR: No arguments provided."
+		return 1
 	fi
 
 	g++ -DENABLE_TESTS $1 -o output.out && ./output.out --verbosity=2 --success

@@ -45,7 +45,7 @@
             "enabled": true
         },
         "AlwaysAnimate": {
-            "enabled": false
+            "enabled": true
         },
         "AlwaysTrust": {
             "enabled": false
@@ -96,7 +96,7 @@
             "enabled": false
         },
         "CallTimer": {
-            "enabled": false
+            "enabled": true
         },
         "ClearURLs": {
             "enabled": false
@@ -555,6 +555,24 @@
         },
         "HideMedia": {
             "enabled": false
+        },
+        "DynamicImageModalAPI": {
+            "enabled": false
+        },
+        "FixImagesQuality": {
+            "enabled": false
+        },
+        "FullUserInChatbox": {
+            "enabled": false
+        },
+        "IrcColors": {
+            "enabled": false
+        },
+        "BadgeAPI": {
+            "enabled": true
+        },
+        "SupportHelper": {
+            "enabled": true
         }
     },
     "notifications": {
@@ -567,7 +585,7 @@
         "authenticated": false,
         "url": "https://api.vencord.dev/",
         "settingsSync": false,
-        "settingsSyncVersion": 1740928170970
+        "settingsSyncVersion": 1744608100386
     },
     "eagerPatches": false
 }

@@ -9,7 +9,7 @@
 
 /*NOTE: THIS STYLE IS ONLY FOR VENCORD*/
 
-@import url('https://refact0r.github.io/midnight-discord/midnight.css');
+@import url('https://refact0r.github.io/midnight-discord/build/midnight.css');
 
 :root {
     --color-background-1: #525568;
@@ -19,8 +19,8 @@
     --color-background-5: #21222C;
 
     --color-foreground-1: #F8F8F2;
-    --color-foreground-2: #D9DADF;
-    --color-foreground-3: #B9BBCB;
+    --color-foreground-2: #E3E3E2;
+    --color-foreground-3: #C6C7CC;
 
     --color-shadow-1: #353747;
     --color-shadow-2: #21222C;
@@ -75,8 +75,8 @@
 	--text-0: var(--color-foreground-1);
 	--text-1: var(--color-foreground-1);
 	--text-2: var(--color-purple-2);
-	--text-3: var(--color-foreground-1);
-	--text-4: var(--color-foreground-3);
+	--text-3: var(--color-foreground-2);
+	--text-4: var(--color-comment);
 	--text-5: var(--color-background-1);
 
 	--bg-1: var(--color-background-3);
@@ -109,8 +109,4 @@
 	--login-bg-filter: saturate(0.3) hue-rotate(-15deg) brightness(0.4);
 	--green-to-accent-3-filter: hue-rotate(56deg) saturate(1.43);
 	--blurple-to-accent-3-filter: hue-rotate(304deg) saturate(0.84) brightness(1.2);
-}
-
-.guilds_c48ade {
-	box-shadow: 0 0 10px var(--color-shadow-3);
 }

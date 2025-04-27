@@ -1,8 +1,8 @@
 #!/bin/bash
 
-rofiMenu='rofi -dmenu -p -i -config ~/.config/rofi/styles/wifi/wifi-rofi.rasi'
-rofiNewSSID='rofi -dmenu -p -i -config ~/.config/rofi/styles/wifi/wifi-newssid.rasi'
-rofiNewPassword='rofi -dmenu -p -i -config ~/.config/rofi/styles/wifi/wifi-newpassword.rasi'
+ROFI_MENU_PATH='rofi -dmenu -p -i -config ~/.config/rofi/styles/wifi/wifi_menu_styles.rasi'
+ROFI_SSID_PATH='rofi -dmenu -p -i -config ~/.config/rofi/styles/wifi/wifi_newssid_styles.rasi'
+ROFI_PASSW_PATH='rofi -dmenu -p -i -config ~/.config/rofi/styles/wifi/wifi_newpassword_styles.rasi'
 
 function connectToWifi() {
 	local nameWifi="$1"
@@ -39,7 +39,7 @@ function main() {
 		isToggled="󰤨   Enable Wi-Fi"
 	fi
 
-	rofiOption=$(echo -e "󱛃   New Connection\n$isToggled\n$savedConnections" | $rofiMenu)
+	rofiOption=$(echo -e "󱛃   New Connection\n$isToggled\n$savedConnections" | $ROFI_MENU_PATH)
 
 	if [ "$rofiOption" = "󰤨   Enable Wi-Fi" ]; then
 		nmcli radio wifi on
@@ -52,8 +52,8 @@ function main() {
 	nmcli dev wifi rescan
 
 	if [ "$rofiOption" = "󱛃   New Connection" ]; then
-		nameWifi=$($rofiNewSSID)
-		passwordWifi=$($rofiNewPassword)
+		nameWifi=$($ROFI_SSID_PATH)
+		passwordWifi=$($ROFI_PASSW_PATH)
 		[ -z "$nameWifi" ] || [ -z "$passwordWifi" ] && exit
 	else
 		nameWifi=$(echo "$rofiOption" | sed 's/^   //' | awk -F ":" '{print $1}')

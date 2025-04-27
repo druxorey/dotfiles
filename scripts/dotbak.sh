@@ -34,6 +34,7 @@ function main() {
 	"rsync -a ~/.zshrc $DOTFILES_DIR/config/zshrc"
 	"rsync -a ~/.bashrc $DOTFILES_DIR/config/bashrc"
 	"rsync -a ~/.config/libinput-gestures.conf $DOTFILES_DIR/config/touchpad-gestures"
+	"rsync -a /etc/tlp.d/ $DOTFILES_DIR/config/tlp"
 	"rsync -a /etc/X11/xorg.conf.d/40-libinput.conf $DOTFILES_DIR/config/touchpad-configuration"
 	"rsync -a /var/spool/cron/druxorey $DOTFILES_DIR/config/crontab"
 	)

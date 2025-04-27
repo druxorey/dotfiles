@@ -3,16 +3,16 @@
 CONFIG_DIR="/etc"
 
 function main() {
-	rofiOption=$(echo -e "Powersave\nNormal\nPerformance" | rofi -dmenu -p -i -config ~/.config/rofi/styles/energy_styles.rasi)
+	rofiOption=$(echo -e "󱟧 Powersave\n󰥔 Normal\n󱐋 Performance" | rofi -dmenu -p -i -config ~/.config/rofi/styles/energy_styles.rasi)
 
 	case "$rofiOption" in
-		"Powersave")
+		"󱟧 Powersave")
 			configFile="$CONFIG_DIR/tlp.d/1-powersave.conf"
 			;;
-		"Performance")
+		"󱐋 Performance")
 			configFile="$CONFIG_DIR/tlp.d/2-performance.conf"
 			;;
-		"Normal")
+		"󰥔 Normal")
 			configFile="$CONFIG_DIR/tlp.d/3-normal.conf"
 			;;
 		*)

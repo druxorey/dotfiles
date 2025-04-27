@@ -17,109 +17,111 @@
 
 /* ============================== configuration ============================= */
 
-@import                             "../shared/theme.rasi"
+@import "../shared/theme.rasi"
 
 configuration {
-    show-icons:                     false;
-    disable-history:                false;
-    case-sensitive:                 false;
-    kb-row-up: "k,Up";
-    kb-row-left: "h";
-    kb-row-right: "l";
-    kb-row-down: "j,Down";
+	show-icons: false;
+	disable-history: false;
+	case-sensitive: false;
+	kb-row-up: "k,Up";
+	kb-row-left: "h";
+	kb-row-right: "l";
+	kb-row-down: "j,Down";
 }
 
 /* ============================== main window =============================== */
 
 window {
-    location:                       northeast;
-    border:                         @border-size-1;
-    border-radius:                  @border-radius-1;
-    padding:                        0;
-    width:                          13em;
-    y-offset:                       6%;
-    x-offset:                       -1%;
+	location: northeast;
+	border: @border-size-1;
+	border-radius: @border-radius-1;
+	padding: 0;
+	width: 13em;
+	y-offset: 6%;
+	x-offset: -1%;
 
-    background-color:               @color-background-1;
-    border-color:                   @color-accent-1;
+	background-color: @color-background-1;
+	border-color: @color-accent-1;
 
-    children:                       [ "mainbox" ];
+	children: [ "mainbox" ];
 }
 
 /* ================================ main box ================================ */
 
 mainbox {
-    spacing:                        1em;
-    padding:                        1.5em;
-    children:                       [ "listview" ];
+	background-color: @color-background-1;
+	spacing: 1em;
+	padding: 1.5em;
+	children: [ "listview" ];
 }
 
 /* ================================ listview ================================ */
 
 listview {
-    scrollbar:                      false;
-    border:                         0;
-    lines:                          4;
+	cycle: true;
+	scrollbar: false;
+	border: 0;
+	columns: 1;
+	lines: 4;
+
+	background-color: @color-background-1;
+	border-radius: @border-radius-1;
+	border-color: @color-accent-1;
 }
 
 element {
-    padding:                        0.5em 1em 0.5em 1em;
-    border-radius:                  @border-radius-1;
+	padding: 0.5em 1em 0.5em 1em;
+	border-radius: @border-radius-1;
 
-    border-color:                   @color-background-1;
+	border-color: @color-background-1;
 }
 
 element.normal.normal {
-    background-color:               @color-background-1;
-    text-color:                     @color-foreground-1;
+	background-color: @color-background-1;
+	text-color: @color-foreground-1;
 }
 
 element.normal.urgent {
-    background-color:               @color-urgent-1;
-    text-color:                     @color-foreground-1;
+	background-color: @color-urgent-1;
+	text-color: @color-foreground-1;
 }
 
 element.normal.active {
-    background-color:               @color-accent-1;
-    text-color:                     @color-foreground-1;
+	background-color: @color-accent-1;
+	text-color: @color-foreground-1;
 }
 
 element.selected.normal {
-    background-color:               @color-accent-1;
-    text-color:                     @color-background-1;
+	background-color: @color-accent-1;
+	text-color: @color-background-1;
 }
 
 element.selected.urgent {
-    background-color:               @selected-urgent-background;
-    text-color:                     @color-foreground-1;
+	background-color: @selected-urgent-background;
+	text-color: @color-foreground-1;
 }
 
 element.selected.active {
-    background-color:               @color-accent-1;
-    text-color:                     @color-foreground-1;
+	background-color: @color-accent-1;
+	text-color: @color-foreground-1;
 }
 
 element.alternate.normal {
-    background-color:               @color-background-1;
-    text-color:                     @color-foreground-1;
+	background-color: @color-background-1;
+	text-color: @color-foreground-1;
 }
 
 element.alternate.urgent {
-    background-color:               @color-urgent-1;
-    text-color:                     @color-foreground-1;
+	background-color: @color-urgent-1;
+	text-color: @color-foreground-1;
 }
 
 element.alternate.active {
-    background-color:               @color-accent-1;
-    text-color:                     @color-foreground-1;
-}
-
-element-icon {
-    size:                           1.25em;
-    padding:                        0em 0.5em 0em 0.5em;
+	background-color: @color-accent-1;
+	text-color: @color-foreground-1;
 }
 
 element-text {
-    background-color:               inherit;
-    text-color:                     inherit;
+	background-color: inherit;
+	text-color: inherit;
 }

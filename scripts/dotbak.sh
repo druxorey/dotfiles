@@ -1,7 +1,5 @@
 #!/bin/bash
 
-. $(dirname $0)/lib/shload.sh
-
 ERROR="\e[1;91m"
 SUCCESS="\e[1;92m"
 END="\e[0m"
@@ -39,7 +37,6 @@ function main() {
 	"rsync -a /var/spool/cron/druxorey $DOTFILES_DIR/config/crontab"
 	)
 
-	setupShload ${#commandList[@]} "Progress"
 	count=0
 
 	for command in "${commandList[@]}"; do
@@ -50,8 +47,6 @@ function main() {
 			echo -e "\n$ERROR ⚠ Error: Unexpected interruption during backup. Please try again$END\n"
 			exit 1
 		fi
-
-		updateShload $count
 	done
 
 	scripts=$(ls $DOTFILES_DIR/scripts/ -p | grep -v /)
@@ -62,7 +57,7 @@ function main() {
 		mv $scriptsDir/$i $scriptsDir/$i.sh
 	done
 
-	echo -e "\n${SUCCESS}All files have been successfully backed up$END"
+	echo -e "${SUCCESS}All files have been successfully backed up$END"
 }
 
 main $@

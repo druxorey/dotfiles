@@ -92,11 +92,11 @@ super + Print
 
 # app launcher
 super + space
-	sh ~/.config/rofi/scripts/start-rofi.sh
+	sh ~/.config/rofi/scripts/start_menu.sh
 
 # general menu
 super + Home
-    rofi -show drun -config ~/.config/rofi/styles/application-rofi.rasi
+    rofi -show drun -config ~/.config/rofi/styles/launcher_styles.rasi
 
 #* ========================== applications ========================== *#
 

@@ -60,7 +60,6 @@ alias matrix='cmatrix -C blue'
 alias peaclock='peaclock --config ~/.config/peaclock'
 
 # pacman and yay
-alias sysupdate='sudo pacman -Syu ; yay -Sua --noconfirm; vencord'
 alias unlock='sudo rm /var/lib/pacman/db.lck'
 
 # git
@@ -181,4 +180,17 @@ function gtest() {
 	fi
 
 	g++ -DENABLE_TESTS $1 -o output.out && ./output.out --verbosity=2 --success
+}
+
+function sysupdate() {
+	sudo -v
+	while true; do sudo -n true; sleep 60; kill -0 "$$" || exit; done 2>/dev/null &
+
+	sudo pacman -Syu --noconfirm && yay -Sua --noconfirm
+
+	if [[ -d go ]]; then
+		sudo rm -rf go
+	fi
+
+	vencord
 }

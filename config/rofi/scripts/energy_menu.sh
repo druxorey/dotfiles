@@ -1,18 +1,31 @@
 #!/bin/bash
 
 CONFIG_DIR="/etc"
+ACTUAL_PLAN="$(readlink -f "$CONFIG_DIR/tlp.conf" | cut -c 12)"
 
 function main() {
-	rofiOption=$(echo -e "󱟧 Powersave\n󰥔 Normal\n󱐋 Performance" | rofi -dmenu -p -i -config ~/.config/rofi/styles/energy_styles.rasi)
+	case "$ACTUAL_PLAN" in
+		"1")
+			availablePlans=$(echo -e "󱟧 Powersave      \n󰥔 Normal\n󱐋 Performance")
+			;;
+		"2")
+			availablePlans=$(echo -e "󱟧 Powersave\n󰥔 Normal\n󱐋 Performance   ")
+			;;
+		"3")
+			availablePlans=$(echo -e "󱟧 Powersave\n󰥔 Normal            \n󱐋 Performance")
+			;;
+	esac
+
+	rofiOption=$(echo -e "$availablePlans" | rofi -dmenu -p -i -config ~/.config/rofi/styles/energy_styles.rasi | awk '{print $1}')
 
 	case "$rofiOption" in
-		"󱟧 Powersave")
+		"󱟧")
 			configFile="$CONFIG_DIR/tlp.d/1-powersave.conf"
 			;;
-		"󱐋 Performance")
+		"󱐋")
 			configFile="$CONFIG_DIR/tlp.d/2-performance.conf"
 			;;
-		"󰥔 Normal")
+		"󰥔")
 			configFile="$CONFIG_DIR/tlp.d/3-normal.conf"
 			;;
 		*)

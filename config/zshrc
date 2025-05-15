@@ -15,6 +15,7 @@
 
 #* ================================= startup ================================ *#
 
+
 [[ $- != *i* ]] && return
 PS1='[\u@\h \W]\$ '
 fastfetch --load-config ~/.config/fastfetch/init.jsonc && echo
@@ -40,7 +41,8 @@ alias fzf='fzf --preview "bat --color=always {}"'
 alias ls='eza --icons --group-directories-first'
 alias la='eza --icons -a --group-directories-first'
 alias lt='eza --icons --tree --group-directories-first'
-alias ll='eza --icons -alh --group-directories-first'
+alias ll='eza --icons -lh --group-directories-first'
+alias lla='eza --icons -alh --group-directories-first'
 alias labc='eza --icons -la'
 alias l.='eza -a | grep -E "^\."'
 alias cd='z'
@@ -58,6 +60,7 @@ alias convert='magick'
 alias grep='grep --color=auto'
 alias matrix='cmatrix -C blue'
 alias peaclock='peaclock --config ~/.config/peaclock'
+alias btop='btop --force-utf'
 
 # pacman and yay
 alias unlock='sudo rm /var/lib/pacman/db.lck'
@@ -110,18 +113,6 @@ alias shutdown='shutdown now'
 
 #* ================================ zsh setup =============================== *#
 
-# plugins
-source ~/.config/zsh/zsh-autosuggestions/zsh-autosuggestions.zsh
-source ~/.config/zsh/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
-
-# autocomplete
-zstyle :compinstall filename '/home/druxorey/.zshrc'
-zstyle ':completion:*' menu select
-zstyle ':autocomplete:*' default-context history-incremental-search-backward
-_comp_options+=(globdots)
-autoload -Uz compinit
-compinit
-
 # history
 HISTFILE=~/.config/zsh/.histfile
 HISTSIZE=10000
@@ -136,8 +127,8 @@ bindkey '^?'	  backward-delete-char
 bindkey '^u'	  backward-kill-line
 bindkey '^a'	  beginning-of-line
 bindkey '^e'	  end-of-line
-bindkey '^k'	  kill-line
 bindkey '^[[3~'   delete-char
+bindkey '^k'	  kill-line
 
 # fzf settings
 export FZF_ALT_C_OPTS='--preview "tree -C {} | head -200"'
@@ -147,6 +138,11 @@ export FZF_CTRL_T_OPTS="
   --bind 'ctrl-/:change-preview-window(down|hidden|)'"
 source <(fzf --zsh)
 source ~/.config/zsh/autocomplete-opdoc.sh
+
+# plugins
+source ~/.config/zsh/zsh-autocomplete/zsh-autocomplete.plugin.zsh
+source ~/.config/zsh/zsh-autosuggestions/zsh-autosuggestions.zsh
+source ~/.config/zsh/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 
 #* ================================ functions =============================== *#
 

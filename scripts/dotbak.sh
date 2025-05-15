@@ -4,7 +4,8 @@ ERROR="\e[1;91m"
 SUCCESS="\e[1;92m"
 END="\e[0m"
 
-DOTFILES_DIR=~/Workspace/dotfiles
+DOTFILES_DIR="$HOME/Workspace/Projects/dotfiles"
+OBSIDIAN_DIR="$HOME/Documents/'[01] Obsidian'"
 
 function main() {
 
@@ -27,8 +28,8 @@ function main() {
 	"rsync -a --delete ~/.config/Vencord/ $DOTFILES_DIR/config/vencord"
 	"rsync -a --delete ~/.config/zsh $DOTFILES_DIR/config"
 	"rsync -a --delete ~/.config/zathura $DOTFILES_DIR/config"
-	"rsync -a --delete --exclude '_test' --exclude 'custom' ~/.local/bin/ $DOTFILES_DIR/scripts"
-	"rsync -a --delete ~/Documents/Obsidian/Academic/.obsidian/* $DOTFILES_DIR/config/obsidian"
+	"rsync -a --delete ~/Workspace/Scripts/ $DOTFILES_DIR/scripts"
+	"rsync -a --delete $OBSIDIAN_DIR/Academic/.obsidian/* $DOTFILES_DIR/config/obsidian"
 	"rsync -a ~/.zshrc $DOTFILES_DIR/config/zshrc"
 	"rsync -a ~/.bashrc $DOTFILES_DIR/config/bashrc"
 	"rsync -a ~/.config/libinput-gestures.conf $DOTFILES_DIR/config/touchpad-gestures"
@@ -37,24 +38,26 @@ function main() {
 	"rsync -a /var/spool/cron/druxorey $DOTFILES_DIR/config/crontab"
 	)
 
-	count=0
-
 	for command in "${commandList[@]}"; do
-		count=$(($count + 1))
 		eval $command
-
 		if [ $? -ne 0 ]; then
 			echo -e "\n$ERROR ⚠ Error: Unexpected interruption during backup. Please try again$END\n"
 			exit 1
 		fi
 	done
 
-	scripts=$(ls $DOTFILES_DIR/scripts/ -p | grep -v /)
 	scriptsDir=$DOTFILES_DIR/scripts
+	scripts=$(ls $DOTFILES_DIR/scripts/ -p | grep -v /)
 
 	for i in $scripts; do
-		chmod -x $scriptsDir/$i
-		mv $scriptsDir/$i $scriptsDir/$i.sh
+		chmod -x $scriptsDir/$i || {
+			echo -e "\n$ERROR ⚠ Error: Unable to change permissions of $i. Please check the file$END\n"
+			exit 1
+		}
+		mv $scriptsDir/$i $scriptsDir/$i.sh || {
+			echo -e "\n$ERROR ⚠ Error: Unable to rename $i. Please check the file$END\n"
+			exit 1
+		}
 	done
 
 	echo -e "${SUCCESS}All files have been successfully backed up$END"

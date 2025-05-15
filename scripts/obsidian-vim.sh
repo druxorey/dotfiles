@@ -1,28 +1,25 @@
 #!/bin/bash
 
+VAULT_PATH="${HOME}/Documents/[01] Obsidian/"
+
 ERROR="\e[1;31mERROR:"
-WARN="\e[1;33mWARNING:"
-SUCCESS="\e[1;32mSUCCESS:"
 END="\e[0m"
 
 function help() {
     echo
-    echo "USAGE: compress [-o OUTPUT_FILE] [-l COMPRESSION_LEVEL] INPUT_FILE"
+    echo "USAGE: obsidian-vim VAULT_NAME"
     echo
-    echo "DESCRIPTION: Compresses a video file using ffmpeg with a specified compression level."
+    echo "DESCRIPTION: Opens an Obsidian vault in Neovim."
     echo
     echo "ARGUMENTS:"
-    echo "  -o OUTPUT_FILE: (Optional) Specify the name of the output file."
-    echo "  -l COMPRESSION_LEVEL: (Optional) Compression level (0-3)."
-    echo "      0: Low compression (default)."
-    echo "      1: Medium compression."
-    echo "      2: High compression."
-    echo "      3: Maximum compression."
-    echo "  INPUT_FILE: The video file to be compressed."
+    echo "  VAULT_NAME: The name of the Obsidian vault to open."
     echo
     echo "EXAMPLES:"
-    echo "  compress -o output.mp4 -l 2 input.mp4"
-    echo "  compress input.mp4"
+    echo "  obsidian-vim MyVault"
+    echo
+    echo "NOTES:"
+    echo "  - The script searches for vaults in the directory: ~/Documents/01 - Obsidian/"
+    echo "  - Ensure the VAULT_NAME matches the folder name of the vault."
     echo
     echo "Report bugs to https://github.com/druxorey/dotfiles/issues"
     echo
@@ -33,24 +30,24 @@ function help() {
 function main() {
 
 	if [ $# -eq 0 ]; then
-		echo "Error: No arguments provided."
+		help
 		return
 	fi
 
-	local vaultPath="${HOME}/Documents/Obsidian"
-	local vaults=("${(f)$(find "${vaultPath}" -mindepth 1 -maxdepth 1 -type d -not -name '.git' -exec basename {} \;)}")
+	local vaults=($(find "${VAULT_PATH}" -mindepth 1 -maxdepth 1 -type d -not -name '.git' -exec basename {} \;))
 
 	for vault in "${vaults[@]}"; do
-		if [[ "${1:l}" = "${vault:l}" ]]; then
+		if [[ "${1,,}" = "${vault,,}" ]]; then
 			(
-			cd $vaultPath
-			nvim $vault
+			command cd "$VAULT_PATH/$vault"
+			nvim
 			)
 			return
 		fi
 	done
 
-	echo "$ERROR Vault not found.$END"
+	echo -e "$ERROR Vault not found.$END"
+	echo -e "Available vaults: ${vaults[*]}"
 }
 
 main "$@"

@@ -1,5 +1,7 @@
 #!/bin/bash
 
+VAULT_PATH="${HOME}/Documents/[01] Obsidian/"
+
 ERROR="\e[1;31mERROR:"
 WARN="\e[1;33mWARNING:"
 SUCCESS="\e[1;32mSUCCESS:"
@@ -31,15 +33,14 @@ function help() {
 
 
 function main() {
-	local vaultPath="${HOME}/Documents/Obsidian"
 
-	if [ ! -d "${vaultPath}/.git" ]; then
+	if [ ! -d "${VAULT_PATH}/.git" ]; then
 		echo "$ERROR Obsidian vault not found."
 		return
 	fi
 
 	(
-		cd "${vaultPath}" || { echo "$ERROR Failed to change directory.$END"; return; }
+		cd "${VAULT_PATH}" || { echo "$ERROR Failed to change directory.$END"; return; }
 		git checkout --orphan temp_branch || { echo "$ERROR Failed to create orphan branch.$END"; return; }
 		git add -A && git commit -m "Clean branch - $(date +%d-%m-%Y_%H-%M-%S)" || { echo "$ERROR Failed to commit changes.$END"; return; }
 		git branch -D main || { echo "$ERROR Failed to delete main branch.$END"; return; }

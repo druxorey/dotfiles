@@ -1,48 +1,62 @@
 #!/bin/bash
 
-ERROR="\e[1;31m"
+DOCS_PATH="${HOME}/Documents/[01] Obsidian/Workspace/Cheatsheets"
+
+ERROR="\e[1;31mERROR:"
 END="\e[0m"
 
-documentLocation=~/Documents/Obsidian/Workspace/Cheatsheets/
-
-function errorMessage() {
-	echo -e "$ERROR ► the file you are trying to access does not exist$END"
-	exit 0
+function help() {
+    echo
+    echo "USAGE: opdoc COMMAND"
+    echo
+    echo "DESCRIPTION: A script to manage and open documents in Neovim."
+    echo
+    echo "COMMANDS:"
+    echo "  todo       Opens or creates the 'todo.md' file in the specified directory."
+    echo "  <filename> Opens the specified file in the directory if it exists."
+    echo
+    echo "NOTES:"
+    echo "  - The script operates on files located in: ~/Documents/01 - Obsidian/Workspace/Cheatsheets"
+    echo "  - Ensure the file name matches an existing file in the directory, or use 'todo' to manage the todo file."
+    echo
+    echo "Report bugs to https://github.com/druxorey/dotfiles/issues"
+    echo
+    exit 1
 }
 
 
 function todo() {
-	todoLocation="$documentLocation/todo.md"
+	todoPath="$DOCS_PATH/todo.md"
 
-	if [ -f "$todoLocation" ]; then
-		nvim $todoLocation
+	if [ -f "$todoPath" ]; then
+		nvim "$todoPath"
 	else
-		echo "Todo file does not exist. Making it..."
-		touch $todoLocation
-		nvim $todoLocation
+		echo -e "$ERROR Todo file does not exist. Making it..."
+		touch "$todoPath"
+		nvim "$todoPath"
 	fi
 }
 
 
 function main() {
 	if [ -z "$1" ]; then
-		errorMessage
+		help
 		exit 1
 	fi
 
-	file=$1
+	file="$1"
 
 	if [ "$file" == "todo.md" ] || [ "$file" == "todo" ]; then
 		todo
 		exit 0
 	fi
 
-	if [ -f "$documentLocation$file" ]; then
-		nvim "$documentLocation$file"
+	if [ -f "$DOCS_PATH$/file" ]; then
+		nvim "$DOCS_PATH$/file"
 		exit 0
 	fi
 
-	errorMessage
+	help
 }
 
 main $@

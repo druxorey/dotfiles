@@ -89,3 +89,7 @@ vim.api.nvim_set_keymap('n', '<leader>cx', '', { noremap = true, silent = true, 
 vim.api.nvim_set_keymap('n', '<leader>cxc', '<cmd>VimtexCompile<CR>', { noremap = true, silent = true, desc = 'LaTeX Compile' })
 vim.api.nvim_set_keymap('n', '<leader>cxv', '<cmd>VimtexView<CR>', { noremap = true, silent = true, desc = 'LaTeX View' })
 vim.api.nvim_set_keymap('n', '<leader>cxs', '<cmd>VimtexStop<CR>', { noremap = true, silent = true, desc = 'LaTeX Stop' })
+
+-- IDK
+
+vim.keymap.set('n', '<leader>;', ':.!', { noremap = true, silent = false, desc="Idk whats call this" })

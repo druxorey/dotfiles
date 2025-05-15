@@ -110,12 +110,6 @@ end
 
 --* ============================= other ============================ *--
 
--- Setting python tab settings
-
-vim.cmd[[ autocmd FileType python setlocal noexpandtab ]]
-vim.cmd[[ autocmd FileType python setlocal tabstop=4 ]]
-vim.cmd[[ autocmd FileType python setlocal shiftwidth=4 ]]
-
 -- Setting php tab settings
 vim.cmd[[ autocmd FileType php setlocal expandtab ]]
 vim.cmd[[ autocmd FileType php setlocal tabstop=4 ]]

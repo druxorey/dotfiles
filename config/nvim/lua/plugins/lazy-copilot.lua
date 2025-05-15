@@ -1,3 +1,13 @@
+local function load_prompt_from_file(file_path)
+	local file = io.open(file_path, "r")
+	if not file then
+		error("ERROR: File could not be opened: " .. file_path)
+	end
+	local content = file:read("*a")
+	file:close()
+	return content
+end
+
 return {
 	{
 		"zbirenbaum/copilot-cmp",
@@ -10,7 +20,8 @@ return {
 		opts = {
 			model = "gpt-4o",
 			prompts = {
-				Commit = "> /COPILOT_GENERATE\n\nWrite 3 versions of commit messages for the change following the 'Conventional Commits' convention. Ensure the title has a maximum of 50 characters and the message is wrapped at 72 characters.",
+				Commit = load_prompt_from_file(vim.fn.expand("~/.config/nvim/lua/plugins/prompts/commit.prompt")),
+				Tasks = load_prompt_from_file(vim.fn.expand("~/.config/nvim/lua/plugins/prompts/tasks.prompt"))
 			}
 		}
 	}

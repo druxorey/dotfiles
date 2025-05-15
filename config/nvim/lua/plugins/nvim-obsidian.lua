@@ -10,11 +10,11 @@ return {
 		workspaces = {
 			{
 				name = "Academic",
-				path = "~/Documents/Obsidian/Academic",
+				path = "~/Documents/[01] Obsidian/Academic",
 			},
 			{
 				name = "Workspace",
-				path = "~/Documents/Obsidian/Workspace",
+				path = "~/Documents/[01] Obsidian/Workspace",
 			},
 		},
 		disable_frontmatter = true,

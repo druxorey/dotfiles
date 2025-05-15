@@ -27,12 +27,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "Daily Notes/LO HICE DESDE EL TELÉFONO.md",
-                "mode": "preview",
+                "file": "Class Notes/INGE - Ingeniería en Informática/Estándares del Software.md",
+                "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "LO HICE DESDE EL TELÉFONO"
+              "title": "Estándares del Software"
             }
           }
         ],
@@ -170,7 +170,8 @@
   },
   "left-ribbon": {
     "hiddenItems": {
-      "obsidian-excalidraw-plugin:New drawing": false,
+      "copilot:Open Copilot Chat": false,
+      "obsidian-importer:Open Importer": false,
       "switcher:Open quick switcher": false,
       "graph:Open graph view": false,
       "canvas:Create new canvas": false,
@@ -186,6 +187,15 @@
   },
   "active": "ebc59aa80c1bd85b",
   "lastOpenFiles": [
+    "Daily Notes/RISC-V - Instrucciones de Lógica.md",
+    "Class Notes/ORGA II - Organización y Estructura del Computador II/RISC-V vs x86.md",
+    "Daily Notes/RISC-V - Instrucciones Aritméticas.md",
+    "Daily Notes/RISC-V - Instrucciones de Toma de Decisiones.md",
+    "Class Notes/ORGA II - Organización y Estructura del Computador II/RISC-V - Registers.md",
+    "Daily Notes/RISC-V - Instrucciones de Manipulación de Memoria.md",
+    "Class Notes/INGE - Ingeniería en Informática/La Crisis del Software.md",
+    "Daily Notes/Nextcloud y SMB.md",
+    "Daily Notes/Evolución de la ingeniería de software.md",
     "Class Notes/ORGA I - Organización y Estructura del Computador I/Apuntes de las Lecturas/1L - A Tour of Computer Systems.md",
     "Daily Notes/LO HICE DESDE EL TELÉFONO.md"
   ]

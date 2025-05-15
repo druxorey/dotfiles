@@ -9,5 +9,6 @@
   "monospaceFontFamily": "NotoMono Nerd Font",
   "baseFontSizeAction": true,
   "baseFontSize": 16,
-  "showViewHeader": false
+  "showViewHeader": false,
+  "enabledCssSnippets": []
 }

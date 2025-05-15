@@ -18,6 +18,8 @@
   "tag-wrangler",
   "dataview",
   "copilot",
-  "obsidian-importer",
-  "obsidian-vimrc-support"
+  "obsidian-vimrc-support",
+  "obsidian-file-color",
+  "obsidian-excalidraw-plugin",
+  "better-export-pdf"
 ]

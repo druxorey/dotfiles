@@ -5,15 +5,15 @@
     "pageSize": "A4",
     "landscape": false,
     "margin": "0",
-    "downscalePercent": 75
+    "downscalePercent": 90
   },
   "showLineNumber": true,
-  "attachmentFolderPath": "Vault/_assets",
+  "attachmentFolderPath": "D1 - Vault/V1 - Assets",
   "readableLineLength": true,
   "showInlineTitle": false,
   "livePreview": true,
   "newFileLocation": "folder",
-  "newFileFolderPath": "Daily Notes",
+  "newFileFolderPath": "D2 - Working",
   "trashOption": "local",
   "strictLineBreaks": false,
   "propertiesInDocument": "visible",

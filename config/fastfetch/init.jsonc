@@ -1,59 +1,59 @@
 {
-    "$schema": "https://github.com/fastfetch-cli/fastfetch/raw/dev/doc/json_schema.json",
-    "logo": {
-        "type": "small",
-        "padding": {
-            "top": 1,
-            "left": 3,
-            "right": 3
-        }
-    },
-    "display": {
-        "separator": "",
-        "key": { "width": 17}
-    },
-    "modules": [
-        {
-            "key": "╭─────────────╮",
-            "type": "custom"
-        },
-        {
-            "key": "│             │\u001b[13D{#34}  host",
-            "type": "host"
-        },
-        {
-            "key": "│             │\u001b[13D{#31}󰅐  uptime",
-            "type": "uptime"
-        },
-        {
-            "key": "│             │\u001b[13D{#32}  processes",
-            "type": "processes"
-        },
-        {
-            "key": "│             │\u001b[13D{#33}󰇄  packages",
-            "type": "packages"
-        },
-        {
-            "key": "│             │\u001b[13D{#34}󰍛  cpu",
-            "type": "cpu"
-        },
-        {
-            "key": "│             │\u001b[13D{#35}󰉉  disk",
-            "type": "disk",
-            "folders": "/"
-        },
-        {
-            "key": "│             │\u001b[13D{#36}󰑭  memory",
-            "type": "memory"
-        },
-        {
-            "key": "│             │\u001b[13D{#37}󰝚  media",
-            "type": "media",
-            "format": "{1}"
-        },
-        {
-            "key": "╰─────────────╯",
-            "type": "custom"
-        }
-    ]
+	"$schema": "https://github.com/fastfetch-cli/fastfetch/raw/dev/doc/json_schema.json",
+	"logo": {
+		"type": "small",
+		"padding": {
+			"top": 1,
+			"left": 3,
+			"right": 3
+		}
+	},
+	"display": {
+		"separator": "",
+		"key": { "width": 17}
+	},
+	"modules": [
+		{
+			"key": "╭─────────────╮",
+			"type": "custom"
+		},
+		{
+			"key": "│             │\u001b[13D{#34}  host",
+			"type": "host"
+		},
+		{
+			"key": "│             │\u001b[13D{#31}󰅐  uptime",
+			"type": "uptime"
+		},
+		{
+			"key": "│             │\u001b[13D{#32}  processes",
+			"type": "processes"
+		},
+		{
+			"key": "│             │\u001b[13D{#33}󰇄  packages",
+			"type": "packages"
+		},
+		{
+			"key": "│             │\u001b[13D{#34}󰍛  cpu",
+			"type": "cpu"
+		},
+		{
+			"key": "│             │\u001b[13D{#35}󰉉  disk",
+			"type": "disk",
+			"folders": "/"
+		},
+		{
+			"key": "│             │\u001b[13D{#36}󰑭  memory",
+			"type": "memory"
+		},
+		{
+			"key": "│             │\u001b[13D{#37}󰝚  media",
+			"type": "media",
+			"format": "{1}"
+		},
+		{
+			"key": "╰─────────────╯",
+			"type": "custom"
+		}
+	]
 }

@@ -7,7 +7,7 @@
 <p align="center">
 <a href="https://www.deviantart.com/druxorey/gallery/94231956/wallpapers-for-dracula"><img src="https://img.shields.io/badge/wallpapers-BD93F9?style=for-the-badge"></a>
 <a href="#installation"><img src="https://img.shields.io/badge/installation-FF79C6?style=for-the-badge"></a>
-<a href="#dependencies"><img src="https://img.shields.io/badge/dependencies-BD93F9?style=for-the-badge"></a>
+<a href="https://github.com/druxorey/sh-toolkit"><img src="https://img.shields.io/badge/scripts-BD93F9?style=for-the-badge"></a>
 </p>
 
 ## Repository Structure
@@ -15,8 +15,6 @@
 - `assets`: Contains files needed for the repository, such as screenshots.
 
 - `config`: This directory contains specific configuration files for different programs and tools.
-
-- `scripts`: Here you can find several scripts that are added to the `$PATH` so that they can be executed at any time.
 
 ## Installation
 

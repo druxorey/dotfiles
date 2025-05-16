@@ -2,13 +2,13 @@
 
 <p align="center">A minimalist repository of my dotfiles for arch linux</p>
 
-![Desktop Screenshot](/assets/rice-2025-04-06.webp)
-
 <p align="center">
 <a href="https://www.deviantart.com/druxorey/gallery/94231956/wallpapers-for-dracula"><img src="https://img.shields.io/badge/wallpapers-BD93F9?style=for-the-badge"></a>
 <a href="#installation"><img src="https://img.shields.io/badge/installation-FF79C6?style=for-the-badge"></a>
 <a href="https://github.com/druxorey/sh-toolkit"><img src="https://img.shields.io/badge/scripts-BD93F9?style=for-the-badge"></a>
 </p>
+
+![Desktop Screenshot](/assets/rice-2025-04-06.webp)
 
 ## Repository Structure
 

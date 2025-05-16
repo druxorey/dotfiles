@@ -17,6 +17,7 @@ config/cmus/*
 
 # nvim
 config/nvim/plugins/installed/*
+config/nvim/lua/plugins/prompts/*
 
 # obsidian
 config/obsidian/plugins/*
@@ -35,6 +36,7 @@ config/vencord/dist
 config/zsh/.histfile
 config/zsh/zsh-autosuggestions
 config/zsh/zsh-syntax-highlighting
+config/zsh/zsh-autocomplete
 
 # experiments
 */_experiments

@@ -1,0 +1,62 @@
+#!/bin/bash
+
+ERROR="\e[1;31mERROR:"
+TITLE="\e[1;34m"
+END="\e[0m"
+
+function help() {
+	printf "
+${TITLE}USAGE:$END
+    open INPUT_FILE
+
+${TITLE}DESCRIPTION:$END
+    Opens a file using the appropriate application based on its type.
+
+${TITLE}ARGUMENTS:$END
+    INPUT_FILE             The file to be opened. Supported formats include:
+                           - Video: .mp4, .mkv, .avi
+                           - Audio: .mp3, .flac
+                           - Image: .png, .webp, .jpeg, .jpg, .svg
+                           - Document: .pdf
+
+${TITLE}EXAMPLES:$END
+    open video.mp4
+    open document.pdf
+
+${TITLE}REPORTING BUGS:$END
+    Report issues at: https://github.com/druxorey/dotfiles/issues
+
+"
+	exit 1
+}
+
+
+function main() {
+	local file="$1"
+
+	while getopts "h" opt; do
+		case $opt in
+			h) help ;;
+			*) help ;;
+		esac
+	done
+
+	[ -z "$file" ] && help
+
+	case $file in
+		*.mp4)    mpv     "$file" ;;
+		*.mkv)    mpv     "$file" ;;
+		*.mp3)    mpv     "$file" ;;
+		*.avi)    mpv     "$file" ;;
+		*.flac)   mpv     "$file" ;;
+		*.png)    sxiv    "$file" ;;
+		*.webp)   sxiv    "$file" ;;
+		*.jpeg)   sxiv    "$file" ;;
+		*.jpg)    sxiv    "$file" ;;
+		*.svg)    sxiv    "$file" ;;
+		*.pdf)    zathura "$file" ;;
+		*) printf "\n${ERROR} '$file' cannot be open via open()\nUse: [mpv, sxiv or zathura]\n\n" ;;
+	esac
+}
+
+main "$@"

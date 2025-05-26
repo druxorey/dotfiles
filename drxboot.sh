@@ -8,6 +8,8 @@ FAILED="\e[1;31m"
 END="\e[0m"
 LINE="\n"
 
+PACKAGES_LINK="https://raw.githubusercontent.com/druxorey/dotfiles/master/deps.pkglist"
+
 IS_AUTOMATED=0
 IS_YAY_INSTALLED=0
 
@@ -69,7 +71,7 @@ function installDependencies() {
 	)
 
 	# Fetch additional dependencies from a remote package list
-	local scriptDependencies=$(curl -s https://raw.githubusercontent.com/druxorey/dotfiles/master/arch-deps.pkglist)
+	local scriptDependencies=$(curl -s $PACKAGES_LINK)
 	eval "$scriptDependencies"
 }
 

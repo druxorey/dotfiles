@@ -1,0 +1,6 @@
+[Desktop Entry]
+Name=Neovim
+Exec=kitty -e nvim %F
+Terminal=true
+Type=Application
+MimeType=text/plain;text/markdown;

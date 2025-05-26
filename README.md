@@ -5,33 +5,36 @@
 <p align="center">
 <a href="https://www.deviantart.com/druxorey/gallery/94231956/wallpapers-for-dracula"><img src="https://img.shields.io/badge/wallpapers-BD93F9?style=for-the-badge"></a>
 <a href="#installation"><img src="https://img.shields.io/badge/installation-FF79C6?style=for-the-badge"></a>
-<a href="https://github.com/druxorey/sh-toolkit"><img src="https://img.shields.io/badge/scripts-BD93F9?style=for-the-badge"></a>
+<a href="https://github.com/druxorey/dotfiles/tree/main/local/bin"><img src="https://img.shields.io/badge/scripts-BD93F9?style=for-the-badge"></a>
 </p>
 
 ![Desktop Screenshot](/assets/rice-2025-04-06.webp)
 
 ## Repository Structure
 
-- `assets`: Contains files needed for the repository, such as screenshots.
+- `assets`: This directory contains resources required for the repository, such as screenshots, and other media files.
 
-- `config`: This directory contains specific configuration files for different programs and tools.
+- `config`: This directory holds configuration files for various programs and tools. These files are used to customize or set up the behavior of specific software.
+
+- `local`: This directory is used for user-specific files and scripts. It is divided into:
+	- `share/applications`: Contains `.desktop` files, which are used to define shortcuts and metadata for Linux applications, making them accessible from the application menu or launcher.
+	- `bin`: Contains custom scripts and executable files created by the user for system-level tasks or automation.
 
 ## Installation
 
-The `drxboot-arch.sh` script automates the initial installation and configuration of an Arch Linux system. It updates the system, installs essential packages (both from Pacman and AUR), and enables necessary services like the firewall and the login manager.
-
-It’s particularly useful for users who want a quick and straightforward installation process. You can find the script [here](drxboot-arch.sh).
+The [`drxboot.sh`](drxboot.sh) script automates the initial installation and configuration of an Arch Linux system. It updates the system, installs essential packages (both from Pacman and AUR), and enables necessary services like the firewall and the login manager. It’s particularly useful for users who want a quick and straightforward installation process.
 
 To download and execute the script directly, run:
 
 ```bash
-curl -O https://raw.githubusercontent.com/druxorey/dotfiles/refs/heads/main/drxboot-arch.sh && bash drxboot-arch.sh
+curl -O https://raw.githubusercontent.com/druxorey/dotfiles/refs/heads/main/drxboot.sh
+bash drxboot.sh
 ```
 
 To execute the script directly without downloading it, run:
 
 ```bash
-bash <(curl -s https://raw.githubusercontent.com/druxorey/dotfiles/refs/heads/main/drxboot-arch.sh)
+bash <(curl -s https://raw.githubusercontent.com/druxorey/dotfiles/refs/heads/main/drxboot.sh)
 ```
 
 ## Dependencies

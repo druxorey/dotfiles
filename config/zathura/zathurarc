@@ -1,0 +1,9 @@
+set selection-clipboard clipboard
+
+set font "Hack Nerd Font 9"
+
+set default-bg "#282A36"
+set statusbar-bg "#21222C"
+set statusbar-fg "#F8F8F2"
+set recolor-darkcolor "#F8F8F2"
+set recolor-lightcolor "#282A36"

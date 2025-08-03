@@ -1,0 +1,72 @@
+#!/usr/bin/env python3
+
+import os
+import argparse
+
+SIZE = '\033[32m'
+FILE = '\033[35m'
+ROUTE = '\033[36m'
+END = '\033[0m'
+
+QUANTITY_TOTAL = 0
+SIZE_TOTAL = 0
+
+def unitConverter(fileSize, memoryUnit):
+    if memoryUnit == 'kilobytes':
+        fileSize = round(fileSize / 1000, 2)
+    elif memoryUnit == 'megabytes':
+        fileSize = round(fileSize / 1000000, 2)
+    elif memoryUnit == 'gigabytes':
+        fileSize = round(fileSize / 1000000000, 2)
+    return fileSize
+
+
+def analyzeDirectory(directoryPath, memoryUnit, isRecursive, isHidden):
+    global QUANTITY_TOTAL
+    global SIZE_TOTAL
+
+    try:
+        fileList = os.listdir(directoryPath)
+    except FileNotFoundError:
+        print(f"Directory {ROUTE}{directoryPath}{END} not found")
+        return
+
+    for file in fileList:
+        if file.startswith('.') and not isHidden:
+            continue
+
+        filePath = os.path.join(directoryPath, file)
+
+        try:
+            if os.path.isfile(filePath):
+                fileSize = unitConverter(os.path.getsize(filePath), memoryUnit)
+                print(f"File {ROUTE}{filePath}{END} takes up {SIZE}{fileSize}{END} {memoryUnit}")
+                QUANTITY_TOTAL += 1
+                SIZE_TOTAL += fileSize
+
+            elif isRecursive:
+                analyzeDirectory(filePath,memoryUnit, isRecursive, isHidden)
+
+        except FileNotFoundError:
+            print(f"File {ROUTE}{filePath}{END} not found")
+            continue
+
+
+def main():
+    parser = argparse.ArgumentParser(description='List files in a directory.')
+
+    parser.add_argument('-r', action='store_true', help='Analyze directories recursively')
+    parser.add_argument('-d', action='store_true', help='Analyze hidden directories')
+    parser.add_argument('-k', action='store_const', const='kilobytes', dest='unit', default='bytes', help='Shows the final size value en Kilobytes')
+    parser.add_argument('-m', action='store_const', const='megabytes', dest='unit', default='bytes', help='Shows the final size value en Megabytes')
+    parser.add_argument('-g', action='store_const', const='gigabytes', dest='unit', default='bytes', help='Shows the final size value en Gigabytes')
+    parser.add_argument('path', type=str, help='The directory path to analyze')
+
+    args = parser.parse_args()
+
+    analyzeDirectory(args.path, args.unit, args.r, args.d)
+
+    print(f"\n ► {FILE}{QUANTITY_TOTAL} files{END} occupy a total of {SIZE}{round(SIZE_TOTAL,2)}{END} {args.unit}\n")
+
+if __name__ == "__main__":
+    main()

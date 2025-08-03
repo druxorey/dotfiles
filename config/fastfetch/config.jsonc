@@ -1,0 +1,64 @@
+{
+	"$schema": "https://github.com/fastfetch-cli/fastfetch/raw/dev/doc/json_schema.json",
+	"logo": {
+		"type": "small",
+		"padding": {
+			"top": 2,
+			"left": 4
+		}
+	},
+	"display": {
+		"separator": "",
+		"key": { "width": 18}
+	},
+	"modules": [
+		{
+			"key": "╭─────────────╮",
+			"type": "custom"
+		},
+		{
+			"key": "│             │\u001b[13D{#34}  user",
+			"type": "title",
+			"format": "{1}"
+		},
+		{
+			"key": "│             │\u001b[13D{#36}󰣇  os",
+			"type": "os",
+			"format": "{3}"
+		},
+		{
+			"key": "│             │\u001b[13D{#33}  kernel",
+			"type": "kernel"
+		},
+		{
+			"key": "│             │\u001b[13D{#31}󰏖  packages",
+			"type": "packages"
+		},
+		{
+			"key": "│             │\u001b[13D{#35}  shell",
+			"type": "shell"
+		},
+		{
+			"key": "│             │\u001b[13D{#37}  wm",
+			"type": "wm",
+			"format": "{1}"
+		},
+		{
+			"key": "│             │\u001b[13D{#32}  terminal",
+			"type": "terminal"
+		},
+		{
+			"key": "├─────────────┤",
+			"type": "custom"
+		},
+		{
+			"key": "│             │\u001b[13D{#39} colors",
+			"type": "colors",
+			"symbol": "circle"
+		},
+		{
+			"key": "╰─────────────╯",
+			"type": "custom"
+		}
+	]
+}

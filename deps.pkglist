@@ -1,0 +1,11 @@
+#!/bin/bash
+
+minimal_main_packages=(git linux linux-firmware linux-headers reflector ufw bash-completion bat bc btop curl dosfstools exfat-utils eza fastfetch fd ffmpeg fuse-exfat fzf gnome-keyring imagemagick ncdu neovim p7zip pv ripgrep rsync scrot silicon sl speedtest-cli sxiv tar the_silver_searcher thefuck tldr tmux tokei translate-shell trash-cli unrar unzip usbutils vim wget xclip xdg-ninja xsel yazi zip zoxide github-cli gping yt-dlp alsa-utils blueman bluez-utils brightnessctl cpufetch ffmpegthumbnailer g++ gvfs-mtp gvfs-smb iniparser intel-ucode jdk-openjdk luarocks mtpfs ncurses nodejs npm ntfs-3g pandoc-cli php playerctl pulseaudio-bluetooth python python-black python-pip python-setuptools python-virtualenv redshift rust rust-analyzer sane samba smbclient tlp tumbler upower xdotool cmatrix cmus genact)
+
+desktop_main_packages=(bspwm dunst kitty hplip libinput libinput-gestures lightdm lightdm-gtk-greeter lightdm-gtk-greeter-settings networkmanager sxhkd timeshift xorg dialog flameshot viu autorandr cups cups-pdf gestures simple-scan texlive-bin texlive-bibtexextra texlive-binextra texlive-fontsextra texlive-fontsrecommended texlive-langspanish texlive-latex texlive-latexextra texlive-latexrecommended texlive-mathscience texlive-pictures texlive-xetex lxappearance nitrogen noto-fonts noto-fonts-cjk noto-fonts-emoji papirus-icon-theme picom polybar discord gimp gloobus-preview gthumb inkscape libreoffice-fresh nautilus obs-studio obsidian qalculate-gtk rofi rofi-calc sigil steam thunar transmission-gtk vbam-wx virtualbox vlc wine zathura zathura-pdf-mupdf system-config-printer)
+
+minimal_aur_packages=(oh-my-posh peaclock pipes.sh cava googler gtypist)
+
+desktop_aur_packages=(ani-cli bsp-layout eww lutgen-bin manga-cli-git tetris-terminal-git tumbler-extra-thumbnailers brave-bin deemix-gui-git minecraft-launcher notion-app-electron proton-vpn-gtk-app visual-studio-code-bin)
+
+drivers_services=(bluetooth.service cups.service lightdm.service NetworkManager.service tlp.service ufw.service)

@@ -1,0 +1,42 @@
+# ======================================================================#
+#
+#
+#   ██████╗ ██╗████████╗██╗ ██████╗ ███╗   ██╗ ██████╗ ██████╗ ███████╗
+#  ██╔════╝ ██║╚══██╔══╝██║██╔════╝ ████╗  ██║██╔═══██╗██╔══██╗██╔════╝
+#  ██║  ███╗██║   ██║   ██║██║  ███╗██╔██╗ ██║██║   ██║██████╔╝█████╗  
+#  ██║   ██║██║   ██║   ██║██║   ██║██║╚██╗██║██║   ██║██╔══██╗██╔══╝  
+#  ╚██████╔╝██║   ██║   ██║╚██████╔╝██║ ╚████║╚██████╔╝██║  ██║███████╗
+#   ╚═════╝ ╚═╝   ╚═╝   ╚═╝ ╚═════╝ ╚═╝  ╚═══╝ ╚═════╝ ╚═╝  ╚═╝╚══════╝
+#
+#
+# ======================================================================#
+
+# cmus
+!config/cmus/autosave
+config/cmus/*
+
+# nvim
+config/nvim/plugins/installed/*
+config/nvim/lua/plugins/prompts/*
+
+# obsidian
+config/obsidian/plugins/*
+config/obsidian/themes/*
+config/obsidian/workspace.json
+
+# tmux
+!config/tmux/plugins/tmux/dracula.tmux
+!config/tmux/plugins/tmux/scripts
+config/tmux/plugins/tmux/
+
+# vencord
+config/vencord/dist
+
+# zsh
+config/zsh/.histfile
+config/zsh/zsh-autosuggestions
+config/zsh/zsh-syntax-highlighting
+config/zsh/zsh-autocomplete
+
+# experiments
+*/_experiments

@@ -1,0 +1,185 @@
+
+/* ========================================================================== !/
+/!
+/!                        ██████╗  ██████╗ ███████╗██╗
+/!                        ██╔══██╗██╔═══██╗██╔════╝██║
+/!                        ██████╔╝██║   ██║█████╗  ██║
+/!                        ██╔══██╗██║   ██║██╔══╝  ██║
+/!                        ██║  ██║╚██████╔╝██║     ██║
+/!                        ╚═╝  ╚═╝ ╚═════╝ ╚═╝     ╚═╝
+/!
+/!                                FILES MENU
+/!
+/!                            - Made by Druxorey -
+/!                         https://github.com/druxorey
+/!
+/! ========================================================================== */
+
+/* ============================== configuration ============================= */
+
+@import "shared/theme.rasi"
+
+configuration {
+	modi: "recursivebrowser,filebrowser";
+	display-recursivebrowser: "";
+	display-filebrowser: "";
+	drun-display-format: "{name}";
+	show-icons: true;
+	disable-history: false;
+	case-sensitive: false;
+	icon-theme: "Papirus";
+}
+
+/* ============================== main window =============================== */
+
+window {
+	location: north;
+	border: @border-size-1;
+	border-radius: @border-radius-1;
+	padding: 0;
+	width: 56em;
+	y-offset: 6%;
+
+	background-color: @color-background-1;
+	border-color: @color-accent-1;
+
+	children: [ "mainbox" ];
+}
+
+/* ================================ main box ================================ */
+
+mainbox {
+	spacing: 1em;
+	padding: 1.5em;
+	children: [ "inputbar", "message", "listview" ];
+}
+
+/* ================================ inputbar ================================ */
+
+inputbar {
+	spacing: 0.5 em;
+	children: [ "entry", "mode-switcher"];
+}
+
+message {
+	enabled: true;
+	margin: 0px;
+	padding: 0.25em 0.5em 0.25em 0.5em;
+	border: 0px solid;
+	border-radius: @border-radius-2;
+	background-color: @color-background-2;
+}
+
+textbox {
+	enabled: true;
+	padding: 0.25em 0.5em 0.25em 0.5em;
+	background-color: @color-background-2;
+	text-color: @color-foreground-1;
+	vertical-align: 0.5;
+	horizontal-align: 0.0;
+	highlight: none;
+	blink: true;
+	markup: true;
+}
+
+entry {
+	padding: 0.25em 0.5em 0.25em 0.5em;
+	border-radius: @border-radius-2;
+	placeholder: "Search...";
+
+	background-color: @color-background-2;
+	text-color: @color-foreground-1;
+	placeholder-color: @color-disabled;
+}
+
+mode-switcher{
+	enabled: true;
+	spacing: 0.5em;
+}
+
+button {
+	padding: 0.15em 0.5em 0.15em 0.5em;
+	cursor: pointer;
+	border-radius: @border-radius-2;
+
+	background-color: @color-background-2;
+	text-color: @color-foreground-1;
+	border-color: @border-color;
+}
+
+button selected {
+	padding: 0em 0.25em 0em 0.25em;
+
+	background-color: @color-accent-1;
+	text-color: @color-foreground-2;
+}
+
+/* ================================ listview ================================ */
+
+listview {
+	scrollbar: false;
+	border: 0;
+	lines: 4;
+}
+
+element {
+	padding: 0.5em 0em 0.5em 0em;
+	border-radius: @border-radius-1;
+
+	border-color: @color-background-1;
+}
+
+element.normal.normal {
+	background-color: @color-background-1;
+	text-color: @color-foreground-1;
+}
+
+element.normal.urgent {
+	background-color: @color-urgent-1;
+	text-color: @color-foreground-1;
+}
+
+element.normal.active {
+	background-color: @color-accent-1;
+	text-color: @color-foreground-1;
+}
+
+element.selected.normal {
+	background-color: @color-accent-1;
+	text-color: @color-background-1;
+}
+
+element.selected.urgent {
+	background-color: @selected-urgent-background;
+	text-color: @color-foreground-1;
+}
+
+element.selected.active {
+	background-color: @color-accent-1;
+	text-color: @color-foreground-1;
+}
+
+element.alternate.normal {
+	background-color: @color-background-1;
+	text-color: @color-foreground-1;
+}
+
+element.alternate.urgent {
+	background-color: @color-urgent-1;
+	text-color: @color-foreground-1;
+}
+
+element.alternate.active {
+	background-color: @color-accent-1;
+	text-color: @color-foreground-1;
+}
+
+element-icon {
+	size: 1.25em;
+	padding: 0em 0.5em 0em 0.5em;
+}
+
+element-text {
+	background-color: inherit;
+	text-color: inherit;
+}

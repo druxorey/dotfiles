@@ -1,0 +1,82 @@
+#!/bin/bash
+
+ERROR="\e[1;31mERROR:"
+WARN="\e[1;33mWARNING:"
+SUCCESS="\e[1;32mSUCCESS:"
+TITLE="\e[1;34m"
+END="\e[0m"
+
+function help() {
+	printf "
+${TITLE}USAGE:$END
+    compress [-o OUTPUT_FILE] [-l COMPRESSION_LEVEL] INPUT_FILE
+
+${TITLE}DESCRIPTION:$END
+    Compresses a video file using ffmpeg with a specified compression level.
+
+${TITLE}ARGUMENTS:$END
+    -o OUTPUT_FILE         Specify the name of the output file. (Optional)
+    -l COMPRESSION_LEVEL   Compression level (0-3). (Optional)
+                           0: Low compression (default)
+                           1: Medium compression
+                           2: High compression
+                           3: Maximum compression
+    INPUT_FILE             The video file to be compressed.
+
+${TITLE}EXAMPLES:$END
+    compress -o output.mp4 -l 2 input.mp4
+    compress input.mp4
+
+${TITLE}REPORTING BUGS:$END
+    Report issues at: https://github.com/druxorey/dotfiles/issues
+
+"
+    exit 1
+}
+
+
+function main() {
+	local inputFile=""
+	local outputFile=""
+	local compressionLevel=0
+
+	while getopts "o:l:h" opt; do
+		case $opt in
+			o) outputFile="$OPTARG" ;;
+			l) compressionLevel="$OPTARG" ;;
+			h) help ;;
+			*) help ;;
+		esac
+	done
+
+	shift $((OPTIND - 1))
+
+	inputFile="$1"
+
+	if [[ -z "$inputFile" ]]; then
+		printf "${ERROR} Input file is required.${END}"
+		return 1
+	fi
+
+	if [[ -z "$outputFile" ]]; then
+		local date=$(date +%d-%m-%Y_%H-%M-%S)
+		outputFile="${compressionLevel}_${date}.${inputFile#*.}"
+	fi
+
+	case $compressionLevel in
+		0) compression=10 ;;
+		1) compression=20 ;;
+		2) compression=31 ;;
+		3) compression=35 ;;
+		*) printf "${ERROR} Wrong compression level.${END}" ; return 1 ;;
+	esac
+
+	ffmpeg -i "$inputFile" -vcodec libx264 -preset slower -crf $compression "$outputFile" || {
+		printf "${ERROR} Failed to compress the file.${END}"
+		return 1
+	}
+
+	printf "\n$SUCCESS File $inputFile compressed to $outputFile with compression level $compressionLevel\n"
+}
+
+main "$@"

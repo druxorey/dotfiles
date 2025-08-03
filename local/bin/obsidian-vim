@@ -1,0 +1,53 @@
+#!/bin/bash
+
+VAULT_PATH="${HOME}/Documents/[01] Obsidian/"
+
+ERROR="\e[1;31mERROR:"
+END="\e[0m"
+
+function help() {
+    echo
+    echo "USAGE: obsidian-vim VAULT_NAME"
+    echo
+    echo "DESCRIPTION: Opens an Obsidian vault in Neovim."
+    echo
+    echo "ARGUMENTS:"
+    echo "  VAULT_NAME: The name of the Obsidian vault to open."
+    echo
+    echo "EXAMPLES:"
+    echo "  obsidian-vim MyVault"
+    echo
+    echo "NOTES:"
+    echo "  - The script searches for vaults in the directory: ~/Documents/01 - Obsidian/"
+    echo "  - Ensure the VAULT_NAME matches the folder name of the vault."
+    echo
+    echo "Report bugs to https://github.com/druxorey/dotfiles/issues"
+    echo
+    exit 1
+}
+
+
+function main() {
+
+	if [ $# -eq 0 ]; then
+		help
+		return
+	fi
+
+	local vaults=($(find "${VAULT_PATH}" -mindepth 1 -maxdepth 1 -type d -not -name '.git' -exec basename {} \;))
+
+	for vault in "${vaults[@]}"; do
+		if [[ "${1,,}" = "${vault,,}" ]]; then
+			(
+			command cd "$VAULT_PATH/$vault"
+			nvim
+			)
+			return
+		fi
+	done
+
+	echo -e "$ERROR Vault not found.$END"
+	echo -e "Available vaults: ${vaults[*]}"
+}
+
+main "$@"

@@ -1,0 +1,227 @@
+{
+  "main": {
+    "id": "3e4567300b74d3fb",
+    "type": "split",
+    "children": [
+      {
+        "id": "ce95f754156fbc35",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "1f14a282cdd5478e",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "Class Notes/ORGA I - Organización y Estructura del Computador I/Apuntes de las Lecturas/1L - A Tour of Computer Systems.md",
+                "mode": "source",
+                "source": false
+              },
+              "icon": "lucide-file",
+              "title": "1L - A Tour of Computer Systems"
+            }
+          },
+          {
+            "id": "ebc59aa80c1bd85b",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "S03 - Ingeniería de Software/INGE 01 - Investigaciones/250530 - Comparación de Modelos.md",
+                "mode": "preview",
+                "source": false
+              },
+              "icon": "lucide-file",
+              "title": "250530 - Comparación de Modelos"
+            }
+          }
+        ],
+        "currentTab": 1
+      }
+    ],
+    "direction": "vertical"
+  },
+  "left": {
+    "id": "f10705fe7aab6e71",
+    "type": "mobile-drawer",
+    "children": [
+      {
+        "id": "37d22a507ae8df86",
+        "type": "leaf",
+        "state": {
+          "type": "file-explorer",
+          "state": {
+            "sortOrder": "alphabetical",
+            "autoReveal": false
+          },
+          "icon": "lucide-folder-closed",
+          "title": "Files"
+        }
+      },
+      {
+        "id": "1b3274e0906ab8e9",
+        "type": "leaf",
+        "state": {
+          "type": "search",
+          "state": {
+            "query": "Discip",
+            "matchingCase": false,
+            "explainSearch": false,
+            "collapseAll": false,
+            "extraContext": false,
+            "sortOrder": "alphabetical"
+          },
+          "icon": "lucide-search",
+          "title": "Search"
+        }
+      },
+      {
+        "id": "559eb3e19dd1ce58",
+        "type": "leaf",
+        "state": {
+          "type": "tag",
+          "state": {
+            "sortOrder": "frequency",
+            "useHierarchy": true,
+            "showSearch": false,
+            "searchQuery": ""
+          },
+          "icon": "lucide-tags",
+          "title": "Tags"
+        }
+      },
+      {
+        "id": "9ae8fa5a037c3426",
+        "type": "leaf",
+        "state": {
+          "type": "bookmarks",
+          "state": {},
+          "icon": "lucide-file",
+          "title": "Plugin no longer active"
+        }
+      }
+    ],
+    "currentTab": 0
+  },
+  "right": {
+    "id": "47fd1c58efe62c80",
+    "type": "mobile-drawer",
+    "children": [
+      {
+        "id": "2860e9a0171ec900",
+        "type": "leaf",
+        "state": {
+          "type": "backlink",
+          "state": {
+            "file": "S03 - Ingeniería de Software/INGE 01 - Investigaciones/250530 - Comparación de Modelos.md",
+            "collapseAll": false,
+            "extraContext": false,
+            "sortOrder": "alphabetical",
+            "showSearch": false,
+            "searchQuery": "",
+            "backlinkCollapsed": false,
+            "unlinkedCollapsed": true
+          },
+          "icon": "links-coming-in",
+          "title": "Backlinks"
+        }
+      },
+      {
+        "id": "d092ef8c9d23fe9e",
+        "type": "leaf",
+        "state": {
+          "type": "outgoing-link",
+          "state": {
+            "file": "Class Notes/Matemáticas II/Derivadas.md",
+            "linksCollapsed": false,
+            "unlinkedCollapsed": true
+          },
+          "icon": "links-going-out",
+          "title": "Outgoing links"
+        }
+      },
+      {
+        "id": "1411de855f0c2876",
+        "type": "leaf",
+        "state": {
+          "type": "outline",
+          "state": {
+            "file": "Class Notes/Matemáticas II/Derivadas.md",
+            "followCursor": false,
+            "showSearch": false,
+            "searchQuery": ""
+          },
+          "icon": "lucide-list",
+          "title": "Outline"
+        }
+      },
+      {
+        "id": "c56cca167967a1bd",
+        "type": "leaf",
+        "state": {
+          "type": "calendar",
+          "state": {},
+          "icon": "calendar-with-checkmark",
+          "title": "Calendar"
+        }
+      }
+    ],
+    "currentTab": 0
+  },
+  "left-ribbon": {
+    "hiddenItems": {
+      "obsidian-excalidraw-plugin:New drawing": false,
+      "copilot:Open Copilot Chat": false,
+      "switcher:Open quick switcher": false,
+      "graph:Open graph view": false,
+      "canvas:Create new canvas": false,
+      "templates:Insert template": false,
+      "command-palette:Open command palette": false,
+      "table-editor-obsidian:Advanced Tables Toolbar": false,
+      "pomodoro-timer:Toggle timer panel": false,
+      "templater-obsidian:Templater": false,
+      "obsidian-kanban:Create new board": false,
+      "omnisearch:Omnisearch": false,
+      "obsidian-trash-explorer:Open trash explorer": false
+    }
+  },
+  "active": "ebc59aa80c1bd85b",
+  "lastOpenFiles": [
+    "S03 - Ingeniería de Software/INGE 01 - Investigaciones/250505 - Metodologías de Desarrollo de Software.md",
+    "S03 - Ingeniería de Software/INGE 01 - Investigaciones/250425 - Gestión de Proyectos de Software.md",
+    "S03 - Ingeniería de Software/INGE 01 - Investigaciones/250414 - Estándares del Software.md",
+    "S03 - Ingeniería de Software/INGE 01 - Investigaciones/250410 - Complejidad del Software.md",
+    "S03 - Ingeniería de Software/INGE 01 - Investigaciones/250408 - La Crisis del Software.md",
+    "S03 - Ingeniería de Software/INGE 01 - Investigaciones/250408 - Evolución de la ingeniería de software.md",
+    "S03 - Ingeniería de Software/INGE 01 - Investigaciones/250407 - Introducción a la Ingeniería de Software.md",
+    "S03 - Organización y Estructura del Computador II/ORGA-II 02 - Prácticas/P1 - Introducción a RISC-V.md",
+    "S03 - Organización y Estructura del Computador II/ORGA-II 01 - Investigaciones/ORGA-II 01 - RISC-V/250424 - RISC-V - Llamados de Funciones.md",
+    "S03 - Organización y Estructura del Computador II/ORGA-II 01 - Investigaciones/ORGA-II 01 - RISC-V/250410 - RISC-V - Instrucciones Aritméticas.md",
+    "S03 - Organización y Estructura del Computador II/ORGA-II 01 - Investigaciones/ORGA-II 01 - RISC-V/250409 - RISC-V - Registers.md",
+    "D2 - Working/250529 - RUP y XP.md",
+    "S03 - Organización y Estructura del Computador II/ORGA-II 01 - Investigaciones/ORGA-II 01 - RISC-V/250407 - RISC-V - Cómo funciona el compilador.md",
+    "D3 - Investigations/Vadamécum del Programador/250417 - Ideas Generales.md",
+    "Problemas de Ayp - Parcial 1.md",
+    "D1 - Vault/V1 - Assets/Pasted image 20250512005654.png",
+    "D1 - Vault/V1 - Assets/Pasted image 20250511203831.png",
+    "D1 - Vault/V1 - Assets/Pasted image 20250511002937.png",
+    "D1 - Vault/V1 - Assets/Pasted image 20250509095037.png",
+    "D1 - Vault/V1 - Assets/Pasted image 20250509093211.png",
+    "D1 - Vault/V1 - Assets/Pasted image 20250304192320.png",
+    "D1 - Vault/V1 - Assets/Pasted image 20250303172603.png",
+    "D1 - Vault/V1 - Assets/Pasted image 20250303172459.png",
+    "D1 - Vault/V1 - Assets/Pasted image 20250303172428.png",
+    "D1 - Vault/V1 - Assets/Pasted image 20250303163726.png",
+    "S03 - Ingeniería de Software/INGE 01 - Investigaciones/250526 - Procesos de Desarrollo de Software.md",
+    "S03 - Ingeniería de Software/INGE 02 - Prácticas/250509 - Práctica 2.md",
+    "S03 - Ingeniería de Software/INGE 02 - Prácticas/250504 - Práctica 1.md",
+    "Daily Notes/RISC-V - Instrucciones de Lógica.md",
+    "Class Notes/ORGA II - Organización y Estructura del Computador II/RISC-V vs x86.md",
+    "Daily Notes/RISC-V - Instrucciones Aritméticas.md",
+    "Daily Notes/RISC-V - Instrucciones de Toma de Decisiones.md",
+    "Class Notes/ORGA II - Organización y Estructura del Computador II/RISC-V - Registers.md",
+    "Daily Notes/RISC-V - Instrucciones de Manipulación de Memoria.md",
+    "Class Notes/INGE - Ingeniería en Informática/La Crisis del Software.md",
+    "Daily Notes/Nextcloud y SMB.md"
+  ]
+}

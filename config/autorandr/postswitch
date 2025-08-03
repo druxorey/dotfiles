@@ -1,0 +1,13 @@
+#!/bin/bash
+
+if xrandr | grep "HDMI-1 connected"; then
+    bspc monitor eDP-1 -d 󰊠 󰊠 󰊠 󰊠 󰊠
+    bspc monitor HDMI-1 -d 󰮯 󰮯 󰮯
+else
+    bspc monitor eDP-1 -d 󰊠 󰊠 󰊠 󰊠 󰊠
+    bspc monitor HDMI-1 -r
+fi
+
+pkill polybar
+polybar &
+nitrogen --restore

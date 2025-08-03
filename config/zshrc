@@ -1,0 +1,209 @@
+
+#! ========================================================================== !#
+#!
+#!                  ███████╗███████╗██╗  ██╗██████╗  ██████╗
+#!                  ╚══███╔╝██╔════╝██║  ██║██╔══██╗██╔════╝
+#!                    ███╔╝ ███████╗███████║██████╔╝██║
+#!                   ███╔╝  ╚════██║██╔══██║██╔══██╗██║
+#!                  ███████╗███████║██║  ██║██║  ██║╚██████╗
+#!                  ╚══════╝╚══════╝╚═╝  ╚═╝╚═╝  ╚═╝ ╚═════╝
+#!
+#!                            - Made by Druxorey -
+#!                         https://github.com/druxorey
+#!
+#! ========================================================================== !#
+
+#* ================================= startup ================================ *#
+
+[[ $- != *i* ]] && return
+PS1='[\u@\h \W]\$ '
+fastfetch --load-config ~/.config/fastfetch/init.jsonc && echo
+
+eval "$(zoxide init zsh)"
+eval "$(thefuck --alias)"
+eval "$(oh-my-posh init zsh --config ~/.config/oh-my-posh/dracula.omp.json)"
+
+#* =============================== path export ============================== *#
+
+export PATH=$PATH:~/.local/bin
+export CARGO_HOME='$XDG_DATA_HOME'/cargo
+export GTK2_RC_FILES='$XDG_CONFIG_HOME'/gtk-2.0/gtkrc
+export GIT_EDITOR=nvim
+export EDITOR=nvim
+export _JAVA_AWT_WM_NONREPARENTING=1
+export _JAVA_OPTIONS="-Dawt.useSystemAAFontSettings=on -Dswing.aatext=true -Dsun.java2d.xrender=true -Dsun.java2d.uiScale=1.25 -Dsun.java2d.dpiaware=true -Dsun.java2d.dpi=96"
+
+#* ================================= aliases ================================ *#
+
+# directory navigation
+alias vim='nvim'
+alias cat='bat'
+alias fzf='fzf --preview "bat --color=always {}"'
+alias ls='eza --icons --group-directories-first'
+alias la='eza --icons -a --group-directories-first'
+alias lt='eza --icons --tree --group-directories-first'
+alias ll='eza --icons -lh --group-directories-first'
+alias lla='eza --icons -alh --group-directories-first'
+alias labc='eza --icons -la'
+alias l.='eza -a | grep -E "^\."'
+alias cd='z'
+alias cdi='zi'
+alias ..='z ..'
+alias ...='z ../..'
+
+# remaping
+alias fk='fuck'
+alias cp='cp -i'
+alias th='trash'
+alias thl='trash-list'
+alias thr='trash-restore'
+alias convert='magick'
+alias grep='grep --color=auto'
+alias matrix='cmatrix -C blue'
+alias peaclock='peaclock --config ~/.config/peaclock'
+alias btop='btop --force-utf'
+
+# pacman and yay
+alias unlock='sudo rm /var/lib/pacman/db.lck'
+
+# git
+alias gadd='git add'
+alias gamend='git commit --amend'
+alias gbranch='git branch -vv'
+alias gcheckout='git checkout'
+alias gclone='git clone'
+alias gcommit='git commit -v'
+alias gdiff='git diff'
+alias gfetch='git fetch'
+alias glog='git log --oneline --graph --decorate -n 10'
+alias glogl='git log --oneline --graph --decorate'
+alias gmerge='git merge --no-ff'
+alias gpull='git pull'
+alias gpush='git push'
+alias greset='git reset'
+alias grestore='git restore'
+alias gstatus='git status -sb'
+alias gvim='nvim -c "vertical Git" -c "wincmd h | q" '
+
+# macros
+alias copilot='nvim -c "CopilotChat" -c "wincmd h | q" '
+alias cpv='rsync -avh --info=progress2'
+alias mdtopdf='pandoc $1 -o default.pdf --pdf-engine=xelatex -V mainfont="Arial" monofont="Arial"'
+alias todo='bspc rule -a "*" -o state=floating && kitty opdoc todo'
+alias trans-es='trans -s english -t spanish'
+alias setkeys='setxkbmap us -variant intl'
+alias reload='clear && source ~/.zshrc'
+alias yt-mp3='yt-dlp -x --audio-format mp3'
+alias yt-1080='yt-dlp -f "bestvideo[height<=1080][ext=mp4]+bestaudio[ext=m4a]"'
+alias yt-720='yt-dlp -f "bestvideo[height<=720][ext=mp4]+bestaudio[ext=m4a]"'
+alias yt-480='yt-dlp -f "bestvideo[height<=480][ext=mp4]+bestaudio[ext=m4a]"'
+alias vencord='sh -c "$(curl -sS https://raw.githubusercontent.com/Vendicated/VencordInstaller/main/install.sh)"'
+
+# python
+alias py='python3'
+alias rm-pychache='sudo rm -r __pycache__'
+alias venv-activate='source .venv/bin/activate'
+alias venv-requirements='pip freeze > requirements.txt'
+alias venv-create='virtualenv .venv'
+alias venv-desactivate='deactivate'
+
+# system
+alias lock='dm-tool lock'
+alias logout='bspc quit'
+alias shutdown='shutdown now'
+
+#* ================================ zsh setup =============================== *#
+
+# history
+HISTFILE=~/.config/zsh/.histfile
+HISTSIZE=5000
+SAVEHIST=5000
+
+# vim mode
+bindkey -v
+export KEYTIMEOUT=1
+
+# key bindings
+bindkey '^?'      backward-delete-char
+bindkey '^u'      backward-kill-line
+bindkey '^a'      beginning-of-line
+bindkey '^e'      end-of-line
+bindkey '^[[3~'   delete-char
+bindkey '^k'      kill-line
+
+# fzf settings
+export FZF_ALT_C_OPTS='--preview "tree -C {} | head -200"'
+export FZF_CTRL_T_OPTS="
+  --walker-skip .git,node_modules,target,.local,.steam
+  --preview 'bat -n --color=always {}'
+  --bind 'ctrl-/:change-preview-window(down|hidden|)'"
+source <(fzf --zsh)
+source ~/.config/zsh/autocomplete-opdoc.sh
+
+# plugins
+source ~/.config/zsh/zsh-autosuggestions/zsh-autosuggestions.zsh
+source ~/.config/zsh/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+
+#* ================================ functions =============================== *#
+
+function gfix() {
+	echo "The commit: "
+	git log --oneline --graph --decorate -n 1
+	git reset --soft HEAD~1
+	echo "\nWas restarted to previous commit: "
+	git log --oneline --graph --decorate -n 1
+}
+
+
+function hdmi-connect() {
+	local resolution="${1:-1920x1080}"
+	echo "Setting HDMI resolution to $resolution"
+	xrandr --output eDP-1 --primary --mode 1920x1080 --rotate normal --output HDMI-1 --mode $resolution --rotate normal --right-of eDP-1
+	bspc wm -r
+}
+
+
+function hdmi-disconnect() {
+	echo "Turning off HDMI"
+	xrandr --output HDMI-1 --off
+}
+
+
+function gtest() {
+	if [[ $# -eq 0 ]]; then
+		echo -e "\e[1;31mERROR: No file provided."
+		return 1
+	fi
+
+	g++ -DENABLE_TESTS $1 -o output.out && ./output.out --verbosity=2 --success
+}
+
+
+function grun() {
+	if [[ $# -eq 0 ]]; then
+		printf "\e[1;31mERROR: No file provided."
+		return 1
+	fi
+
+	if [[ ${1##*.} != "cpp" ]]; then
+		printf "\e[1;31mERROR: Incorrect file type."
+		return 1
+	fi
+
+	filename=$(basename "$1" .cpp)
+	g++ $1 -o ${filename}.out && ./${filename}.out
+}
+
+
+function sysupdate() {
+	sudo -v
+	while true; do sudo -n true; sleep 60; kill -0 "$$" || exit; done 2>/dev/null &
+
+	sudo pacman -Syu --noconfirm && yay -Sua --noconfirm
+
+	if [[ -d go ]]; then
+		sudo rm -rf go
+	fi
+
+	vencord
+}

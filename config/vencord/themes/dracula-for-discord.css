@@ -1,0 +1,112 @@
+/* ==UserStyle==
+@name             Dracula for Discord
+@namespace        github.com/druxorey/dracula-for-stylus
+@version          1.0.1
+@description      Are you tired of the same boring colors on Discord? Then try this modern color style based on the Dracula theme
+@author           Druxorey
+@license          GNU General Public License v3.0
+==/UserStyle== */
+
+/*NOTE: THIS STYLE IS ONLY FOR VENCORD*/
+
+@import url('https://refact0r.github.io/midnight-discord/build/midnight.css');
+
+:root {
+    --color-background-1: #525568;
+    --color-background-2: #44475A;
+    --color-background-3: #353747;
+    --color-background-4: #282A36;
+    --color-background-5: #21222C;
+
+    --color-foreground-1: #F8F8F2;
+    --color-foreground-2: #E3E3E2;
+    --color-foreground-3: #C6C7CC;
+
+    --color-shadow-1: #353747;
+    --color-shadow-2: #21222C;
+    --color-shadow-3: #1A1C24;
+
+    --color-comment: #6272A4;
+
+    --color-red-1:#FF6E6E;
+    --color-red-2: #FF5555;
+    --color-red-3: #E63C3C;
+    --color-orange-1: #FFD185;
+    --color-orange-2: #FFB86C;
+    --color-orange-3: #E69F53;
+    --color-yellow-1: #FFFFA5;
+    --color-yellow-2: #F1FA8C;
+    --color-yellow-3: #D8E173;
+    --color-green-1: #69FF94;
+    --color-green-2: #50FA7B;
+    --color-green-3: #37EB62; 
+    --color-cyan-1: #A4FFFF;
+    --color-cyan-2: #8BE9FD;
+    --color-cyan-3: #72D0E4;
+    --color-blue-1: #6DCCFF;
+    --color-blue-2: #54B3FF;
+    --color-blue-3: #3B9AE6;
+    --color-purple-1: #D6ACFF;
+    --color-purple-2: #BD93F9;
+    --color-purple-3: #A47AE0;
+    --color-pink-1: #FF92DF;
+    --color-pink-2: #FF79C6;
+    --color-pink-3: #E660AD;
+}
+
+:root {
+	--font: 'gg sans';
+
+	--corner-text: 'none';
+
+	--online-indicator: var(--color-purple-2);
+	--dnd-indicator: var(--color-red-2);
+	--idle-indicator: var(--color-yellow-2);
+	--streaming-indicator: var(--color-purple-2);
+
+	--accent-1: var(--color-pink-2);
+	--accent-2: var(--color-purple-2);
+	--accent-3: var(--color-background-1);
+	--accent-4: var(--color-background-2);
+	--accent-5: var(--color-purple-2);
+	--mention: var(--color-background-3);
+	--mention-hover: var(--color-background-2);
+
+	--text-0: var(--color-foreground-1);
+	--text-1: var(--color-foreground-1);
+	--text-2: var(--color-purple-2);
+	--text-3: var(--color-foreground-2);
+	--text-4: var(--color-comment);
+	--text-5: var(--color-background-1);
+
+	--bg-1: var(--color-background-3);
+	--bg-2: var(--color-background-5);
+	--bg-3: var(--color-background-5);
+	--bg-4: var(--color-background-4);
+	--hover: var(--color-background-3);
+	--active: var(--color-background-3);
+	--message-hover: var(--color-background-3);
+
+	--spacing: 16px;
+
+	--list-item-transition: 0.2s ease;
+	--unread-bar-transition: 0.2s ease;
+	--moon-spin-transition: 0.4s ease;
+	--icon-spin-transition: 1s ease;
+
+	--roundness-xl: 12px;
+	--roundness-l: 10px;
+	--roundness-m: 16px;
+	--roundness-s: 12px;
+	--roundness-xs: 10px;
+	--roundness-xxs: 8px;
+
+	--discord-icon: show;
+	--moon-icon: none;
+	--moon-icon-url: url('https://upload.wikimedia.org/wikipedia/commons/c/c4/Font_Awesome_5_solid_moon.svg');
+	--moon-icon-size: auto;
+
+	--login-bg-filter: saturate(0.3) hue-rotate(-15deg) brightness(0.4);
+	--green-to-accent-3-filter: hue-rotate(56deg) saturate(1.43);
+	--blurple-to-accent-3-filter: hue-rotate(304deg) saturate(0.84) brightness(1.2);
+}

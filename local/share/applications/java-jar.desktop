@@ -1,0 +1,11 @@
+#!/usr/bin/env xdg-open
+[Desktop Entry]
+Version=1.0
+Name=OpenJDK Jar
+Comment=Execute a Java Archive (JAR) file with OpenJDK
+Exec=env _JAVA_AWT_WM_NONREPARENTING=1 _JAVA_OPTIONS="-Dawt.useSystemAAFontSettings=on -Dswing.aatext=true -Dsun.java2d.xrender=true -Dsun.java2d.uiScale=1.25 -Dsun.java2d.dpiaware=true -Dsun.java2d.dpi=96" java -jar %f
+Terminal=false
+Type=Application
+MimeType=application/x-java-archive
+Icon=java
+NoDisplay=false

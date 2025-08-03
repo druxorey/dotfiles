@@ -1,0 +1,267 @@
+
+# ======================================================================#
+#
+#
+#               ███████╗██╗  ██╗██╗  ██╗██╗  ██╗██████╗
+#               ██╔════╝╚██╗██╔╝██║  ██║██║ ██╔╝██╔══██╗
+#               ███████╗ ╚███╔╝ ███████║█████╔╝ ██║  ██║
+#               ╚════██║ ██╔██╗ ██╔══██║██╔═██╗ ██║  ██║
+#               ███████║██╔╝ ██╗██║  ██║██║  ██╗██████╔╝
+#               ╚══════╝╚═╝  ╚═╝╚═╝  ╚═╝╚═╝  ╚═╝╚═════╝
+#
+#
+# ======================================================================#
+#
+#! ================================================================== !#
+#!                              testing                               !#
+#! ================================================================== !#
+
+# Caps_Lock
+# 	sh ~/Workspace/Playground/caps-lock.sh
+
+#! ================================================================== !#
+#!                              general                               !#
+#! ================================================================== !#
+
+#* ============================= system ============================= *#
+
+# open todo list
+super + shift + t
+	bspc rule -a "*" -o state=floating rectangle=1280x720+300+150 && kitty opdoc todo
+
+# lock screen
+super + Escape
+	dm-tool lock
+
+# increase audio volume
+XF86AudioRaiseVolume
+	pactl set-sink-volume @DEFAULT_SINK@ +5%
+
+# decrease audio volume
+XF86AudioLowerVolume
+	pactl set-sink-volume @DEFAULT_SINK@ -5%
+
+# mute audio volume
+XF86AudioMute
+	pactl set-sink-mute @DEFAULT_SINK@ toggle
+
+# mute mic
+XF86AudioMicMute
+	amixer -D pulse sset Capture toggle
+
+# previous song
+XF86AudioPrev
+	playerctl previous
+
+# next song
+XF86AudioNext
+	playerctl next
+
+# play/pause song
+XF86AudioPlay
+	playerctl play-pause
+
+# stop song
+XF86AudioStop
+	playerctl stop
+
+# increase brightness
+XF86MonBrightnessUp
+	brightnessctl set +10000
+
+# increase brightness slowly
+shift + XF86MonBrightnessUp
+	brightnessctl set +1000
+
+# decrease brightness
+XF86MonBrightnessDown
+	brightnessctl set 10000-
+
+# decrease brightness slowly
+shift + XF86MonBrightnessDown
+	brightnessctl set 1000-
+
+# activate night light
+super + XF86MonBrightnessUp
+	redshift -O 4000
+
+# desactivate night light
+super + XF86MonBrightnessDown
+	redshift -x
+
+# print the full screen
+@Print
+	scrot -q 100 ~/Pictures/screenshots/%Y-%m-%d_%H%M%S.webp
+
+# print a selected area
+super + Print
+	flameshot gui
+
+# app launcher
+super + space
+	sh ~/.config/rofi/scripts/start_menu.sh
+
+# general menu
+super + Home
+    rofi -show drun -config ~/.config/rofi/styles/launcher_styles.rasi
+
+#* ========================== applications ========================== *#
+
+# kitty
+super + Return
+	kitty
+
+# music player
+super + alt + m
+	kitty cmus
+
+# file managment
+super + e
+	thunar
+super + alt + e
+	kitty yazi
+
+# server managment
+super + s
+	thunar smb://192.168.1.119/
+
+# file editor
+super + c
+	code
+super + v
+	kitty nvim
+super + alt + i
+	kitty nvim -c "CopilotChat" -c "wincmd h | q"
+
+# independent apps
+super + d
+	discord
+super + o
+	obsidian
+
+# browser shortcuts
+super + b
+	brave
+super + i
+	gtk-launch brave-gemini.desktop
+super + t
+	gtk-launch brave-task.desktop
+
+super + F1
+	brave tasks.google.com/tasks
+super + F2
+	brave gmail.com
+super + F3
+	brave calendar.google.com
+super + F4
+	brave drive.google.com
+super + F5
+	brave web.whatsapp.com
+super + F6
+	brave youtube.com
+super + F7
+	brave github.com/druxorey
+super + F8
+	brave notion.so
+super + F12
+	brave remotedesktop.google.com/access
+
+#! ================================================================== !#
+#!                               bspwm                                !#
+#! ================================================================== !#
+
+# make sxhkd reload its configuration files:
+super + shift + Escape
+	pkill -USR1 -x sxhkd
+
+# close and kill
+super + {_,shift + }w
+	bspc node -{c,k}
+
+# send the newest marked node to the newest preselected node
+super + y
+	bspc node newest.marked.local -n newest.!automatic.local
+
+#* ========================== states/flags ========================== *#
+
+# set the window state
+super + alt + {7,8,9,0}
+	bspc node -t {tiled,pseudo_tiled,floating,fullscreen}
+
+# alternate between the tiled and monocle layout
+super + m
+	bspc desktop -l next
+
+# change the window layer to the previous
+super + comma
+    bsp-layout previous --layouts tall,rtall,wide,rwide,grid,rgrid,even,tiled && notify-send "Layer: $(bsp-layout get)"
+
+# change the window layer to the next
+super + period
+    bsp-layout next --layouts tall,rtall,wide,rwide,grid,rgrid,even,tiled && notify-send "Layer: $(bsp-layout get)"
+
+# set the node flags
+super + ctrl + {m,x,y,z}
+	bspc node -g {marked,locked,sticky,private}
+
+#* =========================== focus/swap =========================== *#
+
+# focus the node in the given direction
+super + {_,shift + }{h,j,k,l}
+	bspc node -{f,s} {west,south,north,east}
+
+# focus the node for the given path jump
+super + {p,b,comma,period}
+	bspc node -f @{parent,brother,first,second}
+
+# focus the next window in the current desktop
+super + Tab
+    bspc node -f next.local.window
+
+# focus the previous window in the current desktop
+super + shift + Tab
+    bspc node -f prev.local.window
+
+# focus the next/previous desktop in the current monitor
+super + bracket{left,right}
+	bspc desktop -f {prev,next}.local
+
+# focus the last node/desktop
+super + {grave,shift grave}
+	bspc {node,desktop} -f last
+
+# focus or send to the given desktop
+super + {_,shift + }{1-5,8,9,0}
+	bspc {desktop -f,node -d} '^{1-9,10}'
+
+#* ============================ preselect =========================== *#
+
+# preselect the direction
+super + ctrl + {h,j,k,l}
+	bspc node -p {west,south,north,east}
+
+# preselect the ratio
+super + ctrl + {1-9}
+	bspc node -o 0.{1-9}
+
+# cancel the preselection for the focused node
+super + ctrl + space
+	bspc node -p cancel
+
+# cancel the preselection for the focused desktop
+super + ctrl + shift + space
+	bspc query -N -d | xargs -I id -n 1 bspc node id -p cancel
+
+#* ========================== move/resize =========================== *#
+
+# expand a window by moving one of its side outward
+super + alt + {h,j,k,l}
+	bspc node -z {left -20 0,bottom 0 20,top 0 -20,right 20 0}
+
+# contract a window by moving one of its side inward
+super + alt + shift + {h,j,k,l}
+	bspc node -z {right -20 0,top 0 20,bottom 0 -20,left 20 0}
+
+# move a floating window
+super + {Left,Down,Up,Right}
+	bspc node -v {-20 0,0 20,0 -20,20 0}

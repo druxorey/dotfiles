@@ -1,0 +1,9 @@
+#!/bin/bash
+
+function main() {
+	applications=("cmatrix -C blue" "pipes.sh" "genact")
+	selected=${applications[$((RANDOM % ${#applications[@]}))]}
+	${selected}
+}
+
+main $@

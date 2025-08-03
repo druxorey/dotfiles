@@ -1,0 +1,61 @@
+#!/bin/bash
+
+ERROR="\e[1;31mERROR:"
+TITLE="\e[1;34m"
+END="\e[0m"
+
+function help() {
+	printf "
+${TITLE}USAGE:${END}
+    ex INPUT_FILE
+
+${TITLE}DESCRIPTION:${END}
+    Extracts the contents of a compressed file based on its extension.
+
+${TITLE}ARGUMENTS:${END}
+    INPUT_FILE             The compressed file to be extracted.
+
+${TITLE}EXAMPLES:${END}
+    ex archive.tar.gz
+    ex file.zip
+
+${TITLE}REPORTING BUGS:${END}
+    Report issues at: https://github.com/druxorey/dotfiles/issues
+
+"
+	exit 1
+}
+
+
+function main() {
+	local file="$1"
+
+	while getopts "h" opt; do
+		case $opt in
+			h) help ;;
+			*) help ;;
+		esac
+	done
+
+	[ -z "$file" ] && help
+
+	case "$file" in
+		*.tar.bz2)  xjf        "$file" ;;
+		*.tar.gz)   tar xzf    "$file" ;;
+		*.bz2)      bunzip2    "$file" ;;
+		*.rar)      unrar x    "$file" ;;
+		*.gz)       gunzip     "$file" ;;
+		*.tar)      tar xf     "$file" ;;
+		*.tbz2)     tar xjf    "$file" ;;
+		*.tgz)      tar xzf    "$file" ;;
+		*.zip)      unzip      "$file" ;;
+		*.Z)        uncompress "$file" ;;
+		*.7z)       7z x       "$file" ;;
+		*.deb)      ar x       "$file" ;;
+		*.tar.xz)   tar xf     "$file" ;;
+		*.tar.zst)  unzstd     "$file" ;;
+		*) printf "\n${ERROR} '$file' cannot be extracted via ex()${END}\n\n" ;;
+	esac
+}
+
+main "$@"

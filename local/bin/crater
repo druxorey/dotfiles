@@ -1,0 +1,69 @@
+#!/bin/bash
+
+ERROR="\e[1;31mERROR:"
+TITLE="\e[1;34m"
+END="\e[0m\n"
+
+function help() {
+	printf "
+${TITLE}USAGE:${END}
+    crater [FILE TYPE] [FILE NAME] [TEMPLATE TYPE]
+
+${TITLE}DESCRIPTION:${END}
+    Creates a default file in a specific programming language.
+
+${TITLE}ARGUMENTS:${END}
+    FILE TYPE              bash, c, c++, go, html, java, latex, lua, python, rust.
+    FILE NAME              (Optional) The name of the file.
+    TEMPLATE TYPE          (Optional) basic, code.
+
+${TITLE}EXAMPLES:${END}
+    crater html index
+    crater python
+    crater c++ wordFinder code
+
+${TITLE}REPORTING BUGS:${END}
+    Report issues at: https://github.com/druxorey/dotfiles/issues
+
+"
+	exit 1
+}
+
+
+function main() {
+	fileType=$1
+	fileName=${2:-"default"}
+	templateName=${3:-"basic"}
+
+	case $fileType in
+		"bash") extension="sh";;
+		"c") extension="c";;
+		"c++") extension="cpp";;
+		"cpp") extension="cpp";;
+		"golang") extension="go";;
+		"go") extension="go";;
+		"html") extension="html";;
+		"java") extension="java";;
+		"latex") extension="tex";;
+		"lua") extension="lua";;
+		"python") extension="py";;
+		"rust") extension="rs";;
+		"sh") extension="sh";;
+		"shell") extension="sh";;
+		*) help
+		;;
+	esac
+
+    . $(dirname $0)/lib/languages-templates/${extension}-template.sh
+
+	eval "content=\$${templateName}Template"
+
+	if [[ -z "$content" ]]; then
+		printf "${ERROR} Template not found.${END}"
+		exit 1
+	fi
+
+	echo "$content" > ${fileName}.${extension}
+}
+
+main $@

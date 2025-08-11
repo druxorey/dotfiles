@@ -70,6 +70,7 @@ function main() {
 		["~/.config/libinput-gestures.conf"]="rsync -a ~/.config/libinput-gestures.conf $directory/config/touchpad/"
 		["~/.zshrc"]="rsync -a ~/.zshrc $directory/config/zshrc"
 		["~/.bashrc"]="rsync -a ~/.bashrc $directory/config/bashrc"
+		["~/.gitconfig"]="rsync -a ~/.gitconfig $directory/config/gitconfig"
 		["~/.local/bin"]="rsync -a --delete ~/.local/bin $directory/local/"
 		["~/.local/share/applications"]="rsync -a --delete ~/.local/share/applications $directory/local/share/"
 		["$OBSIDIAN_DIR/Academic/.obsidian"]="rsync -a --delete $OBSIDIAN_DIR/Academic/.obsidian/* $directory/config/obsidian"
@@ -87,6 +88,10 @@ function main() {
 		fi
 		printf "${SUCCESS} ✔ Successfully backed up:$END %s\n" "$name"
 	done
+
+	if [ -f "$directory/config/gitconfig" ]; then
+		sed -i '1,5c\# user data' $directory/config/gitconfig
+	fi
 
 	echo -e "\n${SUCCESS}All files have been successfully backed up$END"
 }

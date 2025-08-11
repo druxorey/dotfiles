@@ -1,0 +1,41 @@
+# user data
+[core]
+	compression = 5
+	whitespace = error
+	editor = nvim
+	preloadindex = true
+[http]
+	postBuffer = 524288000
+[credential "https://github.com"]
+	helper = 
+	helper = !/usr/bin/gh auth git-credential
+[credential "https://gist.github.com"]
+	helper = 
+	helper = !/usr/bin/gh auth git-credential
+[url "https://github.com/"]
+	insteadOf = gh:
+[url "https://github.com/druxorey/"]
+	insteadOf = drx:
+
+[commit]
+	gpgsign = true
+[status]
+	branch = true
+	showStash = true
+	showUntrackedFiles = all
+[diff]
+	context = 3
+	renames = copies
+	interHunkContext = 10
+[push]
+	defautl = current
+[pull]
+	default = current
+	rebase = true
+[rebase]
+	autoStash = true
+	missingCommitsCheck = warn
+[log]
+	abbrevCommit = true
+[branch]
+	sort = -committerdate

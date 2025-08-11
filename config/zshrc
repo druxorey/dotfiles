@@ -75,8 +75,7 @@ alias gclone='git clone'
 alias gcommit='git commit -v'
 alias gdiff='git diff'
 alias gfetch='git fetch'
-alias glog='git log --oneline --graph --decorate -n 10'
-alias glogl='git log --oneline --graph --decorate'
+alias glog='git log --all --graph -n 10 --pretty=format:"%C(magenta)%h %C(white) %an %ar %C(auto)   %D%n%s%n"'
 alias gmerge='git merge --no-ff'
 alias gpull='git pull'
 alias gpush='git push'
@@ -158,7 +157,7 @@ function gfix() {
 function hdmi-connect() {
 	local resolution="${1:-1920x1080}"
 	echo "Setting HDMI resolution to $resolution"
-	xrandr --output eDP-1 --primary --mode 1920x1080 --rotate normal --output HDMI-1 --mode $resolution --rotate normal --right-of eDP-1
+	xrandr --output eDP-1 --primary --mode 1920x1080 --rotate normal --output HDMI-1 --mode $resolution --rate 100 --rotate normal --right-of eDP-1
 	bspc wm -r
 }
 
@@ -166,6 +165,7 @@ function hdmi-connect() {
 function hdmi-disconnect() {
 	echo "Turning off HDMI"
 	xrandr --output HDMI-1 --off
+	bspc wm -r
 }
 
 

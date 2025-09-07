@@ -65,7 +65,7 @@ return {
 			always_divide_middle = true,
 			globalstatus = false,
 			refresh = {
-				statusline = 1000,
+				statusline = 100,
 				tabline = 1000,
 				winbar = 1000
 			}
@@ -75,28 +75,61 @@ return {
 				function()
 					local recording_register = vim.fn.reg_recording()
 					if recording_register == '' then
-						return 'MODE'
+						return ({
+							n = "NORMAL",
+							no = "NORMAL",
+							v = "VISUAL",
+							V = "V-LINE",
+							[""] = "V-BLOCK",
+							i = "INSERT",
+							ic = "INSERT",
+							R = "REPLACE",
+							Rv = "V-REPLACE",
+							c = "COMMAND",
+							cv = "EX",
+							ce = "EX",
+							r = "PROMPT",
+							rm = "MORE",
+							["r?"] = "CONFIRM",
+							["!"] = "SHELL",
+							t = "TERMINAL",
+						})[vim.fn.mode()] or "UNKNOWN"
 					else
-						return 'Recording @' .. recording_register
+						return 'RECORDING @' .. recording_register
+					end
+				end,
+				color = function()
+					if vim.fn.reg_recording() ~= '' then
+						return { bg = dracula_colors.red, fg = dracula_colors.black, gui = 'bold' }
+					else
+						return {gui = 'bold'}
 					end
 				end,
 				separator = {
 					left = "",
 					right = ""
 				},
+				icon = '',
 				right_padding = 2
 			}},
-			lualine_b = {"branch", "diff", "diagnostics"},
-			lualine_c = {"%=", "filename"},
-			lualine_x = {"encoding"},
-			lualine_y = {"filetype", "filesize"},
+			lualine_b = {{
+				"filename",
+				icon = ' '
+			}},
+			lualine_c = {"branch", "diff", "diagnostics"},
+			lualine_x = {"selectioncount", "searchcount"},
+			lualine_y = {{
+				"filesize",
+				icon = '󰖡 ',
+			}},
 			lualine_z = {{
 				"location",
 				separator = {
 					left = "",
 					right = ""
 				},
-				left_padding = 2
+				left_padding = 2,
+				icon = ''
 			}}
 		},
 		inactive_sections = {

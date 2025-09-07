@@ -8,6 +8,8 @@
 #!                  ███████╗███████║██║  ██║██║  ██║╚██████╗
 #!                  ╚══════╝╚══════╝╚═╝  ╚═╝╚═╝  ╚═╝ ╚═════╝
 #!
+#!                                   ZSHRC
+#
 #!                            - Made by Druxorey -
 #!                         https://github.com/druxorey
 #!
@@ -17,21 +19,11 @@
 
 [[ $- != *i* ]] && return
 PS1='[\u@\h \W]\$ '
-fastfetch --load-config ~/.config/fastfetch/init.jsonc && echo
+fastfetch --config ~/.config/fastfetch/init.jsonc && echo
 
 eval "$(zoxide init zsh)"
 eval "$(thefuck --alias)"
 eval "$(oh-my-posh init zsh --config ~/.config/oh-my-posh/dracula.omp.json)"
-
-#* =============================== path export ============================== *#
-
-export PATH=$PATH:~/.local/bin
-export CARGO_HOME='$XDG_DATA_HOME'/cargo
-export GTK2_RC_FILES='$XDG_CONFIG_HOME'/gtk-2.0/gtkrc
-export GIT_EDITOR=nvim
-export EDITOR=nvim
-export _JAVA_AWT_WM_NONREPARENTING=1
-export _JAVA_OPTIONS="-Dawt.useSystemAAFontSettings=on -Dswing.aatext=true -Dsun.java2d.xrender=true -Dsun.java2d.uiScale=1.25 -Dsun.java2d.dpiaware=true -Dsun.java2d.dpi=96"
 
 #* ================================= aliases ================================ *#
 
@@ -114,9 +106,9 @@ alias shutdown='shutdown now'
 #* ================================ zsh setup =============================== *#
 
 # history
-HISTFILE=~/.config/zsh/.histfile
-HISTSIZE=5000
-SAVEHIST=5000
+HISTFILE="$HOME/.cache/zsh_history"
+HISTSIZE=10000
+SAVEHIST=10000
 
 # vim mode
 bindkey -v
@@ -171,22 +163,28 @@ function hdmi-disconnect() {
 
 function gtest() {
 	if [[ $# -eq 0 ]]; then
-		echo -e "\e[1;31mERROR: No file provided."
+		echo -e "\e[1;31m[ERROR]: No file provided."
 		return 1
 	fi
 
-	g++ -DENABLE_TESTS $1 -o output.out && ./output.out --verbosity=2 --success
+	if [[ ${1##*.} != "cpp" ]]; then
+		printf "\e[1;31m[ERROR]: Incorrect file type.\n"
+		return 1
+	fi
+
+	filename=$(basename "$1" .cpp)
+	g++ -DENABLE_TESTS $1 -o ${filename}.out && ./${filename}.out --verbosity=2 --success
 }
 
 
 function grun() {
 	if [[ $# -eq 0 ]]; then
-		printf "\e[1;31mERROR: No file provided."
+		printf "\e[1;31m[ERROR]: No file provided.\n"
 		return 1
 	fi
 
 	if [[ ${1##*.} != "cpp" ]]; then
-		printf "\e[1;31mERROR: Incorrect file type."
+		printf "\e[1;31m[ERROR]: Incorrect file type.\n"
 		return 1
 	fi
 

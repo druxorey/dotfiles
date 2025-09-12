@@ -32,13 +32,12 @@ configuration {
 /* ============================== main window =============================== */
 
 window {
-	location: northwest;
+	location: north;
 	border: @border-size-1;
 	border-radius: @border-radius-1;
 	padding: 0;
 	width: 12em;
 	y-offset: 6%;
-	x-offset: 1%;
 
 	background-color: @color-background-1;
 	border-color: @color-accent-1;

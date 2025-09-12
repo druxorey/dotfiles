@@ -8,8 +8,8 @@ function main() {
 
 	case "$rofiOption" in
 		"") sh $SCRIPTS_PATH/wifi_menu.sh ;;
-		"󰀻") rofi -show drun -config ~/.config/rofi/styles/launcher_styles.rasi;;
-		"󰱼") rofi -show recursivebrowser -config ~/.config/rofi/styles/files_styles.rasi;;
+		"󰀻") sh $SCRIPTS_PATH/notes_menu.sh ;;
+		"󰱼") rofi -show recursivebrowser -config ~/.config/rofi/styles/files_styles.rasi ;;
 		"󰂄") sh $SCRIPTS_PATH/energy_menu.sh ;;
 		"⏻") sh $SCRIPTS_PATH/power_menu.sh ;;
 		*) exit 1 ;;

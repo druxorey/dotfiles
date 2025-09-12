@@ -9,9 +9,9 @@ function main() {
 
 	output=""
 
-	[ -n "$discord" ] && output="${output}  󰙯"
-	[ -n "$steam" ] && output="${output}  󰓓"
-	[ -n "$proton" ] && output="${output}  󰕣"
+	[ -n "$discord" ] && output="${output} 󰙯  "
+	[ -n "$steam" ] && output="${output} 󰓓  "
+	[ -n "$proton" ] && output="${output} 󰕣  "
 
 	printf "${output:- }"
 }

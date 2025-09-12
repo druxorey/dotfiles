@@ -27,6 +27,7 @@
     "Materia": "number",
     "date": "date",
     "created": "datetime",
-    "author": "text"
+    "author": "text",
+    "excalidraw-embed-md": "checkbox"
   }
 }

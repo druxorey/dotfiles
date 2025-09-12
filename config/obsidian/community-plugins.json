@@ -5,7 +5,6 @@
   "pomodoro-timer",
   "obsidian-relative-line-numbers",
   "obsidian-tagfolder",
-  "templater-obsidian",
   "obsidian-kanban",
   "obsidian-latex-suite",
   "obsidian-icon-folder",
@@ -21,5 +20,6 @@
   "obsidian-file-color",
   "obsidian-excalidraw-plugin",
   "better-export-pdf",
-  "omnisearch"
+  "omnisearch",
+  "templater-obsidian"
 ]

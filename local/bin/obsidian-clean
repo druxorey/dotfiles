@@ -1,6 +1,6 @@
 #!/bin/bash
 
-VAULT_PATH="${HOME}/Documents/[01] Obsidian/"
+VAULT_PATH="${HOME}/Documents/01 Obsidian/"
 
 ERROR="\e[1;31mERROR:"
 SUCCESS="\e[1;32mSUCCESS:"
@@ -9,7 +9,7 @@ END="\e[0m"
 function main() {
 
 	if [ ! -d "${VAULT_PATH}/.git" ]; then
-		printf "$ERROR Obsidian vault not found."
+		printf "$ERROR Obsidian vault not found.$END\n"
 		return
 	fi
 

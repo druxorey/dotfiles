@@ -11,12 +11,21 @@ end
 return {
 	{
 		"zbirenbaum/copilot-cmp",
+		event = "VeryLazy",
 	},
 	{
 		"zbirenbaum/copilot.lua",
+		cmd = { "CopilotStart" },
+		config = function()
+			vim.api.nvim_create_user_command("CopilotStart", function()
+				require("copilot").setup()
+				vim.cmd("Copilot enable")
+			end, {})
+		end,
 	},
 	{
 		"CopilotC-Nvim/CopilotChat.nvim",
+		event = "VeryLazy",
 		opts = {
 			model = "gpt-4o",
 			prompts = {

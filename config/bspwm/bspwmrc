@@ -51,8 +51,8 @@ bspc config split_ratio          0.52
 bspc config borderless_monocle   false
 bspc config gapless_monocle      false
 
-bspc config normal_border_color     "#282A36"
-bspc config active_border_color     "#282A36"
+bspc config normal_border_color     "#1E1F29"
+bspc config active_border_color     "#1E1F29"
 bspc config focused_border_color    "#BD93F9"
 bspc config presel_feedback_color   "#BD93F9"
 
@@ -64,4 +64,9 @@ bspc rule -a Gloobus-preview state=floating
 bspc rule -a mplayer2 state=floating
 bspc rule -a Kupfer.py focus=on
 bspc rule -a Screenkey manage=off
-bspc rule -a java state=floating center=true
+
+#* ================================== init ================================== *#
+
+# Turn the default tlp config
+sudo ln -sf /etc/tlp.d/3-normal.conf /etc/tlp.conf
+sudo tlp start

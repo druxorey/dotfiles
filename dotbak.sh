@@ -5,7 +5,7 @@ ERROR="\e[1;91m"
 SUCCESS="\e[1;92m"
 END="\e[0m"
 
-OBSIDIAN_DIR="$HOME/Documents/'[01] Obsidian'"
+OBSIDIAN_DIR="$HOME/Documents/'01 Obsidian'"
 EXCLUDE="--exclude=.git/ --exclude=.github --exclude=*.gitmodules --exclude=*.editorconfig --exclude=*.gitignore"
 
 function help() {
@@ -68,12 +68,12 @@ function main() {
 		["~/.config/zsh"]="rsync -a --delete $EXCLUDE ~/.config/zsh $directory/config"
 		["~/.config/zathura"]="rsync -a --delete ~/.config/zathura $directory/config"
 		["~/.config/libinput-gestures.conf"]="rsync -a ~/.config/libinput-gestures.conf $directory/config/touchpad/"
-		["~/.zshrc"]="rsync -a ~/.zshrc $directory/config/zshrc"
+		["~/.zprofile"]="rsync -a ~/.zprofile $directory/config/zprofile"
 		["~/.bashrc"]="rsync -a ~/.bashrc $directory/config/bashrc"
 		["~/.gitconfig"]="rsync -a ~/.gitconfig $directory/config/gitconfig"
 		["~/.local/bin"]="rsync -a --delete ~/.local/bin $directory/local/"
 		["~/.local/share/applications"]="rsync -a --delete ~/.local/share/applications $directory/local/share/"
-		["$OBSIDIAN_DIR/Academic/.obsidian"]="rsync -a --delete $OBSIDIAN_DIR/Academic/.obsidian/* $directory/config/obsidian"
+		["$OBSIDIAN_DIR/.obsidian"]="rsync -a --delete $OBSIDIAN_DIR/.obsidian/* $directory/config/obsidian"
 		["/etc/X11/xorg.conf.d/40-libinput.conf"]="rsync -a /etc/X11/xorg.conf.d/40-libinput.conf $directory/config/touchpad/"
 		["/etc/tlp.d"]="rsync -a /etc/tlp.d/ $directory/config/tlp"
 		["/var/spool/cron/druxorey"]="rsync -a /var/spool/cron/druxorey $directory/config/crontab"
@@ -96,4 +96,4 @@ function main() {
 	echo -e "\n${SUCCESS}All files have been successfully backed up$END"
 }
 
-main $@
+main "$@"

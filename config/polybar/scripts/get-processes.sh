@@ -6,14 +6,16 @@ function main() {
 	discord=$(echo $processes | grep "discord")
 	steam=$(echo $processes  | grep "steam")
 	proton=$(echo $processes  | grep "proton")
+	obs=$(echo $processes | grep -w "obs")
 
 	output=""
 
 	[ -n "$discord" ] && output="${output} 󰙯  "
 	[ -n "$steam" ] && output="${output} 󰓓  "
 	[ -n "$proton" ] && output="${output} 󰕣  "
+	[ -n "$obs" ] && output="${output} 󰻃  "
 
 	printf "${output:- }"
 }
 
-main $@
+main "$@"

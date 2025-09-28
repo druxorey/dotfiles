@@ -23,13 +23,14 @@ fastfetch --config ~/.config/fastfetch/init.jsonc && echo
 
 eval "$(zoxide init zsh)"
 eval "$(thefuck --alias)"
-eval "$(oh-my-posh init zsh --config ~/.config/oh-my-posh/dracula.omp.json)"
+eval "$(oh-my-posh init zsh --config ~/.config/oh-my-posh/dracula-default.omp.json)"
 
 #* ================================= aliases ================================ *#
 
 # directory navigation
 alias vim='nvim'
-alias cat='bat'
+alias cat='bat -p'
+alias man='batman'
 alias fzf='fzf --preview "bat --color=always {}"'
 alias ls='eza --icons --group-directories-first'
 alias la='eza --icons -a --group-directories-first'
@@ -54,6 +55,7 @@ alias grep='grep --color=auto'
 alias matrix='cmatrix -C blue'
 alias peaclock='peaclock --config ~/.config/peaclock'
 alias btop='btop --force-utf'
+alias oh-my-time='eval "$(oh-my-posh init zsh --config ~/.config/oh-my-posh/dracula-time.omp.json)"'
 
 # pacman and yay
 alias unlock='sudo rm /var/lib/pacman/db.lck'
@@ -83,7 +85,7 @@ alias mdtopdf='pandoc $1 -o default.pdf --pdf-engine=xelatex -V mainfont="Arial"
 alias todo='bspc rule -a "*" -o state=floating && kitty opdoc todo'
 alias trans-es='trans -s english -t spanish'
 alias setkeys='setxkbmap us -variant intl'
-alias reload='clear && source ~/.zshrc'
+alias reload='clear && source ~/.zprofile && source ~/.config/zsh/.zshrc'
 alias yt-mp3='yt-dlp -x --audio-format mp3'
 alias yt-1080='yt-dlp -f "bestvideo[height<=1080][ext=mp4]+bestaudio[ext=m4a]"'
 alias yt-720='yt-dlp -f "bestvideo[height<=720][ext=mp4]+bestaudio[ext=m4a]"'

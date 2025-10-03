@@ -9,13 +9,9 @@ return {
 	opts = {
 		workspaces = {
 			{
-				name = "Academic",
-				path = "~/Documents/[01] Obsidian/Academic",
-			},
-			{
 				name = "Workspace",
-				path = "~/Documents/[01] Obsidian/Workspace",
-			},
+				path = "~/Documents/01 Obsidian",
+			}
 		},
 		disable_frontmatter = true,
 		ui = {

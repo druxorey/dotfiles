@@ -11,13 +11,6 @@
 #
 #
 # ======================================================================#
-#
-#! ================================================================== !#
-#!                              testing                               !#
-#! ================================================================== !#
-
-# Caps_Lock
-# 	sh ~/Workspace/Playground/caps-lock.sh
 
 #! ================================================================== !#
 #!                              general                               !#
@@ -25,9 +18,6 @@
 
 #* ============================= system ============================= *#
 
-# open todo list
-super + shift + t
-	bspc rule -a "*" -o state=floating rectangle=1280x720+300+150 && kitty opdoc todo
 
 # lock screen
 super + Escape
@@ -145,16 +135,16 @@ super + b
 super + i
 	gtk-launch brave-gemini.desktop
 super + t
-	gtk-launch brave-task.desktop
+	bspc rule -a "*" -o state=floating rectangle=1280x720+300+150 && gtk-launch brave-task.desktop
 
 super + F1
-	brave tasks.google.com/tasks
-super + F2
 	brave gmail.com
-super + F3
+super + F2
 	brave calendar.google.com
-super + F4
+super + F3
 	brave drive.google.com
+super + F4
+	brave notebooklm.google.com/
 super + F5
 	brave web.whatsapp.com
 super + F6

@@ -79,6 +79,7 @@ function main() {
 		["/var/spool/cron/druxorey"]="rsync -a /var/spool/cron/druxorey $directory/config/crontab"
 	)
 
+	index=1
 	for name in "${!commandList[@]}"; do
 		command="${commandList[$name]}"
 		eval $command
@@ -86,14 +87,18 @@ function main() {
 			printf "\n$ERROR ⚠ [ERROR]: Unexpected interruption during (%s) backup.$END\n\n" "$name"
 			exit 1
 		fi
-		printf "${SUCCESS} ✔ Successfully backed up:$END %s\n" "$name"
+		printf "\r${SUCCESS} ✔ [$END%02d${SUCCESS}] Successfully backed up:$END %s" "$index" "$name"
+		tput el
+		index=$(($index + 1))
 	done
 
 	if [ -f "$directory/config/gitconfig" ]; then
 		sed -i '1,5c\# user data' $directory/config/gitconfig
 	fi
 
-	echo -e "\n${SUCCESS}All files have been successfully backed up$END"
+	printf "\r${SUCCESS} ✔ All %02d files have been successfully backed up$END" "$index"
+	tput el
+	printf "\n"
 }
 
 main "$@"

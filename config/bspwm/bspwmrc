@@ -1,4 +1,4 @@
-#! /bin/sh
+#!/bin/sh
 
 #! ========================================================================== !#
 #!
@@ -18,24 +18,21 @@ pgrep -x sxhkd > /dev/null || sxhkd &
 
 #* =========================== startup application ========================== *#
 
-autorandr &
-nitrogen --restore %
+nitrogen --restore &
 polybar &
 picom --config ~/.config/picom/picom.conf &
 setxkbmap us -variant intl &
 libinput-gestures-setup start &
 thunar --daemon &
+dunst &
 
 #* ================================= monitor ================================ *#
 
-# if [[ $(xrandr -1 | grep 'HDMI-1 connected') ]]; then
-# 	xrandr --output eDP-1 --primary --mode 1920x1080 --rotate normal --output HDMI-1 --mode 1600x900 --rotate normal --right-of eDP-1
-# fi
-
-bspc monitor HDMI-1 -d   
 bspc monitor eDP-1 -d     
+bspc monitor HDMI-1 -d   
 
 wmname LG3D
+autorandr --change &
 
 #* ================================== bspc ================================== *#
 
@@ -72,4 +69,4 @@ sudo ln -sf /etc/tlp.d/3-normal.conf /etc/tlp.conf
 sudo tlp start
 
 # Launch lxappearance to set the gtk theme on startup
-bspc desktop '^5' --focus && lxappearance & sleep 2 && pkill lxappearance && bspc desktop '^1' --focus
+bspc desktop '^5' --focus && lxappearance & sleep 1 && pkill lxappearance && bspc desktop '^1' --focus

@@ -1,0 +1,14 @@
+#!/bin/bash
+
+sourceDesktops=(6 7 8)
+
+targetDesktop=5
+
+# Loop through each source desktop
+for desktop in "${sourceDesktops[@]}"; do
+	# Query all window IDs (WIDs) on the current desktop
+	for wid in $(bspc query -N -d "^$desktop"); do
+		# Move each window to the target desktop
+		bspc node "$wid" --to-desktop "^$targetDesktop"
+	done
+done

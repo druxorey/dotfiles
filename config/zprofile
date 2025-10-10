@@ -36,6 +36,5 @@ export GIT_EDITOR="nvim"
 
 export CARGO_HOME='$XDG_DATA_HOME'/cargo
 export PYTHON_HISTORY="$XDG_DATA_HOME/python/history"
-export GTK2_RC_FILES='$XDG_CONFIG_HOME'/gtk-2.0/gtkrc
 export _JAVA_AWT_WM_NONREPARENTING=1
 export _JAVA_OPTIONS="-Dawt.useSystemAAFontSettings=on -Dswing.aatext=true -Dsun.java2d.xrender=true -Dsun.java2d.uiScale=1.25 -Dsun.java2d.dpiaware=true -Dsun.java2d.dpi=96"

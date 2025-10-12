@@ -6,11 +6,12 @@ if xrandr | grep "HDMI-1 connected"; then
 	bspc monitor HDMI-1 -d   
 	# Disable screen power management (DPMS)
 	xset dpms 0 0 0
+	xset s 0
 else
 	bspc monitor eDP-1 -d     
 	bspc monitor HDMI-1 -r
 	# Enable screen power management (DPMS) with a timeout of 600 seconds
-	xset dpms 0 0 600
+	xset s 600
 fi
 
 pkill polybar

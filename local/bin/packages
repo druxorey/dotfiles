@@ -1,0 +1,105 @@
+#!/usr/bin/env python3
+
+import os
+import sys
+
+basePath = "/home/druxorey/Workspace/projects/dotfiles/"
+files = {
+    "base": "drxboot-base.packages",
+    "extra": "drxboot-extra.packages"
+}
+
+def loadPackages(filePath):
+    packages = {"pacman": [], "aur": []}
+    with open(filePath, "r") as file:
+        lines = file.readlines()
+        currentList = None
+        for line in lines:
+            line = line.strip()
+            if line.startswith("base_pacman_packages=(") or line.startswith("extra_pacman_packages=("):
+                currentList = "pacman"
+            elif line.startswith("base_aur_packages=(") or line.startswith("extra_aur_packages=("):
+                currentList = "aur"
+            elif line == ")":
+                currentList = None
+            elif currentList and line:
+                packages[currentList].append(line)
+    return packages
+
+
+def savePackages(action, filePath, packages):
+    with open(filePath, "w") as file:
+        file.write("#!/bin/bash\n\n")
+        for key, values in packages.items():
+            file.write(f"{action}_{key}_packages=(\n")
+            for value in values:
+                file.write(f"    {value}\n")
+            file.write(")\n\n")
+
+
+def listPackages(filePath):
+    packages = loadPackages(filePath)
+    print("Pacman packages:")
+    for pkg in packages["pacman"]:
+        print(f"  {pkg}")
+    print("\nAUR packages:")
+    for pkg in packages["aur"]:
+        print(f"  {pkg}")
+
+
+def addPackage(fileType, filePath, packageType, packageName):
+    packages = loadPackages(filePath)
+    if packageName in packages[packageType]:
+        print(f"Package '{packageName}' already exists in {packageType} packages.")
+        return
+    packages[packageType].append(packageName)
+    savePackages(fileType, filePath, packages)
+    print(f"Package '{packageName}' added to {packageType} packages.")
+
+
+def removePackage(fileType, filePath, packageType, packageName):
+    packages = loadPackages(filePath)
+    if packageName not in packages[packageType]:
+        print(f"Package '{packageName}' not found in {packageType} packages.")
+        return
+    packages[packageType].remove(packageName)
+    savePackages(fileType, filePath, packages)
+    print(f"Package '{packageName}' removed from {packageType} packages.")
+
+
+def main():
+    if len(sys.argv) < 3:
+        print("Usage: packages <base|extra> <list|add|remove> [<pacman|aur>] [<package_name>]")
+        return
+
+    fileType = sys.argv[1]
+    action = sys.argv[2]
+
+    if fileType not in files:
+        print("Invalid file type. Use 'base' or 'extra'.")
+        return
+
+    filePath = os.path.join(basePath, files[fileType])
+
+    if action == "list":
+        listPackages(filePath)
+    elif action in ["add", "remove"]:
+        packageType = input("Enter package type (pacman/aur): ").strip()
+        if packageType not in ["pacman", "aur"]:
+            print("Invalid package type. Use 'pacman' or 'aur'.")
+            return
+
+        packageName = input("Enter package name: ").strip()
+        if not packageName:
+            print("Package name cannot be empty.")
+            return
+
+        if action == "add":
+            addPackage(fileType, filePath, packageType, packageName)
+        elif action == "remove":
+            removePackage(fileType, filePath, packageType, packageName)
+    else:
+        print("Invalid action. Use 'list', 'add', or 'remove'.")
+
+if __name__ == "__main__":
+    main()

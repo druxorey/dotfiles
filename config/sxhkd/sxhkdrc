@@ -18,11 +18,6 @@
 
 #* ============================= system ============================= *#
 
-
-# lock screen
-super + Escape
-	dm-tool lock
-
 # increase audio volume
 XF86AudioRaiseVolume
 	pactl set-sink-volume @DEFAULT_SINK@ +5%
@@ -79,13 +74,17 @@ super + XF86MonBrightnessUp
 super + XF86MonBrightnessDown
 	redshift -x
 
-# print the full screen
+# print a selected area
 @Print
-	scrot -q 100 ~/Pictures/screenshots/%Y-%m-%d_%H%M%S.webp
+	flameshot gui
 
 # print a selected area
+super + v
+	CM_LAUNCHER="rofi" CM_HISTLENGTH=10 clipmenu 
+
+# grab a color
 super + Print
-	flameshot gui
+	xcolor -s && notify-send "Color picked and saved to clipboard"
 
 # app launcher
 super + space

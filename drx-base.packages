@@ -100,5 +100,6 @@ base_pacman_packages=(
 
 base_aur_packages=(
     oh-my-posh
+    downgrade
 )
 

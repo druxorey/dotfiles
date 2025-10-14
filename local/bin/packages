@@ -3,11 +3,47 @@
 import os
 import sys
 
-basePath = "/home/druxorey/Workspace/projects/dotfiles/"
-files = {
-    "base": "drxboot-base.packages",
-    "extra": "drxboot-extra.packages"
+PACKAGES_FILES_PATH = "/home/druxorey/Workspace/projects/dotfiles/"
+PACKAGES_FILES = {
+    "base": "drx-base.packages",
+    "extra": "drx-extra.packages"
 }
+
+def printHelp():
+    print("""
+USAGE:
+    packages <list|add|remove> <base|extra> [<pacman|aur>] [<package_name>]
+    packages search <package_name>
+
+DESCRIPTION:
+    A utility script to manage package lists for Arch Linux.
+
+ARGUMENTS:
+    list <base|extra>
+        Lists all packages in the specified file type.
+
+    add <base|extra>
+        Adds a package to the specified file type. You will be prompted to specify
+        the package type (pacman or aur) and the package name.
+
+    remove <base|extra>
+        Removes a package from the specified file type. You will be prompted to
+        specify the package type (pacman or aur) and the package name.
+
+    search <package_name>
+        Searches for a package in both base and extra files. The package name must
+        be provided as an argument.
+
+EXAMPLES:
+    packages list base
+    packages add extra
+    packages remove base
+    packages search firefox
+
+REPORTING BUGS:
+    Report issues at: https://github.com/druxorey/dotfiles/issues
+""")
+
 
 def loadPackages(filePath):
     packages = {"pacman": [], "aur": []}
@@ -67,19 +103,51 @@ def removePackage(fileType, filePath, packageType, packageName):
     print(f"Package '{packageName}' removed from {packageType} packages.")
 
 
+def searchPackage(packageToSearch):
+    basePackages = loadPackages(os.path.join(PACKAGES_FILES_PATH, PACKAGES_FILES["base"]))
+    extraPackages = loadPackages(os.path.join(PACKAGES_FILES_PATH, PACKAGES_FILES["extra"]))
+
+    for pkg in basePackages["pacman"]:
+        if packageToSearch == pkg:
+            print(f"Package '{packageToSearch}' found in base packages.")
+            return
+    for pkg in basePackages["aur"]:
+        if packageToSearch == pkg:
+            print(f"  {pkg}")
+            return
+
+    for pkg in extraPackages["pacman"]:
+        if packageToSearch == pkg:
+            print(f"Package '{packageToSearch}' found in extra packages.")
+            return
+    for pkg in extraPackages["aur"]:
+        if packageToSearch == pkg:
+            print(f"  {pkg}")
+            return
+
+    print("Package not found.")
+    return
+
+
 def main():
     if len(sys.argv) < 3:
-        print("Usage: packages <base|extra> <list|add|remove> [<pacman|aur>] [<package_name>]")
+        printHelp()
         return
 
-    fileType = sys.argv[1]
-    action = sys.argv[2]
+    action = sys.argv[1]
 
-    if fileType not in files:
+    if action == "search":
+        packageToSearch = sys.argv[2]
+        searchPackage(packageToSearch)
+        return
+
+    fileType = sys.argv[2]
+
+    if fileType not in PACKAGES_FILES:
         print("Invalid file type. Use 'base' or 'extra'.")
         return
 
-    filePath = os.path.join(basePath, files[fileType])
+    filePath = os.path.join(PACKAGES_FILES_PATH, PACKAGES_FILES[fileType])
 
     if action == "list":
         listPackages(filePath)
@@ -100,6 +168,7 @@ def main():
             removePackage(fileType, filePath, packageType, packageName)
     else:
         print("Invalid action. Use 'list', 'add', or 'remove'.")
+
 
 if __name__ == "__main__":
     main()

@@ -2,6 +2,7 @@
 
 import os
 import sys
+from typing import Dict, List
 
 PACKAGES_FILES_PATH = "/home/druxorey/Workspace/projects/dotfiles/"
 PACKAGES_FILES = {
@@ -45,11 +46,11 @@ REPORTING BUGS:
 """)
 
 
-def loadPackages(filePath):
-    packages = {"pacman": [], "aur": []}
+def loadPackages(filePath: str) -> Dict[str, List[str]]:
+    packages: Dict[str, List[str]] = {"pacman": [], "aur": []}
     with open(filePath, "r") as file:
-        lines = file.readlines()
-        currentList = None
+        lines: List[str] = file.readlines()
+        currentList: str | None = None
         for line in lines:
             line = line.strip()
             if line.startswith("base_pacman_packages=(") or line.startswith("extra_pacman_packages=("):
@@ -63,7 +64,7 @@ def loadPackages(filePath):
     return packages
 
 
-def savePackages(action, filePath, packages):
+def savePackages(action: str, filePath: str, packages: Dict[str, List[str]]) -> None:
     with open(filePath, "w") as file:
         file.write("#!/bin/bash\n\n")
         for key, values in packages.items():
@@ -73,8 +74,8 @@ def savePackages(action, filePath, packages):
             file.write(")\n\n")
 
 
-def listPackages(filePath):
-    packages = loadPackages(filePath)
+def listPackages(filePath: str) -> None:
+    packages: Dict[str, List[str]] = loadPackages(filePath)
     print("Pacman packages:")
     for pkg in packages["pacman"]:
         print(f"  {pkg}")
@@ -83,8 +84,8 @@ def listPackages(filePath):
         print(f"  {pkg}")
 
 
-def addPackage(fileType, filePath, packageType, packageName):
-    packages = loadPackages(filePath)
+def addPackage(fileType: str, filePath: str, packageType: str, packageName: str) -> None:
+    packages: Dict[str, List[str]] = loadPackages(filePath)
     if packageName in packages[packageType]:
         print(f"Package '{packageName}' already exists in {packageType} packages.")
         return
@@ -93,8 +94,8 @@ def addPackage(fileType, filePath, packageType, packageName):
     print(f"Package '{packageName}' added to {packageType} packages.")
 
 
-def removePackage(fileType, filePath, packageType, packageName):
-    packages = loadPackages(filePath)
+def removePackage(fileType: str, filePath: str, packageType: str, packageName: str) -> None:
+    packages: Dict[str, List[str]] = loadPackages(filePath)
     if packageName not in packages[packageType]:
         print(f"Package '{packageName}' not found in {packageType} packages.")
         return
@@ -103,9 +104,9 @@ def removePackage(fileType, filePath, packageType, packageName):
     print(f"Package '{packageName}' removed from {packageType} packages.")
 
 
-def searchPackage(packageToSearch):
-    basePackages = loadPackages(os.path.join(PACKAGES_FILES_PATH, PACKAGES_FILES["base"]))
-    extraPackages = loadPackages(os.path.join(PACKAGES_FILES_PATH, PACKAGES_FILES["extra"]))
+def searchPackage(packageToSearch: str) -> None:
+    basePackages: Dict[str, List[str]] = loadPackages(os.path.join(PACKAGES_FILES_PATH, PACKAGES_FILES["base"]))
+    extraPackages: Dict[str, List[str]] = loadPackages(os.path.join(PACKAGES_FILES_PATH, PACKAGES_FILES["extra"]))
 
     for pkg in basePackages["pacman"]:
         if packageToSearch == pkg:
@@ -134,30 +135,30 @@ def main():
         printHelp()
         return
 
-    action = sys.argv[1]
+    action: str = sys.argv[1]
 
     if action == "search":
-        packageToSearch = sys.argv[2]
+        packageToSearch: str = sys.argv[2]
         searchPackage(packageToSearch)
         return
 
-    fileType = sys.argv[2]
+    fileType: str = sys.argv[2]
 
     if fileType not in PACKAGES_FILES:
         print("Invalid file type. Use 'base' or 'extra'.")
         return
 
-    filePath = os.path.join(PACKAGES_FILES_PATH, PACKAGES_FILES[fileType])
+    filePath: str = os.path.join(PACKAGES_FILES_PATH, PACKAGES_FILES[fileType])
 
     if action == "list":
         listPackages(filePath)
     elif action in ["add", "remove"]:
-        packageType = input("Enter package type (pacman/aur): ").strip()
+        packageType: str = input("Enter package type (pacman/aur): ").strip()
         if packageType not in ["pacman", "aur"]:
             print("Invalid package type. Use 'pacman' or 'aur'.")
             return
 
-        packageName = input("Enter package name: ").strip()
+        packageName: str = input("Enter package name: ").strip()
         if not packageName:
             print("Package name cannot be empty.")
             return

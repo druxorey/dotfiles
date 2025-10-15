@@ -7,6 +7,8 @@ END="\e[0m"
 
 OBSIDIAN_DIR="$HOME/Documents/'01 Obsidian'"
 EXCLUDE="--exclude=.git/ --exclude=.github --exclude=*.gitmodules --exclude=*.editorconfig --exclude=*.gitignore"
+BOOKMARKS_DIR="$HOME/.config/BraveSoftware/Brave-Browser/Default/Bookmarks"
+YAML_DIR="$HOME/Workspace/projects/dotfiles/config/brave/"
 
 function help() {
 	printf "
@@ -29,6 +31,21 @@ ${TITLE}REPORTING BUGS:$END
 
 "
 	exit 1
+}
+
+
+function backupBookmarks() {
+    grep -E '"name":|\"url\":' "$BOOKMARKS_DIR" | awk '
+    BEGIN { name = ""; url = ""; }
+    /"name":/ {
+        name = $0;
+        getline;
+        if ($0 ~ /"url":/) {
+            url = $0;
+            print "- name: " substr(name, index(name, ":") + 3, length(name) - index(name, ":") - 4) "\n  url: " substr(url, index(url, ":") + 3, length(url) - index(url, ":") - 3);
+        }
+    }
+    ' > "$YAML_DIR/bookmarks.yaml"
 }
 
 
@@ -99,6 +116,8 @@ function main() {
 	printf "\r${SUCCESS} ✔ All %02d files have been successfully backed up$END" "$index"
 	tput el
 	printf "\n"
+
+	backupBookmarks >/dev/null 2>&1
 }
 
 main "$@"

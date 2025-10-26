@@ -1,28 +1,11 @@
 #!/bin/bash
 
-ERROR="\e[1;31mERROR:"
-TITLE="\e[1;34m"
-END="\e[0m"
+FORMAT_ERROR="\e[1;31m[ERROR]"
+FORMAT_TITLE="\e[0;34m"
+FORMAT_END="\e[0m"
 
 function help() {
-	printf "
-${TITLE}USAGE:${END}
-    ex INPUT_FILE
-
-${TITLE}DESCRIPTION:${END}
-    Extracts the contents of a compressed file based on its extension.
-
-${TITLE}ARGUMENTS:${END}
-    INPUT_FILE             The compressed file to be extracted.
-
-${TITLE}EXAMPLES:${END}
-    ex archive.tar.gz
-    ex file.zip
-
-${TITLE}REPORTING BUGS:${END}
-    Report issues at: https://github.com/druxorey/dotfiles/issues
-
-"
+	printf "${FORMAT_TITLE}USAGE:${FORMAT_END} $(basename $0) INPUT_FILE\n"
 	exit 1
 }
 
@@ -54,7 +37,7 @@ function main() {
 		*.deb)      ar x       "$file" ;;
 		*.tar.xz)   tar xf     "$file" ;;
 		*.tar.zst)  unzstd     "$file" ;;
-		*) printf "\n${ERROR} '$file' cannot be extracted via ex()${END}\n\n" ;;
+		*) printf "${FORMAT_ERROR} $file cannot be extracted via ex()${FORMAT_END}\n" ;;
 	esac
 }
 

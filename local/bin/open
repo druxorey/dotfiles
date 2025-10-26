@@ -1,32 +1,11 @@
 #!/bin/bash
 
-ERROR="\e[1;31mERROR:"
-TITLE="\e[1;34m"
-END="\e[0m"
+FORMAT_ERROR="\e[1;31m[ERROR]"
+FORMAT_TITLE="\e[0;34m"
+FORMAT_END="\e[0m"
 
 function help() {
-	printf "
-${TITLE}USAGE:$END
-    open INPUT_FILE
-
-${TITLE}DESCRIPTION:$END
-    Opens a file using the appropriate application based on its type.
-
-${TITLE}ARGUMENTS:$END
-    INPUT_FILE             The file to be opened. Supported formats include:
-                           - Video: .mp4, .mkv, .avi
-                           - Audio: .mp3, .flac
-                           - Image: .png, .webp, .jpeg, .jpg, .svg
-                           - Document: .pdf
-
-${TITLE}EXAMPLES:$END
-    open video.mp4
-    open document.pdf
-
-${TITLE}REPORTING BUGS:$END
-    Report issues at: https://github.com/druxorey/dotfiles/issues
-
-"
+	printf "${FORMAT_TITLE}USAGE:${FORMAT_END} $(basename $0) INPUT_FILE\n"
 	exit 1
 }
 
@@ -55,7 +34,7 @@ function main() {
 		*.jpg)    sxiv    "$file" ;;
 		*.svg)    sxiv    "$file" ;;
 		*.pdf)    zathura "$file" ;;
-		*) printf "\n${ERROR} '$file' cannot be open via open()\nUse: [mpv, sxiv or zathura]\n\n" ;;
+		*) printf "${FORMAT_ERROR} '$file' cannot be open via open()${FORMAT_END}\nUse: [mpv, sxiv or zathura]\n" ;;
 	esac
 }
 

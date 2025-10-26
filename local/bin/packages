@@ -4,6 +4,11 @@ import os
 import sys
 from typing import Dict, List
 
+FORMAT_ERROR = "\033[1;31m[ERROR]"
+FORMAT_SUCCESS = "\033[1;32m[SUCCESS]"
+FORMAT_TITLE = "\033[0;34m"
+FORMAT_END = "\033[0m"
+
 PACKAGES_FILES_PATH = "/home/druxorey/Workspace/projects/dotfiles/"
 PACKAGES_FILES = {
     "base": "drx-base.packages",
@@ -11,15 +16,15 @@ PACKAGES_FILES = {
 }
 
 def printHelp():
-    print("""
-USAGE:
+    print(f"""
+{FORMAT_TITLE}USAGE:{FORMAT_END}
     packages <list|add|remove> <base|extra> [<pacman|aur>] [<package_name>]
     packages search <package_name>
 
-DESCRIPTION:
+{FORMAT_TITLE}DESCRIPTION:{FORMAT_END}
     A utility script to manage package lists for Arch Linux.
 
-ARGUMENTS:
+{FORMAT_TITLE}ARGUMENTS:{FORMAT_END}
     list <base|extra>
         Lists all packages in the specified file type.
 
@@ -35,13 +40,13 @@ ARGUMENTS:
         Searches for a package in both base and extra files. The package name must
         be provided as an argument.
 
-EXAMPLES:
+{FORMAT_TITLE}EXAMPLES:{FORMAT_END}
     packages list base
     packages add extra
     packages remove base
     packages search firefox
 
-REPORTING BUGS:
+{FORMAT_TITLE}REPORTING BUGS:{FORMAT_END}
     Report issues at: https://github.com/druxorey/dotfiles/issues
 """)
 

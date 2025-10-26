@@ -1,20 +1,19 @@
 #!/bin/bash
 
-ERROR="\e[1;31mERROR:"
-WARN="\e[1;33mWARNING:"
-SUCCESS="\e[1;32mSUCCESS:"
-TITLE="\e[1;34m"
-END="\e[0m"
+FORMAT_ERROR="\e[1;31m[ERROR]"
+FORMAT_SUCCESS="\e[1;32m[SUCCESS]"
+FORMAT_TITLE="\e[0;34m"
+FORMAT_END="\e[0m"
 
 function help() {
 	printf "
-${TITLE}USAGE:$END
-    compress [-o OUTPUT_FILE] [-l COMPRESSION_LEVEL] INPUT_FILE
+${FORMAT_TITLE}USAGE:${FORMAT_END}
+    $(basename $0) [-o OUTPUT_FILE] [-l COMPRESSION_LEVEL] INPUT_FILE
 
-${TITLE}DESCRIPTION:$END
+${FORMAT_TITLE}DESCRIPTION:${FORMAT_END}
     Compresses a video file using ffmpeg with a specified compression level.
 
-${TITLE}ARGUMENTS:$END
+${FORMAT_TITLE}ARGUMENTS:${FORMAT_END}
     -o OUTPUT_FILE         Specify the name of the output file. (Optional)
     -l COMPRESSION_LEVEL   Compression level (0-3). (Optional)
                            0: Low compression (default)
@@ -23,11 +22,11 @@ ${TITLE}ARGUMENTS:$END
                            3: Maximum compression
     INPUT_FILE             The video file to be compressed.
 
-${TITLE}EXAMPLES:$END
-    compress -o output.mp4 -l 2 input.mp4
-    compress input.mp4
+${FORMAT_TITLE}EXAMPLES:${FORMAT_END}
+    $(basename $0) -o output.mkv -l 2 input.mp4
+    $(basename $0) input.mp4
 
-${TITLE}REPORTING BUGS:$END
+${FORMAT_TITLE}REPORTING BUGS:${FORMAT_END}
     Report issues at: https://github.com/druxorey/dotfiles/issues
 
 "
@@ -54,7 +53,7 @@ function main() {
 	inputFile="$1"
 
 	if [[ -z "$inputFile" ]]; then
-		printf "${ERROR} Input file is required.${END}"
+		printf "${FORMAT_ERROR} Input file is required${FORMAT_END}\n"
 		return 1
 	fi
 
@@ -68,15 +67,15 @@ function main() {
 		1) compression=20 ;;
 		2) compression=31 ;;
 		3) compression=35 ;;
-		*) printf "${ERROR} Wrong compression level.${END}" ; return 1 ;;
+		*) printf "${FORMAT_ERROR} Wrong compression level${FORMAT_END}\n" ; return 1 ;;
 	esac
 
 	ffmpeg -i "$inputFile" -vcodec libx264 -preset slower -crf $compression "$outputFile" || {
-		printf "${ERROR} Failed to compress the file.${END}"
+		printf "${FORMAT_ERROR} Failed to compress the file${FORMAT_END}\n"
 		return 1
 	}
 
-	printf "\n$SUCCESS File $inputFile compressed to $outputFile with compression level $compressionLevel\n"
+	printf "\n${FORMAT_SUCCESS} File $inputFile compressed to $outputFile with compression level $compressionLevel${FORMAT_END}\n"
 }
 
 main "$@"

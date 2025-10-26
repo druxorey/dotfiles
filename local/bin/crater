@@ -1,28 +1,29 @@
 #!/bin/bash
 
-ERROR="\e[1;31mERROR:"
-TITLE="\e[1;34m"
-END="\e[0m\n"
+FORMAT_ERROR="\e[1;31m[ERROR]"
+FORMAT_SUCCESS="\e[1;32m[SUCCESS]"
+FORMAT_TITLE="\e[0;34m"
+FORMAT_END="\e[0m"
 
 function help() {
 	printf "
-${TITLE}USAGE:${END}
-    crater [FILE TYPE] [FILE NAME] [TEMPLATE TYPE]
+${FORMAT_TITLE}USAGE:${FORMAT_END}
+    $(basename $0) [FILE TYPE] [FILE NAME] [TEMPLATE TYPE]
 
-${TITLE}DESCRIPTION:${END}
+${FORMAT_TITLE}DESCRIPTION:${FORMAT_END}
     Creates a default file in a specific programming language.
 
-${TITLE}ARGUMENTS:${END}
+${FORMAT_TITLE}ARGUMENTS:${FORMAT_END}
     FILE TYPE              bash, c, c++, go, html, java, latex, lua, python, rust.
     FILE NAME              (Optional) The name of the file.
     TEMPLATE TYPE          (Optional) basic, code.
 
-${TITLE}EXAMPLES:${END}
-    crater html index
-    crater python
-    crater c++ wordFinder code
+${FORMAT_TITLE}EXAMPLES:${FORMAT_END}
+    $(basename $0) html index
+    $(basename $0) python
+    $(basename $0) c++ wordFinder code
 
-${TITLE}REPORTING BUGS:${END}
+${FORMAT_TITLE}REPORTING BUGS:${FORMAT_END}
     Report issues at: https://github.com/druxorey/dotfiles/issues
 
 "
@@ -54,16 +55,17 @@ function main() {
 		;;
 	esac
 
-    . $(dirname $0)/lib/languages-templates/${extension}-template.sh
+    . $HOME/.local/share/crater/${extension}-template.sh
 
 	eval "content=\$${templateName}Template"
 
 	if [[ -z "$content" ]]; then
-		printf "${ERROR} Template not found.${END}"
+		printf "${FORMAT_ERROR} Template not found.${FORMAT_END}"
 		exit 1
 	fi
 
-	echo "$content" > ${fileName}.${extension}
+	echo "$content" > "${fileName}.${extension}"
+	printf "${FORMAT_SUCCESS} File "${fileName}.${extension}" created${FORMAT_END}\n"
 }
 
-main $@
+main "$@"

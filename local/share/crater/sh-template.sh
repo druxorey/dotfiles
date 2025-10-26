@@ -7,7 +7,7 @@ function main() {
 	echo "Hello World"
 }
 
-main \$@
+main "\$@"
 EOF
 )
 
@@ -18,6 +18,6 @@ function main() {
 	echo -e "\n\033[0;35m[========= EXERCISE =========]\033[0m\n"
 }
 
-main \$@
+main "\$@"
 EOF
 )

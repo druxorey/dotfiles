@@ -82,7 +82,6 @@ alias gvim='nvim -c "vertical Git" -c "wincmd h | q" '
 alias copilot='nvim -c "CopilotChat" -c "wincmd h | q" '
 alias cpv='rsync -avh --info=progress2'
 alias mdtopdf='pandoc $1 -o default.pdf --pdf-engine=xelatex -V mainfont="Arial" monofont="Arial"'
-alias todo='bspc rule -a "*" -o state=floating && kitty opdoc todo'
 alias trans-es='trans -s english -t spanish'
 alias setkeys='setxkbmap us -variant intl'
 alias reload='clear && source ~/.zprofile && source ~/.config/zsh/.zshrc'
@@ -90,7 +89,6 @@ alias yt-mp3='yt-dlp -x --audio-format mp3'
 alias yt-1080='yt-dlp -f "bestvideo[height<=1080][ext=mp4]+bestaudio[ext=m4a]"'
 alias yt-720='yt-dlp -f "bestvideo[height<=720][ext=mp4]+bestaudio[ext=m4a]"'
 alias yt-480='yt-dlp -f "bestvideo[height<=480][ext=mp4]+bestaudio[ext=m4a]"'
-alias vencord='sh -c "$(curl -sS https://raw.githubusercontent.com/Vendicated/VencordInstaller/main/install.sh)"'
 
 # python
 alias py='python3'
@@ -101,7 +99,6 @@ alias venv-create='virtualenv .venv'
 alias venv-desactivate='deactivate'
 
 # system
-alias lock='dm-tool lock'
 alias logout='bspc quit'
 alias shutdown='shutdown now'
 
@@ -111,10 +108,12 @@ alias shutdown='shutdown now'
 HISTFILE="$HOME/.cache/zsh_history"
 HISTSIZE=10000
 SAVEHIST=10000
+setopt sharehistory
+setopt hist_ignore_space
 
 # vim mode
 bindkey -v
-export KEYTIMEOUT=1
+export KEYTIMEOUT=0
 
 # key bindings
 bindkey '^?'      backward-delete-char
@@ -123,6 +122,7 @@ bindkey '^a'      beginning-of-line
 bindkey '^e'      end-of-line
 bindkey '^[[3~'   delete-char
 bindkey '^k'      kill-line
+bindkey '^[f'     autosuggest-accept
 
 # fzf settings
 export FZF_ALT_C_OPTS='--preview "tree -C {} | head -200"'
@@ -131,79 +131,13 @@ export FZF_CTRL_T_OPTS="
   --preview 'bat -n --color=always {}'
   --bind 'ctrl-/:change-preview-window(down|hidden|)'"
 source <(fzf --zsh)
-source ~/.config/zsh/autocomplete-opdoc.sh
 
 # plugins
 source ~/.config/zsh/zsh-autosuggestions/zsh-autosuggestions.zsh
 source ~/.config/zsh/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 
-#* ================================ functions =============================== *#
-
-function gfix() {
-	echo "The commit: "
-	git log --oneline --graph --decorate -n 1
-	git reset --soft HEAD~1
-	echo "\nWas restarted to previous commit: "
-	git log --oneline --graph --decorate -n 1
-}
-
-
-function hdmi-connect() {
-	local resolution="${1:-1920x1080}"
-	echo "Setting HDMI resolution to $resolution"
-	xrandr --output eDP-1 --primary --mode 1920x1080 --rotate normal --output HDMI-1 --mode $resolution --rate 100 --rotate normal --right-of eDP-1
-	bspc wm -r
-}
-
-
-function hdmi-disconnect() {
-	echo "Turning off HDMI"
-	xrandr --output HDMI-1 --off
-	bspc wm -r
-}
-
-
-function gtest() {
-	if [[ $# -eq 0 ]]; then
-		echo -e "\e[1;31m[ERROR]: No file provided."
-		return 1
-	fi
-
-	if [[ ${1##*.} != "cpp" ]]; then
-		printf "\e[1;31m[ERROR]: Incorrect file type.\n"
-		return 1
-	fi
-
-	filename=$(basename "$1" .cpp)
-	g++ -DENABLE_TESTS $1 -o ${filename}.out && ./${filename}.out --verbosity=2 --success
-}
-
-
-function grun() {
-	if [[ $# -eq 0 ]]; then
-		printf "\e[1;31m[ERROR]: No file provided.\n"
-		return 1
-	fi
-
-	if [[ ${1##*.} != "cpp" ]]; then
-		printf "\e[1;31m[ERROR]: Incorrect file type.\n"
-		return 1
-	fi
-
-	filename=$(basename "$1" .cpp)
-	g++ $1 -o ${filename}.out && ./${filename}.out
-}
-
-
-function sysupdate() {
-	sudo -v
-	while true; do sudo -n true; sleep 60; kill -0 "$$" || exit; done 2>/dev/null &
-
-	sudo pacman -Syu --noconfirm && yay -Sua --noconfirm
-
-	if [[ -d go ]]; then
-		sudo rm -rf go
-	fi
-
-	vencord
-}
+zstyle ':completion:*' matcher-list 'm:{a-z}={A-Za-z}'
+zstyle ':completion:*' list-colors "${(s.:.)LS_COLORS}"
+zstyle ':completion:*' menu no
+zstyle ':fzf-tab:complete:cd:*' fzf-preview 'ls --color $realpath'
+zstyle ':fzf-tab:complete:__zoxide_z:*' fzf-preview 'ls --color $realpath'

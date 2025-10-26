@@ -1,0 +1,11 @@
+#!/bin/bash
+
+function main() {
+	echo "The commit: "
+	git log --oneline --graph --decorate -n 1
+	git reset --soft HEAD~1
+	echo "\nWas restarted to previous commit: "
+	git log --oneline --graph --decorate -n 1
+}
+
+main "$@"

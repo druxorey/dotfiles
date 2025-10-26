@@ -1,0 +1,21 @@
+#!/bin/bash
+
+FORMAT_TITLE="\e[0;34m"
+FORMAT_END="\e[0m"
+
+function help() {
+	printf "${FORMAT_TITLE}USAGE:${FORMAT_END} $(basename $0) input.cpp\n"
+	exit 1
+}
+
+function main() {
+	if [[ $# -eq 0 ]] || [[ ${1##*.} != "cpp" ]]; then
+		help
+		return 1
+	fi
+
+	filename=$(basename "$1" .cpp)
+	g++ $1 -o ${filename}.out && ./${filename}.out
+}
+
+main "$@"

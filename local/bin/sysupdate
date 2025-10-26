@@ -1,0 +1,17 @@
+#!/bin/bash
+
+function main() {
+	sudo -v
+	while true; do sudo -n true; sleep 60; kill -0 "$$" || exit; done 2>/dev/null &
+
+	sudo pacman -Syu --noconfirm && yay -Sua --noconfirm
+
+	if [[ -d go ]]; then
+		sudo rm -rf go
+	fi
+
+	# Vencord Installer
+	sh -c "$(curl -sS https://raw.githubusercontent.com/Vendicated/VencordInstaller/main/install.sh)"
+}
+
+main "$@"

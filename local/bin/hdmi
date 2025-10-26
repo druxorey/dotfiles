@@ -1,0 +1,57 @@
+#!/bin/bash
+
+FORMAT_WARN="\e[1;33m[WARNING]"
+FORMAT_TITLE="\e[0;34m"
+FORMAT_END="\e[0m"
+
+function help() {
+	printf "${FORMAT_TITLE}USAGE:${FORMAT_END} $(basename $0) {connect|disconnect}\n"
+	exit 1
+}
+
+function connect() {
+	printf "Select resolution:\n"
+	printf "1) 1330x768\n"
+	printf "2) 1600x900\n"
+	printf "3) 1920x1080\n"
+	printf "Enter your choice [1-3]: "
+	read -r ans
+
+	local resolution
+	case $ans in
+		1) resolution="1330x768" ;;
+		2) resolution="1600x900" ;;
+		3) resolution="1920x1080" ;;
+		*) printf "${FORMAT_WARN} Invalid choice\n"; resolution="1330x768" ;;
+	esac
+
+	printf "Setting HDMI resolution to $resolution\n"
+
+	xrandr --output eDP-1 --primary --mode 1920x1080 --rotate normal --output HDMI-1 --mode $resolution --rate 60 --rotate normal --right-of eDP-1
+	bspc wm -r
+}
+
+
+function disconnect() {
+	xrandr --output HDMI-1 --off
+	bspc wm -r
+}
+
+function main() {
+	if [[ $# -eq 0 ]]; then
+		help
+		return 1
+	fi
+
+	option=$1
+
+    if [[ $option == "connect" ]]; then
+        connect
+    elif [[ $option == "disconnect" ]]; then
+        disconnect
+	else
+		help
+    fi
+}
+
+main "$@"

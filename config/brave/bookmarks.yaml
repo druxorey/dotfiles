@@ -1,3 +1,5 @@
+- name: SquidWTF
+  url: https://tidal.squid.wtf/
 - name: DevHints
   url: https://devhints.io/
 - name: DevDocs
@@ -30,6 +32,10 @@
   url: https://app.txyz.ai/
 - name: WeLib
   url: https://es.welib.org/
+- name: Mathcha - Visual LaTeX Graphs
+  url: https://www.mathcha.io/editor
+- name: Simpletex - Image To LaTeX
+  url: https://simpletex.cn/ai/latex_ocr
 - name: Linux From Scratch
   url: https://linuxfromscratch.org/
 - name: ArchWiki
@@ -98,3 +104,9 @@
   url: https://www.mercadolibre.com.ve/
 - name: Modrinth
   url: https://modrinth.com/auth/sign-in?redirect=/dashboard
+- name: Proton Mail
+  url: https://mail.proton.me/u/0/inbox
+- name: Proton Pass
+  url: https://pass.proton.me/
+- name: Proton Drive
+  url: https://drive.proton.me/u/0/

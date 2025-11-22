@@ -2,8 +2,10 @@
 
 FORMAT_ERROR="\e[1;31m[ERROR]"
 FORMAT_SUCCESS="\e[1;32m[SUCCESS]"
-FORMAT_TITLE="\e[0;34m"
-FORMAT_END="\e[0m"
+FORMAT_TITLE="\e[1;34m"
+FORMAT_END="\e[0m\n"
+
+TEMPLATES_PATH="$HOME/.local/share/crater"
 
 function help() {
 	printf "
@@ -16,7 +18,7 @@ ${FORMAT_TITLE}DESCRIPTION:${FORMAT_END}
 ${FORMAT_TITLE}ARGUMENTS:${FORMAT_END}
     FILE TYPE              bash, c, c++, go, html, java, latex, lua, python, rust.
     FILE NAME              (Optional) The name of the file.
-    TEMPLATE TYPE          (Optional) basic, code.
+    TEMPLATE TYPE          (Optional) basic, code, academic.
 
 ${FORMAT_TITLE}EXAMPLES:${FORMAT_END}
     $(basename $0) html index
@@ -33,8 +35,16 @@ ${FORMAT_TITLE}REPORTING BUGS:${FORMAT_END}
 
 function main() {
 	fileType=$1
-	fileName=${2:-"default"}
-	templateName=${3:-"basic"}
+	shift
+	fileName="default"
+
+	while getopts "n:h" opt; do
+	case $opt in
+		n) fileName="$OPTARG" ;;
+		h) help ;;
+		*) help ;;
+	esac
+	done
 
 	case $fileType in
 		"bash") extension="sh";;
@@ -51,21 +61,51 @@ function main() {
 		"rust") extension="rs";;
 		"sh") extension="sh";;
 		"shell") extension="sh";;
-		*) help
+		"tex") extension="tex";;
+		*)
+			printf "${FORMAT_ERROR} File type not found.${FORMAT_END}"
+			exit 1
 		;;
 	esac
 
-    . $HOME/.local/share/crater/${extension}-template.sh
+	files=()
+	for file in "$TEMPLATES_PATH/$extension"/*; do
+		files+=("$file")
+	done
 
-	eval "content=\$${templateName}Template"
+	printf "Available templates with extension '%s':\n" "$extension"
+	for index in "${!files[@]}"; do
+		if [[ -d ${files[$index]} ]]; then
+			printf "  [%d] ${FORMAT_TITLE}%s/${FORMAT_END}" "$index" "$(basename "${files[$index]}")"
+		else
+			printf "  [%d] %s\n" "$index" "$(basename "${files[$index]}")"
+		fi
+	done
 
-	if [[ -z "$content" ]]; then
-		printf "${FORMAT_ERROR} Template not found.${FORMAT_END}"
+	printf "Enter the number corresponding to the file index: "
+	read -r ans
+
+	if ! [[ "$ans" =~ ^[0-9]$ ]]; then
+		printf "${FORMAT_ERROR} Invalid input: '%s'${FORMAT_END}" "$ans"
 		exit 1
 	fi
 
-	echo "$content" > "${fileName}.${extension}"
-	printf "${FORMAT_SUCCESS} File "${fileName}.${extension}" created${FORMAT_END}\n"
+	if [[ -d ${files[$ans]} ]]; then
+		newFileName="${fileName}"
+	else
+		newFileName="${fileName}.${extension}"
+	fi
+
+	cp -rp "${files[$ans]}" "$newFileName" || {
+		printf "${FORMAT_ERROR} Failed to create file '${newFileName}'${FORMAT_END}"
+		exit 1
+	}
+
+	if [[ -s $newFileName ]]; then
+		printf "${FORMAT_SUCCESS} File "$newFileName" created${FORMAT_END}"
+	else
+		printf "${FORMAT_ERROR} Failed to create file '${newFileName}'${FORMAT_END}"
+	fi
 }
 
 main "$@"

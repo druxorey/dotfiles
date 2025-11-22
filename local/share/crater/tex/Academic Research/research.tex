@@ -1,0 +1,211 @@
+\documentclass[12pt]{article} % Define the document type and font size
+
+\usepackage[spanish]{babel} % Package for the Spanish language
+\usepackage[utf8]{inputenc} % Package for UTF-8 character encoding
+\usepackage{geometry} % Package to configure document margins
+\usepackage{listings} % Package to include source code in the document
+\usepackage{xcolor} % Package to define colors
+\usepackage{fancyhdr} % Package to customize headers and footers
+\usepackage{amsmath} % Package for advanced mathematical symbols and environments
+\usepackage{amssymb} % Package for additional mathematical symbols
+\usepackage{url} % Package to format URLs
+\usepackage{hyperref} % Package to create hyperlinks
+\usepackage{graphicx} % Package to include graphics
+
+% Definition of colors for source code
+\definecolor{COLOR_COMMENTS}{HTML}{7C6F64}
+\definecolor{COLOR_KEYWORDS}{HTML}{CC241D}
+\definecolor{COLOR_EMPH}{HTML}{076678}
+\definecolor{COLOR_STRINGS}{HTML}{98971A}
+
+\hypersetup{
+    colorlinks=true, % Enable colored links
+    linkcolor=COLOR_EMPH, % Color for internal links (e.g., TOC)
+	urlcolor=COLOR_EMPH, % Color for external links (e.g., references)
+    citecolor=COLOR_EMPH % Color for citations
+}
+
+% Configuration of the listings environment to display source code
+\lstdefinestyle{cpp}{
+	frame=shadowbox,
+	language=c++,
+	aboveskip=3mm,
+	belowskip=3mm,
+	xleftmargin=10mm,
+	xrightmargin=10mm,
+	showstringspaces=false,
+	columns=flexible,
+	basicstyle={\footnotesize\ttfamily},
+	numbers=left,
+	numberstyle=\tiny\color{COLOR_COMMENTS},
+	commentstyle=\color{COLOR_COMMENTS},
+    keywordstyle=\color{COLOR_KEYWORDS},
+	emphstyle=\color{COLOR_EMPH},
+	stringstyle=\color{COLOR_STRINGS},
+	morekeywords={std},
+	emph={i64,i32,f64,f32},
+	breaklines=true,
+	breakatwhitespace=true,
+	tabsize=4,
+}
+
+\lstdefinestyle{python}{
+	frame=shadowbox,
+	language=Python,
+	aboveskip=3mm,
+	belowskip=3mm,
+	xleftmargin=10mm,
+	xrightmargin=10mm,
+	showstringspaces=false,
+	columns=flexible,
+	basicstyle={\footnotesize\ttfamily},
+	numbers=left,
+	numberstyle=\tiny\color{COLOR_COMMENTS},
+	commentstyle=\color{COLOR_COMMENTS},
+    keywordstyle=\color{COLOR_KEYWORDS},
+	emphstyle=\color{COLOR_EMPH},
+	stringstyle=\color{COLOR_STRINGS},
+	morekeywords={...},
+    emph={int, float, str, bool, list, tuple, dict, set, None},
+	breaklines=true,
+	breakatwhitespace=true,
+	tabsize=4,
+}
+
+\lstdefinestyle{bash}{
+	frame=shadowbox,
+	language=Bash,
+	aboveskip=3mm,
+	belowskip=3mm,
+	xleftmargin=10mm,
+	xrightmargin=10mm,
+	showstringspaces=false,
+	columns=flexible,
+	basicstyle={\footnotesize\ttfamily},
+	numbers=left,
+	numberstyle=\tiny\color{COLOR_COMMENTS},
+	commentstyle=\color{COLOR_COMMENTS},
+    keywordstyle=\color{COLOR_KEYWORDS},
+	emphstyle=\color{COLOR_EMPH},
+	stringstyle=\color{COLOR_STRINGS},
+	morekeywords={...},
+	emph={...},
+	breaklines=true,
+	breakatwhitespace=true,
+	tabsize=4,
+}
+
+% Configuration of document margins
+\geometry{
+	a4paper,
+	left=25mm,
+	right=25mm,
+	top=25mm,
+	bottom=25mm
+}
+
+\setlength{\parskip}{1em} % Space between paragraphs
+\setlength{\parindent}{0pt} % Without indentation for paragraphs
+
+\title{Título del Informe} % Document title
+\author{Nombre} % Document author
+\date{\today} % Document date
+
+\begin{document}
+
+\begin{titlepage}
+	\centering
+	\vspace{1cm}
+	\begin{center}
+		\includegraphics[width=3cm]{ucv.png}
+	\end{center}
+	{\large {Universidad Central de Venezuela}\par}
+	{\large {Facultad de Ciencias}\par}
+	{\large {Escuela de Computación}\par}
+	{\large {Materia}\par}
+	\vspace{4cm}
+	{\LARGE \textbf{Título del Informe}\par}
+	\vspace{0.5cm}
+	{\Large \textbf{Informe de Laboratorio}\par}
+	\vfill
+	{\large Nombre Completo\par}
+	\vspace{0.5cm}
+	{\large \today\par}
+\end{titlepage}
+
+\setcounter{tocdepth}{2} % Depth of the table of contents
+\tableofcontents % Table of contents
+
+\pagebreak
+
+\section{Introducción}
+Este documento contiene varios ejemplos de código en C++. El propósito de este documento es demostrar cómo se pueden estructurar y utilizar diferentes características del lenguaje C++.
+
+\pagebreak
+
+\section{Desarrollo}
+El siguiente código demuestra una función básica en C++ que calcula el factorial de un número.
+
+\begin{lstlisting}[style=cpp, caption={Ejemplo de Código de C++}]
+#include <vector>
+#include <algorithm>
+
+int main(int argc, char *argv[]) {
+    std::vector<i64> numbers = {5, 3, 8, 6, 2};
+    std::sort(numbers.begin(), numbers.end());
+
+    // Apply a lambda function to print the square of each number
+    std::for_each(numbers.begin(), numbers.end(), [](i64 x) {
+        std::cout << x * x << " ";
+    });
+
+    return 0;
+}
+\end{lstlisting}
+
+\begin{lstlisting}[style=python, caption={Ejemplo de Código de Python}]
+def factorial(n: int) -> int:
+    # Base case: factorial of 0 or 1 is 1
+    if n == 0 or n == 1:
+        return 1
+    return n * factorial(n - 1)
+
+if __name__ == "__main__":
+    num: int = int(input("Enter a number: "))
+    print(f"The factorial of {num} is {factorial(num)}")
+\end{lstlisting}
+
+\begin{lstlisting}[style=bash, caption={Ejemplo de Código de Bash}]
+#!/bin/bash
+
+nums=(3 5 7 3 9 5 7)
+sum=0
+
+unique=($(printf "%s\n" "${nums[@]}" | sort -n | uniq))
+for n in "${unique[@]}"; do ((sum += n)); done
+
+# Display results with parameter expansion
+[[ $sum -gt 20 ]] && msg="Greater than 20" || msg="Less than 20"
+echo "Unique numbers: ${unique[*]}"
+echo "Sum: $sum ($msg)"
+\end{lstlisting}
+
+\pagebreak
+
+\section{Conclusión}
+En conclusión, C++ es un lenguaje de programación poderoso y versátil que permite a los desarrolladores crear aplicaciones eficientes y robustas. Los ejemplos presentados en este documento muestran algunas de las características básicas del lenguaje.
+
+\pagebreak
+
+\section{Referencias Bibliográficas}
+\vspace{-4em}
+\renewcommand{\refname}{} % Remove the default bibliography title
+\renewcommand{\bibname}{} % For book/report classes
+\begin{thebibliography}{99}
+
+\bibitem{wiki_ansi}
+Wikipedia. (2025, 15 de septiembre). \textit{ANSI C}. \href{https://es.wikipedia.org/wiki/ANSI\_C}{https://es.wikipedia.org/wiki/ANSI\_C}
+
+\end{thebibliography}
+
+\end{document}

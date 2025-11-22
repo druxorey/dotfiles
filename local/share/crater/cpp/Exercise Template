@@ -1,0 +1,6 @@
+#include <iostream>
+
+int main(int argc, char *argv[]) {
+	std::cout << "\n\e[0;35m[========= EXERCISE =========]\e[0m\n\n";
+	return 0;
+}

@@ -1,6 +1,3 @@
-#!/bin/bash
-
-basicTemplate=$(cat << EOF
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -12,5 +9,3 @@ basicTemplate=$(cat << EOF
     <h1>Hello World</h1>
 </body>
 </html>
-EOF
-)

@@ -1,0 +1,99 @@
+
+/* ========================================================================== !/
+/!
+/!                        ██████╗  ██████╗ ███████╗██╗
+/!                        ██╔══██╗██╔═══██╗██╔════╝██║
+/!                        ██████╔╝██║   ██║█████╗  ██║
+/!                        ██╔══██╗██║   ██║██╔══╝  ██║
+/!                        ██║  ██║╚██████╔╝██║     ██║
+/!                        ╚═╝  ╚═╝ ╚═════╝ ╚═╝     ╚═╝
+/!
+/!                                FILES MENU
+/!
+/!                            - Made by Druxorey -
+/!                         https://github.com/druxorey
+/!
+/! ========================================================================== */
+
+@import "../shared/theme_layout.rasi"
+@import "../shared/theme_list_text.rasi"
+
+configuration {
+	modi: "recursivebrowser,filebrowser";
+	display-recursivebrowser: "";
+	display-filebrowser: "";
+	drun-display-format: "{name}";
+
+	show-icons: true;
+	disable-history: false;
+	case-sensitive: false;
+	icon-theme: "Papirus";
+	kb-row-up: "K,Up";
+	kb-row-down: "J,Down";
+}
+
+module {
+	spacing: 1em;
+	padding: 1.5em;
+	children: [ "inputbar", "message", "listview" ];
+}
+
+inputbar {
+	spacing: 0.5 em;
+	children: [ "entry", "mode-switcher"];
+}
+
+window {
+	width: 48em;
+}
+
+message {
+	enabled: true;
+	border: 0;
+	border-radius: @drx-border-big;
+	background-color: @drx-color-overlay;
+	padding: 0.5em;
+}
+
+textbox {
+	text-color: @drx-color-text;
+	horizontal-align: 0.50;
+}
+
+entry {
+	padding: 0.25em 0.5em 0.25em 0.5em;
+	border-radius: @drx-border-small;
+	placeholder: "   Search...";
+
+	background-color: @drx-color-overlay;
+	text-color: @drx-color-text;
+	placeholder-color: @drx-color-deactivate;
+}
+
+mode-switcher{
+	enabled: true;
+	spacing: 0.5em;
+}
+
+button {
+	padding: 0.15em 0.5em 0.15em 0.5em;
+	cursor: pointer;
+
+	background-color: @drx-color-overlay;
+	text-color: @drx-color-text;
+	border-radius: @drx-border-small;
+}
+
+button selected {
+	padding: 0em 0.25em 0em 0.25em;
+
+	background-color: @drx-color-accent;
+	text-color: @drx-color-surface;
+	border-radius: @drx-border-small;
+}
+
+listview {
+	scrollbar: false;
+	border: 0;
+	lines: 8;
+}

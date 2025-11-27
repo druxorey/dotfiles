@@ -1,0 +1,83 @@
+
+/* ========================================================================== !/
+/!
+/!                        ██████╗  ██████╗ ███████╗██╗
+/!                        ██╔══██╗██╔═══██╗██╔════╝██║
+/!                        ██████╔╝██║   ██║█████╗  ██║
+/!                        ██╔══██╗██║   ██║██╔══╝  ██║
+/!                        ██║  ██║╚██████╔╝██║     ██║
+/!                        ╚═╝  ╚═╝ ╚═════╝ ╚═╝     ╚═╝
+/!
+/!                                COLORSCHEME
+/!
+/!                            - Made by Druxorey -
+/!                         https://github.com/druxorey
+/!
+/! ========================================================================== */
+
+listview {
+	cycle: true;
+	scrollbar: false;
+	border: 0;
+	spacing: 0.5em;
+}
+
+element {
+	padding: 0.5em 0em 0.5em 1em;
+	border-radius: @drx-border-big;
+}
+
+element.normal.normal {
+	background-color: @drx-color-surface;
+	text-color: @drx-color-text;
+}
+
+element.normal.urgent {
+	background-color: @drx-color-urgent;
+	text-color: @drx-color-surface;
+}
+
+element.normal.active {
+	background-color: @drx-color-accent;
+	text-color: @drx-color-surface;
+}
+
+element.selected.normal {
+	background-color: @drx-color-overlay;
+	text-color: @drx-color-text;
+}
+
+element.selected.urgent {
+	background-color: #FF6E6E;
+	text-color: @drx-color-surface;
+}
+
+element.selected.active {
+	background-color: @drx-color-hover;
+	text-color: @drx-color-surface;
+}
+
+element.alternate.normal {
+	background-color: @drx-color-surface;
+	text-color: @drx-color-text;
+}
+
+element.alternate.urgent {
+	background-color: @drx-color-urgent;
+	text-color: @drx-color-text;
+}
+
+element.alternate.active {
+	background-color: @drx-color-accent;
+	text-color: @drx-color-surface;
+}
+
+element-icon {
+	size: 1.25em;
+	padding: 0em 0.5em 0em 0.5em;
+}
+
+element-text {
+	background-color: inherit;
+	text-color: inherit;
+}

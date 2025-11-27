@@ -1,0 +1,67 @@
+
+/* ========================================================================== !/
+/!
+/!                        ██████╗  ██████╗ ███████╗██╗
+/!                        ██╔══██╗██╔═══██╗██╔════╝██║
+/!                        ██████╔╝██║   ██║█████╗  ██║
+/!                        ██╔══██╗██║   ██║██╔══╝  ██║
+/!                        ██║  ██║╚██████╔╝██║     ██║
+/!                        ╚═╝  ╚═╝ ╚═════╝ ╚═╝     ╚═╝
+/!
+/!                                START MENU
+/!
+/!                            - Made by Druxorey -
+/!                         https://github.com/druxorey
+/!
+/! ========================================================================== */
+
+@import "../shared/theme_layout.rasi"
+@import "../shared/theme_list_icons.rasi"
+
+configuration {
+	show-icons: false;
+	disable-history: false;
+	case-sensitive: false;
+	kb-row-up: "k,Up";
+	kb-row-left: "h";
+	kb-row-right: "l";
+	kb-row-down: "j,Down";
+}
+
+window {
+	width: 28em;
+}
+
+module {
+	children: [ "message", "listview" ];
+	spacing: 1em;
+	padding: 1em;
+}
+
+message {
+	border-radius: @drx-border-big;
+	border: 0;
+	children: [ "textbox" ];
+	background-color: @drx-color-overlay;
+	padding: 10.5em 0.5em;
+	background-image: url("/tmp/thumbnail.jpg", width);
+}
+
+textbox {
+	text-color: @drx-color-text;
+	horizontal-align: 0.50;
+	background-color: @drx-color-overlay;
+	border-radius: @drx-border-big;
+	margin: 0em 2em;
+	padding: 0.5em;
+}
+
+listview {
+	cycle: true;
+	scrollbar: false;
+	layout: vertical;
+	border: 0;
+	columns: 7;
+	lines: 1;
+	spacing: 1em;
+}

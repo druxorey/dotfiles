@@ -1,0 +1,81 @@
+
+/* ========================================================================== !/
+/!
+/!                        ██████╗  ██████╗ ███████╗██╗
+/!                        ██╔══██╗██╔═══██╗██╔════╝██║
+/!                        ██████╔╝██║   ██║█████╗  ██║
+/!                        ██╔══██╗██║   ██║██╔══╝  ██║
+/!                        ██║  ██║╚██████╔╝██║     ██║
+/!                        ╚═╝  ╚═╝ ╚═════╝ ╚═╝     ╚═╝
+/!
+/!                                COLORSCHEME
+/!
+/!                            - Made by Druxorey -
+/!                         https://github.com/druxorey
+/!
+/! ========================================================================== */
+
+listview {
+	cycle: true;
+	scrollbar: false;
+	border: 0;
+	spacing: 1em;
+}
+
+element {
+	padding: 20px;
+	border-radius: @drx-border-big;
+}
+
+element.normal.normal {
+	background-color: @drx-color-overlay;
+	text-color: @drx-color-text;
+}
+
+element.normal.urgent {
+	background-color: @drx-color-urgent;
+	text-color: @drx-color-text;
+}
+
+element.normal.active {
+	background-color: @drx-color-accent;
+	text-color: @drx-color-text;
+}
+
+element.selected.normal {
+	background-color: @drx-color-accent;
+	text-color: @drx-color-surface;
+}
+
+element.selected.urgent {
+	background-color: #FF6E6E;
+	text-color: @drx-color-text;
+}
+
+element.selected.active {
+	background-color: @drx-color-accent;
+	text-color: @drx-color-text;
+}
+
+element.alternate.normal {
+	background-color: @drx-color-overlay;
+	text-color: @drx-color-text;
+}
+
+element.alternate.urgent {
+	background-color: @drx-color-urgent;
+	text-color: @drx-color-text;
+}
+
+element.alternate.active {
+	background-color: @drx-color-accent;
+	text-color: @drx-color-text;
+}
+
+element-text {
+	background-color: inherit;
+	text-color: inherit;
+	vertical-align: 0.5;
+	horizontal-align: 0.5;
+    font: "Noto Sans Nerd Font 16";
+}

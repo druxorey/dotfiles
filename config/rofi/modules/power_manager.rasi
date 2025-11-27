@@ -1,0 +1,72 @@
+
+/* ========================================================================== !/
+/!
+/!                        ██████╗  ██████╗ ███████╗██╗
+/!                        ██╔══██╗██╔═══██╗██╔════╝██║
+/!                        ██████╔╝██║   ██║█████╗  ██║
+/!                        ██╔══██╗██║   ██║██╔══╝  ██║
+/!                        ██║  ██║╚██████╔╝██║     ██║
+/!                        ╚═╝  ╚═╝ ╚═════╝ ╚═╝     ╚═╝
+/!
+/!                               POWER MANAGER
+/!
+/!                            - Made by Druxorey -
+/!                         https://github.com/druxorey
+/!
+/! ========================================================================== */
+
+@import "../shared/theme_layout.rasi"
+@import "../shared/theme_list_icons.rasi"
+
+configuration {
+	show-icons: false;
+	disable-history: false;
+	case-sensitive: false;
+	kb-row-up: "k,Up";
+	kb-row-left: "h";
+	kb-row-right: "l";
+	kb-row-down: "j,Down";
+}
+
+window {
+	background-color: #1E1F29ca;
+	width: 300%;
+	height: 300%;
+
+	children: [ "mainbox" ];
+	padding: 76em 130em;
+}
+
+mainbox {
+	margin: 0.5em;
+	border-radius: @drx-border-big;
+	background-color: @drx-color-surface;
+
+	children: [ "module" ];
+}
+
+module {
+	children: [ "message", "listview" ];
+	spacing: 1em;
+	padding: 1em;
+}
+
+message {
+	border-radius: @drx-border-big;
+	border: 0;
+	children: [ "textbox" ];
+	background-color: @drx-color-overlay;
+	padding: 0.5em;
+}
+
+textbox {
+	text-color: @drx-color-text;
+	horizontal-align: 0.50;
+}
+
+listview {
+	layout: vertical;
+	margin: 0px 3em;
+	columns: 4;
+	lines: 1;
+}

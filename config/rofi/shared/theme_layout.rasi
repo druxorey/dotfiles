@@ -1,0 +1,42 @@
+
+/* ========================================================================== !/
+/!
+/!                        ██████╗  ██████╗ ███████╗██╗
+/!                        ██╔══██╗██╔═══██╗██╔════╝██║
+/!                        ██████╔╝██║   ██║█████╗  ██║
+/!                        ██╔══██╗██║   ██║██╔══╝  ██║
+/!                        ██║  ██║╚██████╔╝██║     ██║
+/!                        ╚═╝  ╚═╝ ╚═════╝ ╚═╝     ╚═╝
+/!
+/!                                COLORSCHEME
+/!
+/!                            - Made by Druxorey -
+/!                         https://github.com/druxorey
+/!
+/! ========================================================================== */
+
+@import "theme_colorscheme.rasi"
+
+configuration {
+	hover-select: true;
+	me-select-entry: "MousePrimary";
+	me-accept-entry: "!MousePrimary";
+}
+
+window {
+	location: center;
+	border-radius: 14px;
+	border-color: @drx-color-base;
+	background-color: @drx-color-base;
+	width: 24em;
+
+	children: [ "mainbox" ];
+}
+
+mainbox {
+	margin: 0.5em;
+	border-radius: @drx-border-big;
+	background-color: @drx-color-surface;
+
+	children: [ "module" ];
+}

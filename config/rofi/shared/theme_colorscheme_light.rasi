@@ -1,0 +1,37 @@
+
+/* ========================================================================== !/
+/!
+/!                        ██████╗  ██████╗ ███████╗██╗
+/!                        ██╔══██╗██╔═══██╗██╔════╝██║
+/!                        ██████╔╝██║   ██║█████╗  ██║
+/!                        ██╔══██╗██║   ██║██╔══╝  ██║
+/!                        ██║  ██║╚██████╔╝██║     ██║
+/!                        ╚═╝  ╚═╝ ╚═════╝ ╚═╝     ╚═╝
+/!
+/!                                COLORSCHEME
+/!
+/!                            - Made by Druxorey -
+/!                         https://github.com/druxorey
+/!
+/! ========================================================================== */
+
+* {
+    font: "Noto Sans Nerd Font 11";
+
+	drx-color-base: #eff1f5;
+	drx-color-surface: #fcfcfd;
+	drx-color-overlay: #e6e9ef;
+	drx-color-highlight: #dce0e8;
+
+	drx-color-text: #4C4F69;
+	drx-color-subtext: #5C5F77;
+	drx-color-deactivate: #ACB0BE;
+
+	drx-color-comment: #6272A4;
+    drx-color-accent: #EA76CB;
+    drx-color-hover: #EE95D7;
+    drx-color-urgent: #d20f39;
+
+	drx-border-big: 10px;
+	drx-border-small: 6px;
+}

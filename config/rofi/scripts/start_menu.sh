@@ -3,17 +3,17 @@
 SCRIPTS_PATH=~/.config/rofi/scripts
 
 function main() {
-	runRofi='rofi -dmenu -p -i -config ~/.config/rofi/styles/start_styles.rasi'
-	rofiOption=$(echo -e "\n󰈙\n󰱼\n󰂄\n⏻" | $runRofi)
+	actualDate=$(date +"%H:%M  %A  %d/%m/%Y" | tr '[:lower:]' '[:upper:]')
+	rofiOption=$(echo -e "\n󰱼\n\n\n⏻" | rofi -dmenu -p -i -m -1 -mesg "$actualDate" -config ~/.config/rofi/modules/start_menu.rasi)
 
 	case "$rofiOption" in
-		"") sh $SCRIPTS_PATH/wifi_menu.sh ;;
-		"󰈙") sh $SCRIPTS_PATH/notes_menu.sh ;;
-		"󰱼") rofi -show recursivebrowser -config ~/.config/rofi/styles/files_styles.rasi ;;
-		"󰂄") sh $SCRIPTS_PATH/energy_menu.sh ;;
-		"⏻") sh $SCRIPTS_PATH/power_menu.sh ;;
+		"") rofi -show drun -config ~/.config/rofi/modules/app_launcher.rasi ;;
+		"󰱼") rofi -show recursivebrowser -config ~/.config/rofi/modules/file_search.rasi ;;
+		"") sh $SCRIPTS_PATH/music_manager.sh ;;
+		"") sh $SCRIPTS_PATH/settings_menu.sh ;;
+		"⏻") sh $SCRIPTS_PATH/power_manager.sh ;;
 		*) exit 1 ;;
 	esac
 }
 
-main $@
+main "$@"

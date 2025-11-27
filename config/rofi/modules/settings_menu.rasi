@@ -1,0 +1,60 @@
+
+/* ========================================================================== !/
+/!
+/!                        ██████╗  ██████╗ ███████╗██╗
+/!                        ██╔══██╗██╔═══██╗██╔════╝██║
+/!                        ██████╔╝██║   ██║█████╗  ██║
+/!                        ██╔══██╗██║   ██║██╔══╝  ██║
+/!                        ██║  ██║╚██████╔╝██║     ██║
+/!                        ╚═╝  ╚═╝ ╚═════╝ ╚═╝     ╚═╝
+/!
+/!                                START MENU
+/!
+/!                            - Made by Druxorey -
+/!                         https://github.com/druxorey
+/!
+/! ========================================================================== */
+
+@import "../shared/theme_layout.rasi"
+@import "../shared/theme_list_text.rasi"
+
+configuration {
+	show-icons: false;
+	disable-history: false;
+	case-sensitive: false;
+	kb-row-up: "k,Up";
+	kb-row-left: "h";
+	kb-row-right: "l";
+	kb-row-down: "j,Down";
+}
+
+module {
+	layout: horizontal;
+	children: [ "inputbar", "listview" ];
+	spacing: 1em;
+	padding: 1em;
+}
+
+inputbar {
+	spacing: 0.5 em;
+	children: [ "entry" ];
+}
+
+entry {
+	padding: 0.25em 0.5em 0.25em 0.5em;
+	border-radius: @drx-border-small;
+	placeholder: "   Search...";
+
+	background-color: @drx-color-overlay;
+	text-color: @drx-color-text;
+	placeholder-color: @drx-color-deactivate;
+}
+
+listview {
+	cycle: true;
+	scrollbar: false;
+	layout: vertical;
+	border: 0;
+	spacing: 1em;
+	lines: 5;
+}

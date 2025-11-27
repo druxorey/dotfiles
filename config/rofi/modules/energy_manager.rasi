@@ -1,0 +1,62 @@
+
+/* ========================================================================== !/
+/!
+/!                        ██████╗  ██████╗ ███████╗██╗
+/!                        ██╔══██╗██╔═══██╗██╔════╝██║
+/!                        ██████╔╝██║   ██║█████╗  ██║
+/!                        ██╔══██╗██║   ██║██╔══╝  ██║
+/!                        ██║  ██║╚██████╔╝██║     ██║
+/!                        ╚═╝  ╚═╝ ╚═════╝ ╚═╝     ╚═╝
+/!
+/!                                ENERGY MENU
+/!
+/!                            - Made by Druxorey -
+/!                         https: //github.com/druxorey
+/!
+/! ========================================================================== */
+
+/* ============================== configuration ============================= */
+
+@import "../shared/theme_layout.rasi"
+@import "../shared/theme_list_text.rasi"
+
+configuration {
+	show-icons: false;
+	disable-history: false;
+	case-sensitive: false;
+	kb-row-up: "k,Up";
+	kb-row-left: "h";
+	kb-row-right: "l";
+	kb-row-down: "j,Down";
+}
+
+module {
+	spacing: 1em;
+	padding: 1.5em;
+	children: [ "message", "listview" ];
+}
+
+message {
+	border-radius: @drx-border-big;
+	border: 0;
+	children: [ "textbox" ];
+	background-color: @drx-color-overlay;
+	padding: 0.5em;
+}
+
+textbox {
+	text-color: @drx-color-text;
+	horizontal-align: 0.5;
+}
+
+listview {
+	cycle: true;
+	scrollbar: false;
+	border: 0;
+	columns: 1;
+	lines: 3;
+}
+
+element {
+	padding: 0.5em 1em 0.5em 1em;
+}

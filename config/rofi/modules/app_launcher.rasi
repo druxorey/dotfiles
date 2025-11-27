@@ -1,0 +1,112 @@
+
+/* ========================================================================== !/
+/!
+/!                        ██████╗  ██████╗ ███████╗██╗
+/!                        ██╔══██╗██╔═══██╗██╔════╝██║
+/!                        ██████╔╝██║   ██║█████╗  ██║
+/!                        ██╔══██╗██║   ██║██╔══╝  ██║
+/!                        ██║  ██║╚██████╔╝██║     ██║
+/!                        ╚═╝  ╚═╝ ╚═════╝ ╚═╝     ╚═╝
+/!
+/!                               LAUNCHER MENU
+/!
+/!                            - Made by Druxorey -
+/!                         https://github.com/druxorey
+/!
+/! ========================================================================== */
+
+@import "../shared/theme_layout.rasi"
+@import "../shared/theme_list_text.rasi"
+
+configuration {
+	modi: "drun,run,window";
+	display-drun: "";
+	display-run: "";
+	display-window: "";
+	drun-display-format: "{name}";
+	window-format: "{w} · {t}";
+
+	show-icons: true;
+	disable-history: false;
+	case-sensitive: false;
+	icon-theme: "Papirus";
+	kb-row-up: "K,Up";
+	kb-row-down: "J,Down";
+}
+
+window {
+	location: north;
+	y-offset: 6%;
+}
+
+module {
+	spacing: 1em;
+	padding: 1.5em;
+	children: [ "inputbar", "message", "listview" ];
+}
+
+inputbar {
+	spacing: 0.5 em;
+	children: [ "entry", "mode-switcher"];
+}
+
+message {
+	enabled: true;
+	margin: 0px;
+	padding: 0.25em 0.5em 0.25em 0.5em;
+	border: 0px solid;
+	border-radius: @drx-border-big;
+	background-color: @drx-color-base;
+}
+
+textbox {
+	enabled: true;
+	margin: 0.5em;
+	padding: 0.5em;
+	background-color: @drx-color-surface;
+	text-color: @drx-color-text;
+	vertical-align: 0.5;
+	horizontal-align: 0.0;
+	highlight: none;
+	blink: true;
+	markup: true;
+	border-radius: @drx-border-big;
+}
+
+entry {
+	padding: 0.25em 0.5em 0.25em 0.5em;
+	border-radius: @drx-border-small;
+	placeholder: "   Search...";
+
+	background-color: @drx-color-overlay;
+	text-color: @drx-color-text;
+	placeholder-color: @drx-color-deactivate;
+}
+
+mode-switcher{
+	enabled: true;
+	spacing: 0.5em;
+}
+
+button {
+	padding: 0.15em 0.5em 0.15em 0.5em;
+	cursor: pointer;
+
+	background-color: @drx-color-overlay;
+	text-color: @drx-color-text;
+	border-radius: @drx-border-small;
+}
+
+button selected {
+	padding: 0em 0.25em 0em 0.25em;
+
+	background-color: @drx-color-accent;
+	text-color: @drx-color-surface;
+	border-radius: @drx-border-small;
+}
+
+listview {
+	scrollbar: false;
+	border: 0;
+	lines: 8;
+}

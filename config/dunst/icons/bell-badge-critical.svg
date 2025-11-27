@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   viewBox="0 0 128 128"
+   version="1.1"
+   id="svg1"
+   sodipodi:docname="bell-badge-critical.svg"
+   width="128"
+   height="128"
+   inkscape:version="1.4.2 (ebf0e940d0, 2025-05-08)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <defs
+     id="defs1" />
+  <sodipodi:namedview
+     id="namedview1"
+     pagecolor="#ffffff"
+     bordercolor="#000000"
+     borderopacity="0.25"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:zoom="4.817165"
+     inkscape:cx="52.001541"
+     inkscape:cy="52.416723"
+     inkscape:window-width="1896"
+     inkscape:window-height="1007"
+     inkscape:window-x="10"
+     inkscape:window-y="59"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="svg1" />
+  <path
+     fill="#a6e3a1"
+     d="m 105.05402,36.652388 c 0,8.853161 -7.201797,16.054955 -16.054961,16.054955 -8.853161,0 -16.054955,-7.201794 -16.054955,-16.054955 0,-8.853161 7.201794,-16.054955 16.054955,-16.054955 8.853164,0 16.054961,7.201794 16.054961,16.054955 m -9.174263,24.265918 c -2.293569,0.596327 -4.587133,0.963297 -6.880698,0.963297 -13.899004,0 -25.229215,-11.330211 -25.229215,-25.229215 0,-6.743081 2.660535,-12.843964 6.880695,-17.385223 -1.605495,-1.972466 -4.082545,-3.256862 -6.880695,-3.256862 -5.045843,0 -9.17426,4.128417 -9.17426,9.17426 v 1.330268 C 40.971807,30.551505 31.659934,43.07437 31.659934,57.294474 v 27.52278 l -9.17426,9.174262 v 4.587131 H 105.05402 V 93.991516 L 95.879757,84.817254 V 60.918306 M 63.769844,112.34004 c 5.091714,0 9.17426,-4.08255 9.17426,-9.17426 h -18.34852 c 0,5.09171 4.128417,9.17426 9.17426,9.17426 z"
+     id="path1"
+     style="fill:#ff5555;fill-opacity:1;stroke-width:4.58711"
+     inkscape:transform-center-x="0.95350645"
+     inkscape:transform-center-y="0.63567197" />
+  <g
+     inkscape:groupmode="layer"
+     id="layer1"
+     inkscape:label="Layer 1"
+     transform="translate(-3,-2)" />
+</svg>

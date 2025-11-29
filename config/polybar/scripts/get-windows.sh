@@ -12,7 +12,7 @@ function main() {
 			windows=$(( windows - 1 ))
 		fi
 
-		printf $windows
+		printf "$windows"
 	else
 		printf "\n"
 		return 0
@@ -20,4 +20,4 @@ function main() {
 
 }
 
-main $@
+main "$@"

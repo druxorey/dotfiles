@@ -7,11 +7,13 @@ function main() {
 	steam=$(echo $processes  | grep "steam")
 	proton=$(echo $processes  | grep "proton")
 	obs=$(echo $processes  | grep "obs")
+	localsend=$(echo $processes | grep "localsend")
 
 	[ -n "$discord" ] && pkill Discord
 	[ -n "$steam" ] && pkill steam
 	[ -n "$proton" ] && pkill protonvpn-app
 	[ -n "$obs" ] && pkill obs
+	[ -n "$localsend" ] && pkill localsend
 }
 
 main "$@"

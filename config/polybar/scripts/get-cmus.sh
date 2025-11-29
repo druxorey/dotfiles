@@ -5,7 +5,7 @@ ARTIST_MAX_LENGTH=50
 function main() {
 	status=$(cmus-remote -Q 2>/dev/null)
 	if [ $? -ne 0 ]; then
-		printf ""
+		printf " "
 		exit 0
 	fi
 
@@ -18,12 +18,12 @@ function main() {
 	fi
 
 	if [ "$state" = "playing" ]; then
-		printf "  $artist - $title"
+		printf "  $artist - $title "
 	elif [ "$state" = "paused" ]; then
-		printf "  $artist - $title"
+		printf "  $artist - $title "
 	else
 		printf "  Stopped"
 	fi
 }
 
-main $@
+main "$@"

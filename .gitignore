@@ -34,9 +34,11 @@ config/vencord/dist
 
 # zsh
 config/zsh/.histfile
+config/zsh/zsh_history
 config/zsh/zsh-autosuggestions
 config/zsh/zsh-syntax-highlighting
 config/zsh/zsh-autocomplete
 
 # experiments
 */_experiments
+local/share/applications/wine*

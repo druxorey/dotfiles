@@ -6,6 +6,7 @@ FORMAT_WARNING="\e[1;33m[WARNING]"
 FORMAT_END="\e[0m\n"
 
 CONFIG_DIR="/etc"
+PICOM_DIR="$HOME/.config/picom"
 ACTUAL_PLAN="$(readlink -f "$CONFIG_DIR/tlp.conf" | cut -c 12)"
 
 function main() {
@@ -28,7 +29,7 @@ function main() {
 			;;
 	esac
 
-	rofiOption=$(echo -e "$availablePlans" | rofi -dmenu -p -i -m -1 "$selectedPlan" -mesg "$message" -config ~/.config/rofi/modules/energy_manager.rasi | awk '{print $1}')
+	rofiOption=$(echo -e "$availablePlans" | rofi -dmenu -p -i -m -1 $selectedPlan -mesg "$message" -config ~/.config/rofi/modules/energy_manager.rasi | awk '{print $1}')
 
 	case "$rofiOption" in
 		"󱟧")
@@ -60,10 +61,10 @@ function main() {
 
 	if [[ "$powerPlan" == "powersave" ]]; then
 		printf "${FORMAT_WARNING} Killing picom for low-power mode${FORMAT_END}"
-		pkill picom
-	elif ! pgrep -x "picom" > /dev/null; then
+		cp "$PICOM_DIR/picom_powersave.conf" "$PICOM_DIR/picom.conf"
+	else
 		printf "${FORMAT_WARNING} Starting picom for normal/performance mode${FORMAT_END}"
-		picom &
+		cp "$PICOM_DIR/picom_performance.conf" "$PICOM_DIR/picom.conf"
 	fi
 }
 

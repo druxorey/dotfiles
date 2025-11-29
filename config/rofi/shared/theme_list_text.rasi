@@ -15,6 +15,11 @@
 /!
 /! ========================================================================== */
 
+configuration {
+	kb-row-up: "K,Up";
+	kb-row-down: "J,Down";
+}
+
 listview {
 	cycle: true;
 	scrollbar: false;

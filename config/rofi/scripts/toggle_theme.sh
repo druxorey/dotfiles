@@ -36,11 +36,11 @@ function main() {
 
 	if [[ $mode == "dark" ]]; then
 		toggleMode "light"
-		notify-send "Cambiado a modo claro"
+		notify-send -u low "Cambiado a modo claro"
 		echo "light" > $CACHE_FILE
 	else
 		toggleMode "dark"
-		notify-send "Cambiado a modo oscuro"
+		notify-send -u low "Cambiado a modo oscuro"
 		echo "dark" > $CACHE_FILE
 	fi
 

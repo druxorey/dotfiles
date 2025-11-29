@@ -28,8 +28,6 @@ configuration {
 	disable-history: false;
 	case-sensitive: false;
 	icon-theme: "Papirus";
-	kb-row-up: "K,Up";
-	kb-row-down: "J,Down";
 }
 
 module {

@@ -34,11 +34,6 @@ configuration {
 	kb-row-down: "J,Down";
 }
 
-window {
-	location: north;
-	y-offset: 6%;
-}
-
 module {
 	spacing: 1em;
 	padding: 1.5em;

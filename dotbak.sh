@@ -90,6 +90,7 @@ function main() {
 		["~/.gitconfig"]="rsync -a ~/.gitconfig $directory/config/gitconfig"
 		["~/.local/bin"]="rsync -a --delete ~/.local/bin $directory/local/"
 		["~/.local/share/applications"]="rsync -a --delete ~/.local/share/applications $directory/local/share/"
+		["~/.local/share/crater"]="rsync -a --delete ~/.local/share/crater $directory/local/share/"
 		["$OBSIDIAN_DIR/.obsidian"]="rsync -a --delete $OBSIDIAN_DIR/.obsidian/* $directory/config/obsidian"
 		["/etc/X11/xorg.conf.d/40-libinput.conf"]="rsync -a /etc/X11/xorg.conf.d/40-libinput.conf $directory/config/touchpad/"
 		["/etc/tlp.d"]="rsync -a /etc/tlp.d/ $directory/config/tlp"

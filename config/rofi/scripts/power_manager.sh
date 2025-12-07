@@ -2,7 +2,10 @@
 
 function main() {
 	uptime=$(uptime -p)
-	rofiOption=$(echo -e "\n⏻\n\n" | rofi -dmenu -p -i -m -1 -u 0 -mesg "$uptime" -config ~/.config/rofi/modules/power_manager.rasi)
+
+	[[ ! $1 == "polybar" ]] && monitor="-m -1"
+
+	rofiOption=$(echo -e "\n⏻\n\n" | rofi -dmenu -p -i $monitor -u 0 -mesg "$uptime" -config ~/.config/rofi/modules/power_manager.rasi)
 
 	case "$rofiOption" in
 		"") ;;

@@ -15,29 +15,9 @@
 /!
 /! ========================================================================== */
 
-@import "../shared/theme_layout.rasi"
-@import "../shared/theme_list_text.rasi"
+@import "../modules/start_menu.rasi"
 
-configuration {
-	show-icons: false;
-	disable-history: false;
-	case-sensitive: false;
-	kb-row-up: "k,Up";
-	kb-row-down: "j,Down";
-}
-
-module {
-	layout: horizontal;
-	children: [ "listview" ];
-	spacing: 1em;
-	padding: 1em;
-}
-
-listview {
-	cycle: true;
-	scrollbar: false;
-	layout: vertical;
-	border: 0;
-	spacing: 1em;
-	lines: 5;
+window {
+    location: north;
+    y-offset: 3em;
 }

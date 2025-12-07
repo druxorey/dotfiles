@@ -14,11 +14,13 @@ function checkCmus() {
 	fi
 }
 
+
 function getThumbnail() {
 	cleanTitle=$(echo "$1" | sed 's/^[^a-zA-Z]*//;s/[^a-zA-Z]*$//')
 	thumbnail=$(find ~/Music/ -type f -iname "*${cleanTitle}*")
-	ffmpeg -y -i "$thumbnail" -an -vcodec copy "/tmp/thumbnail.jpg" 2>/dev/null
+    ffmpeg -y -i "$thumbnail" -an -vcodec copy "/tmp/thumbnail.jpg" 2>/dev/null || rm -f "/tmp/thumbnail.jpg"
 }
+
 
 function main() {
 	status=$(cmus-remote -Q 2>/dev/null)
@@ -32,13 +34,19 @@ function main() {
 	title=$(echo "$status" | grep "tag title" | cut -d ' ' -f 3-)
 	message="$artist - $title"
 
-	if getThumbnail "$title"; then
+	isLofiRunning=$(pgrep -x "lofi" > /dev/null && echo true || echo false)
+
+	if [ "$isLofiRunning" = false ] && getThumbnail "$title"; then
 		printf "${FORMAT_SUCCESS} Thumbnail updated for '%s' ${FORMAT_END}" "$title"
 	else
 		printf "${FORMAT_ERROR} No thumbnail found for '%s' ${FORMAT_END}" "$title"
 	fi
 
-	if [ "$state" = "playing" ]; then
+	if [ "$isLofiRunning" == true ]; then
+		message="Lofi radio"
+		reproducerState="󰎊"
+		lofiSelected="-u 4"
+	elif [ "$state" = "playing" ]; then
 		reproducerState=""
 	elif [ "$state" = "paused" ]; then
 		reproducerState=""
@@ -47,14 +55,14 @@ function main() {
 		message="No music playing"
 	fi
 
-	rofiOption=$(echo -e "\n󰒮\n$reproducerState\n󰒭\n󰋋" | rofi -dmenu -p -i -m -1 -mesg "$message" -selected-row $OPTION -config ~/.config/rofi/modules/music_manager.rasi)
+	rofiOption=$(echo -e "\n󰒮\n$reproducerState\n󰒭\n󰋋" | rofi -dmenu -p -i -m -1 $lofiSelected -mesg "$message" -selected-row $OPTION -config ~/.config/rofi/modules/music_manager.rasi)
 
 	case "$rofiOption" in
 		"") cmus-remote --stop && OPTION=0 ;;
 		"󰒮") cmus-remote --prev  && OPTION=1 ;;
 		"$reproducerState") cmus-remote --pause || checkCmus "$status" && OPTION=2 ;;
 		"󰒭") cmus-remote --next  && OPTION=3 ;;
-		"󰋋") cmus-remote --stop && kitty lofi  && OPTION=-1 ;;
+		"󰋋") cmus-remote --stop ; kitty lofi  && OPTION=-1 ;;
 		*) exit 1 ;;
 	esac
 }

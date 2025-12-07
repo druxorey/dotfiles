@@ -59,12 +59,12 @@ function main() {
 		exit 1
 	fi
 
-	if [[ "$powerPlan" == "powersave" ]]; then
+	if [[ "$powerPlan" == "powersave" ]] || [[ "$powerPlan" == "performance" ]]; then
 		printf "${FORMAT_WARNING} Killing picom for low-power mode${FORMAT_END}"
-		cp "$PICOM_DIR/picom_powersave.conf" "$PICOM_DIR/picom.conf"
+		cp "$PICOM_DIR/picom_low_detail.conf" "$PICOM_DIR/picom.conf"
 	else
 		printf "${FORMAT_WARNING} Starting picom for normal/performance mode${FORMAT_END}"
-		cp "$PICOM_DIR/picom_performance.conf" "$PICOM_DIR/picom.conf"
+		cp "$PICOM_DIR/picom_high_detail.conf" "$PICOM_DIR/picom.conf"
 	fi
 }
 

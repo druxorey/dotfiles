@@ -11,13 +11,13 @@ function main() {
 
 	output=""
 
-	[ -n "$discord" ] && output="${output}󰙯"
-	[ -n "$steam" ] && output="${output}   󰓓"
-	[ -n "$proton" ] && output="${output}   󰕣"
-	[ -n "$obs" ] && output="${output}   󰻃"
-	[ -n "$localsend" ] && output="${output}   "
+	[ -n "$discord" ] && output="${output}󰙯   "
+	[ -n "$steam" ] && output="${output}󰓓   "
+	[ -n "$proton" ] && output="${output}󰕣   "
+	[ -n "$obs" ] && output="${output}󰻃   "
+	[ -n "$localsend" ] && output="${output}   "
 
-	[ -n "$output" ] && output="  $output   "
+	[ -n "$output" ] && output="  $output"
 
 	printf "${output:- }"
 }

@@ -1,5 +1,11 @@
 #!/bin/bash
 
+FORMAT_SUCCESS="\e[1;32m[SUCCESS]"
+FORMAT_END="\e[0m\n"
+
+CACHE_ROUTE="$HOME/.cache/"
+TRASH_ROUTE="$HOME/.local/share/Trash/files/"
+
 function main() {
 	sudo -v
 	while true; do sudo -n true; sleep 60; kill -0 "$$" || exit; done 2>/dev/null &
@@ -8,6 +14,16 @@ function main() {
 
 	if [[ -d go ]]; then
 		sudo rm -rf go
+	fi
+
+	cacheSize=$(dirbyte -rms "$CACHE_ROUTE")
+	if (( $(echo "$cacheSize > 8192" | bc -l) )); then
+		sudo rm -rf "$CACHE_ROUTE" && printf "${FORMAT_SUCCESS} Cache of size %s cleared successfully.${FORMAT_END}" "$cacheSize"
+	fi
+
+	trashSize=$(dirbyte -rms "$TRASH_ROUTE")
+	if (( $(echo "$trashSize > 32768" | bc -l) )); then
+		sudo rm -rf "$TRASH_ROUTE" && printf "${FORMAT_SUCCESS} Trash of size %s cleared successfully.${FORMAT_END}" "$trashSize"
 	fi
 
 	# Vencord Installer

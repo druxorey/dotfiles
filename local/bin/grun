@@ -4,18 +4,25 @@ FORMAT_TITLE="\e[0;34m"
 FORMAT_END="\e[0m"
 
 function help() {
-	printf "${FORMAT_TITLE}USAGE:${FORMAT_END} $(basename $0) input.cpp\n"
+	printf "${FORMAT_TITLE}USAGE:${FORMAT_END} $(basename $0) {input.cpp,input.c}\n"
 	exit 1
 }
 
 function main() {
-	if [[ $# -eq 0 ]] || [[ ${1##*.} != "cpp" ]]; then
+	fileExtension=${1##*.}
+
+	if [[ $# -eq 0 || ! $fileExtension =~ ^(cpp|c)$ ]]; then
 		help
-		return 1
 	fi
 
-	filename=$(basename "$1" .cpp)
-	g++ $1 -o ${filename}.out && ./${filename}.out
+	if [[ ${1##*.} == "cpp" ]]; then
+		filename=$(basename "$1" .cpp)
+		g++ "$1" -o "${filename}.out" -Wall "${@:2}" && ./"${filename}.out"
+	elif [[ ${1##*.} == "c" ]]; then
+		filename=$(basename "$1" .c)
+		gcc "$1" -o "${filename}.out" -Wall "${@:2}" && ./"${filename}.out"
+	fi
+	rm "${filename}.out"
 }
 
 main "$@"

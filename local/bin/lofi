@@ -1,0 +1,37 @@
+#!/bin/bash
+
+FORMAT_TITLE="\e[0;34m"
+FORMAT_END="\e[0m"
+COVER_PATH="$HOME/.local/share/lofi"
+
+function help() {
+	printf "${FORMAT_TITLE}USAGE:${FORMAT_END} $(basename $0) VOLUME\n"
+	exit 1
+}
+
+
+function main() {
+	[[ $1 == "-h" ]] && help
+
+	if [[ -n $1 ]]; then
+		volume=$(echo "scale=2; $1 / 100" | bc)
+	else
+		volume="0.5"
+	fi
+
+	if [[ ! -d "$COVER_PATH" ]]; then
+		mkdir "$COVER_PATH"
+		wget --output-document "$COVER_PATH/lofi.jpg" "https://f4.bcbits.com/img/a0591684555_10.jpg"
+	fi
+
+	(
+	yt-dlp --format "w*" -o - 'https://www.youtube.com/watch?v=jfKfPfyJRdk' | ffplay -nodisp -af "volume=$volume" -
+	) > /dev/null 2>&1 &
+
+	cp -f "$HOME/.local/share/lofi/lofi.jpg" "/tmp/thumbnail.jpg"
+    PGID=$(ps -o pgid= -p $! | tr -d ' ')
+	cava
+    kill -TERM -$PGID
+}
+
+main "$@"

@@ -1,0 +1,30 @@
+#!/bin/bash
+
+FORMAT_SUCCESS="\e[1;32m[SUCCESS]"
+FORMAT_WARNING="\e[1;33m[WARNING]"
+FORMAT_ERROR="\e[1;31m[ERROR]"
+FORMAT_TITLE="\e[0;34m"
+FORMAT_RESET="\e[0m"
+
+function help() {
+	printf "${FORMAT_TITLE}USAGE:${FORMAT_RESET} %s INPUT_FILE\n" "$(basename "$0")"
+	exit 1
+}
+
+function main() {
+	while getopts "ewsh" opt; do
+		case $opt in
+			e) printf "${FORMAT_ERROR} Error example for %s ${FORMAT_RESET}\n" "$opt" ;;
+			w) printf "${FORMAT_WARNING} Warning example for %s ${FORMAT_RESET}\n" "$opt" ;;
+			s) printf "${FORMAT_SUCCESS} Success example for %s ${FORMAT_RESET}\n" "$opt" ;;
+			h) help ;;
+			*) exit 1 ;;
+		esac
+	done
+
+	printf "Hello World\n"
+
+	return 0
+}
+
+main "$@"

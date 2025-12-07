@@ -10,6 +10,7 @@
 \usepackage{amssymb} % Package for additional mathematical symbols
 \usepackage{url} % Package to format URLs
 \usepackage{hyperref} % Package to create hyperlinks
+\usepackage{graphicx} % Package to include images
 
 \geometry{ % Configuration of document margins
 	a4paper,
@@ -92,7 +93,53 @@
 
 \begin{document}
 
-\maketitle
+\begin{titlepage}
+	\centering
+	\vspace{1cm}
+	\begin{center}
+		\includegraphics[width=3cm]{TMP [L0] - Assets/ucv.png}
+	\end{center}
+	{\large {Universidad Central de Venezuela}\par}
+	{\large {Facultad de Ciencias}\par}
+	{\large {Escuela de Computación}\par}
+	{\large {Materia}\par}
+	\vspace{4cm}
+	{\LARGE \textbf{Título del Informe}\par}
+	{\Large \textbf{Informe de Laboratorio}\par}
+	\vfill
+	{\large Nombre Completo\par}
+	\vspace{0.5cm}
+	{\large \today\par}
+\end{titlepage}
+
+\setcounter{tocdepth}{2} % Depth of the table of contents
+\tableofcontents % Table of contents
+
+\pagebreak
+
+\section{Objetivos}
+
+\subsection{Objetivo General}
+\begin{itemize}
+    \item Comprender los procesos y su comunicación en sistemas operativos.
+\end{itemize}
+
+\subsection{Objetivos Específicos}
+
+\begin{itemize}
+    \item Entender el concepto de proceso y su estructura
+    \item Entender las diferencias entre las llamadas al sistema \texttt{fork()} y \texttt{vfork()}
+    \item Conocer las herramientas disponibles en los sistemas operativos para realizar comunicación entre procesos
+    \item Adquirir destrezas en el desarrollo de soluciones, basadas en la bifurcación de instrucciones y comunicación entre procesos
+\end{itemize}
+
+\pagebreak
+
+\section{Marco Teórico}
+
+El presente marco teórico aborda los conceptos fundamentales necesarios para la comprensión de la gestión de procesos, la comunicación entre procesos (IPC) y el manejo de señales en entornos basados en Unix/Linux.
+
+\pagebreak
 
 \section{Desarrollo}
 El siguiente código demuestra una función básica en C++ que calcula el factorial de un número.
@@ -154,6 +201,11 @@ se imprimen los bytes leidos: Jim Plank
 invocado read(3, c, 99).  valor de retorno: 12 bytes leidos.
 se imprimen los bytes leidos: Claxton 221
 \end{lstlisting}
+
+\pagebreak
+
+\section{Conclusión}
+En conclusión, C++ es un lenguaje de programación poderoso y versátil que permite a los desarrolladores crear aplicaciones eficientes y robustas. Los ejemplos presentados en este documento muestran algunas de las características básicas del lenguaje.
 
 \pagebreak
 

@@ -11,91 +11,7 @@
 \usepackage{url} % Package to format URLs
 \usepackage{hyperref} % Package to create hyperlinks
 
-% Definition of colors for source code
-\definecolor{COLOR_COMMENTS}{HTML}{7C6F64}
-\definecolor{COLOR_KEYWORDS}{HTML}{CC241D}
-\definecolor{COLOR_EMPH}{HTML}{076678}
-\definecolor{COLOR_STRINGS}{HTML}{98971A}
-
-\hypersetup{
-    colorlinks=true, % Enable colored links
-    linkcolor=COLOR_EMPH, % Color for internal links (e.g., TOC)
-	urlcolor=COLOR_EMPH, % Color for external links (e.g., references)
-    citecolor=COLOR_EMPH % Color for citations
-}
-
-% Configuration of the listings environment to display source code
-\lstdefinestyle{cpp}{
-	frame=shadowbox,
-	language=c++,
-	aboveskip=3mm,
-	belowskip=3mm,
-	xleftmargin=10mm,
-	xrightmargin=10mm,
-	showstringspaces=false,
-	columns=flexible,
-	basicstyle={\footnotesize\ttfamily},
-	numbers=left,
-	numberstyle=\tiny\color{COLOR_COMMENTS},
-	commentstyle=\color{COLOR_COMMENTS},
-    keywordstyle=\color{COLOR_KEYWORDS},
-	emphstyle=\color{COLOR_EMPH},
-	stringstyle=\color{COLOR_STRINGS},
-	morekeywords={std},
-	emph={i64,i32,f64,f32},
-	breaklines=true,
-	breakatwhitespace=true,
-	tabsize=4,
-}
-
-\lstdefinestyle{python}{
-	frame=shadowbox,
-	language=Python,
-	aboveskip=3mm,
-	belowskip=3mm,
-	xleftmargin=10mm,
-	xrightmargin=10mm,
-	showstringspaces=false,
-	columns=flexible,
-	basicstyle={\footnotesize\ttfamily},
-	numbers=left,
-	numberstyle=\tiny\color{COLOR_COMMENTS},
-	commentstyle=\color{COLOR_COMMENTS},
-    keywordstyle=\color{COLOR_KEYWORDS},
-	emphstyle=\color{COLOR_EMPH},
-	stringstyle=\color{COLOR_STRINGS},
-	morekeywords={...},
-    emph={int, float, str, bool, list, tuple, dict, set, None},
-	breaklines=true,
-	breakatwhitespace=true,
-	tabsize=4,
-}
-
-\lstdefinestyle{bash}{
-	frame=shadowbox,
-	language=Bash,
-	aboveskip=3mm,
-	belowskip=3mm,
-	xleftmargin=10mm,
-	xrightmargin=10mm,
-	showstringspaces=false,
-	columns=flexible,
-	basicstyle={\footnotesize\ttfamily},
-	numbers=left,
-	numberstyle=\tiny\color{COLOR_COMMENTS},
-	commentstyle=\color{COLOR_COMMENTS},
-    keywordstyle=\color{COLOR_KEYWORDS},
-	emphstyle=\color{COLOR_EMPH},
-	stringstyle=\color{COLOR_STRINGS},
-	morekeywords={...},
-	emph={...},
-	breaklines=true,
-	breakatwhitespace=true,
-	tabsize=4,
-}
-
-% Configuration of document margins
-\geometry{
+\geometry{ % Configuration of document margins
 	a4paper,
 	left=25mm,
 	right=25mm,
@@ -105,6 +21,70 @@
 
 \setlength{\parskip}{1em} % Space between paragraphs
 \setlength{\parindent}{0pt} % Without indentation for paragraphs
+
+% Definition of colors for source code
+\definecolor{COLOR_COMMENTS}{HTML}{7C6F64}
+\definecolor{COLOR_KEYWORDS}{HTML}{CC241D}
+\definecolor{COLOR_EMPH}{HTML}{076678}
+\definecolor{COLOR_STRINGS}{HTML}{98971A}
+\definecolor{COLOR_CONSOLE}{HTML}{EEEEEE}
+
+\hypersetup{
+	colorlinks=true, % Enable colored links
+	linkcolor=COLOR_EMPH, % Color for internal links (e.g., TOC)
+	urlcolor=COLOR_EMPH, % Color for external links (e.g., references)
+	citecolor=COLOR_EMPH % Color for citations
+}
+
+% Configuration of the listings environment to display source code
+\lstdefinestyle{base}{
+	frame=shadowbox,
+	aboveskip=5mm,
+	xleftmargin=5mm,
+	basicstyle={\footnotesize\ttfamily},
+	numberstyle=\tiny\color{COLOR_COMMENTS},
+	commentstyle=\color{COLOR_COMMENTS},
+	keywordstyle=\color{COLOR_KEYWORDS},
+	emphstyle=\color{COLOR_EMPH},
+	stringstyle=\color{COLOR_STRINGS},
+	breaklines=true,
+	breakatwhitespace=true,
+	showstringspaces=false,
+	columns=flexible,
+	numbers=left,
+	tabsize=4,
+	captionpos=b
+}
+
+\lstdefinestyle{cpp}{
+	style=base,
+	language=c++,
+	morekeywords={std},
+	emph={i64,i32,f64,f32}
+}
+
+\lstdefinestyle{python}{
+	style=base,
+	language=Python,
+	morekeywords={...},
+	emph={int,float,str,bool,list,tuple,dict,set,None}
+}
+
+\lstdefinestyle{bash}{
+	style=base,
+	language=Bash,
+	morekeywords={...},
+	emph={...}
+}
+
+\lstdefinestyle{consola}{
+	style=base,
+	backgroundcolor=\color{COLOR_CONSOLE},
+	keepspaces=true,
+	numbers=none,
+	xleftmargin=10mm,
+	xrightmargin=10mm,
+}
 
 \title{Título del Informe} % Document title
 \author{Nombre} % Document author
@@ -121,7 +101,6 @@
 	{\large {Materia}\par}
 	\vspace{8cm}
 	{\LARGE \textbf{Título del Informe}\par}
-	\vspace{0.5cm}
 	{\Large \textbf{Informe de Laboratorio}\par}
 	\vfill
 	{\large Nombre Completo\par}
@@ -147,29 +126,33 @@ El siguiente código demuestra una función básica en C++ que calcula el factor
 #include <algorithm>
 
 int main(int argc, char *argv[]) {
-    std::vector<i64> numbers = {5, 3, 8, 6, 2};
-    std::sort(numbers.begin(), numbers.end());
+	std::vector<i64> numbers = {5, 3, 8, 6, 2};
+	std::sort(numbers.begin(), numbers.end());
 
-    // Apply a lambda function to print the square of each number
-    std::for_each(numbers.begin(), numbers.end(), [](i64 x) {
-        std::cout << x * x << " ";
-    });
+	// Apply a lambda function to print the square of each number
+	std::for_each(numbers.begin(), numbers.end(), [](i64 x) {
+		std::cout << x * x << " ";
+	});
 
-    return 0;
+	return 0;
 }
 \end{lstlisting}
 
+El siguiente código demuestra una función básica en C++ que calcula el factorial de un número.
+
 \begin{lstlisting}[style=python, caption={Ejemplo de Código de Python}]
 def factorial(n: int) -> int:
-    # Base case: factorial of 0 or 1 is 1
-    if n == 0 or n == 1:
-        return 1
-    return n * factorial(n - 1)
+	# Base case: factorial of 0 or 1 is 1
+	if n == 0 or n == 1:
+		return 1
+	return n * factorial(n - 1)
 
 if __name__ == "__main__":
-    num: int = int(input("Enter a number: "))
-    print(f"The factorial of {num} is {factorial(num)}")
+	num: int = int(input("Enter a number: "))
+	print(f"The factorial of {num} is {factorial(num)}")
 \end{lstlisting}
+
+El siguiente código demuestra una función básica en C++ que calcula el factorial de un número.
 
 \begin{lstlisting}[style=bash, caption={Ejemplo de Código de Bash}]
 #!/bin/bash
@@ -184,6 +167,16 @@ for n in "${unique[@]}"; do ((sum += n)); done
 [[ $sum -gt 20 ]] && msg="Greater than 20" || msg="Less than 20"
 echo "Unique numbers: ${unique[*]}"
 echo "Sum: $sum ($msg)"
+\end{lstlisting}
+
+El siguiente código demuestra una función básica en C++ que calcula el factorial de un número.
+
+\begin{lstlisting}[style=consola, caption={Resultado de ejecución del programa \texttt{r1.c}}]
+llamando read(3, c, 10).  valor de retorno: 10 bytes leidos
+se imprimen los bytes leidos: Jim Plank
+
+invocado read(3, c, 99).  valor de retorno: 12 bytes leidos.
+se imprimen los bytes leidos: Claxton 221
 \end{lstlisting}
 
 \pagebreak

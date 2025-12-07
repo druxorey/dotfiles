@@ -1,35 +1,35 @@
 #!/bin/bash
 
-FORMAT_ERROR="\e[1;31m[ERROR]"
-FORMAT_SUCCESS="\e[1;32m[SUCCESS]"
-FORMAT_TITLE="\e[1;34m"
-FORMAT_END="\e[0m\n"
+declare FORMAT_SUCCESS="\e[1;32m[SUCCESS]"
+declare FORMAT_ERROR="\e[1;31m[ERROR]"
+declare FORMAT_TITLE="\e[0;34m"
+declare FORMAT_RESET="\e[0m"
 
-TEMPLATES_PATH="$HOME/.local/share/crater"
+declare TEMPLATES_PATH="$HOME/.local/share/crater"
 
 function help() {
 	printf "
-${FORMAT_TITLE}USAGE:${FORMAT_END}
+${FORMAT_TITLE}USAGE:${FORMAT_RESET}
     $(basename $0) [FILE TYPE] [FILE NAME] [TEMPLATE TYPE]
 
-${FORMAT_TITLE}DESCRIPTION:${FORMAT_END}
+${FORMAT_TITLE}DESCRIPTION:${FORMAT_RESET}
     Creates a default file in a specific programming language.
 
-${FORMAT_TITLE}ARGUMENTS:${FORMAT_END}
+${FORMAT_TITLE}ARGUMENTS:${FORMAT_RESET}
     FILE TYPE              bash, c, c++, go, html, java, latex, lua, python, rust.
     FILE NAME              (Optional) The name of the file.
     TEMPLATE TYPE          (Optional) basic, code, academic.
 
-${FORMAT_TITLE}EXAMPLES:${FORMAT_END}
+${FORMAT_TITLE}EXAMPLES:${FORMAT_RESET}
     $(basename $0) html index
     $(basename $0) python
     $(basename $0) c++ wordFinder code
 
-${FORMAT_TITLE}REPORTING BUGS:${FORMAT_END}
+${FORMAT_TITLE}REPORTING BUGS:${FORMAT_RESET}
     Report issues at: https://github.com/druxorey/dotfiles/issues
 
 "
-	exit 1
+	exit 0
 }
 
 
@@ -42,7 +42,7 @@ function main() {
 	case $opt in
 		n) fileName="$OPTARG" ;;
 		h) help ;;
-		*) help ;;
+		*) exit 1 ;;
 	esac
 	done
 
@@ -63,7 +63,7 @@ function main() {
 		"shell") extension="sh";;
 		"tex") extension="tex";;
 		*)
-			printf "${FORMAT_ERROR} File type not found.${FORMAT_END}"
+			printf "${FORMAT_ERROR} File type '%s' not found.${FORMAT_RESET}\n" "$fileType"
 			exit 1
 		;;
 	esac
@@ -76,7 +76,7 @@ function main() {
 	printf "Available templates with extension '%s':\n" "$extension"
 	for index in "${!files[@]}"; do
 		if [[ -d ${files[$index]} ]]; then
-			printf "  [%d] ${FORMAT_TITLE}%s/${FORMAT_END}" "$index" "$(basename "${files[$index]}")"
+			printf "  [%d] ${FORMAT_TITLE}%s/${FORMAT_RESET}\n" "$index" "$(basename "${files[$index]}")"
 		else
 			printf "  [%d] %s\n" "$index" "$(basename "${files[$index]}")"
 		fi
@@ -86,7 +86,7 @@ function main() {
 	read -r ans
 
 	if ! [[ "$ans" =~ ^[0-9]$ ]]; then
-		printf "${FORMAT_ERROR} Invalid input: '%s'${FORMAT_END}" "$ans"
+		printf "${FORMAT_ERROR} Invalid input: '%s'${FORMAT_RESET}\n" "$ans"
 		exit 1
 	fi
 
@@ -97,15 +97,17 @@ function main() {
 	fi
 
 	cp -rp "${files[$ans]}" "$newFileName" || {
-		printf "${FORMAT_ERROR} Failed to create file '${newFileName}'${FORMAT_END}"
+		printf "${FORMAT_ERROR} Failed to create file '%s'${FORMAT_RESET}\n" "$newFileName"
 		exit 1
 	}
 
 	if [[ -s $newFileName ]]; then
-		printf "${FORMAT_SUCCESS} File "$newFileName" created${FORMAT_END}"
+		printf "${FORMAT_SUCCESS} File '%s' created${FORMAT_RESET}\n" "$newFileName"
 	else
-		printf "${FORMAT_ERROR} Failed to create file '${newFileName}'${FORMAT_END}"
+		printf "${FORMAT_ERROR} Failed to create file '%s'${FORMAT_RESET}\n" "$newFileName"
 	fi
+
+	exit 0
 }
 
 main "$@"

@@ -56,6 +56,7 @@ alias matrix='cmatrix -C blue'
 alias peaclock='peaclock --config ~/.config/peaclock'
 alias btop='btop --force-utf'
 alias oh-my-time='eval "$(oh-my-posh init zsh --config ~/.config/oh-my-posh/dracula-time.omp.json)"'
+alias clip='xclip -selection clipboard'
 
 # pacman and yay
 alias unlock='sudo rm /var/lib/pacman/db.lck'
@@ -89,6 +90,8 @@ alias yt-mp3='yt-dlp -x --audio-format mp3'
 alias yt-1080='yt-dlp -f "bestvideo[height<=1080][ext=mp4]+bestaudio[ext=m4a]"'
 alias yt-720='yt-dlp -f "bestvideo[height<=720][ext=mp4]+bestaudio[ext=m4a]"'
 alias yt-480='yt-dlp -f "bestvideo[height<=480][ext=mp4]+bestaudio[ext=m4a]"'
+alias youtube='mpv --ytdl-format="bestvideo[height<=1080]+bestaudio/best[height<=1080]"'
+alias weather='curl wttr.in'
 
 # python
 alias py='python3'
@@ -105,7 +108,7 @@ alias shutdown='shutdown now'
 #* ================================ zsh setup =============================== *#
 
 # history
-HISTFILE="$HOME/.cache/zsh_history"
+HISTFILE="$HOME/.config/zsh/zsh_history"
 HISTSIZE=10000
 SAVEHIST=10000
 setopt sharehistory

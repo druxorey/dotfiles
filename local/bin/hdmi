@@ -22,10 +22,10 @@ function connect() {
 		1) resolution="1330x768" ;;
 		2) resolution="1600x900" ;;
 		3) resolution="1920x1080" ;;
-		*) printf "${FORMAT_WARN} Invalid choice\n"; resolution="1330x768" ;;
+		*) printf "${FORMAT_WARN} Invalid choice${FORMAT_END}"; resolution="1330x768" ;;
 	esac
 
-	printf "Setting HDMI resolution to $resolution\n"
+	printf "Setting HDMI resolution to %s ${FORMAT_END}" "$resolution"
 
 	xrandr --output eDP-1 --primary --mode 1920x1080 --rotate normal --output HDMI-1 --mode $resolution --rate 60 --rotate normal --right-of eDP-1
 	bspc wm -r
@@ -40,18 +40,17 @@ function disconnect() {
 function main() {
 	if [[ $# -eq 0 ]]; then
 		help
-		return 1
 	fi
 
 	option=$1
 
-    if [[ $option == "connect" ]]; then
-        connect
-    elif [[ $option == "disconnect" ]]; then
-        disconnect
+	if [[ $option == "connect" ]]; then
+		connect
+	elif [[ $option == "disconnect" ]]; then
+		disconnect
 	else
 		help
-    fi
+	fi
 }
 
 main "$@"

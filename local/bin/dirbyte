@@ -21,14 +21,15 @@ def unitConverter(fileSize, memoryUnit):
     return fileSize
 
 
-def analyzeDirectory(directoryPath, memoryUnit, isRecursive, isHidden):
+def analyzeDirectory(directoryPath, memoryUnit, isRecursive, isHidden, isScript):
     global QUANTITY_TOTAL
     global SIZE_TOTAL
 
     try:
         fileList = os.listdir(directoryPath)
     except FileNotFoundError:
-        print(f"Directory {ROUTE}{directoryPath}{END} not found")
+        if not isScript:
+            print(f"Directory {ROUTE}{directoryPath}{END} not found")
         return
 
     for file in fileList:
@@ -40,12 +41,15 @@ def analyzeDirectory(directoryPath, memoryUnit, isRecursive, isHidden):
         try:
             if os.path.isfile(filePath):
                 fileSize = unitConverter(os.path.getsize(filePath), memoryUnit)
-                print(f"File {ROUTE}{filePath}{END} takes up {SIZE}{fileSize}{END} {memoryUnit}")
+
+                if not isScript:
+                    print(f"File {ROUTE}{filePath}{END} takes up {SIZE}{fileSize}{END} {memoryUnit}")
+
                 QUANTITY_TOTAL += 1
                 SIZE_TOTAL += fileSize
 
             elif isRecursive:
-                analyzeDirectory(filePath,memoryUnit, isRecursive, isHidden)
+                analyzeDirectory(filePath,memoryUnit, isRecursive, isHidden, isScript)
 
         except FileNotFoundError:
             print(f"File {ROUTE}{filePath}{END} not found")
@@ -57,6 +61,7 @@ def main():
 
     parser.add_argument('-r', action='store_true', help='Analyze directories recursively')
     parser.add_argument('-d', action='store_true', help='Analyze hidden directories')
+    parser.add_argument('-s', action='store_true', help='Script Mode (Only ouput the number)')
     parser.add_argument('-k', action='store_const', const='kilobytes', dest='unit', default='bytes', help='Shows the final size value en Kilobytes')
     parser.add_argument('-m', action='store_const', const='megabytes', dest='unit', default='bytes', help='Shows the final size value en Megabytes')
     parser.add_argument('-g', action='store_const', const='gigabytes', dest='unit', default='bytes', help='Shows the final size value en Gigabytes')
@@ -64,9 +69,14 @@ def main():
 
     args = parser.parse_args()
 
-    analyzeDirectory(args.path, args.unit, args.r, args.d)
+    analyzeDirectory(args.path, args.unit, args.r, args.d, args.s)
 
-    print(f"\n ► {FILE}{QUANTITY_TOTAL} files{END} occupy a total of {SIZE}{round(SIZE_TOTAL,2)}{END} {args.unit}\n")
+    if args.s:
+        print(f"{round(SIZE_TOTAL,2)}")
+    else:
+        print(f"\n ► {FILE}{QUANTITY_TOTAL} files{END} occupy a total of {SIZE}{round(SIZE_TOTAL,2)}{END} {args.unit}\n")
+
+    return SIZE_TOTAL
 
 if __name__ == "__main__":
     main()

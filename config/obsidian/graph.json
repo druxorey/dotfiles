@@ -3,35 +3,42 @@
   "search": "",
   "showTags": true,
   "showAttachments": true,
-  "hideUnresolved": true,
+  "hideUnresolved": false,
   "showOrphans": true,
   "collapse-color-groups": false,
   "colorGroups": [
     {
-      "query": "tag:#unsolved  ",
-      "color": {
-        "a": 1,
-        "rgb": 16733525
-      }
-    },
-    {
       "query": "tag:#TODO  ",
       "color": {
         "a": 1,
-        "rgb": 16733525
+        "rgb": 14701138
+      }
+    },
+    {
+      "query": "tag:#UNSOLVED  ",
+      "color": {
+        "a": 1,
+        "rgb": 14701138
+      }
+    },
+    {
+      "query": "tag:#temporal  ",
+      "color": {
+        "a": 1,
+        "rgb": 65531
       }
     }
   ],
   "collapse-display": false,
   "showArrow": false,
-  "textFadeMultiplier": 0,
-  "nodeSizeMultiplier": 1,
-  "lineSizeMultiplier": 1,
+  "textFadeMultiplier": 0.2,
+  "nodeSizeMultiplier": 0.801822916666667,
+  "lineSizeMultiplier": 0.419010416666667,
   "collapse-forces": false,
-  "centerStrength": 0.557291666666667,
-  "repelStrength": 13.75,
-  "linkStrength": 0.802083333333333,
+  "centerStrength": 0.481770833333333,
+  "repelStrength": 9.73958333333333,
+  "linkStrength": 0.434895833333333,
   "linkDistance": 250,
-  "scale": 0.059326171875,
+  "scale": 0.0889892578125,
   "close": true
 }

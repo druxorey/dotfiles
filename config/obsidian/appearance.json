@@ -1,14 +1,8 @@
 {
-  "accentColor": "#bd93f9",
   "cssTheme": "Minimal Dracula",
-  "theme": "obsidian",
-  "nativeMenus": false,
   "showRibbon": false,
-  "interfaceFontFamily": "Noto Sans",
-  "textFontFamily": "Noto Sans,MODERN TYPEWRITER,ELEGANT TYPEWRITER",
-  "monospaceFontFamily": "NotoMono Nerd Font",
-  "baseFontSizeAction": true,
-  "baseFontSize": 17,
   "showViewHeader": false,
-  "enabledCssSnippets": []
+  "theme": "obsidian",
+  "monospaceFontFamily": "FiraMono Nerd Font",
+  "accentColor": "#bd93f9"
 }

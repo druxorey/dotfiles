@@ -8,7 +8,7 @@
     "downscalePercent": 90
   },
   "showLineNumber": true,
-  "attachmentFolderPath": "D1 Vault/V1 Assets",
+  "attachmentFolderPath": "D9 Vault/V1 Assets",
   "readableLineLength": true,
   "showInlineTitle": false,
   "livePreview": true,
@@ -19,5 +19,6 @@
   "propertiesInDocument": "visible",
   "defaultViewMode": "source",
   "alwaysUpdateLinks": true,
-  "showUnsupportedFiles": true
+  "showUnsupportedFiles": true,
+  "promptDelete": false
 }

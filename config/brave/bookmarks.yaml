@@ -110,3 +110,7 @@
   url: https://pass.proton.me/
 - name: Proton Drive
   url: https://drive.proton.me/u/0/
+- name: CommandLineFu
+  url: https://www.commandlinefu.com/commands/browse
+- name: pure-sh-bible
+  url: https://github.com/dylanaraps/pure-sh-bible

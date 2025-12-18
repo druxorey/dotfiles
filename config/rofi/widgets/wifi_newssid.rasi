@@ -17,10 +17,23 @@
 
 /* ============================== configuration ============================= */
 
-@import "wifi_menu_styles.rasi"
+@import "../shared/theme_layout.rasi"
+@import "../shared/theme_list_text.rasi"
 
-window {
-	width: 16em;
+configuration {
+	show-icons: false;
+	disable-history: false;
+	case-sensitive: false;
+	kb-row-up: "k,Up";
+	kb-row-left: "h";
+	kb-row-right: "l";
+	kb-row-down: "j,Down";
+}
+
+module {
+	background-color: @color-background-1;
+	spacing: 1em;
+	padding: 1.5em;
 	children: [ "mainbox" ];
 }
 
@@ -31,8 +44,8 @@ mainbox {
 }
 
 textbox {
-	content: "Enter the name of the network you want to connect to.";
-	text-color: @color-foreground-1;
+	content: "Enter the name of the wifi network you want to connect to.";
+	text-color: @drx-color-text;
 	padding: 0.5em;
 	expand: false;
 }
@@ -44,12 +57,12 @@ inputbar {
 
 entry {
 	padding: 0.25em 0.25em 0.25em 0.25em;
-	border-radius: @border-radius-2;
+	border-radius: @drx-border-small;
 	placeholder: "Enter a network name...";
 
-	background-color: @color-background-2;
-	text-color: @color-foreground-1;
-	placeholder-color: @color-disabled;
+	background-color: @drx-color-overlay;
+	text-color: @drx-color-text;
+	placeholder-color: @drx-color-deactivate;
 }
 
 listview {

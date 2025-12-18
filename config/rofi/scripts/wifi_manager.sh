@@ -14,20 +14,20 @@ function connectToWifi() {
 
 	notify_id=8000
 	percentage=0
-	notify-send -u low -r $notify_id "Connecting to $nameWifi..."
+	notify-send "Connecting to $nameWifi..." --app-name "Wifi Manager" -u low -r $notify_id
 
 	for ((i = 1; i <= 5; i++)); do
 		percentage=$((i * 20))
-		notify-send -u low -r $notify_id -h int:value:${percentage} "Connecting to $nameWifi..."
+		notify-send "Connecting to $nameWifi..." --app-name "Wifi Manager" -u low -r $notify_id -h int:value:${percentage}
 		if $command; then
-			notify-send -u low -r $notify_id "Successfully connected to $nameWifi"
+			notify-send "Successfully connected to $nameWifi" --app-name "Wifi Manager" -u low -r $notify_id 
 			return
 		fi
 		echo "The command failed, retrying..."
 		sleep 3
 	done
 
-	notify-send -u critical "Failed to establish connection"
+	notify-send "Failed to establish connection" --app-name "Wifi Manager" -u critical
 }
 
 

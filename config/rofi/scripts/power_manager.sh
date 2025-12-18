@@ -5,10 +5,11 @@ function main() {
 
 	[[ ! $1 == "polybar" ]] && monitor="-m -1"
 
-	rofiOption=$(echo -e "\n⏻\n\n" | rofi -dmenu -p -i $monitor -u 0 -mesg "$uptime" -config ~/.config/rofi/modules/power_manager.rasi)
+	rofiOption=$(echo -e "\n󰍃\n⏻\n\n" | rofi -dmenu -p -i $monitor -u 0 -mesg "$uptime" -config ~/.config/rofi/modules/power_manager.rasi)
 
 	case "$rofiOption" in
 		"") ;;
+		"󰍃") dm-tool lock ;;
 		"⏻") systemctl poweroff ;;
 		"") systemctl reboot ;;
 		"") bspc quit ;;

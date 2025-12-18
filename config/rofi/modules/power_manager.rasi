@@ -66,7 +66,6 @@ textbox {
 
 listview {
 	layout: vertical;
-	margin: 0px 3em;
-	columns: 4;
+	columns: 5;
 	lines: 1;
 }

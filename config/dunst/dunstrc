@@ -19,6 +19,19 @@
 	monitor = 0
 	follow = mouse
 
+	indicate_hidden = yes
+	transparency = 0
+	separator_height = 2
+	padding = 8
+	horizontal_padding = 10
+	text_icon_padding = 0
+
+	frame_width = 2
+	frame_color = "#bd93f9"
+	separator_color = "#44475A"
+	sort = yes
+	idle_threshold = 0
+
 	#* ============================== geometry ============================== *#
 
 	width = 384
@@ -36,19 +49,6 @@
 	progress_bar_frame_width = 2
 	progress_bar_min_width = 150
 	progress_bar_max_width = 300
-
-	indicate_hidden = yes
-	transparency = 0
-	separator_height = 2
-	padding = 8
-	horizontal_padding = 10
-	text_icon_padding = 0
-
-	frame_width = 2
-	frame_color = "#bd93f9"
-	separator_color = "#44475A"
-	sort = yes
-	idle_threshold = 1
 
 	#* ================================ text ================================ *#
 
@@ -93,6 +93,7 @@
 	background = "#282a36"
 	foreground = "#50FA7B"
 	frame_color = "#50FA7B"
+	highlight = "#50FA7B"
 	default_icon = "~/.config/dunst/icons/bell-badge-low.svg"
 	timeout = 5
 
@@ -100,6 +101,7 @@
 	background = "#282a36"
 	foreground = "#F8F8F2"
 	frame_color = "#bd93f9"
+	highlight = "#bd93f9"
 	default_icon = "~/.config/dunst/icons/bell-badge-normal.svg"
 	timeout = 5
 	script = "~/.config/dunst/alert.sh"
@@ -108,6 +110,7 @@
 	background = "#282a36"
 	foreground = "#ff5555"
 	frame_color = "#ff5555"
+	highlight = "#ff5555"
 	default_icon = "~/.config/dunst/icons/bell-badge-critical.svg"
 	timeout = 0
 	script = "~/.config/dunst/alert.sh"

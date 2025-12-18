@@ -52,19 +52,19 @@ XF86AudioStop
 
 # increase brightness
 XF86MonBrightnessUp
-	brightnessctl set +6000 && notify-send -u low -r 999 "Brillo actual" "$(( $(cat /sys/class/backlight/*/brightness) * 100 / 120000 ))%"
+	brightnessctl set +6000 && notify-send "Brillo actual" "$(( $(cat /sys/class/backlight/*/brightness) * 100 / 120000 ))%" --app-name "Brightness Manager" -u low -r 999
 
 # increase brightness slowly
 shift + XF86MonBrightnessUp
-	brightnessctl set +1200 && notify-send -u low -r 999 "Brillo actual" "$(( $(cat /sys/class/backlight/*/brightness) * 100 / 120000 ))%"
+	brightnessctl set +1200 && notify-send "Brillo actual" "$(( $(cat /sys/class/backlight/*/brightness) * 100 / 120000 ))%" --app-name "Brightness Manager" -u low -r 999
 
 # decrease brightness
 XF86MonBrightnessDown
-	brightnessctl set 6000- && notify-send -u low -r 999 "Brillo actual" "$(( $(cat /sys/class/backlight/*/brightness) * 100 / 120000 ))%"
+	brightnessctl set 6000- && notify-send "Brillo actual" "$(( $(cat /sys/class/backlight/*/brightness) * 100 / 120000 ))%" --app-name "Brightness Manager" -u low -r 999
 
 # decrease brightness slowly
 shift + XF86MonBrightnessDown
-	brightnessctl set 1200- && notify-send -u low -r 999 "Brillo actual" "$(( $(cat /sys/class/backlight/*/brightness) * 100 / 120000 ))%"
+	brightnessctl set 1200- && notify-send "Brillo actual" "$(( $(cat /sys/class/backlight/*/brightness) * 100 / 120000 ))%" --app-name "Brightness Manager" -u low -r 999
 
 # activate night light
 super + XF86MonBrightnessUp
@@ -84,7 +84,7 @@ super + v
 
 # grab a color
 super + Print
-	xcolor -s && notify-send -u low "Color picked and saved to clipboard"
+	xcolor -s && notify-send "Color picked and saved to clipboard" -u low
 
 # app launcher
 super + space
@@ -173,15 +173,15 @@ super + alt + {7,8,9,0}
 
 # alternate between the tiled and monocle layout
 super + m
-	bspc desktop -l next && notify-send -u low "Toggled monocle layout"
+	bspc desktop -l next
 
 # change the window layer to the previous
 super + comma
-    bsp-layout previous --layouts tall,rtall,wide,rwide,grid,rgrid,even,tiled && notify-send -u low "Changed Layout"
+    bsp-layout previous --layouts tall,rtall,wide,rwide,grid,rgrid,even,tiled && notify-send "Changed Layout" --app-name "BSPWM" -u low
 
 # change the window layer to the next
 super + period
-    bsp-layout next --layouts tall,rtall,wide,rwide,grid,rgrid,even,tiled && notify-send -u low "Changed Layout"
+    bsp-layout next --layouts tall,rtall,wide,rwide,grid,rgrid,even,tiled && notify-send "Changed Layout" --app-name "BSPWM" -u low
 
 # set the node flags
 super + ctrl + {m,x,y,z}

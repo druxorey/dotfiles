@@ -10,44 +10,42 @@ FORMAT_TITLE = "\033[0;34m"
 FORMAT_END = "\033[0m"
 
 PACKAGES_FILES_PATH = "/home/druxorey/Workspace/projects/dotfiles/"
-PACKAGES_FILES = {
-    "base": "drx-base.packages",
-    "extra": "drx-extra.packages"
-}
+PACKAGES_FILES = {"base": "drx-base.packages", "extra": "drx-extra.packages"}
+
 
 def printHelp():
     print(f"""
 {FORMAT_TITLE}USAGE:{FORMAT_END}
-    packages <list|add|remove> <base|extra> [<pacman|aur>] [<package_name>]
-    packages search <package_name>
+	packages <list|add|remove> <base|extra> [<pacman|aur>] [<package_name>]
+	packages search <package_name>
 
 {FORMAT_TITLE}DESCRIPTION:{FORMAT_END}
-    A utility script to manage package lists for Arch Linux.
+	A utility script to manage package lists for Arch Linux.
 
 {FORMAT_TITLE}ARGUMENTS:{FORMAT_END}
-    list <base|extra>
-        Lists all packages in the specified file type.
+	list <base|extra>
+		Lists all packages in the specified file type.
 
-    add <base|extra>
-        Adds a package to the specified file type. You will be prompted to specify
-        the package type (pacman or aur) and the package name.
+	add <base|extra>
+		Adds a package to the specified file type. You will be prompted to specify
+		the package type (pacman or aur) and the package name.
 
-    remove <base|extra>
-        Removes a package from the specified file type. You will be prompted to
-        specify the package type (pacman or aur) and the package name.
+	remove <base|extra>
+		Removes a package from the specified file type. You will be prompted to
+		specify the package type (pacman or aur) and the package name.
 
-    search <package_name>
-        Searches for a package in both base and extra files. The package name must
-        be provided as an argument.
+	search <package_name>
+		Searches for a package in both base and extra files. The package name must
+		be provided as an argument.
 
 {FORMAT_TITLE}EXAMPLES:{FORMAT_END}
-    packages list base
-    packages add extra
-    packages remove base
-    packages search firefox
+	packages list base
+	packages add extra
+	packages remove base
+	packages search firefox
 
 {FORMAT_TITLE}REPORTING BUGS:{FORMAT_END}
-    Report issues at: https://github.com/druxorey/dotfiles/issues
+	Report issues at: https://github.com/druxorey/dotfiles/issues
 """)
 
 
@@ -58,9 +56,13 @@ def loadPackages(filePath: str) -> Dict[str, List[str]]:
         currentList: str | None = None
         for line in lines:
             line = line.strip()
-            if line.startswith("base_pacman_packages=(") or line.startswith("extra_pacman_packages=("):
+            if line.startswith("base_pacman_packages=(") or line.startswith(
+                "extra_pacman_packages=("
+            ):
                 currentList = "pacman"
-            elif line.startswith("base_aur_packages=(") or line.startswith("extra_aur_packages=("):
+            elif line.startswith("base_aur_packages=(") or line.startswith(
+                "extra_aur_packages=("
+            ):
                 currentList = "aur"
             elif line == ")":
                 currentList = None
@@ -75,7 +77,7 @@ def savePackages(action: str, filePath: str, packages: Dict[str, List[str]]) -> 
         for key, values in packages.items():
             file.write(f"{action}_{key}_packages=(\n")
             for value in values:
-                file.write(f"    {value}\n")
+                file.write(f"	{value}\n")
             file.write(")\n\n")
 
 
@@ -89,7 +91,9 @@ def listPackages(filePath: str) -> None:
         print(f"  {pkg}")
 
 
-def addPackage(fileType: str, filePath: str, packageType: str, packageName: str) -> None:
+def addPackage(
+    fileType: str, filePath: str, packageType: str, packageName: str
+) -> None:
     packages: Dict[str, List[str]] = loadPackages(filePath)
     if packageName in packages[packageType]:
         print(f"Package '{packageName}' already exists in {packageType} packages.")
@@ -99,7 +103,9 @@ def addPackage(fileType: str, filePath: str, packageType: str, packageName: str)
     print(f"Package '{packageName}' added to {packageType} packages.")
 
 
-def removePackage(fileType: str, filePath: str, packageType: str, packageName: str) -> None:
+def removePackage(
+    fileType: str, filePath: str, packageType: str, packageName: str
+) -> None:
     packages: Dict[str, List[str]] = loadPackages(filePath)
     if packageName not in packages[packageType]:
         print(f"Package '{packageName}' not found in {packageType} packages.")
@@ -110,8 +116,12 @@ def removePackage(fileType: str, filePath: str, packageType: str, packageName: s
 
 
 def searchPackage(packageToSearch: str) -> None:
-    basePackages: Dict[str, List[str]] = loadPackages(os.path.join(PACKAGES_FILES_PATH, PACKAGES_FILES["base"]))
-    extraPackages: Dict[str, List[str]] = loadPackages(os.path.join(PACKAGES_FILES_PATH, PACKAGES_FILES["extra"]))
+    basePackages: Dict[str, List[str]] = loadPackages(
+        os.path.join(PACKAGES_FILES_PATH, PACKAGES_FILES["base"])
+    )
+    extraPackages: Dict[str, List[str]] = loadPackages(
+        os.path.join(PACKAGES_FILES_PATH, PACKAGES_FILES["extra"])
+    )
 
     for pkg in basePackages["pacman"]:
         if packageToSearch == pkg:

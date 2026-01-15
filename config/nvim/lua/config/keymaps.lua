@@ -52,6 +52,7 @@ vim.keymap.set("n", "<C-l>", "<C-w>l", { noremap = true, silent = true })
 vim.keymap.set("n", "<leader>e", ":Neotree toggle<CR>", { noremap = true, silent = true, desc = "Toggle Neotree" })
 
 -- Copilot Chat toggle
+vim.keymap.set("n", "<leader>as", ":CopilotStart<CR>", { noremap = true, silent = true, desc = "Enable Copilot Sugestions"})
 vim.keymap.set("n", "<leader>ai", ":CopilotChat<CR>", { noremap = true, silent = true, desc = "Open Copilot Chat"})
 vim.keymap.set("v", "<leader>ai", ":'<,'>CopilotChat<CR>", { noremap = true, silent = true, desc = "Open Copilot Chat" })
 
@@ -90,9 +91,6 @@ vim.api.nvim_set_keymap('n', '<leader>cxc', '<cmd>VimtexCompile<CR>', { noremap 
 vim.api.nvim_set_keymap('n', '<leader>cxv', '<cmd>VimtexView<CR>', { noremap = true, silent = true, desc = 'LaTeX View' })
 vim.api.nvim_set_keymap('n', '<leader>cxs', '<cmd>VimtexStop<CR>', { noremap = true, silent = true, desc = 'LaTeX Stop' })
 
--- IDK
-
-vim.keymap.set('n', '<leader>;', ':.!', { noremap = true, silent = false, desc="Idk whats call this" })
-
+-- Better page up/down
 vim.keymap.set('n', '<C-M-j>', '<C-d>', { noremap = true, silent = true, desc = 'Page down (half screen)' })
 vim.keymap.set('n', '<C-M-k>', '<C-u>', { noremap = true, silent = true, desc = 'Page up (half screen)' })

@@ -26,8 +26,20 @@ return {
 	{
 		"CopilotC-Nvim/CopilotChat.nvim",
 		event = "VeryLazy",
+		keys = {
+			{ "<leader>aa", mode = { "n" }, false },
+			{ "<C-l>", mode = { "n" }, false },
+		},
 		opts = {
-			model = "gpt-4o",
+			model = "gemini-3-flash-preview",
+			language = "Spanish",
+			auto_insert_mode = true,
+			mappings = {
+				reset = {
+					normal = "gr",
+					insert = "gr",
+				},
+			},
 			prompts = {
 				Commit = load_prompt_from_file(vim.fn.expand("~/.config/nvim/lua/plugins/prompts/commit.prompt")),
 				Tasks = load_prompt_from_file(vim.fn.expand("~/.config/nvim/lua/plugins/prompts/tasks.prompt"))

@@ -1,12 +1,12 @@
 
 #! ========================================================================== !#
 #!
-#!                  ███████╗███████╗██╗  ██╗██████╗  ██████╗
-#!                  ╚══███╔╝██╔════╝██║  ██║██╔══██╗██╔════╝
-#!                    ███╔╝ ███████╗███████║██████╔╝██║
-#!                   ███╔╝  ╚════██║██╔══██║██╔══██╗██║
-#!                  ███████╗███████║██║  ██║██║  ██║╚██████╗
-#!                  ╚══════╝╚══════╝╚═╝  ╚═╝╚═╝  ╚═╝ ╚═════╝
+#!                          ███████╗███████╗██╗  ██╗
+#!                          ╚══███╔╝██╔════╝██║  ██║
+#!                            ███╔╝ ███████╗███████║
+#!                           ███╔╝  ╚════██║██╔══██║
+#!                          ███████╗███████║██║  ██║
+#!                          ╚══════╝╚══════╝╚═╝  ╚═╝
 #!
 #!                                   ZSHRC
 #
@@ -18,20 +18,14 @@
 #* ================================= startup ================================ *#
 
 [[ $- != *i* ]] && return
-PS1='[\u@\h \W]\$ '
 fastfetch --config ~/.config/fastfetch/init.jsonc && echo
 
 eval "$(zoxide init zsh)"
-eval "$(thefuck --alias)"
-eval "$(oh-my-posh init zsh --config ~/.config/oh-my-posh/dracula-default.omp.json)"
+eval "$(oh-my-posh init zsh --config ~/.config/oh-my-posh/dracula-default.omp.json)" || PS1='[\u@\h \W]\$ '
 
 #* ================================= aliases ================================ *#
 
 # directory navigation
-alias vim='nvim'
-alias cat='bat -p'
-alias man='batman'
-alias fzf='fzf --preview "bat --color=always {}"'
 alias ls='eza --icons --group-directories-first'
 alias la='eza --icons -a --group-directories-first'
 alias lt='eza --icons --tree --group-directories-first'
@@ -43,25 +37,22 @@ alias cd='z'
 alias cdi='zi'
 alias ..='z ..'
 alias ...='z ../..'
+alias cpv='rsync -avh --info=progress2'
 
 # remaping
-alias fk='fuck'
+alias vim='nvim'
 alias cp='cp -i'
-alias th='trash'
-alias thl='trash-list'
-alias thr='trash-restore'
+alias cat='bat -p'
+alias man='batman'
+alias fzf='fzf --preview "bat --color=always {}"'
 alias convert='magick'
 alias grep='grep --color=auto'
 alias matrix='cmatrix -C blue'
 alias peaclock='peaclock --config ~/.config/peaclock'
 alias btop='btop --force-utf'
 alias oh-my-time='eval "$(oh-my-posh init zsh --config ~/.config/oh-my-posh/dracula-time.omp.json)"'
-alias clip='xclip -selection clipboard'
 
-# pacman and yay
-alias unlock='sudo rm /var/lib/pacman/db.lck'
-
-# git
+# development
 alias gadd='git add'
 alias gamend='git commit --amend'
 alias gbranch='git branch -vv'
@@ -72,26 +63,23 @@ alias gdiff='git diff'
 alias gfetch='git fetch'
 alias glog='git log --all --graph -n 10 --pretty=format:"%C(magenta)%h %C(white) %an %ar %C(auto)   %D%n%s%n"'
 alias gmerge='git merge --no-ff'
+alias gpop='git stash pop'
 alias gpull='git pull'
 alias gpush='git push'
 alias greset='git reset'
 alias grestore='git restore'
 alias gstatus='git status -sb'
+alias gstash='git stash'
+alias gswitch='git switch'
 alias gvim='nvim -c "vertical Git" -c "wincmd h | q" '
-
-# macros
 alias copilot='nvim -c "CopilotChat" -c "wincmd h | q" '
-alias cpv='rsync -avh --info=progress2'
-alias mdtopdf='pandoc $1 -o default.pdf --pdf-engine=xelatex -V mainfont="Arial" monofont="Arial"'
-alias trans-es='trans -s english -t spanish'
-alias setkeys='setxkbmap us -variant intl'
-alias reload='clear && source ~/.zprofile && source ~/.config/zsh/.zshrc'
-alias yt-mp3='yt-dlp -x --audio-format mp3'
+
+# multimedia
 alias yt-1080='yt-dlp -f "bestvideo[height<=1080][ext=mp4]+bestaudio[ext=m4a]"'
 alias yt-720='yt-dlp -f "bestvideo[height<=720][ext=mp4]+bestaudio[ext=m4a]"'
 alias yt-480='yt-dlp -f "bestvideo[height<=480][ext=mp4]+bestaudio[ext=m4a]"'
+alias yt-mp3='yt-dlp -x --audio-format mp3'
 alias youtube='mpv --ytdl-format="bestvideo[height<=1080]+bestaudio/best[height<=1080]"'
-alias weather='curl wttr.in'
 
 # python
 alias py='python3'
@@ -104,14 +92,18 @@ alias venv-desactivate='deactivate'
 # system
 alias logout='bspc quit'
 alias shutdown='shutdown now'
+alias reload='clear && source ~/.zprofile && source ~/.config/zsh/.zshrc'
+alias clip='xclip -selection clipboard'
+alias unlock='sudo rm /var/lib/pacman/db.lck'
+alias setkeys='setxkbmap us -variant intl'
+alias weather='curl wttr.in'
 
 #* ================================ zsh setup =============================== *#
 
 # history
-HISTFILE="$HOME/.config/zsh/zsh_history"
-HISTSIZE=10000
-SAVEHIST=10000
-setopt sharehistory
+HISTFILE="$HOME/.config/history_zsh"
+HISTSIZE=5000
+SAVEHIST=5000
 setopt hist_ignore_space
 
 # vim mode
@@ -139,8 +131,9 @@ source <(fzf --zsh)
 source ~/.config/zsh/zsh-autosuggestions/zsh-autosuggestions.zsh
 source ~/.config/zsh/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 
+autoload -Uz compinit && compinit
 zstyle ':completion:*' matcher-list 'm:{a-z}={A-Za-z}'
 zstyle ':completion:*' list-colors "${(s.:.)LS_COLORS}"
-zstyle ':completion:*' menu no
+zstyle ':completion:*' menu select
 zstyle ':fzf-tab:complete:cd:*' fzf-preview 'ls --color $realpath'
 zstyle ':fzf-tab:complete:__zoxide_z:*' fzf-preview 'ls --color $realpath'

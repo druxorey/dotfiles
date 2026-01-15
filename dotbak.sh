@@ -5,7 +5,7 @@ ERROR="\e[1;91m"
 SUCCESS="\e[1;92m"
 END="\e[0m"
 
-OBSIDIAN_DIR="$HOME/Documents/'01 Obsidian'"
+OBSIDIAN_DIR="$HOME/Documents/'A1 Obsidian'"
 EXCLUDE="--exclude=.git/ --exclude=.github --exclude=*.gitmodules --exclude=*.editorconfig --exclude=*.gitignore"
 BOOKMARKS_DIR="$HOME/.config/BraveSoftware/Brave-Browser/Default/Bookmarks"
 YAML_DIR="$HOME/Workspace/projects/dotfiles/config/brave/"
@@ -55,6 +55,7 @@ function main() {
 	while getopts "h" opt; do
 		case $opt in
 			h) help ;;
+			*) help ;;
 		esac
 	done
 
@@ -66,31 +67,30 @@ function main() {
 	mkdir -p "$directory/config" "$directory/local"
 
 	declare -A commandList=(
-		["~/.config/autorandr"]="rsync -a --delete ~/.config/autorandr $directory/config"
-		["~/.config/bspwm"]="rsync -a --delete ~/.config/bspwm $directory/config"
-		["~/.config/cmus"]="rsync -a --delete ~/.config/cmus $directory/config"
-		["~/.config/dunst"]="rsync -a --delete ~/.config/dunst $directory/config"
-		["~/.config/fastfetch"]="rsync -a --delete ~/.config/fastfetch $directory/config"
-		["~/.config/flameshot"]="rsync -a --delete ~/.config/flameshot $directory/config"
-		["~/.config/kitty"]="rsync -a --delete ~/.config/kitty $directory/config"
-		["~/.config/neovim"]="rsync -a --delete ~/.config/nvim $directory/config"
-		["~/.config/oh-my-posh"]="rsync -a --delete ~/.config/oh-my-posh $directory/config"
-		["~/.config/picom"]="rsync -a --delete ~/.config/picom $directory/config"
-		["~/.config/polybar"]="rsync -a --delete ~/.config/polybar $directory/config"
-		["~/.config/rofi"]="rsync -a --delete ~/.config/rofi $directory/config"
-		["~/.config/sxhkd"]="rsync -a --delete ~/.config/sxhkd $directory/config"
-		["~/.config/tmux"]="rsync -a --delete $EXCLUDE ~/.config/tmux $directory/config"
-		["~/.config/yazi"]="rsync -a --delete ~/.config/yazi $directory/config"
-		["~/.config/vencord"]="rsync -a --delete ~/.config/Vencord/ $directory/config/vencord"
-		["~/.config/zsh"]="rsync -a --delete $EXCLUDE ~/.config/zsh $directory/config"
-		["~/.config/zathura"]="rsync -a --delete ~/.config/zathura $directory/config"
-		["~/.config/libinput-gestures.conf"]="rsync -a ~/.config/libinput-gestures.conf $directory/config/touchpad/"
-		["~/.zprofile"]="rsync -a ~/.zprofile $directory/config/zprofile"
-		["~/.bashrc"]="rsync -a ~/.bashrc $directory/config/bashrc"
-		["~/.gitconfig"]="rsync -a ~/.gitconfig $directory/config/gitconfig"
-		["~/.local/bin"]="rsync -a --delete ~/.local/bin $directory/local/"
-		["~/.local/share/applications"]="rsync -a --delete ~/.local/share/applications $directory/local/share/"
-		["~/.local/share/crater"]="rsync -a --delete ~/.local/share/crater $directory/local/share/"
+		["$HOME/.config/autorandr"]="rsync -a --delete $HOME/.config/autorandr $directory/config"
+		["$HOME/.config/bspwm"]="rsync -a --delete $HOME/.config/bspwm $directory/config"
+		["$HOME/.config/cmus"]="rsync -a --delete $HOME/.config/cmus $directory/config"
+		["$HOME/.config/dunst"]="rsync -a --delete $HOME/.config/dunst $directory/config"
+		["$HOME/.config/fastfetch"]="rsync -a --delete $HOME/.config/fastfetch $directory/config"
+		["$HOME/.config/flameshot"]="rsync -a --delete $HOME/.config/flameshot $directory/config"
+		["$HOME/.config/kitty"]="rsync -a --delete $HOME/.config/kitty $directory/config"
+		["$HOME/.config/neovim"]="rsync -a --delete $HOME/.config/nvim $directory/config"
+		["$HOME/.config/oh-my-posh"]="rsync -a --delete $HOME/.config/oh-my-posh $directory/config"
+		["$HOME/.config/picom"]="rsync -a --delete $HOME/.config/picom $directory/config"
+		["$HOME/.config/polybar"]="rsync -a --delete $HOME/.config/polybar $directory/config"
+		["$HOME/.config/rofi"]="rsync -a --delete $HOME/.config/rofi $directory/config"
+		["$HOME/.config/sxhkd"]="rsync -a --delete $HOME/.config/sxhkd $directory/config"
+		["$HOME/.config/tmux"]="rsync -a --delete $EXCLUDE $HOME/.config/tmux $directory/config"
+		["$HOME/.config/vencord"]="rsync -a --delete $HOME/.config/Vencord/ $directory/config/vencord"
+		["$HOME/.config/zsh"]="rsync -a --delete $EXCLUDE $HOME/.config/zsh $directory/config && rsync -a $HOME/.zprofile $directory/config/zsh/.zprofile"
+		["$HOME/.config/zathura"]="rsync -a --delete $HOME/.config/zathura $directory/config"
+		["$HOME/.config/libinput-gestures.conf"]="rsync -a $HOME/.config/libinput-gestures.conf $directory/config/touchpad/"
+		["$HOME/.bash_profile"]="rsync -a $HOME/.bash_profile $directory/config/bash/.bash_profile"
+		["$HOME/.bashrc"]="rsync -a $HOME/.bashrc $directory/config/bash/.bashrc"
+		["$HOME/.gitconfig"]="rsync -a $HOME/.gitconfig $directory/config/gitconfig"
+		["$HOME/.local/bin"]="rsync -a --delete $HOME/.local/bin $directory/local/"
+		["$HOME/.local/share/applications"]="rsync -a --delete $HOME/.local/share/applications $directory/local/share/"
+		["$HOME/.local/share/crater"]="rsync -a --delete $HOME/.local/share/crater $directory/local/share/"
 		["$OBSIDIAN_DIR/.obsidian"]="rsync -a --delete $OBSIDIAN_DIR/.obsidian/* $directory/config/obsidian"
 		["/etc/X11/xorg.conf.d/40-libinput.conf"]="rsync -a /etc/X11/xorg.conf.d/40-libinput.conf $directory/config/touchpad/"
 		["/etc/tlp.d"]="rsync -a /etc/tlp.d/ $directory/config/tlp"
@@ -100,18 +100,17 @@ function main() {
 	index=1
 	for name in "${!commandList[@]}"; do
 		command="${commandList[$name]}"
-		eval $command
-		if [ $? -ne 0 ]; then
+		if ! eval "$command"; then
 			printf "\n$ERROR ⚠ [ERROR]: Unexpected interruption during (%s) backup.$END\n\n" "$name"
 			exit 1
 		fi
 		printf "\r${SUCCESS} ✔ [$END%02d${SUCCESS}] Successfully backed up:$END %s" "$index" "$name"
 		tput el
-		index=$(($index + 1))
+		index=$((index + 1))
 	done
 
 	if [ -f "$directory/config/gitconfig" ]; then
-		sed -i '1,5c\# user data' $directory/config/gitconfig
+		sed -i '1,5c\# user data' "$directory/config/gitconfig"
 	fi
 
 	printf "\r${SUCCESS} ✔ All %02d files have been successfully backed up$END" "$index"

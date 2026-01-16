@@ -10,20 +10,19 @@ declare TEMPLATES_PATH="$HOME/.local/share/crater"
 function help() {
 	printf "
 ${FORMAT_TITLE}USAGE:${FORMAT_RESET}
-    $(basename $0) [FILE TYPE] [FILE NAME] [TEMPLATE TYPE]
+    $(basename $0) [FILE TYPE] [-n FILE NAME]
 
 ${FORMAT_TITLE}DESCRIPTION:${FORMAT_RESET}
     Creates a default file in a specific programming language.
 
 ${FORMAT_TITLE}ARGUMENTS:${FORMAT_RESET}
     FILE TYPE              bash, c, c++, go, html, java, latex, lua, python, rust.
-    FILE NAME              (Optional) The name of the file.
-    TEMPLATE TYPE          (Optional) basic, code, academic.
+    -n FILE NAME           (Optional) The name of the file.
+    -h                     Display this help message.
 
 ${FORMAT_TITLE}EXAMPLES:${FORMAT_RESET}
-    $(basename $0) html index
-    $(basename $0) python
-    $(basename $0) c++ wordFinder code
+    $(basename $0) html
+    $(basename $0) python -n code
 
 ${FORMAT_TITLE}REPORTING BUGS:${FORMAT_RESET}
     Report issues at: https://github.com/druxorey/dotfiles/issues
@@ -34,6 +33,10 @@ ${FORMAT_TITLE}REPORTING BUGS:${FORMAT_RESET}
 
 
 function main() {
+	if [[ "$1" == "-h" || -z "$1" ]]; then
+		help
+	fi
+
 	fileType=$1
 	shift
 	fileName="default"
@@ -85,7 +88,7 @@ function main() {
 	printf "Enter the number corresponding to the file index: "
 	read -r ans
 
-	if ! [[ "$ans" =~ ^[0-9]$ ]]; then
+	if ! [[ "$ans" =~ ^[0-9]+$ ]]; then
 		printf "${FORMAT_ERROR} Invalid input: '%s'${FORMAT_RESET}\n" "$ans"
 		exit 1
 	fi

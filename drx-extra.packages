@@ -5,7 +5,6 @@ extra_pacman_packages=(
 	dunst
 	kitty
 	libinput
-	libinput-gestures
 	networkmanager
 	sxhkd
 	timeshift
@@ -54,7 +53,6 @@ extra_pacman_packages=(
 	steam
 	thunar
 	transmission-gtk
-	vbam-wx
 	virtualbox
 	vlc
 	wine
@@ -80,12 +78,9 @@ extra_aur_packages=(
 	eww
 	lutgen-bin
 	manga-cli-git
-	tetris-terminal-git
 	tumbler-extra-thumbnailers
 	brave-bin
-	deemix-gui-git
-	minecraft-launcher
-	notion-app-electron
+	modrinth-app-bin	
 	proton-vpn-gtk-app
 	visual-studio-code-bin
 	peaclock
@@ -96,5 +91,8 @@ extra_aur_packages=(
 	downgrade
 	localsend-bin
 	zen-browser-bin
+	libinput-gestures
+	vbam-wx
+	cnijfilter2
 )
 

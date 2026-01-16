@@ -10,6 +10,19 @@
 \usepackage{amssymb} % Package for additional mathematical symbols
 \usepackage{url} % Package to format URLs
 \usepackage{hyperref} % Package to create hyperlinks
+\usepackage{multicol} % Package for multiple columns
+\usepackage{caption} % Package to customize captions
+\usepackage{listings} % Package to include source code in the document
+\usepackage{graphicx} % Package to include images
+\usepackage{xcolor} % Package to define colors
+
+% Font configuration
+\usepackage[T1]{fontenc} % Package for font encoding
+\usepackage{stix2} % Package for STIX2 fonts
+\usepackage{FiraMono} % Package for Fira Mono font
+\let\oldtexttt\texttt
+\renewcommand{\texttt}[1]{{\small\oldtexttt{#1}}} % Redefine \texttt to use a smaller font size
+\captionsetup{hypcap=false}
 
 \geometry{ % Configuration of document margins
 	a4paper,
@@ -86,7 +99,7 @@
 	xrightmargin=10mm,
 }
 
-\title{Título del Informe} % Document title
+\title{Título de la Asignación} % Document title
 \author{Nombre} % Document author
 \date{\today} % Document date
 
@@ -94,31 +107,30 @@
 
 \begin{titlepage}
 	\centering
-	\vspace{1cm}
-	{\large {Universidad Central de Venezuela}\par}
-	{\large {Facultad de Ciencias}\par}
-	{\large {Escuela de Computación}\par}
-	{\large {Materia}\par}
-	\vspace{8cm}
-	{\LARGE \textbf{Título del Informe}\par}
-	{\Large \textbf{Informe de Laboratorio}\par}
+	\begin{center}
+		\includegraphics[width=3cm]{TMP [T0] - Recursos/logo_ucv.png}
+	\end{center}
+	{\vspace{-1.5em} \large {UNIVERSIDAD CENTRAL DE VENEZUELA}\par}
+	{\vspace{-1em} \large {FACULTAD DE CIENCIAS}\par}
+	{\vspace{-1em} \large {ESCUELA DE COMPUTACIÓN}\par}
+	{\vspace{-1em} \large {MATERIA}\par}
+	\vspace{6.5cm}
+	{\LARGE \textbf{TÍTULO DE LA ASIGNACIÓN}\par}
 	\vfill
-	{\large Nombre Completo\par}
-	\vspace{0.5cm}
+	{\large Nombre Apellido, Nombre Apellido\par}
 	{\large \today\par}
 \end{titlepage}
 
-\setcounter{tocdepth}{2} % Depth of the table of contents
-\tableofcontents % Table of contents
-
-\pagebreak
+\newpage
 
 \section{Introducción}
-Este documento contiene varios ejemplos de código en C++. El propósito de este documento es demostrar cómo se pueden estructurar y utilizar diferentes características del lenguaje C++.
 
-\pagebreak
+El presente marco teórico aborda los conceptos fundamentales necesarios para la comprensión de la gestión de procesos, la comunicación entre procesos (IPC) y el manejo de señales en entornos basados en Unix/Linux.
+
+\newpage
 
 \section{Desarrollo}
+
 El siguiente código demuestra una función básica en C++ que calcula el factorial de un número.
 
 \begin{lstlisting}[style=cpp, caption={Ejemplo de Código de C++}]
@@ -179,12 +191,19 @@ invocado read(3, c, 99).  valor de retorno: 12 bytes leidos.
 se imprimen los bytes leidos: Claxton 221
 \end{lstlisting}
 
-\pagebreak
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=1\textwidth]{TMP [T0] - Recursos/img_0001.png}
+	\caption{Descripción de la imagen}
+\end{figure}
+
+\newpage
 
 \section{Conclusión}
+
 En conclusión, C++ es un lenguaje de programación poderoso y versátil que permite a los desarrolladores crear aplicaciones eficientes y robustas. Los ejemplos presentados en este documento muestran algunas de las características básicas del lenguaje.
 
-\pagebreak
+\newpage
 
 \section{Referencias Bibliográficas}
 \vspace{-4em}

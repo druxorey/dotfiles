@@ -19,9 +19,10 @@
 @import "../shared/theme_list_text.rasi"
 
 configuration {
-	modi: "recursivebrowser,filebrowser";
+	modi: "recursivebrowser,filebrowser,projects:~/.config/rofi/scripts/projects_manager.sh";
 	display-recursivebrowser: "";
 	display-filebrowser: "";
+	display-projects: "󰈮";
 	drun-display-format: "{name}";
 
 	show-icons: true;

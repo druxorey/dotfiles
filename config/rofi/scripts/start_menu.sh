@@ -17,8 +17,8 @@ function main() {
 	rofiOption=$(echo -e "\n󰱼\n\n\n⏻" | rofi -dmenu -p -i $monitor -mesg "$actualDate" -config "$configFile")
 
 	case "$rofiOption" in
-		"") rofi -show drun -config ~/.config/rofi/modules/app_launcher.rasi ;;
-		"󰱼") rofi -show recursivebrowser -config ~/.config/rofi/modules/file_search.rasi ;;
+		"") rofi -show drun -i $monitor -config ~/.config/rofi/modules/app_launcher.rasi ;;
+		"󰱼") rofi -show recursivebrowser -i $monitor -config ~/.config/rofi/modules/file_search.rasi ;;
 		"") sh "$SCRIPTS_PATH/music_manager.sh" ;;
 		"") sh "$SCRIPTS_PATH/settings_menu.sh" ;;
 		"⏻") sh "$SCRIPTS_PATH/power_manager.sh" ;;

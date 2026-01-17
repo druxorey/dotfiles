@@ -1,6 +1,8 @@
 #!/bin/bash
 
-ROFI_MENU_PATH='rofi -dmenu -p -i -m -1 -config ~/.config/rofi/modules/wifi_manager.rasi'
+CONFIG_PATH="$HOME/.config/rofi/modules/wifi_manager.rasi"
+POLYBAR_CONFIG_PATH="$HOME/.config/rofi/polybar/wifi_manager_polybar.rasi"
+
 ROFI_SAVED_PATH='rofi -dmenu -p -i -m -1 -config ~/.config/rofi/widgets/wifi_saved.rasi'
 ROFI_SSID_PATH='rofi -dmenu -p -i -m -1 -config ~/.config/rofi/widgets/wifi_newssid.rasi'
 ROFI_PASSW_PATH='rofi -dmenu -p -i -m -1 -config ~/.config/rofi/widgets/wifi_newpassword.rasi'
@@ -66,6 +68,16 @@ function main() {
 	disableText="󰤮   Disable Wi-Fi"
 	enableText="󰤨   Enable Wi-Fi"
 
+	if [[ $1 == "polybar" ]]; then
+		configFile="$POLYBAR_CONFIG_PATH"
+		ROFI_SAVED_PATH="rofi -dmenu -p -i $monitor -config ~/.config/rofi/polybar/wifi_saved_polybar.rasi"
+		ROFI_SSID_PATH="rofi -dmenu -p -i $monitor -config ~/.config/rofi/polybar/wifi_newssid_polybar.rasi"
+		ROFI_PASSW_PATH="rofi -dmenu -p -i $monitor -config ~/.config/rofi/polybar/wifi_newpassword_polybar.rasi"
+	else
+		configFile="$CONFIG_PATH"
+		monitor="-m -1"
+	fi
+
 	wifiStatus=$(nmcli -fields WIFI g)
 
 	if [[ "$wifiStatus" =~ "enabled" ]]; then
@@ -74,7 +86,7 @@ function main() {
 		isToggled="$enableText"
 	fi
 
-	rofiOption=$(echo -e "$isToggled\n$addConnectionText\n$deleteConnectionText\n$savedConnectionsText" | $ROFI_MENU_PATH)
+	rofiOption=$(echo -e "$isToggled\n$addConnectionText\n$deleteConnectionText\n$savedConnectionsText" | rofi -dmenu -p -i $monitor -config "$configFile")
 
 	nmcli dev wifi rescan
 

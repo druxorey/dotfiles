@@ -60,7 +60,8 @@ function main() {
 	case "$rofiOption" in
 		"") cmus-remote --stop && OPTION=0 ;;
 		"󰒮") cmus-remote --prev  && OPTION=1 ;;
-		"$reproducerState") cmus-remote --pause || checkCmus "$status" && OPTION=2 ;;
+		"") checkCmus "$status" && OPTION=-1 ;;
+		"$reproducerState") cmus-remote --pause && OPTION=2 ;;
 		"󰒭") cmus-remote --next  && OPTION=3 ;;
 		"󰋋") cmus-remote --stop ; kitty lofi  && OPTION=-1 ;;
 		*) exit 1 ;;

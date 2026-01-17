@@ -58,8 +58,8 @@ return {
 				right = ""
 			},
 			disabled_filetypes = {
-				statusline = {"neo-tree", "dashboard"},
-				winbar = {"neo-tree"}
+				statusline = {"dashboard"},
+				winbar = {}
 			},
 			ignore_focus = {},
 			always_divide_middle = true,

@@ -5,13 +5,9 @@ return {
 		"nvim-tree/nvim-web-devicons",
 		"MunifTanjim/nui.nvim"
 	},
-	keys = {
-		{ "<leader>E", false },
-		{ "<leader>e", false },
-	},
 	opts = {
 		window = {
-			position = "right",
+			position = "float",
 			width = 30,
 			mapping_options = {
 				noremap = true,
@@ -21,10 +17,22 @@ return {
 				["P"] = {
 					"toggle_preview",
 					config = {
-						use_float = false,
+						use_float = true,
 					},
 				},
 			}
+		},
+		filesystem = {
+			window = {
+				popup = {
+					position = { col = "100%", row = "2" },
+					size = {
+						width = 40,
+						height = vim.o.lines - 4
+					}
+				}
+			}
 		}
+
 	}
 }

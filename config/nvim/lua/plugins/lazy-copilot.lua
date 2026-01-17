@@ -36,8 +36,8 @@ return {
 			auto_insert_mode = true,
 			mappings = {
 				reset = {
-					normal = "gr",
-					insert = "gr",
+					normal = "",
+					insert = "",
 				},
 			},
 			prompts = {

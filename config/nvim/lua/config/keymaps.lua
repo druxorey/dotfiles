@@ -29,7 +29,6 @@ vim.keymap.set("n", "<M-l>", ":vertical resize +2<CR>", { noremap = true, silent
 
 -- Alternative way to save
 vim.keymap.set("n", "<C-s>", ":w<CR>", { noremap = true, silent = true })
-vim.keymap.set("n", "<C-q>", ":wq!<CR>", { noremap = true, silent = true })
 vim.keymap.set("n", "<C-b>", ":bd<CR>", { noremap = true, silent = true })
 
 -- < or > to indent
@@ -48,9 +47,6 @@ vim.keymap.set("n", "<C-l>", "<C-w>l", { noremap = true, silent = true })
 
 --* ==================== pluggins configurations =================== *--
 
--- Neotree toggle
-vim.keymap.set("n", "<leader>e", ":Neotree toggle<CR>", { noremap = true, silent = true, desc = "Toggle Neotree" })
-
 -- Copilot Chat toggle
 vim.keymap.set("n", "<leader>as", ":CopilotStart<CR>", { noremap = true, silent = true, desc = "Enable Copilot Sugestions"})
 vim.keymap.set("n", "<leader>ai", ":CopilotChat<CR>", { noremap = true, silent = true, desc = "Open Copilot Chat"})
@@ -62,12 +58,11 @@ vim.keymap.set("v", "<leader>si", ":'<,'>Silicon<CR>", { noremap = true, silent 
 -- Git
 vim.keymap.set("n", "<leader>gg", ":vertical Git<CR>", { noremap = true, silent = true, desc = "Git Changes" })
 vim.keymap.set("n", "<leader>gc", ":Git commit<CR>", { noremap = true, silent = true, desc = "Git Commits" })
-vim.keymap.set("n", "<leader>gs", ":Git status<CR>", { noremap = true, silent = true, desc = "Git Status" })
 vim.keymap.set("n", "<leader>gl", ":Git log<CR>", { noremap = true, silent = true, desc = "Git Log" })
 vim.keymap.set("n", "<leader>gp", ":Gitsigns preview_hunk<CR>", { noremap = true, silent = true, desc = "Git Preview Hunk" })
 vim.keymap.set("n", "<leader>gC", "<cmd>FzfLua git_commits<CR>", { noremap = true, silent = true, desc = "Git Commits History" })
 vim.keymap.set("n", "<leader>gP", ":Git push<CR>", { noremap = true, silent = true, desc = "Git Push" })
-vim.keymap.set("n", "<leader>gS", "<cmd>FzfLua git_status<CR>", { noremap = true, silent = true, desc = "Git Status History" })
+vim.keymap.set("n", "<leader>gs", "<cmd>FzfLua git_status<CR>", { noremap = true, silent = true, desc = "Git Status History" })
 
 -- TAB to move to the next buffer
 if vim.g.vscode == nil then

@@ -47,8 +47,12 @@ vim.keymap.set("n", "<C-l>", "<C-w>l", { noremap = true, silent = true })
 
 --* ==================== pluggins configurations =================== *--
 
+-- Conform format
+vim.keymap.set({ "n", "v" }, "<leader>cF", function()
+	require("conform").format({ async = true, lsp_format = "fallback" })
+end, { noremap = true, silent = true, desc = "Format buffer or selection" })
+
 -- Copilot Chat toggle
-vim.keymap.set("n", "<leader>as", ":CopilotStart<CR>", { noremap = true, silent = true, desc = "Enable Copilot Sugestions"})
 vim.keymap.set("n", "<leader>ai", ":CopilotChat<CR>", { noremap = true, silent = true, desc = "Open Copilot Chat"})
 vim.keymap.set("v", "<leader>ai", ":'<,'>CopilotChat<CR>", { noremap = true, silent = true, desc = "Open Copilot Chat" })
 

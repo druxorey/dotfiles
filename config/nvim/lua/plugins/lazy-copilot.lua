@@ -10,25 +10,43 @@ end
 
 return {
 	{
-		"zbirenbaum/copilot-cmp",
-		event = "VeryLazy",
-	},
-	{
 		"zbirenbaum/copilot.lua",
-		cmd = { "CopilotStart" },
-		config = function()
-			vim.api.nvim_create_user_command("CopilotStart", function()
-				require("copilot").setup()
-				vim.cmd("Copilot enable")
-			end, {})
+		cmd = "Copilot",
+		event = {},
+		config = function(_)
+			local c = require("copilot.client")
+			c.teardown()
+			require("copilot.panel").teardown()
+			require("copilot.suggestion").teardown()
 		end,
+		keys = {
+			{
+				"<leader>as",
+				function()
+					local copilot = require("copilot.suggestion")
+					local client = require("copilot.client")
+
+					if client.is_disabled() then
+						vim.cmd("Copilot enable")
+						copilot.toggle_auto_trigger()
+						vim.notify("Copilot Enabled", vim.log.levels.INFO)
+					else
+						vim.cmd("Copilot disable")
+						vim.notify("Copilot Disabled", vim.log.levels.INFO)
+					end
+				end,
+				desc = "Toggle Copilot",
+			},
+		},
 	},
 	{
 		"CopilotC-Nvim/CopilotChat.nvim",
-		event = "VeryLazy",
+		cmd = { "CopilotChat", "CopilotChatOpen", "CopilotChatToggle" },
+		event = {},
+		dependencies = { "zbirenbaum/copilot.lua" },
 		keys = {
 			{ "<leader>aa", mode = { "n" }, false },
-			{ "<C-l>", mode = { "n" }, false },
+			{ "<C-l>",      mode = { "n" }, false },
 		},
 		opts = {
 			model = "gemini-3-flash-preview",

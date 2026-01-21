@@ -2,6 +2,9 @@ return {
 	"stevearc/conform.nvim",
 	event = { "BufWritePre" },
 	cmd = { "ConformInfo" },
+	keys = {
+		{ "<leader>cF", mode = { "n" }, false },
+	},
 	opts = {
 		formatters_by_ft = {
 			lua = { "stylua" },

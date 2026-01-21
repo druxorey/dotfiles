@@ -19,11 +19,11 @@ function main() {
 	fi
 
 	if [ "$state" = "playing" ]; then
-		printf "  %s - %s " "$artist" "$title"
+		printf "   %s  -  %s " "$artist" "$title"
 	elif [ "$state" = "paused" ]; then
-		printf "  %s - %s " "$artist" "$title"
+		printf "   %s  -  %s " "$artist" "$title"
 	else
-		printf "  Stopped "
+		printf "   Stopped "
 	fi
 }
 

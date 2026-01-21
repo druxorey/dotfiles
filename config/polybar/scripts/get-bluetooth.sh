@@ -1,14 +1,14 @@
 #!/bin/bash
 
 function main() {
-	status=$(bluetoothctl show 2>/dev/null)
+	status=$(bluetoothctl devices Connected  2>/dev/null)
 
-	if [ $? -ne 0 ]; then
+	if [[ $status == "No default controller available" ]] ; then
 		printf "󰂲"
-	elif echo "$status" | grep -q "Endpoint"; then
-		printf "󰂱"
-	else
+	elif [[ -z $status ]]; then
 		printf "󰂯"
+	else
+		printf "󰂱"
 	fi
 }
 

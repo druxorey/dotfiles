@@ -12,8 +12,6 @@
   url: https://www.w3schools.com/
 - name: OverAPI
   url: https://overapi.com/
-- name: UCV Campus Virtual
-  url: https://campusvirtualucv.org/ead/login/index.php
 - name: UCV Conest
   url: https://conest.ciens.ucv.ve/webapp/
 - name: Scribbr
@@ -36,6 +34,8 @@
   url: https://www.mathcha.io/editor
 - name: Simpletex - Image To LaTeX
   url: https://simpletex.cn/ai/latex_ocr
+- name: UCV Campus Virtual
+  url: https://campusvirtualucv.org/login/index.php
 - name: Linux From Scratch
   url: https://linuxfromscratch.org/
 - name: ArchWiki
@@ -48,6 +48,8 @@
   url: https://explainshell.com/
 - name: Linux Foundation
   url: https://www.linuxfoundation.org/
+- name: WallRice
+  url: https://www.wallrice.xyz/
 - name: Zalgo Text Generator
   url: https://lingojam.com/ZalgoText
 - name: Koloicons

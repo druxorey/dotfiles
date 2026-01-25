@@ -8,7 +8,7 @@
 <a href="https://github.com/druxorey/dotfiles/tree/main/local/bin"><img src="https://img.shields.io/badge/scripts-BD93F9?style=for-the-badge"></a>
 </p>
 
-![Desktop Screenshot](/assets/rice-2025-04-06.webp)
+![Desktop Screenshot](/assets/rice-2026-01-25.webp)
 
 ## Repository Structure
 

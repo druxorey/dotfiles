@@ -37,11 +37,6 @@ module {
 	children: [ "inputbar", "message", "listview" ];
 }
 
-inputbar {
-	spacing: 0.5 em;
-	children: [ "entry", "mode-switcher"];
-}
-
 window {
 	width: 48em;
 }
@@ -52,6 +47,11 @@ message {
 	border-radius: @drx-border-big;
 	background-color: @drx-color-overlay;
 	padding: 0.5em;
+}
+
+inputbar {
+	spacing: 0.5 em;
+	children: [ "entry", "mode-switcher"];
 }
 
 textbox {

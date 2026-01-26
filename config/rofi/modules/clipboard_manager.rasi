@@ -32,9 +32,24 @@ configuration {
 
 module {
 	layout: horizontal;
-	children: [ "message", "listview" ];
+	children: [ "inputbar", "message", "listview" ];
 	spacing: 1em;
 	padding: 1em;
+}
+
+inputbar {
+	spacing: 0.5 em;
+	children: [ "entry" ];
+}
+
+entry {
+	padding: 0.25em 0.5em 0.25em 0.5em;
+	border-radius: @drx-border-small;
+	placeholder: "   Search...";
+
+	background-color: @drx-color-overlay;
+	text-color: @drx-color-text;
+	placeholder-color: @drx-color-deactivate;
 }
 
 message {
@@ -58,3 +73,4 @@ listview {
 	spacing: 1em;
 	lines: 5;
 }
+

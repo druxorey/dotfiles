@@ -20,7 +20,7 @@
 
 # increase audio volume
 XF86AudioRaiseVolume
-	pactl set-sink-volume @DEFAULT_SINK@ +5%
+	pactl set-sink-volume @DEFAULT_SINK@ +5% 
 
 # decrease audio volume
 XF86AudioLowerVolume
@@ -68,23 +68,23 @@ shift + XF86MonBrightnessDown
 
 # activate night light
 super + XF86MonBrightnessUp
-	redshift -O 4000
+	redshift -O 5000 && notify-send "Modo noche activado" --app-name "Brightness Manager" -u low -r 999
 
 # desactivate night light
 super + XF86MonBrightnessDown
-	redshift -x
+	redshift -x && notify-send "Modo noche desactivado" --app-name "Brightness Manager" -u low -r 999
 
 # print a selected area
 @Print
 	flameshot gui
 
-# open clipboard manager
-super + v
-	clipmenu -config ~/.config/rofi/modules/clipboard_manager.rasi
-
 # grab a color
 super + Print
 	xcolor -s && notify-send "Color picked and saved to clipboard" -u low
+
+# open clipboard manager
+super + v
+	clipmenu -config ~/.config/rofi/modules/clipboard_manager.rasi
 
 # app launcher
 super + space
@@ -93,6 +93,10 @@ super + space
 # general menu
 super + Home
     rofi -show drun -config ~/.config/rofi/modules/app_launcher.rasi
+
+# music manager
+super + ctrl + m
+	sh ~/.config/rofi/scripts/music_manager.sh
 
 #* ========================== applications ========================== *#
 
@@ -117,7 +121,7 @@ super + s
 # file editor
 super + c
 	code
-super + v
+super + n
 	kitty nvim
 super + alt + i
 	kitty nvim -c "CopilotChat" -c "wincmd h | q"

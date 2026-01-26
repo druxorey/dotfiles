@@ -96,6 +96,7 @@ base_pacman_packages=(
 	entr
 	gdb
 	shellcheck
+	fdk-aac
 )
 
 base_aur_packages=(

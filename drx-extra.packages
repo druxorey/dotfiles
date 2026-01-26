@@ -70,6 +70,13 @@ extra_pacman_packages=(
 	sane-airscan
 	ipp-usb
 	foomatic-db-gutenprint-ppds
+	libfdk-aac
+	fragments
+	gum
+	ollama
+	thunderbird
+	lazygit
+	pdfarranger
 )
 
 extra_aur_packages=(
@@ -80,7 +87,7 @@ extra_aur_packages=(
 	manga-cli-git
 	tumbler-extra-thumbnailers
 	brave-bin
-	modrinth-app-bin	
+	modrinth-app-bin
 	proton-vpn-gtk-app
 	visual-studio-code-bin
 	peaclock
@@ -94,5 +101,8 @@ extra_aur_packages=(
 	libinput-gestures
 	vbam-wx
 	cnijfilter2
+	puddletag
+	yt-x
+	open-webui
 )
 

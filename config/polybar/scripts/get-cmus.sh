@@ -23,7 +23,7 @@ function main() {
 	elif [ "$state" = "paused" ]; then
 		printf "   %s  -  %s " "$artist" "$title"
 	else
-		printf "   Stopped "
+		printf "   Stopped"
 	fi
 }
 

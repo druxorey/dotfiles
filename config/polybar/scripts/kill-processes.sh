@@ -1,19 +1,15 @@
 #!/bin/bash
 
 function main() {
-	processes=$(ps aux | awk '{print $11 $12}')
+	local apps=("Discord" "steam" "protonvpn-app" "obs" "localsend")
 
-	discord=$(echo $processes | grep "discord")
-	steam=$(echo $processes  | grep "steam")
-	proton=$(echo $processes  | grep "proton")
-	obs=$(echo $processes  | grep "obs")
-	localsend=$(echo $processes | grep "localsend")
-
-	[ -n "$discord" ] && pkill Discord
-	[ -n "$steam" ] && pkill steam
-	[ -n "$proton" ] && pkill protonvpn-app
-	[ -n "$obs" ] && pkill obs
-	[ -n "$localsend" ] && pkill localsend
+	for app in "${apps[@]}"; do
+		if [[ "$app" == "Discord" ]]; then
+			pkill -9 -i "$app" 2>/dev/null
+		else
+			pkill -i "$app" 2>/dev/null
+		fi
+	done
 }
 
 main "$@"

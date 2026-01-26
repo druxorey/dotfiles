@@ -3,18 +3,19 @@
 \usepackage[spanish]{babel} % Package for the Spanish language
 \usepackage[utf8]{inputenc} % Package for UTF-8 character encoding
 \usepackage{geometry} % Package to configure document margins
-\usepackage{listings} % Package to include source code in the document
-\usepackage{xcolor} % Package to define colors
-\usepackage{fancyhdr} % Package to customize headers and footers
+% \usepackage{fancyhdr} % Package to customize headers and footers
+\usepackage{multicol} % Package for multiple columns
 \usepackage{amsmath} % Package for advanced mathematical symbols and environments
 \usepackage{amssymb} % Package for additional mathematical symbols
-\usepackage{url} % Package to format URLs
-\usepackage{hyperref} % Package to create hyperlinks
-\usepackage{multicol} % Package for multiple columns
-\usepackage{caption} % Package to customize captions
-\usepackage{listings} % Package to include source code in the document
 \usepackage{graphicx} % Package to include images
 \usepackage{xcolor} % Package to define colors
+% \usepackage{listings} % Package to include source code in the document
+\usepackage{url} % Package to format URLs
+\usepackage{hyperref} % Package to create hyperlinks
+% \usepackage{float} % Package for improved interface for floating objects
+\usepackage{caption} % Package to customize captions
+% \usepackage{booktabs} % Package for professional quality tables
+% \usepackage{array} % Package for advanced table formatting
 
 % Font configuration
 \usepackage[T1]{fontenc} % Package for font encoding
@@ -40,7 +41,6 @@
 \definecolor{COLOR_KEYWORDS}{HTML}{CC241D}
 \definecolor{COLOR_EMPH}{HTML}{076678}
 \definecolor{COLOR_STRINGS}{HTML}{98971A}
-\definecolor{COLOR_CONSOLE}{HTML}{EEEEEE}
 
 \hypersetup{
 	colorlinks=true, % Enable colored links
@@ -65,28 +65,28 @@
 \maketitle
 
 \begin{abstract}
-¿¡"Resumen Experimental"!? El abstract contiene: @símbolos, \#etiquetas, \$monedas y  también los \%porcentajes. —Este texto— busca demostrar el uso de «comillas latinas» y ``comillas inglesas'', además de (paréntesis), [corchetes] y {llaves}. La integración de \& (ampersand) y * (asteriscos) es crucial para la validación del 100\% de los datos analizados/observados.
+¿Quisquam «est qui ``dolorem 'ipsum' quia'' dolor» sit amet? Elit @consectetur [adipiscing] vélit, sed quia non-numquam (eius) modi 15\% tempora incidunt ut labore \& dolore magnam \{aliquam\} quaerat voluptatem. Ut enim ad mínima veniam, quis nostrum \$10.99 exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi \^{}consequatur?
 \end{abstract}
 
 \section{Desarrollo}
 
 \begin{multicols}{2}
-	¿Lorem ipsum "dolor" sit amet, 'consectetuer' adipiscing elit? «Aenean» commodo ligula \& eget dolor \#1. Aenean massa; Cum sociis natoque penatibus et magnis (dis) parturient montes, nascetur ridiculus mus! Donec quam felis, 50\% de ultricies nec, pellentesque eu, pretium quis, sem.
+	Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae \_consequatur, vel illum qui dolorem eum fugiat $\aleph_0$ quo voluptas nulla \#pariatur! Nam libero tempore, cum soluta nobis est eligendi <optio> cumque nihil $\nabla$ impedit quo minus id quod maxime placeat facere possimus, omnis voluptas [assumenda] est, omnis dolor repellendus.
 
 	\begin{equation} \label{eq:einstein_lorem}
 		R_{\mu\nu} - \frac{1}{2}R g_{\mu\nu} + \Lambda g_{\mu\nu} = \frac{8\pi G}{c^4} T_{\mu\nu}
 	\end{equation}
 
-	Aenean imperdiet. Etiam ultricies nisi vel augue. Curabitur ullamcorper ultricies nisi. Nam eget dui. Etiam rhoncus. Maecenas tempus, tellus eget condimentum rhoncus, sem quam semper libero, sit amet. Nulla consequat massa quis enim. Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu.
+	Temporibus autem quibusdam et aut officiis debitis aut rerum necessitatibus \~{s}aepe\~{} eveniet ut et voluptates repudiandae sint et molestiae non recusandae. Nam libero tempore, cum soluta nobis est eligendi <optio> cumque nihil impedit quo minus id quod maxime placeat facere possimus, omnis voluptas [assumenda] est, omnis $\oiiint$ dolor repellendus.
 
-	La Ecuación \ref{eq:einstein_lorem} describe el ``Lore Ipsum'' del espacio-tiempo: ¡In enim justo!, rhoncus ut, imperdiet a, “venenatis” vitae, justo. Nullam dictum felis eu pede mollis pretium. Integer tincidunt. In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo. Nullam dictum felis eu pede mollis pretium. ¿Phasellus viverra nulla ut metus varius laoreet? Quisque rutrum: ``Aenean imperdiet''. Etiam ultricies nisi vel augue (ca. 10--20 unidades). Curabitur ullamcorper ultricies nisi; Nam eget dui.
+	Itaque earum rerum [\ref{eq:einstein_lorem}] hic tenetúr a sapiente delectus, ut aut reiciendis voluptatibus maiores alias consequatur aut perferendis doloribus asperiores repellat. ¿Aenean massa cum sociis natoque \{nascetur\} ridiculus mus? Donec quam felis, 50\% de [ultricies] nec, pellentesque eu, pretium quis, sem. Eu fugiat du x > y \&\& z < w; ¿verdol? Ea vaxianza $\sigma^2$ enim justo, rhoncus ut, imperdiet a [0, 100] scelerisque ut, mollis sed f(x) $\rightarrow$ \{y\} vitae sapien ut libero venenatis @metadata.
 \end{multicols}
 
 \begin{center}
 	\begin{equation}
 		\mathcal{Z} = \int \mathcal{D}\phi \exp \left\{ \frac{i}{\hbar} \int d^4x \left[ \frac{1}{2} (\partial_\mu \phi)^2 - \frac{1}{2} m^2 \phi^2 - \frac{\lambda}{4!} \phi^4 \right] \right\}
 	\end{equation}
-	\captionof{figure}{Fórmula para calcular el significado de la Vida}
+	\captionof{figure}{Tellus eget condimentum $\alpha_0$ rhoncus}
 	\vspace{1cm}
 \end{center}
 
@@ -97,9 +97,11 @@
 \renewcommand{\refname}{} % Remove the default bibliography title
 \renewcommand{\bibname}{} % For book/report classes
 \begin{thebibliography}{99}
+\hbadness=10000
+\sloppy
+\urlstyle{same}
 
-\bibitem{wiki_ansi}
-Wikipedia. (2025, 15 de septiembre). \textit{ANSI C}. \href{https://es.wikipedia.org/wiki/ANSI\_C}{https://es.wikipedia.org/wiki/ANSI\_C}
+\bibitem{downey2009} Downey, A. B. (2009). \textit{The Little Book of Semaphores}. \url{http://greenteapress.com/semaphores/index.html}
 
 \end{thebibliography}
 

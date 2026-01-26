@@ -3,18 +3,19 @@
 \usepackage[spanish]{babel} % Package for the Spanish language
 \usepackage[utf8]{inputenc} % Package for UTF-8 character encoding
 \usepackage{geometry} % Package to configure document margins
-\usepackage{listings} % Package to include source code in the document
-\usepackage{xcolor} % Package to define colors
-\usepackage{fancyhdr} % Package to customize headers and footers
+% \usepackage{fancyhdr} % Package to customize headers and footers
+% \usepackage{multicol} % Package for multiple columns
 \usepackage{amsmath} % Package for advanced mathematical symbols and environments
 \usepackage{amssymb} % Package for additional mathematical symbols
-\usepackage{url} % Package to format URLs
-\usepackage{hyperref} % Package to create hyperlinks
-\usepackage{multicol} % Package for multiple columns
-\usepackage{caption} % Package to customize captions
-\usepackage{listings} % Package to include source code in the document
 \usepackage{graphicx} % Package to include images
 \usepackage{xcolor} % Package to define colors
+\usepackage{listings} % Package to include source code in the document
+\usepackage{url} % Package to format URLs
+\usepackage{hyperref} % Package to create hyperlinks
+% \usepackage{float} % Package for improved interface for floating objects
+\usepackage{caption} % Package to customize captions
+% \usepackage{booktabs} % Package for professional quality tables
+% \usepackage{array} % Package for advanced table formatting
 
 % Font configuration
 \usepackage[T1]{fontenc} % Package for font encoding
@@ -40,7 +41,6 @@
 \definecolor{COLOR_KEYWORDS}{HTML}{CC241D}
 \definecolor{COLOR_EMPH}{HTML}{076678}
 \definecolor{COLOR_STRINGS}{HTML}{98971A}
-\definecolor{COLOR_CONSOLE}{HTML}{EEEEEE}
 
 \hypersetup{
 	colorlinks=true, % Enable colored links
@@ -52,7 +52,7 @@
 % Configuration of the listings environment to display source code
 \lstdefinestyle{base}{
 	frame=shadowbox,
-	aboveskip=5mm,
+	aboveskip=10mm,
 	xleftmargin=5mm,
 	basicstyle={\footnotesize\ttfamily},
 	numberstyle=\tiny\color{COLOR_COMMENTS},
@@ -65,15 +65,53 @@
 	showstringspaces=false,
 	columns=flexible,
 	numbers=left,
+	keepspaces=true,
 	tabsize=4,
 	captionpos=b
+}
+
+\lstdefinestyle{c}{
+	style=base,
+	language=c,
+	morekeywords={NULL},
+	emph={int,long,short,float,double,char,bool,void,size_t,ssize_t,uint8_t,
+		uint16_t,uint32_t,uint64_t,int8_t,int16_t,int32_t,int64_t,pthread_t,
+		pthread_attr_t,pthread_mutex_t,pthread_mutexattr_t,pthread_cond_t,
+		pthread_condattr_t,sem_t,sig_atomic_t,sigset_t,atomic_flag,pid_t,
+		off_t,time_t},
+    literate=
+		{=}{{\textcolor{COLOR_KEYWORDS}{=}}}1
+		{*}{{{\textcolor{COLOR_KEYWORDS}{*}}}}1
+		{&}{{\textcolor{COLOR_KEYWORDS}{\&}}}1
+		{+}{{\textcolor{COLOR_KEYWORDS}{+}}}1
+		{-}{{\textcolor{COLOR_KEYWORDS}{-}}}1
+		{<}{{\textcolor{COLOR_KEYWORDS}{<}}}1
+		{>}{{\textcolor{COLOR_KEYWORDS}{>}}}1
+		{!}{{\textcolor{COLOR_KEYWORDS}{!}}}1
+		{.}{{\textcolor{COLOR_KEYWORDS}{.}}}1
+		{::}{{\textcolor{COLOR_KEYWORDS}{::}}}2
+		{->}{{\textcolor{COLOR_KEYWORDS}{->}}}2
 }
 
 \lstdefinestyle{cpp}{
 	style=base,
 	language=c++,
 	morekeywords={std},
-	emph={i64,i32,f64,f32}
+	emph={int,long,short,float,double,char,bool,void,size_t,ssize_t,uint8_t,
+		uint16_t,uint32_t,uint64_t,int8_t,int16_t,int32_t,int64_t,string,
+		vector,i32,i64,f32,f64},
+    literate=
+		{=}{{\textcolor{COLOR_KEYWORDS}{=}}}1
+		{*}{{{\textcolor{COLOR_KEYWORDS}{*}}}}1
+		{&}{{\textcolor{COLOR_KEYWORDS}{\&}}}1
+		{+}{{\textcolor{COLOR_KEYWORDS}{+}}}1
+		{-}{{\textcolor{COLOR_KEYWORDS}{-}}}1
+		{<}{{\textcolor{COLOR_KEYWORDS}{<}}}1
+		{>}{{\textcolor{COLOR_KEYWORDS}{>}}}1
+		{!}{{\textcolor{COLOR_KEYWORDS}{!}}}1
+		{.}{{\textcolor{COLOR_KEYWORDS}{.}}}1
+		{::}{{\textcolor{COLOR_KEYWORDS}{::}}}2
+		{->}{{\textcolor{COLOR_KEYWORDS}{->}}}2
 }
 
 \lstdefinestyle{python}{
@@ -87,12 +125,17 @@
 	style=base,
 	language=Bash,
 	morekeywords={...},
-	emph={...}
+	emph={...},
+	literate=
+		{=}{{\textcolor{COLOR_KEYWORDS}{=}}}1
+		{\$}{{\textcolor{COLOR_KEYWORDS}{\$}}}1
+		{@}{{\textcolor{COLOR_KEYWORDS}{@}}}1
+		{\&\&}{{\textcolor{COLOR_KEYWORDS}{\&\&}}}2
+		{||}{{\textcolor{COLOR_KEYWORDS}{||}}}2
 }
 
 \lstdefinestyle{consola}{
 	style=base,
-	backgroundcolor=\color{COLOR_CONSOLE},
 	keepspaces=true,
 	numbers=none,
 	xleftmargin=10mm,
@@ -148,13 +191,25 @@
 
 \section{Marco Teórico}
 
-El presente marco teórico aborda los conceptos fundamentales necesarios para la comprensión de la gestión de procesos, la comunicación entre procesos (IPC) y el manejo de señales en entornos basados en Unix/Linux.
+¿Quisquam «est qui ``dolorem 'ipsum' quia'' dolor» sit amet? Elit @consectetur [adipiscing] vélit, sed quia non-numquam (eius) modi 15\% tempora incidunt ut labore \& dolore magnam \{aliquam\} quaerat voluptatem. Ut enim ad mínima veniam, quis nostrum \$10.99 exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi \^{}consequatur? Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae \_consequatur, vel illum qui dolorem eum fugiat $\aleph_0$ quo voluptas nulla \#pariatur! Nam libero tempore, cum soluta nobis est eligendi <optio> cumque nihil $\nabla$ impedit quo minus id quod maxime placeat facere possimus, omnis voluptas [assumenda] est, omnis $\oiiint$ dolor repellendus. Temporibus autem quibusdam et aut officiis debitis aut rerum necessitatibus \~{s}aepe\~{} eveniet ut et voluptates repudiandae sint et molestiae non recusandae.
+
+\subsection{Maecenas Tempus Aellus Eget}
+
+Nam libero tempore, cum soluta nobis est eligendi <optio> cumque nihil impedit quo minus id quod maxime placeat facere possimus, omnis voluptas [assumenda] est, omnis dolor repellendus. Itaque earum rerum hic tenetúr a sapiente delectus, ut aut reiciendis voluptatibus maiores alias consequatur aut perferendis doloribus asperiores repellat. ¿Aenean massa cum sociis natoque \{nascetur\} ridiculus mus? Donec quam felis, 50\% de [ultricies] nec, pellentesque eu, pretium quis, sem. Eu fugiat du x > y \&\& z < w; ¿verdol? Ea vaxianza $\sigma^2$ enim justo, rhoncus ut, imperdiet a [0, 100] scelerisque ut, mollis sed f(x) $\rightarrow$ \{y\} vitae sapien ut libero venenatis @metadata.
+
+\begin{itemize} \item \textbf{«Aenean» commodo ligula:} Eget dolor \#1. Aenean massa; Cum sociis natoque penatibus et magnis (dis) parturient montes, nascetur $\wp$ ridiculus mus! Donec quam felis, 50\% de [ultricies] nec, pellentesque eu, pretium quis, sem. Nulla consequat $\complement$ massa quis enim. Donec pede justo, fringilla $\exists!$ vel, aliquet nec, vulputate $\nexists$ eget, arcu. In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo.
+
+\item \textbf{Nullam dictum felis:} Eu pede mollis pretium. Integer tincidunt. Cras dapibus. Vivamus elementum semper nisi. Aenean vulputate eleifend tellus. Aenean leo $\because$ ligula, porttitor eu, consequat vitae, eleifend $\therefore$ ac, enim.
+
+\item \textbf{Aliquam lorem ante:} Sapibus in, viverra quis, feugiat a, tellus. Phasellus viverra nulla ut metus varius laoreet. Quisque rutrum. Aenean imperdiet. Etiam ultricies nisi vel augue. Curabitur ullamcorper ultricies nisi. Nam eget dui.
+
+\end{itemize}
 
 \newpage
 
 \section{Desarrollo}
 
-El siguiente código demuestra una función básica en C++ que calcula el factorial de un número.
+Etiam rhoncus $\beta \approx 0.5$. Maecenas tempus, tellus eget condimentum $\alpha_0$ rhoncus, sem quam semper libero $\sum_{j=0}^{\infty} \chi_j$, sit amet adipiscing sem neque sed ipsum.
 
 \begin{lstlisting}[style=cpp, caption={Ejemplo de Código de C++}]
 #include <vector>
@@ -163,17 +218,14 @@ El siguiente código demuestra una función básica en C++ que calcula el factor
 int main(int argc, char *argv[]) {
 	std::vector<i64> numbers = {5, 3, 8, 6, 2};
 	std::sort(numbers.begin(), numbers.end());
-
 	// Apply a lambda function to print the square of each number
 	std::for_each(numbers.begin(), numbers.end(), [](i64 x) {
 		std::cout << x * x << " ";
 	});
-
-	return 0;
 }
 \end{lstlisting}
 
-El siguiente código demuestra una función básica en C++ que calcula el factorial de un número.
+¿Quisquam «est qui ``dolorem 'ipsum' quia'' dolor» sit amet? Elit @consectetur [adipiscing] vélit, sed quia non-numquam (eius) modi 15\% tempora incidunt ut labore \& dolore magnam \{aliquam\} quaerat voluptatem. Ut enim ad mínima veniam, quis nostrum \$10.99 exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi \^{}consequatur? Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae \_consequatur. «¡Nam quam nunc, blandit @vel, 'luctus' pulvinar!», hendrerit id, lorem \#23. Maecenas nec odio et ante tincidunt tempus [75\%]. Donec vitae sapien ut libero venenatis faucibus $\{ \mu, \sigma \}$.
 
 \begin{lstlisting}[style=python, caption={Ejemplo de Código de Python}]
 def factorial(n: int) -> int:
@@ -187,44 +239,24 @@ if __name__ == "__main__":
 	print(f"The factorial of {num} is {factorial(num)}")
 \end{lstlisting}
 
-El siguiente código demuestra una función básica en C++ que calcula el factorial de un número.
-
-\begin{lstlisting}[style=bash, caption={Ejemplo de Código de Bash}]
-#!/bin/bash
-
-nums=(3 5 7 3 9 5 7)
-sum=0
-
-unique=($(printf "%s\n" "${nums[@]}" | sort -n | uniq))
-for n in "${unique[@]}"; do ((sum += n)); done
-
-# Display results with parameter expansion
-[[ $sum -gt 20 ]] && msg="Greater than 20" || msg="Less than 20"
-echo "Unique numbers: ${unique[*]}"
-echo "Sum: $sum ($msg)"
-\end{lstlisting}
-
-El siguiente código demuestra una función básica en C++ que calcula el factorial de un número.
+Nullam quis ante $\neq$ null. Etiam sit amet orci eget eros faucibus tincidunt $\int_a^b f(x)dx$. Duis leo $\Rightarrow$ «Ep "miño 'aoñí' comp" ia bigünña».
 
 \begin{lstlisting}[style=consola, caption={Resultado de ejecución del programa \texttt{r1.c}}]
 llamando read(3, c, 10).  valor de retorno: 10 bytes leidos
 se imprimen los bytes leidos: Jim Plank
-
-invocado read(3, c, 99).  valor de retorno: 12 bytes leidos.
-se imprimen los bytes leidos: Claxton 221
 \end{lstlisting}
-
-\begin{figure}[h]
-	\centering
-	\includegraphics[width=1\textwidth]{TMP [T0] - Recursos/img_0001.png}
-	\caption{Descripción de la imagen}
-\end{figure}
 
 \newpage
 
 \section{Conclusión}
 
-En conclusión, C++ es un lenguaje de programación poderoso y versátil que permite a los desarrolladores crear aplicaciones eficientes y robustas. Los ejemplos presentados en este documento muestran algunas de las características básicas del lenguaje.
+Sed fringilla mauris sit amet nibh. Donec sodales sagittis magna. Sed consequat, leo eget bibendum sodales, augue velit cursus nunc, quis gravida magna mi a libero. Fusce vulputate eleifend sapien $\Omega_{total}$. Vestibulum purus quam, scelerisque ut, mollis sed, nonummy id, metus. Nullam accumsan lorem in dui $\pm 1.96$. Cras ultricies mi eu turpis hendrerit fringilla. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; In ac dui quis mi consectetuer lacinia.
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=0.75\textwidth]{TMP [T0] - Recursos/img_0001.png}
+	\caption{Descripción de la imagen}
+\end{figure}
 
 \newpage
 
@@ -233,9 +265,11 @@ En conclusión, C++ es un lenguaje de programación poderoso y versátil que per
 \renewcommand{\refname}{} % Remove the default bibliography title
 \renewcommand{\bibname}{} % For book/report classes
 \begin{thebibliography}{99}
+\hbadness=10000
+\sloppy
+\urlstyle{same}
 
-\bibitem{wiki_ansi}
-Wikipedia. (2025, 15 de septiembre). \textit{ANSI C}. \href{https://es.wikipedia.org/wiki/ANSI\_C}{https://es.wikipedia.org/wiki/ANSI\_C}
+\bibitem{downey2009} Downey, A. B. (2009). \textit{The Little Book of Semaphores}. \url{http://greenteapress.com/semaphores/index.html}
 
 \end{thebibliography}
 

@@ -3,18 +3,19 @@
 \usepackage[spanish]{babel} % Package for the Spanish language
 \usepackage[utf8]{inputenc} % Package for UTF-8 character encoding
 \usepackage{geometry} % Package to configure document margins
-\usepackage{listings} % Package to include source code in the document
-\usepackage{xcolor} % Package to define colors
-\usepackage{fancyhdr} % Package to customize headers and footers
-\usepackage{amsmath} % Package for advanced mathematical symbols and environments
-\usepackage{amssymb} % Package for additional mathematical symbols
-\usepackage{url} % Package to format URLs
-\usepackage{hyperref} % Package to create hyperlinks
-\usepackage{multicol} % Package for multiple columns
-\usepackage{caption} % Package to customize captions
-\usepackage{listings} % Package to include source code in the document
+% \usepackage{fancyhdr} % Package to customize headers and footers
+% \usepackage{multicol} % Package for multiple columns
+% \usepackage{amsmath} % Package for advanced mathematical symbols and environments
+% \usepackage{amssymb} % Package for additional mathematical symbols
 \usepackage{graphicx} % Package to include images
 \usepackage{xcolor} % Package to define colors
+% \usepackage{listings} % Package to include source code in the document
+% \usepackage{url} % Package to format URLs
+\usepackage{hyperref} % Package to create hyperlinks
+% \usepackage{float} % Package for improved interface for floating objects
+\usepackage{caption} % Package to customize captions
+% \usepackage{booktabs} % Package for professional quality tables
+% \usepackage{array} % Package for advanced table formatting
 
 % Font configuration
 \usepackage[T1]{fontenc} % Package for font encoding
@@ -26,10 +27,10 @@
 
 \geometry{ % Configuration of document margins
 	a4paper,
-	left=30mm,
+	left=25mm,
 	right=25mm,
 	top=20mm,
-	bottom=25mm
+	bottom=20mm
 }
 
 \setlength{\parskip}{1em} % Space between paragraphs
@@ -43,10 +44,10 @@
 }
 
 % Remitter information
-\newcommand{\miNombre}{Nombre Apellido}
-\newcommand{\miCedula}{V-XX.XXX.XXX}
-\newcommand{\miCorreo}{tu.email@ciens.ucv.ve}
-\newcommand{\miTelefono}{+58 4XX-XXXXXXX}
+\newcommand{\myName}{Nombre Apellido}
+\newcommand{\myID}{V-XX.XXX.XXX}
+\newcommand{\myMail}{tu.email@ciens.ucv.ve}
+\newcommand{\myPhone}{+58 4XX-XXXXXXX}
 
 \begin{document}
 
@@ -79,9 +80,9 @@ Estimado(a) Profesor(a):
 
 Reciba un cordial saludo.
 
-Por medio de la presente, yo, \textbf{\miNombre}, titular de la cédula de identidad \textbf{\miCedula}, estudiante regular de la Licenciatura en Computación, me dirijo a usted con la finalidad de solicitar formalmente...
+Por medio de la presente, yo, \textbf{\myName}, titular de la cédula \textbf{\myID}, estudiante regular de la Licenciatura en Computación, me dirijo a usted con la finalidad de solicitar formalmente...
 
-[AQUÍ ESCRIBES TU CONTENIDO. MANTENIENDO EL FORMATO]
+[AQUÍ SE ESCRIBE EL CONTENIDO. MANTENIENDO EL FORMATO]
 
 Como puede observar en el fragmento de código adjunto (si aplica), el error persiste a pesar de las correcciones:
 
@@ -93,10 +94,10 @@ Sin otro particular a qué hacer referencia, se despide,
 
 \begin{center}
     \rule{0.4\textwidth}{0.4pt}\\
-    \textbf{\miNombre}\\
-    C.I. \miCedula\\
-    \textit{\small \miCorreo}\\
-    \textit{\small \miTelefono}
+    \textbf{\myName}\\
+    C.I. \myID\\
+    \textit{\small \myMail}\\
+    \textit{\small \myPhone}
 \end{center}
 
 \end{document}

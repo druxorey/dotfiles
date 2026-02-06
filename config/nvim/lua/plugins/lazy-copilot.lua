@@ -17,18 +17,15 @@ return {
 			local c = require("copilot.client")
 			c.teardown()
 			require("copilot.panel").teardown()
-			require("copilot.suggestion").teardown()
 		end,
 		keys = {
 			{
 				"<leader>as",
 				function()
-					local copilot = require("copilot.suggestion")
 					local client = require("copilot.client")
 
 					if client.is_disabled() then
 						vim.cmd("Copilot enable")
-						copilot.toggle_auto_trigger()
 						vim.notify("Copilot Enabled", vim.log.levels.INFO)
 					else
 						vim.cmd("Copilot disable")

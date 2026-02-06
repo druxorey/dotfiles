@@ -93,3 +93,7 @@ vim.api.nvim_set_keymap('n', '<leader>cxs', '<cmd>VimtexStop<CR>', { noremap = t
 -- Better page up/down
 vim.keymap.set('n', '<C-M-j>', '<C-d>', { noremap = true, silent = true, desc = 'Page down (half screen)' })
 vim.keymap.set('n', '<C-M-k>', '<C-u>', { noremap = true, silent = true, desc = 'Page up (half screen)' })
+
+vim.keymap.set('n', '<Leader>db', '<cmd>DBUIToggle<CR>', { noremap = false, desc = 'Toggle DBUI' })
+vim.keymap.set('v', '<Leader>dx', '<Plug>(DBUI_ExecuteQuery)', { noremap = false, desc = 'Tumama up (half screen)' })
+vim.keymap.set('n', '<Leader>dx', '<Plug>(DBUI_ExecuteQuery)', { noremap = false, desc = 'Tumama up (half screen)' })

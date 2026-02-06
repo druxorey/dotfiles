@@ -1,6 +1,6 @@
 #!/bin/bash
 
-ARTIST_MAX_LENGTH=50
+MAX_LENGTH=50
 
 function main() {
 	status=$(cmus-remote -Q 2>/dev/null)
@@ -14,8 +14,12 @@ function main() {
 	artist=$(echo "$status" | grep "tag artist" | cut -d ' ' -f 3-)
 	title=$(echo "$status" | grep "tag title" | cut -d ' ' -f 3-)
 
-	if [ ${#artist} -gt $ARTIST_MAX_LENGTH ]; then
-		artist=$(echo "$artist" | cut -c 1-$ARTIST_MAX_LENGTH)...
+	if [ ${#title} -gt $MAX_LENGTH ]; then
+		title=$(echo "$title" | cut -c 1-$MAX_LENGTH)...
+	fi
+
+	if [ ${#artist} -gt $MAX_LENGTH ]; then
+		artist=$(echo "$artist" | cut -c 1-$MAX_LENGTH)...
 	fi
 
 	if [ "$state" = "playing" ]; then

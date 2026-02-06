@@ -10,10 +10,10 @@
 						"always_enabled": true
 					},
 					"leading_diamond": "\ue0b6",
-					"template": " \uf017 {{ .FormattedMs }} ",
+					"template": " 󰣇 ",
 					"foreground": "#F8F8F2",
 					"background": "#6272A4",
-					"type": "executiontime",
+					"type": "os",
 					"style": "diamond"
 				},
 				{

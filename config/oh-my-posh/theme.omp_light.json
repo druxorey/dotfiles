@@ -1,0 +1,86 @@
+{
+	"$schema": "https://raw.githubusercontent.com/JanDeDobbeleer/oh-my-posh/main/themes/schema.json",
+	"blocks": [
+		{
+			"type": "prompt",
+			"alignment": "left",
+			"segments": [
+				{
+					"properties": {
+						"always_enabled": true
+					},
+					"leading_diamond": "\ue0b6",
+					"template": " 󰣇 ",
+					"foreground": "#FFFBEB",
+					"background": "#047FB4",
+					"type": "os",
+					"style": "diamond"
+				},
+				{
+					"properties": {
+						"folder_separator_icon": "/",
+						"hide_root_location": true,
+						"max_depth": 1,
+						"style": "agnoster_short"
+					},
+					"template": "  \uf413 {{ .Path }} ",
+					"foreground": "#FFFBEB",
+					"powerline_symbol": "\ue0b4",
+					"background": "#CB3A2A",
+					"type": "path",
+					"style": "powerline"
+				},
+				{
+					"properties": {
+						"branch_icon": "",
+						"fetch_stash_count": true,
+						"fetch_status": false,
+						"fetch_upstream_icon": true
+					},
+					"template": " \ue725 ({{ .UpstreamIcon }} {{ .HEAD }}{{ if gt .StashCount 0 }} \ueb4b {{ .StashCount }}{{ end }}) ",
+					"foreground": "#FFFBEB",
+					"powerline_symbol": "\ue0b4",
+					"background": "#BF185A",
+					"type": "git",
+					"style": "powerline"
+				},
+				{
+					"template": " \ue718 {{ if .PackageManagerIcon }}{{ .PackageManagerIcon }} {{ end }}{{ .Full }} ",
+					"foreground": "#FFFBEB",
+					"powerline_symbol": "\ue0b4",
+					"background": "#198D0C",
+					"type": "node",
+					"style": "powerline"
+				},
+				{
+					"properties": {
+						"prefix": " \ue235 "
+					},
+					"foreground": "#FFFBEB",
+					"powerline_symbol": "\ue0b4",
+					"background": "#9E841A",
+					"type": "python",
+					"style": "powerline"
+				}
+			]
+		},
+		{
+			"type": "prompt",
+			"alignment": "left",
+			"segments": [
+				{
+					"properties": {
+						"always_enabled": true
+					},
+					"template": " ~ ",
+					"foreground": "#1F1F1F",
+					"type": "status",
+					"style": "plain"
+				}
+			],
+			"newline": true
+		}
+	],
+	"version": 3,
+	"final_space": true
+}

@@ -21,7 +21,7 @@
 fastfetch --config ~/.config/fastfetch/init.jsonc && echo
 
 eval "$(zoxide init zsh)"
-eval "$(oh-my-posh init zsh --config ~/.config/oh-my-posh/dracula-default.omp.json)" || PS1='[\u@\h \W]\$ '
+eval "$(oh-my-posh init zsh --config ~/.config/oh-my-posh/theme.omp.json)" || PS1='[\u@\h \W]\$ '
 
 #* ================================= aliases ================================ *#
 
@@ -80,6 +80,7 @@ alias yt-720='yt-dlp -f "bestvideo[height<=720][ext=mp4]+bestaudio[ext=m4a]"'
 alias yt-480='yt-dlp -f "bestvideo[height<=480][ext=mp4]+bestaudio[ext=m4a]"'
 alias yt-mp3='yt-dlp -x --audio-format mp3'
 alias youtube='mpv --ytdl-format="bestvideo[height<=1080]+bestaudio/best[height<=1080]"'
+alias yt='yt-x'
 
 # python
 alias py='python3'

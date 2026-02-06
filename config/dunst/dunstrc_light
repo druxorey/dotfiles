@@ -1,0 +1,116 @@
+
+#! ========================================================================== !#
+#!
+#!         ██████╗ ██╗   ██╗███╗   ██╗███████╗████████╗██████╗  ██████╗
+#!         ██╔══██╗██║   ██║████╗  ██║██╔════╝╚══██╔══╝██╔══██╗██╔════╝
+#!         ██║  ██║██║   ██║██╔██╗ ██║███████╗   ██║   ██████╔╝██║
+#!         ██║  ██║██║   ██║██║╚██╗██║╚════██║   ██║   ██╔══██╗██║
+#!         ██████╔╝╚██████╔╝██║ ╚████║███████║   ██║   ██║  ██║╚██████╗
+#!         ╚═════╝  ╚═════╝ ╚═╝  ╚═══╝╚══════╝   ╚═╝   ╚═╝  ╚═╝ ╚═════╝
+#!
+#!                            - Made by Druxorey -
+#!                         https://github.com/druxorey
+#!
+#! ========================================================================== !#
+
+[global]
+	#* =============================== display ============================== *#
+
+	monitor = 0
+	follow = mouse
+
+	indicate_hidden = yes
+	transparency = 0
+	separator_height = 2
+	padding = 8
+	horizontal_padding = 10
+	text_icon_padding = 0
+
+	frame_width = 2
+	frame_color = "#CB3A2A"
+	separator_color = "#ff00ff"
+	sort = yes
+	idle_threshold = 0
+
+	#* ============================== geometry ============================== *#
+
+	width = 384
+	height = 192
+	origin = top-right
+	offset = 10x60
+	scale = 0
+	notification_limit = 5
+	corner_radius = 10
+
+	#* ============================ progress bar ============================ *#
+
+	progress_bar = true
+	progress_bar_height = 10
+	progress_bar_frame_width = 2
+	progress_bar_min_width = 150
+	progress_bar_max_width = 300
+
+	#* ================================ text ================================ *#
+
+	font = Noto Sans 11
+	line_height = 0
+	markup = full
+	format = "<b>\n󰁕 %a</b>\n%s <i>%b\n</i>"
+	alignment = left
+	vertical_alignment = center
+	show_age_threshold = 60
+	ellipsize = middle
+	ignore_newline = no
+
+	stack_duplicates = true
+	hide_duplicate_count = true
+	show_indicators = no
+
+	#* =============================== icons ================================ *#
+
+	icon_position = left
+	min_icon_size = 64
+	max_icon_size = 64
+	icon_path = /usr/share/icons/gnome/16x16/status/:/usr/share/icons/gnome/16x16/devices/
+
+	#* ============================== history =============================== *#
+	sticky_history = yes
+	history_length = 20
+
+	#* =========================== misc/advanced ============================ *#
+	dmenu = /usr/bin/dmenu -p dunst:
+	browser = /usr/bin/firefox -new-tab
+	always_run_script = true
+	title = Dunst
+	class = Dunst
+	ignore_dbusclose = false
+
+	mouse_left_click = do_action close_current
+	mouse_middle_click = close_all
+	mouse_right_click = close_current
+
+[urgency_low]
+	background = "#FFFBEB"
+	foreground = "#14710A"
+	frame_color = "#14710A"
+	highlight = "#14710A"
+	default_icon = "~/.config/dunst/icons/bell-badge-low.svg"
+	timeout = 5
+
+[urgency_normal]
+	background = "#FFFBEB"
+	foreground = "#1F1F1F"
+	frame_color = "#CB3A2A"
+	highlight = "#CB3A2A"
+	default_icon = "~/.config/dunst/icons/bell-badge-normal.svg"
+	timeout = 5
+	script = "~/.config/dunst/alert.sh"
+
+[urgency_critical]
+	background = "#CB3A2A"
+	foreground = "#FFFBEB"
+	frame_color = "#FFFBEB"
+	highlight = "#FFFBEB"
+	default_icon = "~/.config/dunst/icons/bell-badge-critical.svg"
+	timeout = 0
+	script = "~/.config/dunst/alert.sh"

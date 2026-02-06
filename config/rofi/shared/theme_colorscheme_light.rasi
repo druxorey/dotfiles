@@ -18,19 +18,20 @@
 * {
     font: "Noto Sans Nerd Font 11";
 
-	drx-color-base: #eff1f5;
-	drx-color-surface: #fcfcfd;
-	drx-color-overlay: #e6e9ef;
-	drx-color-highlight: #dce0e8;
+	drx-color-base: #EDE9DA;
+	drx-color-surface: #fffbeb;
+	drx-color-overlay: #DEDBCC;
+    drx-color-highlight: #CECCC0;
 
-	drx-color-text: #4C4F69;
-	drx-color-subtext: #5C5F77;
-	drx-color-deactivate: #ACB0BE;
+    drx-color-text: #1F1F1F;
+    drx-color-subtext: #6C664B;
+    drx-color-deactivate: #BCBAB3;
 
-	drx-color-comment: #6272A4;
-    drx-color-accent: #EA76CB;
-    drx-color-hover: #EE95D7;
-    drx-color-urgent: #d20f39;
+	drx-color-comment: #6C664B;
+
+    drx-color-urgent: #A3144D;
+    drx-color-hover: #F01D71;
+    drx-color-accent: #CB3A2A;
 
 	drx-border-big: 10px;
 	drx-border-small: 6px;

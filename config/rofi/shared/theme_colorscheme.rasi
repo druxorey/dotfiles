@@ -18,10 +18,10 @@
 * {
     font: "Noto Sans Nerd Font 11";
 
-	drx-color-base: #1E1F29;
-	drx-color-surface: #282A36;
-	drx-color-overlay: #44475A;
-	drx-color-highlight: #525568;
+	drx-color-base: #191A21;
+	drx-color-surface: #21222C;
+	drx-color-overlay: #282A36;
+	drx-color-highlight: #343746;
 
 	drx-color-text: #F8F8F2;
 	drx-color-subtext: #ADAFBC;

@@ -48,7 +48,7 @@ element.normal.active {
 }
 
 element.selected.normal {
-	background-color: @drx-color-overlay;
+	background-color: @drx-color-highlight;
 	text-color: @drx-color-text;
 }
 

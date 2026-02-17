@@ -68,8 +68,6 @@
   url: https://www.flaticon.com/
 - name: GradientsApp
   url: https://gradients.app/es/shades
-- name: Google Gemini
-  url: https://gemini.google.com/app
 - name: The Pirate Bay
   url: https://thepiratebay.org/index.html
 - name: Ivanime
@@ -116,3 +114,9 @@
   url: https://www.commandlinefu.com/commands/browse
 - name: pure-sh-bible
   url: https://github.com/dylanaraps/pure-sh-bible
+- name: Anna’s Archive
+  url: https://annas-archive.li/
+- name: MyAnimeList
+  url: https://myanimelist.net/
+- name: Google YouTube
+  url: https://www.youtube.com/

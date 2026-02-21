@@ -8,7 +8,7 @@ END="\e[0m"
 OBSIDIAN_DIR="$HOME/Documents/'A1 Obsidian'"
 EXCLUDE="--exclude=.git/ --exclude=.github --exclude=*.gitmodules --exclude=*.editorconfig --exclude=*.gitignore"
 BOOKMARKS_DIR="$HOME/.config/BraveSoftware/Brave-Browser/Default/Bookmarks"
-YAML_DIR="$HOME/Workspace/projects/dotfiles/config/brave/"
+YAML_DIR="$HOME/Workspace/Projects/dotfiles/config/brave/"
 
 function help() {
 	printf "

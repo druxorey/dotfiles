@@ -9,9 +9,8 @@ FORMAT_SUCCESS = "\033[1;32m[SUCCESS]"
 FORMAT_TITLE = "\033[0;34m"
 FORMAT_END = "\033[0m"
 
-PACKAGES_FILES_PATH = "/home/druxorey/Workspace/projects/dotfiles/"
+PACKAGES_FILES_PATH = "/home/druxorey/Workspace/Projects/dotfiles/"
 PACKAGES_FILES = {"base": "drx-base.packages", "extra": "drx-extra.packages"}
-
 
 def printHelp():
     print(f"""

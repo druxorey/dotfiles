@@ -1,6 +1,6 @@
 #!/bin/bash
 
-VAULT_PATH="${HOME}/Documents/01 Obsidian/"
+VAULT_PATH="${HOME}/Documents/A1 Obsidian/"
 
 FORMAT_ERROR="\e[1;31m[ERROR]"
 FORMAT_SUCCESS="\e[1;32m[SUCCESS]"

@@ -2,7 +2,7 @@
 
 declare FORMAT_SUCCESS="\e[1;32m[SUCCESS]"
 declare FORMAT_ERROR="\e[1;31m[ERROR]"
-declare FORMAT_INFO="\e[0;34m"
+declare FORMAT_INFO="\e[0;35m"
 declare FORMAT_RESET="\e[0m"
 
 declare PACKAGES_BASE_SOURCE="https://raw.githubusercontent.com/druxorey/dotfiles/refs/heads/main/drx-base.packages"
@@ -48,7 +48,7 @@ function promptCustomPacman() {
 	
 	local choices
 	if choices=$(dialog --clear --no-lines --no-cancel --title "Pacman Packages" --checklist "\nSelect Pacman packages to install:" 40 60 10 "${options[@]}" 3>&1 1>&2 2>&3); then
-		choices=$(echo "$choices" | tr -d '"')
+		choices=$(printf "%s" "$choices" | tr -d '"')
 		customPacmanPackages=($choices)
 	fi
 }
@@ -76,7 +76,7 @@ function promptCustomAur() {
 	
 	local choices
 	if choices=$(dialog --clear --no-lines --no-cancel --title "AUR Packages" --checklist "\nSelect AUR packages to install:" 40 60 10 "${options[@]}" 3>&1 1>&2 2>&3); then
-		choices=$(echo "$choices" | tr -d '"')
+		choices=$(printf "%s" "$choices" | tr -d '"')
 		customAurPackages=($choices)
 	fi
 }
@@ -140,9 +140,9 @@ function showCustomSummary() {
 	summaryText+="Pacman Packages: ${#customPacmanPackages[@]} selected\n"
 	summaryText+="AUR Packages:    ${#customAurPackages[@]} selected\n"
 	summaryText+="Install Yay:     $yayStatus\n"
-	summaryText+="Install Zsh:     $( [[ "$customInstallZsh" == true ]] && echo "Yes" || echo "No" )\n"
-	summaryText+="Copy Dotfiles:   $( [[ "$customInstallDotfiles" == true ]] && echo "Yes" || echo "No" )\n"
-	summaryText+="Enable Services: $( [[ "$customEnableServices" == true ]] && echo "Yes" || echo "No" )\n\n"
+	summaryText+="Install Zsh:     $( [[ "$customInstallZsh" == true ]] && printf "Yes" || printf "No" )\n"
+	summaryText+="Copy Dotfiles:   $( [[ "$customInstallDotfiles" == true ]] && printf "Yes" || printf "No" )\n"
+	summaryText+="Enable Services: $( [[ "$customEnableServices" == true ]] && printf "Yes" || printf "No" )\n\n"
 	summaryText+="Do you want to confirm this configuration?"
 
 	if dialog --clear --no-lines --title "Custom Installation Summary" --yes-label "Confirm" --no-label "Modify" --yesno "$summaryText" 18 60; then
@@ -201,7 +201,7 @@ function runConfigurationUi() {
 
 	if [[ -z "$installMode" ]]; then
 		clear
-		echo -e "${FORMAT_ERROR} Installation canceled by user.${FORMAT_RESET}"
+		printf "%b Installation canceled by user.%b\n" "$FORMAT_ERROR" "$FORMAT_RESET"
 		exit 0
 	fi
 
@@ -232,7 +232,7 @@ function runConfigurationUi() {
 function fetchPackageLists() {
 	local quiet=$1
 	if [[ "$quiet" != "quiet" ]]; then
-		echo -e "\n${FORMAT_INFO}Fetching package lists from repository${FORMAT_RESET}"
+		printf "\n%bFetching package lists from repository%b\n" "$FORMAT_INFO" "$FORMAT_RESET"
 	fi
 
 	curl -sL "$PACKAGES_BASE_SOURCE" -o /tmp/drx-base.packages
@@ -244,41 +244,41 @@ function fetchPackageLists() {
 
 
 function updateSystem() {
-	echo -e "\n${FORMAT_INFO}Updating system${FORMAT_RESET}"
+	printf "\n%bUpdating system%b\n" "$FORMAT_INFO" "$FORMAT_RESET"
 	sudo pacman -Syu --noconfirm
 }
 
 
 function installAurHelper() {
 	if ! command -v yay &> /dev/null; then
-		echo -e "\n${FORMAT_INFO}Installing YAY${FORMAT_RESET}"
+		printf "\n%bInstalling YAY%b\n" "$FORMAT_INFO" "$FORMAT_RESET"
 		sudo pacman -S --needed --noconfirm git base-devel
 		rm -rf /tmp/yay
 		git clone https://aur.archlinux.org/yay.git /tmp/yay
 		(cd /tmp/yay && makepkg -si --noconfirm)
 	else
-		echo -e "\n${FORMAT_SUCCESS} YAY is already installed.${FORMAT_RESET}"
+		printf "\n%b YAY is already installed.%b\n" "$FORMAT_SUCCESS" "$FORMAT_RESET"
 	fi
 }
 
 
 function installBasePackages() {
-	echo -e "\n${FORMAT_INFO}Installing Base Pacman Packages${FORMAT_RESET}"
+	printf "\n%bInstalling Base Pacman Packages%b\n" "$FORMAT_INFO" "$FORMAT_RESET"
 	sudo pacman -S --needed --noconfirm "${base_pacman_packages[@]}"
 
 	if [[ "$installYay" == true ]]; then
-		echo -e "\n${FORMAT_INFO}Installing Base AUR Packages${FORMAT_RESET}"
+		printf "\n%bInstalling Base AUR Packages%b\n" "$FORMAT_INFO" "$FORMAT_RESET"
 		yay -S --needed --noconfirm "${base_aur_packages[@]}"
 	fi
 }
 
 
 function installExtraPackages() {
-	echo -e "\n${FORMAT_INFO}Installing Extra Pacman Packages${FORMAT_RESET}"
+	printf "\n%bInstalling Extra Pacman Packages%b\n" "$FORMAT_INFO" "$FORMAT_RESET"
 	sudo pacman -S --needed --noconfirm "${extra_pacman_packages[@]}"
 
 	if [[ "$installYay" == true ]]; then
-		echo -e "\n${FORMAT_INFO}Installing Extra AUR Packages${FORMAT_RESET}"
+		printf "\n%bInstalling Extra AUR Packages%b\n" "$FORMAT_INFO" "$FORMAT_RESET"
 		yay -S --needed --noconfirm "${extra_aur_packages[@]}"
 	fi
 }
@@ -286,59 +286,76 @@ function installExtraPackages() {
 
 function installCustomPackagesList() {
 	if [[ ${#customPacmanPackages[@]} -gt 0 ]]; then
-		echo -e "\n${FORMAT_INFO}Installing Custom Pacman Packages${FORMAT_RESET}"
+		printf "\n%bInstalling Custom Pacman Packages%b\n" "$FORMAT_INFO" "$FORMAT_RESET"
 		sudo pacman -S --needed --noconfirm "${customPacmanPackages[@]}"
 	fi
 
 	if [[ "$installYay" == true ]] && [[ ${#customAurPackages[@]} -gt 0 ]]; then
-		echo -e "\n${FORMAT_INFO}Installing Custom AUR Packages${FORMAT_RESET}"
+		printf "\n%bInstalling Custom AUR Packages%b\n" "$FORMAT_INFO" "$FORMAT_RESET"
 		yay -S --needed --noconfirm "${customAurPackages[@]}"
 	fi
 }
 
 
 function installZshShell() {
-	echo -e "\n${FORMAT_INFO}Installing and configuring ZSH${FORMAT_RESET}"
+	printf "\n%bInstalling and configuring ZSH%b\n" "$FORMAT_INFO" "$FORMAT_RESET"
 	sudo pacman -S --needed --noconfirm zsh
 	sudo chsh -s /bin/zsh "$USER"
 }
 
 
 function copyDotfiles() {
-	echo -e "\n${FORMAT_INFO}Copying dotfiles${FORMAT_RESET}"
+	printf "\n%bCopying dotfiles%b\n" "$FORMAT_INFO" "$FORMAT_RESET"
 	# TODO: Copy all the configuration files to the correct directory
 }
 
 
 function enableSystemServices() {
-	echo -e "\n${FORMAT_INFO}Enabling System Services${FORMAT_RESET}"
+	printf "\n%bEnabling System Services%b\n" "$FORMAT_INFO" "$FORMAT_RESET"
 	for service in "${SERVICES_TO_ENABLE[@]}"; do
-		if [[ $(systemctl is-enabled "$service" 2>/dev/null) != "enabled" ]]; then
-			sudo systemctl enable --now "${service}.service"
-			echo -e "${FORMAT_SUCCESS} Service $service enabled.${FORMAT_RESET}"
-		else
-			echo -e "Service $service is already enabled."
+		if sudo systemctl enable --now "${service}.service"; then
+			printf "%b Service %s enabled%b\n" "$FORMAT_SUCCESS" "$service" "$FORMAT_RESET"
 		fi
 	done
 }
 
+
 function configureGraphicalEnvironment() {
-	echo -e "\n${FORMAT_INFO}Configuring Graphical Environment${FORMAT_RESET}"
+	printf "\n%bConfiguring Graphical Environment%b\n" "$FORMAT_INFO" "$FORMAT_RESET"
 	# TODO: Installation and configurations of fonts and other graphical settings
 }
 
 
 function main() {
-	if ! command -v dialog &> /dev/null; then
-		echo -e "${FORMAT_INFO}Installing dialog to display the UI${FORMAT_RESET}"
-		sudo pacman -Sy --noconfirm dialog > /dev/null 2>&1
+	if ! ping -c 1 -W 2 archlinux.org > /dev/null 2>&1; then
+		printf "%b No internet connection detected. Terminating script%b\n" "$FORMAT_ERROR" "$FORMAT_RESET"
+		exit 1
 	fi
+
+	sudo -v
+	while true; do sudo -n true; sleep 60; kill -0 "$$" || exit; done 2>/dev/null &
+	if ! command -v dialog &> /dev/null; then
+		printf "%bInstalling dialog to display the UI%b\n" "$FORMAT_INFO" "$FORMAT_RESET"
+		sudo pacman -S --noconfirm --needed dialog > /dev/null 2>&1
+	fi
+
+	local deps=("git" "wget" "unzip")
+	local total=${#deps[@]}
+
+	dialog --clear --title "Initial Setup" --gauge "\nChecking and installing missing dependencies..." 8 50 0 < <(
+		for i in "${!deps[@]}"; do
+			local pkg="${deps[$i]}"
+			if ! command -v "$pkg" &> /dev/null; then
+				sudo pacman -S --noconfirm --needed "$pkg" > /dev/null 2>&1
+			fi
+			local pct=$(( (i + 1) * 100 / total ))
+			printf "%s\n" "$pct"
+		done
+	)
 
 	runConfigurationUi
 
-	echo -e "${FORMAT_INFO}Starting execution phase${FORMAT_RESET}"
-	sudo -v
-	while true; do sudo -n true; sleep 60; kill -0 "$$" || exit; done 2>/dev/null &
+	printf "%bStarting execution phase%b\n" "$FORMAT_INFO" "$FORMAT_RESET"
 
 	if [[ "$doSystemUpdate" == true ]]; then
 		updateSystem
@@ -382,7 +399,9 @@ function main() {
 		configureGraphicalEnvironment
 	fi
 
-	echo -e "\n${FORMAT_SUCCESS} The script has finished running. Enjoy your system! :)${FORMAT_RESET}"
+	# TODO: Go directory delete if created during execution
+
+	printf "\n%b The script has finished running. Enjoy your system! :)%b\n" "$FORMAT_SUCCESS" "$FORMAT_RESET"
 }
 
 main "$@"

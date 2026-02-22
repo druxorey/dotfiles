@@ -7,6 +7,7 @@ declare FORMAT_RESET="\e[0m"
 
 declare PACKAGES_BASE_SOURCE="https://raw.githubusercontent.com/druxorey/dotfiles/refs/heads/main/drx-base.packages"
 declare PACKAGES_EXTRA_SOURCE="https://raw.githubusercontent.com/druxorey/dotfiles/refs/heads/main/drx-extra.packages"
+declare SERVICES_TO_ENABLE=("bluetooth" "NetworkManager" "ufw" "tlp" "smb" "nmb" "cups" "lightdm" "ipp-usb" "ollama")
 
 declare doSystemUpdate=false
 declare installMode=""
@@ -28,20 +29,20 @@ declare hasRunCustomSetup=false
 function promptCustomPacman() {
 	local options=()
 	local status
+	local sortedBasePacman
+	local sortedExtraPacman
 
-	for pkg in "${base_pacman_packages[@]}"; do
+	mapfile -t sortedBasePacman < <(printf "%s\n" "${base_pacman_packages[@]}" | sort)
+	for pkg in "${sortedBasePacman[@]}"; do
 		status="OFF"
-		if [[ "$hasRunCustomSetup" == false ]] || [[ " ${customPacmanPackages[*]} " =~ " ${pkg} " ]]; then
-			status="ON"
-		fi
+		[[ "$hasRunCustomSetup" == false ]] || [[ " ${customPacmanPackages[*]} " =~ " ${pkg} " ]] && status="ON"
 		options+=("$pkg" "Base" "$status")
 	done
 
-	for pkg in "${extra_pacman_packages[@]}"; do
+	mapfile -t sortedExtraPacman < <(printf "%s\n" "${extra_pacman_packages[@]}" | sort)
+	for pkg in "${sortedExtraPacman[@]}"; do
 		status="OFF"
-		if [[ "$hasRunCustomSetup" == true ]] && [[ " ${customPacmanPackages[*]} " =~ " ${pkg} " ]]; then
-			status="ON"
-		fi
+		[[ "$hasRunCustomSetup" == true ]] && [[ " ${customPacmanPackages[*]} " =~ " ${pkg} " ]] && status="ON"
 		options+=("$pkg" "Extra" "$status")
 	done
 	
@@ -56,20 +57,20 @@ function promptCustomPacman() {
 function promptCustomAur() {
 	local options=()
 	local status
+	local sortedBaseAur
+	local sortedExtraAur
 
-	for pkg in "${base_aur_packages[@]}"; do
+	mapfile -t sortedBaseAur < <(printf "%s\n" "${base_aur_packages[@]}" | sort)
+	for pkg in "${sortedBaseAur[@]}"; do
 		status="OFF"
-		if [[ "$hasRunCustomSetup" == false ]] || [[ " ${customAurPackages[*]} " =~ " ${pkg} " ]]; then
-			status="ON"
-		fi
+		[[ "$hasRunCustomSetup" == false ]] || [[ " ${customAurPackages[*]} " =~ " ${pkg} " ]] && status="ON"
 		options+=("$pkg" "Base" "$status")
 	done
 
-	for pkg in "${extra_aur_packages[@]}"; do
+	mapfile -t sortedExtraAur < <(printf "%s\n" "${extra_aur_packages[@]}" | sort)
+	for pkg in "${sortedExtraAur[@]}"; do
 		status="OFF"
-		if [[ "$hasRunCustomSetup" == true ]] && [[ " ${customAurPackages[*]} " =~ " ${pkg} " ]]; then
-			status="ON"
-		fi
+		[[ "$hasRunCustomSetup" == true ]] && [[ " ${customAurPackages[*]} " =~ " ${pkg} " ]] && status="ON"
 		options+=("$pkg" "Extra" "$status")
 	done
 	
@@ -144,9 +145,7 @@ function showCustomSummary() {
 	summaryText+="Enable Services: $( [[ "$customEnableServices" == true ]] && echo "Yes" || echo "No" )\n\n"
 	summaryText+="Do you want to confirm this configuration?"
 
-	dialog --clear --no-lines --title "Custom Installation Summary" --yes-label "Confirm" --no-label "Modify" --yesno "$summaryText" 18 60
-	
-	if [[ $? -eq 0 ]]; then
+	if dialog --clear --no-lines --title "Custom Installation Summary" --yes-label "Confirm" --no-label "Modify" --yesno "$summaryText" 18 60; then
 		return 0
 	else
 		showModifyMenu
@@ -312,12 +311,10 @@ function copyDotfiles() {
 
 
 function enableSystemServices() {
-	local servicesToEnable=("bluetooth" "NetworkManager")
-	
 	echo -e "\n${FORMAT_INFO}Enabling System Services${FORMAT_RESET}"
-	for service in "${servicesToEnable[@]}"; do
+	for service in "${SERVICES_TO_ENABLE[@]}"; do
 		if [[ $(systemctl is-enabled "$service" 2>/dev/null) != "enabled" ]]; then
-			sudo systemctl enable --now "$service"
+			sudo systemctl enable --now "${service}.service"
 			echo -e "${FORMAT_SUCCESS} Service $service enabled.${FORMAT_RESET}"
 		else
 			echo -e "Service $service is already enabled."

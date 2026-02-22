@@ -264,22 +264,34 @@ function installAurHelper() {
 
 function installBasePackages() {
 	printf "\n%bInstalling Base Pacman Packages%b\n" "$FORMAT_INFO" "$FORMAT_RESET"
-	sudo pacman -S --needed --noconfirm "${base_pacman_packages[@]}"
+	for pkg in "${base_pacman_packages[@]}"; do
+		printf " %b->%b Installing %s...\n" "$FORMAT_INFO" "$FORMAT_RESET" "$pkg"
+		sudo pacman -S --needed --noconfirm "$pkg"
+	done
 
 	if [[ "$installYay" == true ]]; then
 		printf "\n%bInstalling Base AUR Packages%b\n" "$FORMAT_INFO" "$FORMAT_RESET"
-		yay -S --needed --noconfirm "${base_aur_packages[@]}"
+		for pkg in "${base_aur_packages[@]}"; do
+			printf " %b->%b Installing %s (AUR)...\n" "$FORMAT_INFO" "$FORMAT_RESET" "$pkg"
+			yay -S --needed --noconfirm "$pkg"
+		done
 	fi
 }
 
 
 function installExtraPackages() {
 	printf "\n%bInstalling Extra Pacman Packages%b\n" "$FORMAT_INFO" "$FORMAT_RESET"
-	sudo pacman -S --needed --noconfirm "${extra_pacman_packages[@]}"
+	for pkg in "${extra_pacman_packages[@]}"; do
+		printf " %b->%b Installing %s...\n" "$FORMAT_INFO" "$FORMAT_RESET" "$pkg"
+		sudo pacman -S --needed --noconfirm "$pkg"
+	done
 
 	if [[ "$installYay" == true ]]; then
 		printf "\n%bInstalling Extra AUR Packages%b\n" "$FORMAT_INFO" "$FORMAT_RESET"
-		yay -S --needed --noconfirm "${extra_aur_packages[@]}"
+		for pkg in "${extra_aur_packages[@]}"; do
+			printf " %b->%b Installing %s (AUR)...\n" "$FORMAT_INFO" "$FORMAT_RESET" "$pkg"
+			yay -S --needed --noconfirm "$pkg"
+		done
 	fi
 }
 
@@ -287,12 +299,18 @@ function installExtraPackages() {
 function installCustomPackagesList() {
 	if [[ ${#customPacmanPackages[@]} -gt 0 ]]; then
 		printf "\n%bInstalling Custom Pacman Packages%b\n" "$FORMAT_INFO" "$FORMAT_RESET"
-		sudo pacman -S --needed --noconfirm "${customPacmanPackages[@]}"
+		for pkg in "${customPacmanPackages[@]}"; do
+			printf " %b->%b Installing %s...\n" "$FORMAT_INFO" "$FORMAT_RESET" "$pkg"
+			sudo pacman -S --needed --noconfirm "$pkg"
+		done
 	fi
 
 	if [[ "$installYay" == true ]] && [[ ${#customAurPackages[@]} -gt 0 ]]; then
 		printf "\n%bInstalling Custom AUR Packages%b\n" "$FORMAT_INFO" "$FORMAT_RESET"
-		yay -S --needed --noconfirm "${customAurPackages[@]}"
+		for pkg in "${customAurPackages[@]}"; do
+			printf " %b->%b Installing %s (AUR)...\n" "$FORMAT_INFO" "$FORMAT_RESET" "$pkg"
+			yay -S --needed --noconfirm "$pkg"
+		done
 	fi
 }
 
@@ -400,6 +418,7 @@ function main() {
 	fi
 
 	# TODO: Go directory delete if created during execution
+	# TODO: Make a log file for package instalattion errors and other errors during execution
 
 	printf "\n%b The script has finished running. Enjoy your system! :)%b\n" "$FORMAT_SUCCESS" "$FORMAT_RESET"
 }

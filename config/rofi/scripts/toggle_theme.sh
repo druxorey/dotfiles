@@ -10,7 +10,10 @@ APP_ROUTES[rofi]="$HOME/.config/rofi/shared"
 APP_ROUTES[bspwm]="$HOME/.config/bspwm"
 APP_ROUTES[dunst]="$HOME/.config/dunst"
 APP_ROUTES[oh-my-posh]="$HOME/.config/oh-my-posh/"
-APP_ROUTES[nvim]="$HOME/.config/nvim/lua/plugins"
+APP_ROUTES[nvim-theme]="$HOME/.config/nvim/lua/plugins"
+APP_ROUTES[nvim-lualine]="$HOME/.config/nvim/lua/plugins"
+APP_ROUTES[tmux]="$HOME/.config/tmux/plugins/tmux/scripts"
+APP_ROUTES[zathura]="$HOME/.config/zathura"
 
 declare -A APP_FILE
 
@@ -20,7 +23,10 @@ APP_FILE[rofi]="theme_colorscheme.rasi"
 APP_FILE[bspwm]="bspwmrc"
 APP_FILE[dunst]="dunstrc"
 APP_FILE[oh-my-posh]="theme.omp.json"
-APP_FILE[nvim]="colorscheme"
+APP_FILE[nvim-theme]="colorscheme"
+APP_FILE[nvim-lualine]="lazy-lualine"
+APP_FILE[tmux]="dracula.sh"
+APP_FILE[zathura]="zathurarc"
 
 function toggleMode() {
 	mode=$1
@@ -30,7 +36,7 @@ function toggleMode() {
 		configFile="${APP_FILE[$app]}"
 
 		rm -f "$configPath/$configFile"
-		if [[ "$app" == "nvim" ]]; then
+		if [[ "$app" =~ ^nvim.* ]]; then
 			cp "$configPath/${configFile}_${mode}.bak" "$configPath/$configFile.lua"
 		elif [[ "$configFile" == *.* ]]; then
 			cp "$configPath/${configFile%.*}_${mode}.${configFile##*.}" "$configPath/$configFile"
@@ -62,10 +68,10 @@ function main() {
 
 	bspc wm -r
 	killall -USR1 kitty
-	killall polybar; polybar &
 	killall dunst; dunst &
 	feh --bg-fill "$HOME/.local/share/wallpaper_$mode.png"
-	notify-send -u low "Switched to $mode theme"
+	killall polybar; polybar &
+	notify-send "Switched to $mode theme" --app-name "Toggle Theme" -u low
 }
 
 main "$@"

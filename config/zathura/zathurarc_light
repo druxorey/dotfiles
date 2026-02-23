@@ -1,0 +1,23 @@
+set selection-clipboard clipboard
+
+set font "Noto Sans Nerd Font 11"
+
+set default-bg "#FFFBEB"
+set statusbar-bg "#DEDBCC"
+set statusbar-fg "#1F1F1F"
+set recolor-darkcolor "#1F1F1F"
+set recolor-lightcolor "#FFFBEB"
+set index-bg "#FFFBEB"
+set index-fg "#1F1F1F"
+set index-active-fg "#FFFBEB"
+set index-active-bg "#CB3A2A"
+set highlight-active-color "rgba(189, 147, 249, 0.5)"
+set highlight-color "rgba(189, 147, 249, 0.5)"
+set notification-error-bg "#CB3A2A"
+set notification-error-fg "#1F1F1F"
+set inputbar-bg "#DEDBCC"
+set inputbar-fg "#1F1F1F"
+
+set guioptions "hv"
+
+map <A-r> feedkeys ":source<Return>"

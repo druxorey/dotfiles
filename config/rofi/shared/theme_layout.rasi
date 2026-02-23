@@ -25,7 +25,6 @@ configuration {
 
 window {
 	location: center;
-	border-radius: 14px;
 	border-color: @drx-color-base;
 	background-color: @drx-color-base;
 	width: 24em;

@@ -27,12 +27,13 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "S03 - Ingeniería de Software/INGE 01 - Investigaciones/250530 - Comparación de Modelos.md",
+                "file": "D3 Academic/S03 - Matemáticas Discretas III/MDIII 01 - Clases/260131 MDIII - Expresiones Regulares.md",
                 "mode": "preview",
-                "source": false
+                "source": false,
+                "backlinks": false
               },
               "icon": "lucide-file",
-              "title": "250530 - Comparación de Modelos"
+              "title": "260131 MDIII - Expresiones Regulares"
             }
           }
         ],
@@ -52,7 +53,7 @@
           "type": "file-explorer",
           "state": {
             "sortOrder": "alphabetical",
-            "autoReveal": false
+            "autoReveal": true
           },
           "icon": "lucide-folder-closed",
           "title": "Files"
@@ -64,7 +65,7 @@
         "state": {
           "type": "search",
           "state": {
-            "query": "Discip",
+            "query": "",
             "matchingCase": false,
             "explainSearch": false,
             "collapseAll": false,
@@ -96,8 +97,8 @@
         "state": {
           "type": "bookmarks",
           "state": {},
-          "icon": "lucide-file",
-          "title": "Plugin no longer active"
+          "icon": "lucide-ghost",
+          "title": "bookmarks"
         }
       }
     ],
@@ -161,8 +162,8 @@
         "state": {
           "type": "calendar",
           "state": {},
-          "icon": "calendar-with-checkmark",
-          "title": "Calendar"
+          "icon": "lucide-ghost",
+          "title": "calendar"
         }
       }
     ],
@@ -170,23 +171,26 @@
   },
   "left-ribbon": {
     "hiddenItems": {
+      "keep-the-rhythm:Word Count Stats": false,
+      "bases:Create new base": false,
+      "obsidian-git:Open Git source control": false,
       "obsidian-excalidraw-plugin:New drawing": false,
       "copilot:Open Copilot Chat": false,
       "switcher:Open quick switcher": false,
       "graph:Open graph view": false,
-      "canvas:Create new canvas": false,
       "templates:Insert template": false,
       "command-palette:Open command palette": false,
       "table-editor-obsidian:Advanced Tables Toolbar": false,
-      "pomodoro-timer:Toggle timer panel": false,
       "templater-obsidian:Templater": false,
-      "obsidian-kanban:Create new board": false,
       "omnisearch:Omnisearch": false,
       "obsidian-trash-explorer:Open trash explorer": false
     }
   },
   "active": "ebc59aa80c1bd85b",
   "lastOpenFiles": [
+    "D3 Academic/S04 - Sistemas Operativos/SO 01 - Clases/251106 SO - Interrupciones.md",
+    "D3 Academic/S04 - Sistemas Operativos/SO 01 - Clases/251105 SO - El Planificador y el Despachador.md",
+    "D2 Working/260118 SO - Interbloqueo e Inanición.md",
     "S03 - Ingeniería de Software/INGE 01 - Investigaciones/250505 - Metodologías de Desarrollo de Software.md",
     "S03 - Ingeniería de Software/INGE 01 - Investigaciones/250425 - Gestión de Proyectos de Software.md",
     "S03 - Ingeniería de Software/INGE 01 - Investigaciones/250414 - Estándares del Software.md",
@@ -219,9 +223,6 @@
     "Class Notes/ORGA II - Organización y Estructura del Computador II/RISC-V vs x86.md",
     "Daily Notes/RISC-V - Instrucciones Aritméticas.md",
     "Daily Notes/RISC-V - Instrucciones de Toma de Decisiones.md",
-    "Class Notes/ORGA II - Organización y Estructura del Computador II/RISC-V - Registers.md",
-    "Daily Notes/RISC-V - Instrucciones de Manipulación de Memoria.md",
-    "Class Notes/INGE - Ingeniería en Informática/La Crisis del Software.md",
-    "Daily Notes/Nextcloud y SMB.md"
+    "Class Notes/ORGA II - Organización y Estructura del Computador II/RISC-V - Registers.md"
   ]
 }

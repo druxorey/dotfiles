@@ -41,15 +41,6 @@
       "key": "E"
     }
   ],
-  "app:toggle-right-sidebar": [
-    {
-      "modifiers": [
-        "Mod",
-        "Shift"
-      ],
-      "key": "E"
-    }
-  ],
   "markdown:toggle-preview": [
     {
       "modifiers": [
@@ -233,6 +224,23 @@
         "Alt"
       ],
       "key": "K"
+    }
+  ],
+  "app:toggle-right-sidebar": [
+    {
+      "modifiers": [
+        "Alt",
+        "Mod"
+      ],
+      "key": "E"
+    }
+  ],
+  "editor:save-file": [
+    {
+      "modifiers": [
+        "Mod"
+      ],
+      "key": "S"
     }
   ]
 }

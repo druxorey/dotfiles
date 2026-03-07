@@ -20,5 +20,5 @@
   "defaultViewMode": "source",
   "alwaysUpdateLinks": true,
   "showUnsupportedFiles": true,
-  "promptDelete": false
+  "promptDelete": true
 }

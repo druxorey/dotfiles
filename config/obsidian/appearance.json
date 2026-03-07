@@ -2,7 +2,7 @@
   "cssTheme": "Minimal Dracula",
   "showRibbon": false,
   "showViewHeader": false,
-  "theme": "obsidian",
+  "theme": "system",
   "monospaceFontFamily": "FiraMono Nerd Font",
   "accentColor": "#bd93f9"
 }

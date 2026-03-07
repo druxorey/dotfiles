@@ -1,11 +1,8 @@
 [
   "table-editor-obsidian",
-  "calendar",
   "url-into-selection",
-  "pomodoro-timer",
   "obsidian-relative-line-numbers",
   "obsidian-tagfolder",
-  "obsidian-kanban",
   "obsidian-latex-suite",
   "obsidian-icon-folder",
   "auto-card-link",
@@ -14,12 +11,11 @@
   "obsidian-git",
   "home-tab",
   "tag-wrangler",
-  "dataview",
   "copilot",
   "obsidian-vimrc-support",
   "obsidian-file-color",
   "obsidian-excalidraw-plugin",
-  "better-export-pdf",
   "omnisearch",
-  "templater-obsidian"
+  "templater-obsidian",
+  "keep-the-rhythm"
 ]

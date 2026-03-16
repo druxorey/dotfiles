@@ -77,6 +77,8 @@ extra_pacman_packages=(
 	thunderbird
 	lazygit
 	pdfarranger
+	feh
+	onefetch
 )
 
 extra_aur_packages=(
@@ -89,7 +91,6 @@ extra_aur_packages=(
 	brave-bin
 	modrinth-app-bin
 	proton-vpn-gtk-app
-	visual-studio-code-bin
 	peaclock
 	pipes.sh
 	cava
@@ -97,12 +98,10 @@ extra_aur_packages=(
 	gtypist
 	downgrade
 	localsend-bin
-	zen-browser-bin
 	libinput-gestures
 	vbam-wx
 	cnijfilter2
 	puddletag
-	yt-x
 	open-webui
 )
 

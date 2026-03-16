@@ -31,19 +31,16 @@ base_pacman_packages=(
 	rsync
 	scrot
 	silicon
-	sl
 	speedtest-cli
 	sxiv
 	tar
 	the_silver_searcher
-	thefuck
 	tldr
 	tmux
 	tokei
 	translate-shell
 	trash-cli
 	unrar
-	unzip
 	usbutils
 	vim
 	wget
@@ -96,7 +93,8 @@ base_pacman_packages=(
 	entr
 	gdb
 	shellcheck
-	fdk-aac
+	libfdk-aac
+	7z
 )
 
 base_aur_packages=(

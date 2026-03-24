@@ -7,7 +7,7 @@ function main() {
 
 	echo "$processes" | grep -q "discord" && icons+=("󰙯")
 	echo "$processes" | grep -q "steam" && icons+=("󰓓")
-	echo "$processes" | grep -q "proton" && icons+=("󰕣")
+	echo "$processes" | grep -q "protonvpn-app" && icons+=("󰕣")
 	echo "$processes" | grep -q -w "obs" && icons+=("󰻃")
 	echo "$processes" | grep -q "localsend" && icons+=("")
 

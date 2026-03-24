@@ -17,6 +17,7 @@ set notification-error-bg "#CB3A2A"
 set notification-error-fg "#1F1F1F"
 set inputbar-bg "#DEDBCC"
 set inputbar-fg "#1F1F1F"
+set recolor true
 
 set guioptions "hv"
 

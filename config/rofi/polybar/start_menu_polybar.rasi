@@ -19,5 +19,5 @@
 
 window {
     location: north;
-    y-offset: 3em;
+    y-offset: 3.1em;
 }

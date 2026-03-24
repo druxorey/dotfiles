@@ -9,6 +9,12 @@ CONFIG_DIR="/etc"
 PICOM_DIR="$HOME/.config/picom"
 ACTUAL_PLAN="$(readlink -f "$CONFIG_DIR/tlp.conf" | cut -c 12)"
 
+function checkPicom() {
+	if ! pgrep -x "picom" > /dev/null && [[ "$powerPlan" != "performance" ]]; then
+		picom -b --config "$PICOM_DIR/picom.conf" &
+	fi
+}
+
 function main() {
 	availablePlans=$(echo -e "󱟧   Powersave\n󰥔   Normal\n󱐋   Performance")
 
@@ -19,17 +25,17 @@ function main() {
 
 	case "$ACTUAL_PLAN" in
 		"1")
-			selectedPlan="-a 0"
+			selectedPlan="0"
 			;;
 		"2")
-			selectedPlan="-a 2"
+			selectedPlan="2"
 			;;
 		"3")
-			selectedPlan="-a 1"
+			selectedPlan="1"
 			;;
 	esac
 
-	rofiOption=$(echo -e "$availablePlans" | rofi -dmenu -p -i -m -1 $selectedPlan -mesg "$message" -config ~/.config/rofi/modules/energy_manager.rasi | awk '{print $1}')
+	rofiOption=$(echo -e "$availablePlans" | rofi -dmenu -p -i -m -1 -a $selectedPlan -mesg "$message" -selected-row $selectedPlan -config ~/.config/rofi/modules/energy_manager.rasi | awk '{print $1}')
 
 	case "$rofiOption" in
 		"󱟧")
@@ -45,7 +51,7 @@ function main() {
 			powerPlan="normal"
 			;;
 		*)
-			printf "${FORMAT_ERROR} Invalid option selected${FORMAT_END}"
+			printf "%b Invalid option selected%b" "${FORMAT_ERROR}" "${FORMAT_END}"
 			exit 1
 			;;
 	esac
@@ -59,12 +65,19 @@ function main() {
 		exit 1
 	fi
 
-	if [[ "$powerPlan" == "powersave" ]] || [[ "$powerPlan" == "performance" ]]; then
-		printf "${FORMAT_WARNING} Killing picom for low-power mode${FORMAT_END}"
+	if [[ "$powerPlan" == "powersave" ]]; then
+		checkPicom
 		cp "$PICOM_DIR/picom_low_detail.conf" "$PICOM_DIR/picom.conf"
-	else
-		printf "${FORMAT_WARNING} Starting picom for normal/performance mode${FORMAT_END}"
+		printf "%b Applied powersave mode%b" "${FORMAT_SUCCESS}" "${FORMAT_END}"
+	elif [[ "$powerPlan" == "normal" ]]; then
+		checkPicom
 		cp "$PICOM_DIR/picom_high_detail.conf" "$PICOM_DIR/picom.conf"
+		printf "%b Applied normal mode%b" "${FORMAT_SUCCESS}" "${FORMAT_END}"
+	elif [[ "$powerPlan" == "performance" ]]; then
+		if pgrep -x "picom" > /dev/null; then
+			pkill picom
+		fi
+		printf "%b Applied performance mode%b" "${FORMAT_SUCCESS}" "${FORMAT_END}"
 	fi
 }
 

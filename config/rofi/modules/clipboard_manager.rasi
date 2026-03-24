@@ -23,11 +23,11 @@
 configuration {
 	show-icons: false;
 	disable-history: false;
-	case-sensitive: false;
 	kb-row-up: "k,Up";
 	kb-row-left: "h";
 	kb-row-right: "l";
 	kb-row-down: "j,Down";
+	case-sensitive: false;
 }
 
 module {

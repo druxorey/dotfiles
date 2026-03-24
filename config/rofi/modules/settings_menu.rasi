@@ -39,5 +39,5 @@ listview {
 	layout: vertical;
 	border: 0;
 	spacing: 1em;
-	lines: 5;
+	lines: 6;
 }

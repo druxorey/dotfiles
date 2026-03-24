@@ -32,7 +32,6 @@ function main() {
 		if ! tmux has-session -t "$SESSION_NAME" 2>/dev/null; then
 
 			tmux new-session -d -s "$SESSION_NAME:1" -c "$PROJECT_PATH" -n "test"
-			tmux split-window -h -t "$SESSION_NAME:1" -c "$PROJECT_PATH"
 
 			tmux new-window -t "$SESSION_NAME:2" -c "$PROJECT_PATH" -n "dev"
 			tmux send-keys -t "$SESSION_NAME:2" "nvim" C-m
@@ -40,8 +39,8 @@ function main() {
 			tmux new-window -t "$SESSION_NAME:3" -c "$PROJECT_PATH" -n "dev"
 			tmux send-keys -t "$SESSION_NAME:3" "nvim" C-m
 
-			tmux new-window -t "$SESSION_NAME:4" -c "$PROJECT_PATH" -n "copilot"
-			tmux send-keys -t "$SESSION_NAME:4" "nvim -c 'CopilotChat' -c 'wincmd h | q'" C-m
+			tmux new-window -t "$SESSION_NAME:4" -c "$PROJECT_PATH" -n "files"
+			tmux send-keys -t "$SESSION_NAME:4" "yazi" C-m
 
 			tmux new-window -t "$SESSION_NAME:5" -c "$PROJECT_PATH" -n "git"
 			tmux split-window -h -t "$SESSION_NAME:5" -c "$PROJECT_PATH"

@@ -1,6 +1,7 @@
 #!/bin/bash
 
-CACHE_FILE=~/.cache/actual_theme
+declare CACHE_FILE=~/.cache/actual_theme
+declare ACTUAL_WALLPAPER_PATH="$HOME/.local/share/wallpaper_actual.png"
 
 declare -A APP_ROUTES
 
@@ -14,6 +15,7 @@ APP_ROUTES[nvim-theme]="$HOME/.config/nvim/lua/plugins"
 APP_ROUTES[nvim-lualine]="$HOME/.config/nvim/lua/plugins"
 APP_ROUTES[tmux]="$HOME/.config/tmux/plugins/tmux/scripts"
 APP_ROUTES[zathura]="$HOME/.config/zathura"
+APP_ROUTES[yazi]="$HOME/.config/yazi"
 
 declare -A APP_FILE
 
@@ -27,6 +29,7 @@ APP_FILE[nvim-theme]="colorscheme"
 APP_FILE[nvim-lualine]="lazy-lualine"
 APP_FILE[tmux]="dracula.sh"
 APP_FILE[zathura]="zathurarc"
+APP_FILE[yazi]="theme.toml"
 
 function toggleMode() {
 	mode=$1
@@ -66,10 +69,10 @@ function main() {
 		echo "dark" > $CACHE_FILE
 	fi
 
+	ln -sf "$HOME/.local/share/wallpaper_$mode.png" "$ACTUAL_WALLPAPER_PATH"
 	bspc wm -r
 	killall -USR1 kitty
 	killall dunst; dunst &
-	feh --bg-fill "$HOME/.local/share/wallpaper_$mode.png"
 	killall polybar; polybar &
 	notify-send "Switched to $mode theme" --app-name "Toggle Theme" -u low
 }

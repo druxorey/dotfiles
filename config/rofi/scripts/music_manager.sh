@@ -3,7 +3,7 @@
 FORMAT_ERROR="\e[1;31m[ERROR]"
 FORMAT_SUCCESS="\e[1;32m[SUCCESS]"
 FORMAT_WARNING="\e[1;33m[WARNING]"
-FORMAT_END="\e[0m\n"
+FORMAT_END="\e[0m"
 
 OPTION=2
 
@@ -26,7 +26,7 @@ function main() {
 	status=$(cmus-remote -Q 2>/dev/null)
 
 	if [[ -z $status ]]; then
-		printf "${FORMAT_WARNING} Cmus is not running${FORMAT_END}"
+		printf "%b Cmus is not running%b\n" "$FORMAT_WARNING" "$FORMAT_END"
 	fi
 
 	state=$(echo "$status" | grep "status" | awk '{print $2}')
@@ -37,9 +37,9 @@ function main() {
 	isLofiRunning=$(pgrep -x "lofi" > /dev/null && echo true || echo false)
 
 	if [ "$isLofiRunning" = false ] && getThumbnail "$title"; then
-		printf "${FORMAT_SUCCESS} Thumbnail updated for '%s' ${FORMAT_END}" "$title"
+		printf "${FORMAT_SUCCESS} Thumbnail updated for '%s' ${FORMAT_END}\n" "$title"
 	else
-		printf "${FORMAT_ERROR} No thumbnail found for '%s' ${FORMAT_END}" "$title"
+		printf "${FORMAT_ERROR} No thumbnail found for '%s' ${FORMAT_END}\n" "$title"
 	fi
 
 	if [ "$isLofiRunning" == true ]; then

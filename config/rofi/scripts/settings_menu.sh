@@ -33,13 +33,15 @@ function main() {
 	wifiOption="󰖩   Wifi"
 	bluetoothOption="   Bluetooth"
 	energyOption="󰂄   Energy"
+	wallpaperOption="   Wallpaper"
 	airplaneOption="󰀝   Toggle Airplane Mode"
-	rofiOption=$(echo -e "$wifiOption\n$bluetoothOption\n$energyOption\n$themeOption\n$airplaneOption" | rofi -dmenu -p -i -m -1 -mesg "$actualDate" -config ~/.config/rofi/modules/settings_menu.rasi)
+	rofiOption=$(echo -e "$wifiOption\n$bluetoothOption\n$energyOption\n$wallpaperOption\n$themeOption\n$airplaneOption" | rofi -dmenu -p -i -m -1 -mesg "$actualDate" -config ~/.config/rofi/modules/settings_menu.rasi)
 
 	case "$rofiOption" in
 		"$wifiOption") sh $SCRIPTS_PATH/wifi_manager.sh ;;
 		"$bluetoothOption") blueman-manager ;;
 		"$energyOption") sh $SCRIPTS_PATH/energy_manager.sh ;;
+		"$wallpaperOption") sh $SCRIPTS_PATH/wallpaper_manager.sh ;;
 		"$themeOption") sh $SCRIPTS_PATH/toggle_theme.sh ;;
 		"$airplaneOption") toggleAirplaneMode;;
 		*) exit 1 ;;

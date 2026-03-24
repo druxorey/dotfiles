@@ -1,4 +1,4 @@
-set aaa_mode=all
+set aaa_mode=artist
 set altformat_current= %F 
 set altformat_playlist= %f%= %d %{?X!=0?%3X ?    }
 set altformat_title=%f
@@ -56,17 +56,22 @@ set continue_album=true
 set device=/dev/cdrom
 set display_artist_sort_name=false
 set dsp.alsa.device=
+set dsp.ao.buffer_size=16384
+set dsp.ao.device_interface=
+set dsp.ao.driver=
+set dsp.ao.wav_counter=1
+set dsp.ao.wav_dir=/home/druxorey
 set dsp.jack.resampling_quality=2
 set dsp.jack.server_name=
 set dsp.oss.device=
-set follow=true
+set follow=false
 set format_clipped_text=…
 set format_current= %t - %a %= %{album} 
 set format_heading_album=%a - %l%= %y %{duration}
 set format_heading_artist=%a%= %{duration}
 set format_heading_playlist=%{?!panel?Playlist - }%{title}%=    %{duration}
-set format_playlist= %02n. %t %= %-28%{album} %-14%a %d  
-set format_playlist_va= %02n. %t %= %-28%{album} %-14%a %d  
+set format_playlist= %02n. %t %= %-28%{album} %-15%a %6%d 
+set format_playlist_va= %02n. %t %= %-28%{album} %-15%a %6%d 
 set format_statusline= %{status} %{?show_playback_position?%{position} %{?duration?/ %{duration} }?%{?duration?%{duration} }}%{?bpm>0?at %{bpm} BPM }%{?stream?buf: %{buffer} }%{?show_current_bitrate & bitrate>=0? %{bitrate} kbps }%= %{?repeat_current?repeat current?%{?play_library?%{?playlist_mode!="all"?%{playlist_mode} from }%{?play_sorted?sorted }library?playlist}} | %{?volume>=0?%{?lvolume!=rvolume?%{lvolume}%% %{rvolume}?%{volume}}%% | }%1{continue}%1{follow}%1{repeat}%1{shuffle} 
 set format_title=%a - %l - %t (%y)
 set format_trackwin=%3n. %t%= %d 
@@ -87,6 +92,7 @@ set input.modplug.priority=50
 set input.mpc.priority=50
 set input.vorbis.priority=50
 set input.wav.priority=50
+set input.wavpack.priority=50
 set lib_add_filter=
 set lib_sort=title album albumartist date discnumber tracknumber filename play_count
 set mixer.alsa.channel=

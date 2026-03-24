@@ -6,7 +6,7 @@ SUCCESS="\e[1;92m"
 END="\e[0m"
 
 OBSIDIAN_DIR="$HOME/Documents/'A1 Obsidian'"
-EXCLUDE="--exclude=.git/ --exclude=.github --exclude=*.gitmodules --exclude=*.editorconfig --exclude=*.gitignore"
+EXCLUDE="--exclude=.git/ --exclude=.github --exclude=*.gitmodules --exclude=*.editorconfig --exclude=*.gitignore --exclude=*.gvsf.private"
 BOOKMARKS_DIR="$HOME/.config/BraveSoftware/Brave-Browser/Default/Bookmarks"
 YAML_DIR="$HOME/Workspace/Projects/dotfiles/config/brave/"
 
@@ -84,7 +84,8 @@ function main() {
 		["$HOME/.config/vencord"]="rsync -a --delete $HOME/.config/Vencord/ $directory/config/vencord"
 		["$HOME/.config/zsh"]="rsync -a --delete $EXCLUDE $HOME/.config/zsh $directory/config && rsync -a $HOME/.zprofile $directory/config/zsh/.zprofile"
 		["$HOME/.config/zathura"]="rsync -a --delete $HOME/.config/zathura $directory/config"
-		["$HOME/.config/libinput-gestures.conf"]="rsync -a $HOME/.config/libinput-gestures.conf $directory/config/touchpad/"
+		["$HOME/.config/yazi"]="rsync -a --delete $EXCLUDE $HOME/.config/yazi $directory/config"
+		["$HOME/.config/touchegg"]="rsync -a --delete $HOME/.config/touchegg $directory/config"
 		["$HOME/.bash_profile"]="rsync -a $HOME/.bash_profile $directory/config/bash/.bash_profile"
 		["$HOME/.bashrc"]="rsync -a $HOME/.bashrc $directory/config/bash/.bashrc"
 		["$HOME/.gitconfig"]="rsync -a $HOME/.gitconfig $directory/config/gitconfig"
@@ -92,7 +93,7 @@ function main() {
 		["$HOME/.local/share/applications"]="rsync -a --delete $HOME/.local/share/applications $directory/local/share/"
 		["$HOME/.local/share/crater"]="rsync -a --delete $HOME/.local/share/crater $directory/local/share/"
 		["$OBSIDIAN_DIR/.obsidian"]="rsync -a --delete $OBSIDIAN_DIR/.obsidian/* $directory/config/obsidian"
-		["/etc/X11/xorg.conf.d/40-libinput.conf"]="rsync -a /etc/X11/xorg.conf.d/40-libinput.conf $directory/config/touchpad/"
+		["/etc/X11/xorg.conf.d"]="rsync -a /etc/X11/xorg.conf.d $directory/config"
 		["/etc/tlp.d"]="rsync -a /etc/tlp.d/ $directory/config/tlp"
 		["/var/spool/cron/druxorey"]="rsync -a /var/spool/cron/druxorey $directory/config/crontab"
 	)

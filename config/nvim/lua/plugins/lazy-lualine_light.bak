@@ -1,13 +1,13 @@
 local dracula_colors = {
-	drx_color_base = '#191A21',
-	drx_color_overlay = '#343746',
-	drx_color_highlight = '#44475A',
-	drx_color_text = '#F8F8F2',
-	drx_color_accent = '#BD93F9',
-	drx_color_orange = '#FFB86C',
-	drx_color_red = '#FF5555',
-	drx_color_yellow = '#F1FA8C',
-	drx_color_green = '#50FA7B',
+	drx_color_base = '#FFFBEB',
+	drx_color_overlay = '#DEDBCC',
+	drx_color_highlight = '#CECCC0',
+	drx_color_text = '#1F1F1F',
+	drx_color_accent = '#CB3A2A',
+	drx_color_orange = '#036A96',
+	drx_color_red = '#CB3A2A',
+	drx_color_yellow = '#846E15',
+	drx_color_green = '#14710A',
 }
 
 local function generate_theme(colors)

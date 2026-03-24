@@ -62,11 +62,11 @@ vim.keymap.set("v", "<leader>si", ":'<,'>Silicon<CR>", { noremap = true, silent 
 -- Git
 vim.keymap.set("n", "<leader>gg", ":vertical Git<CR>", { noremap = true, silent = true, desc = "Git Changes" })
 vim.keymap.set("n", "<leader>gc", ":Git commit<CR>", { noremap = true, silent = true, desc = "Git Commits" })
-vim.keymap.set("n", "<leader>gl", ":Git log<CR>", { noremap = true, silent = true, desc = "Git Log" })
 vim.keymap.set("n", "<leader>gp", ":Gitsigns preview_hunk<CR>", { noremap = true, silent = true, desc = "Git Preview Hunk" })
 vim.keymap.set("n", "<leader>gC", "<cmd>FzfLua git_commits<CR>", { noremap = true, silent = true, desc = "Git Commits History" })
 vim.keymap.set("n", "<leader>gP", ":Git push<CR>", { noremap = true, silent = true, desc = "Git Push" })
 vim.keymap.set("n", "<leader>gs", "<cmd>FzfLua git_status<CR>", { noremap = true, silent = true, desc = "Git Status History" })
+vim.keymap.set("n", "<leader>gl", "<cmd>LazyGit<cr>", { noremap = true, silent = true, desc = "LazyGit" })
 
 -- TAB to move to the next buffer
 if vim.g.vscode == nil then

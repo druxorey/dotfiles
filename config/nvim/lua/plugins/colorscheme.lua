@@ -24,10 +24,10 @@ return {
 				bright_cyan = "#A4FFFF",
 				bright_white = "#FFFFFF",
 				menu = "#21222C",
-				visual = "#3E4452",
-				gutter_fg = "#4B5263",
-				nontext = "#3B4048",
-				white = "#ABB2BF",
+				visual = "#343746",
+				gutter_fg = "#44475A",
+				nontext = "#343746",
+				white = "#BABCC9",
 				black = "#191A21",
 			},
 			-- show the '~' characters after the end of buffers
@@ -35,7 +35,7 @@ return {
 			-- use transparent background
 			transparent_bg = false, -- default false
 			-- set custom lualine background color
-			lualine_bg_color = "#44475a", -- default nil
+			lualine_bg_color = "#44475A", -- default nil
 			-- set italic comment
 			italic_comment = true, -- default false
 			-- overrides the default highlights with table see `:h synIDattr`

@@ -1,0 +1,42 @@
+[[plugin.deps]]
+use = "boydaihungst/gvfs"
+rev = "32eb9f3"
+hash = "b6f691f01a2122bd94866800d4d12a22"
+
+[[plugin.deps]]
+use = "KKV9/compress"
+rev = "46a6b9f"
+hash = "771af2becc575a3f43d0542de823969d"
+
+[[plugin.deps]]
+use = "pirafrank/what-size"
+rev = "179ebf6"
+hash = "57056b9728006881d580ccabe8154a9c"
+
+[[plugin.deps]]
+use = "AnirudhG07/rich-preview"
+rev = "7d616ad"
+hash = "d64feec9761392cbc250d199ab4b8a3a"
+
+[[plugin.deps]]
+use = "yazi-rs/plugins:full-border"
+rev = "1962818"
+hash = "6fa6a05a81c98dd000fbca3cca6e9682"
+
+[[plugin.deps]]
+use = "yazi-rs/plugins:git"
+rev = "1962818"
+hash = "26db011a778f261d730d4f5f8bf24b3f"
+
+[[plugin.deps]]
+use = "yazi-rs/plugins:mount"
+rev = "1962818"
+hash = "91937a4a9b779eabc6983e258befdfe9"
+
+[[plugin.deps]]
+use = "imsi32/yatline"
+rev = "c5d4b48"
+hash = "e6e98d12b1648d1894c2b560d85eeaa7"
+
+[flavor]
+deps = []

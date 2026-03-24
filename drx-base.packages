@@ -32,7 +32,6 @@ base_pacman_packages=(
 	scrot
 	silicon
 	speedtest-cli
-	sxiv
 	tar
 	the_silver_searcher
 	tldr
@@ -95,6 +94,10 @@ base_pacman_packages=(
 	shellcheck
 	libfdk-aac
 	7z
+	mediainfo
+	exiftool
+	gvfs
+	glib2
 )
 
 base_aur_packages=(
@@ -103,5 +106,6 @@ base_aur_packages=(
 	selenium
 	dotool
 	xdg-ninja
+	rich-cli
 )
 

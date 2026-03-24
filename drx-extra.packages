@@ -4,7 +4,6 @@ extra_pacman_packages=(
 	bspwm
 	dunst
 	kitty
-	libinput
 	networkmanager
 	sxhkd
 	timeshift
@@ -15,7 +14,7 @@ extra_pacman_packages=(
 	autorandr
 	cups
 	cups-pdf
-	gestures
+	libinput
 	simple-scan
 	texlive-bin
 	texlive-bibtexextra
@@ -79,6 +78,8 @@ extra_pacman_packages=(
 	pdfarranger
 	feh
 	onefetch
+	touchegg
+	nsxiv
 )
 
 extra_aur_packages=(
@@ -98,7 +99,6 @@ extra_aur_packages=(
 	gtypist
 	downgrade
 	localsend-bin
-	libinput-gestures
 	vbam-wx
 	cnijfilter2
 	puddletag

@@ -2,32 +2,27 @@
 
 declare FORMAT_SUCCESS="\e[1;32m[SUCCESS]"
 declare FORMAT_ERROR="\e[1;31m[ERROR]"
-declare FORMAT_TITLE="\e[0;34m"
+declare FORMAT_TITLE="\e[1;34m"
 declare FORMAT_RESET="\e[0m"
 
 declare TEMPLATES_PATH="$HOME/.local/share/crater"
 
 function help() {
-	printf "
-${FORMAT_TITLE}USAGE:${FORMAT_RESET}
-    $(basename $0) [FILE TYPE] [-n FILE NAME]
+	echo -e "${FORMAT_TITLE}USAGE:${FORMAT_RESET} $(basename "$0") FILE_TYPE [-n FILE NAME]
 
 ${FORMAT_TITLE}DESCRIPTION:${FORMAT_RESET}
     Creates a default file in a specific programming language.
 
 ${FORMAT_TITLE}ARGUMENTS:${FORMAT_RESET}
-    FILE TYPE              bash, c, c++, go, html, java, latex, lua, python, rust.
-    -n FILE NAME           (Optional) The name of the file.
+    FILE_TYPE              bash, c, c++, go, html, java, latex, lua, python, rust.
+
+${FORMAT_TITLE}OPTIONS:${FORMAT_RESET}
+    -n FILE NAME           The name of the file.
     -h                     Display this help message.
 
 ${FORMAT_TITLE}EXAMPLES:${FORMAT_RESET}
-    $(basename $0) html
-    $(basename $0) python -n code
-
-${FORMAT_TITLE}REPORTING BUGS:${FORMAT_RESET}
-    Report issues at: https://github.com/druxorey/dotfiles/issues
-
-"
+    $(basename "$0") html
+    $(basename "$0") python -n code"
 	exit 0
 }
 

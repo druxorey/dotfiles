@@ -1,3 +1,5 @@
+- name: Monochrome Music
+  url: https://monochrome.tf/
 - name: SquidWTF
   url: https://tidal.squid.wtf/
 - name: DevHints
@@ -36,6 +38,8 @@
   url: https://simpletex.cn/ai/latex_ocr
 - name: UCV Campus Virtual
   url: https://campusvirtualucv.org/login/index.php
+- name: FreeBSD Handbook
+  url: https://docs.freebsd.org/en/books/handbook/
 - name: Linux From Scratch
   url: https://linuxfromscratch.org/
 - name: ArchWiki
@@ -120,3 +124,5 @@
   url: https://myanimelist.net/
 - name: Google YouTube
   url: https://www.youtube.com/
+- name: Google Photos
+  url: https://photos.google.com/

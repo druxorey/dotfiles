@@ -18,13 +18,14 @@ pgrep -x sxhkd > /dev/null || sxhkd &
 
 #* =========================== startup application ========================== *#
 
-nitrogen --restore &
+feh --bg-fill "$HOME/.local/share/wallpaper_actual.png" &
 polybar &
 picom --config ~/.config/picom/picom.conf &
 setxkbmap us -variant intl &
 libinput-gestures-setup start &
 thunar --daemon &
 dunst &
+systemctl --user enable --now clipmenud &
 
 #* ================================= monitor ================================ *#
 

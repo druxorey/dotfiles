@@ -55,10 +55,10 @@ main() {
   light_purple="#bd93f9"
   dark_purple="#6272a4"
   cyan="#8be9fd"
-  green="#50fa7b"
+  green="#BD93F9"
   orange="#ffb86c"
   red="#ff5555"
-  purple="#b166cc"
+  purple="#50fa7b"
   pink="#ff79c6"
   yellow="#f1fa8c"
 

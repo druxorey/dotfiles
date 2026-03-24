@@ -1,11 +1,11 @@
 #!/bin/bash
 
-FORMAT_ERROR="\e[1;31m[ERROR]"
-FORMAT_TITLE="\e[0;34m"
-FORMAT_END="\e[0m"
+declare FORMAT_ERROR="\e[1;31m[ERROR]"
+declare FORMAT_TITLE="\e[1;34m"
+declare FORMAT_RESET="\e[0m"
 
 function help() {
-	printf "${FORMAT_TITLE}USAGE:${FORMAT_END} $(basename $0) INPUT_FILE\n"
+	printf "%bUSAGE:%b $(basename "$0") INPUT_FILE\n" "$FORMAT_TITLE" "$FORMAT_RESET"
 	exit 1
 }
 
@@ -16,28 +16,28 @@ function main() {
 	while getopts "h" opt; do
 		case $opt in
 			h) help ;;
-			*) help ;;
+			*) exit 1 ;;
 		esac
 	done
 
 	[ -z "$file" ] && help
 
 	case "$file" in
-		*.tar.bz2)  xjf        "$file" ;;
-		*.tar.gz)   tar xzf    "$file" ;;
-		*.bz2)      bunzip2    "$file" ;;
-		*.rar)      unrar x    "$file" ;;
-		*.gz)       gunzip     "$file" ;;
-		*.tar)      tar xf     "$file" ;;
-		*.tbz2)     tar xjf    "$file" ;;
-		*.tgz)      tar xzf    "$file" ;;
-		*.zip)      unzip      "$file" ;;
-		*.Z)        uncompress "$file" ;;
-		*.7z)       7z x       "$file" ;;
-		*.deb)      ar x       "$file" ;;
-		*.tar.xz)   tar xf     "$file" ;;
-		*.tar.zst)  unzstd     "$file" ;;
-		*) printf "${FORMAT_ERROR} $file cannot be extracted via ex()${FORMAT_END}\n" ;;
+		*.tar.bz2) xjf        "$file" ;;
+		*.tar.gz)  tar xzf    "$file" ;;
+		*.bz2)     bunzip2    "$file" ;;
+		*.rar)     unrar x    "$file" ;;
+		*.gz)      gunzip     "$file" ;;
+		*.tar)     tar xf     "$file" ;;
+		*.tbz2)    tar xjf    "$file" ;;
+		*.tgz)     tar xzf    "$file" ;;
+		*.zip)     7z x       "$file" ;;
+		*.Z)       uncompress "$file" ;;
+		*.7z)      7z x       "$file" ;;
+		*.deb)     ar x       "$file" ;;
+		*.tar.xz)  tar xf     "$file" ;;
+		*.tar.zst) unzstd     "$file" ;;
+		*) printf "%b $file cannot be extracted via ex() %b\n" "$FORMAT_ERROR" "$FORMAT_RESET" ;;
 	esac
 }
 

@@ -1,11 +1,12 @@
 #!/bin/bash
 
-FORMAT_TITLE="\e[0;34m"
-FORMAT_END="\e[0m"
-COVER_PATH="$HOME/.local/share/lofi"
+declare FORMAT_TITLE="\e[1;34m"
+declare FORMAT_RESET="\e[0m"
+
+declare COVER_PATH="$HOME/.local/share/lofi"
 
 function help() {
-	printf "${FORMAT_TITLE}USAGE:${FORMAT_END} $(basename $0) VOLUME\n"
+	printf "%bUSAGE:%b $(basename "$0") VOLUME\n" "$FORMAT_TITLE" "$FORMAT_RESET"
 	exit 1
 }
 
@@ -13,10 +14,9 @@ function help() {
 function main() {
 	[[ $1 == "-h" ]] && help
 
+	local volume="0.5"
 	if [[ -n $1 ]]; then
 		volume=$(echo "scale=2; $1 / 100" | bc)
-	else
-		volume="0.5"
 	fi
 
 	if [[ ! -d "$COVER_PATH" ]]; then
@@ -25,13 +25,13 @@ function main() {
 	fi
 
 	(
-	yt-dlp --format "w*" -o - 'https://www.youtube.com/watch?v=jfKfPfyJRdk' | ffplay -nodisp -af "volume=$volume" -
+		yt-dlp --format "w*" -o - 'https://www.youtube.com/watch?v=jfKfPfyJRdk' | ffplay -nodisp -af "volume=$volume" -
 	) > /dev/null 2>&1 &
 
 	cp -f "$HOME/.local/share/lofi/lofi.jpg" "/tmp/thumbnail.jpg"
     PGID=$(ps -o pgid= -p $! | tr -d ' ')
 	cava
-    kill -TERM -$PGID
+    kill -TERM -$PGID:
 }
 
 main "$@"

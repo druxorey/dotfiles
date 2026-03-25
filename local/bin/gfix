@@ -1,10 +1,10 @@
 #!/bin/bash
 
 function main() {
-	echo "The commit: "
+	printf "The commit: "
 	git log --oneline --graph --decorate -n 1
 	git reset --soft HEAD~1
-	echo "\nWas restarted to previous commit: "
+	printf "\nWas restarted to previous commit: "
 	git log --oneline --graph --decorate -n 1
 }
 

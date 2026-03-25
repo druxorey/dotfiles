@@ -1,11 +1,11 @@
 #!/bin/bash
 
-FORMAT_ERROR="\e[1;31m[ERROR]"
-FORMAT_TITLE="\e[0;34m"
-FORMAT_END="\e[0m"
+declare FORMAT_ERROR="\e[1;31m[ERROR]"
+declare FORMAT_TITLE="\e[1;34m"
+declare FORMAT_RESET="\e[0m"
 
 function help() {
-	printf "${FORMAT_TITLE}USAGE:${FORMAT_END} $(basename $0) INPUT_FILE\n"
+	printf "%bUSAGE:%b $(basename "$0") INPUT_FILE\n" "$FORMAT_TITLE" "$FORMAT_RESET"
 	exit 1
 }
 
@@ -16,25 +16,25 @@ function main() {
 	while getopts "h" opt; do
 		case $opt in
 			h) help ;;
-			*) help ;;
+			*) exit 1 ;;
 		esac
 	done
 
 	[ -z "$file" ] && help
 
 	case $file in
-		*.mp4)    mpv     "$file" ;;
-		*.mkv)    mpv     "$file" ;;
-		*.mp3)    mpv     "$file" ;;
-		*.avi)    mpv     "$file" ;;
-		*.flac)   mpv     "$file" ;;
-		*.png)    sxiv    "$file" ;;
-		*.webp)   sxiv    "$file" ;;
-		*.jpeg)   sxiv    "$file" ;;
-		*.jpg)    sxiv    "$file" ;;
-		*.svg)    sxiv    "$file" ;;
-		*.pdf)    zathura "$file" ;;
-		*) printf "${FORMAT_ERROR} '$file' cannot be open via open()${FORMAT_END}\nUse: [mpv, sxiv or zathura]\n" ;;
+		*.mp4)  mpv     "$file" ;;
+		*.mkv)  mpv     "$file" ;;
+		*.mp3)  mpv     "$file" ;;
+		*.avi)  mpv     "$file" ;;
+		*.flac) mpv     "$file" ;;
+		*.png)  nsxiv   "$file" ;;
+		*.webp) nsxiv   "$file" ;;
+		*.jpeg) nsxiv   "$file" ;;
+		*.jpg)  nsxiv   "$file" ;;
+		*.svg)  nsxiv   "$file" ;;
+		*.pdf)  zathura "$file" ;;
+		*) printf "%b '$file' cannot be open via open() %b\n" "$FORMAT_ERROR" "$FORMAT_RESET" ;;
 	esac
 }
 

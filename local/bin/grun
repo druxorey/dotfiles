@@ -1,10 +1,10 @@
 #!/bin/bash
 
-FORMAT_TITLE="\e[0;34m"
-FORMAT_END="\e[0m"
+declare FORMAT_TITLE="\e[1;34m"
+declare FORMAT_RESET="\e[0m"
 
 function help() {
-	printf "${FORMAT_TITLE}USAGE:${FORMAT_END} $(basename $0) {input.cpp,input.c}\n"
+	printf "%bUSAGE:%b $(basename "$0") [OPTIONS] INPUT_FILE\n" "$FORMAT_TITLE" "$FORMAT_RESET"
 	exit 1
 }
 

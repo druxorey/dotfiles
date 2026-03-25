@@ -1,10 +1,11 @@
 #!/bin/bash
 
-FORMAT_SUCCESS="\e[1;32m[SUCCESS]"
-FORMAT_END="\e[0m\n"
+declare FORMAT_SUCCESS="\e[1;32m[SUCCESS]"
+declare FORMAT_RESET="\e[0m"
 
-CACHE_ROUTE="$HOME/.cache/"
-TRASH_ROUTE="$HOME/.local/share/Trash/files/"
+declare CACHE_ROUTE="$HOME/.cache"
+declare TRASH_ROUTE="$HOME/.local/share/Trash/files"
+declare CACHE_WHITELIST=("uv" "actual_theme" "huggingface")
 
 function main() {
 	sudo -v
@@ -16,18 +17,29 @@ function main() {
 		sudo rm -rf go
 	fi
 
-	cacheSize=$(dirbyte -rms "$CACHE_ROUTE")
-	if (( $(echo "$cacheSize > 8192" | bc -l) )); then
-		sudo rm -rf "$CACHE_ROUTE" && printf "${FORMAT_SUCCESS} Cache of size %s cleared successfully.${FORMAT_END}" "$cacheSize"
+	local cacheSize=0
+	cacheSize=$(du -sm "$CACHE_ROUTE" | cut -f1)
+	if [ "$cacheSize" -gt 8192 ]; then
+		excludeArgs=()
+		for item in "${CACHE_WHITELIST[@]}"; do
+			excludeArgs+=( -not -path "$CACHE_ROUTE/$item" -not -path "$CACHE_ROUTE/$item/*" )
+		done
+
+		find "$CACHE_ROUTE" -mindepth 1 "${excludeArgs[@]}" -delete 2>/dev/null
+		printf "%b Cache of size %sM cleared (whitelist preserved)%b\n" "$FORMAT_SUCCESS" "$cacheSize" "$FORMAT_RESET"
 	fi
 
-	trashSize=$(dirbyte -rms "$TRASH_ROUTE")
-	if (( $(echo "$trashSize > 32768" | bc -l) )); then
-		sudo rm -rf "$TRASH_ROUTE" && printf "${FORMAT_SUCCESS} Trash of size %s cleared successfully.${FORMAT_END}" "$trashSize"
+	local trashSize=0
+	trashSize=$(du -sm "$TRASH_ROUTE" | cut -f1)
+	if [ "$trashSize" -gt 32768 ]; then
+		sudo rm -rf "${TRASH_ROUTE:?}"/*
+		printf "%b Trash of size %sM cleared successfully %b\n" "$FORMAT_SUCCESS" "$trashSize" "$FORMAT_RESET"
 	fi
 
 	# Vencord Installer
-	sh -c "$(curl -sS https://raw.githubusercontent.com/Vendicated/VencordInstaller/main/install.sh)"
+	if grep -q "\[ALPM\] upgraded discord" /var/log/pacman.log | grep "$(date +%Y-%m-%d)"; then
+		sh -c "$(curl -sS https://raw.githubusercontent.com/Vendicated/VencordInstaller/main/install.sh)"
+	fi
 }
 
 main "$@"

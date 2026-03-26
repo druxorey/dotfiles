@@ -2,187 +2,222 @@
 
 import os
 import sys
-from typing import Dict, List
+import subprocess
+import urllib.request
+import json
+from typing import Dict, List, Optional
 
 FORMAT_ERROR = "\033[1;31m[ERROR]"
 FORMAT_SUCCESS = "\033[1;32m[SUCCESS]"
 FORMAT_TITLE = "\033[0;34m"
-FORMAT_END = "\033[0m"
+FORMAT_RESET = "\033[0m"
 
 PACKAGES_FILES_PATH = "/home/druxorey/Workspace/Projects/dotfiles/"
+PACKAGES_FILES_PATH = os.path.expanduser(PACKAGES_FILES_PATH)
 PACKAGES_FILES = {"base": "drx-base.packages", "extra": "drx-extra.packages"}
 
 def printHelp():
-    print(f"""
-{FORMAT_TITLE}USAGE:{FORMAT_END}
-	packages <list|add|remove> <base|extra> [<pacman|aur>] [<package_name>]
-	packages search <package_name>
+    print(f"""{FORMAT_TITLE}USAGE:{FORMAT_RESET}
+    packages <command> [<arguments>]
 
-{FORMAT_TITLE}DESCRIPTION:{FORMAT_END}
-	A utility script to manage package lists for Arch Linux.
+{FORMAT_TITLE}COMMANDS:{FORMAT_RESET}
+    add <package>           Adds a package. The script will check if it exists in Pacman or
+                            the AUR and ask you which list (base/extra) to add it to.
 
-{FORMAT_TITLE}ARGUMENTS:{FORMAT_END}
-	list <base|extra>
-		Lists all packages in the specified file type.
+    remove <package>        Searches for the package across all lists and removes it.
 
-	add <base|extra>
-		Adds a package to the specified file type. You will be prompted to specify
-		the package type (pacman or aur) and the package name.
+    search <package>        Checks if you already have a package registered in your lists 
+                            and tells you exactly where it is located.
 
-	remove <base|extra>
-		Removes a package from the specified file type. You will be prompted to
-		specify the package type (pacman or aur) and the package name.
+    list [filter]           Shows all the saved packages.
+                            Optional filters: 'base', 'extra', 'pacman', 'aur'.
 
-	search <package_name>
-		Searches for a package in both base and extra files. The package name must
-		be provided as an argument.
-
-{FORMAT_TITLE}EXAMPLES:{FORMAT_END}
-	packages list base
-	packages add extra
-	packages remove base
-	packages search firefox
-
-{FORMAT_TITLE}REPORTING BUGS:{FORMAT_END}
-	Report issues at: https://github.com/druxorey/dotfiles/issues
-""")
+{FORMAT_TITLE}EXAMPLES:{FORMAT_RESET}
+    packages add neovim
+    packages remove firefox
+    packages search htop
+    packages list aur""")
 
 
-def loadPackages(filePath: str) -> Dict[str, List[str]]:
+def isInPacman(pkgName: str) -> bool:
+    try:
+        # -Si looks for exact package info. If the exit code is 0, it exists.
+        result = subprocess.run(['pacman', '-Si', pkgName], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+        return result.returncode == 0
+    except FileNotFoundError:
+        return False
+
+
+def isInAur(pkgName: str) -> bool:
+    url = f"https://aur.archlinux.org/rpc/?v=5&type=info&arg={pkgName}"
+    try:
+        req = urllib.request.Request(url)
+        with urllib.request.urlopen(req) as response:
+            data = json.loads(response.read().decode())
+            return data.get("resultcount", 0) > 0
+    except Exception:
+        return False
+
+
+def loadPackages(listType: str) -> Dict[str, List[str]]:
+    filePath = os.path.join(PACKAGES_FILES_PATH, PACKAGES_FILES[listType])
     packages: Dict[str, List[str]] = {"pacman": [], "aur": []}
+
+    if not os.path.exists(filePath):
+        return packages
+
     with open(filePath, "r") as file:
-        lines: List[str] = file.readlines()
-        currentList: str | None = None
-        for line in lines:
+        currentList: Optional[str] = None
+        for line in file:
             line = line.strip()
-            if line.startswith("base_pacman_packages=(") or line.startswith(
-                "extra_pacman_packages=("
-            ):
+            # Identify which block we are reading
+            if line.startswith(f"{listType}_pacman_packages=("):
                 currentList = "pacman"
-            elif line.startswith("base_aur_packages=(") or line.startswith(
-                "extra_aur_packages=("
-            ):
+            elif line.startswith(f"{listType}_aur_packages=("):
                 currentList = "aur"
             elif line == ")":
                 currentList = None
-            elif currentList and line:
+            elif currentList and line and not line.startswith("#"):
                 packages[currentList].append(line)
+
     return packages
 
 
-def savePackages(action: str, filePath: str, packages: Dict[str, List[str]]) -> None:
+def loadAllPackages() -> Dict[str, Dict[str, List[str]]]:
+    return {"base": loadPackages("base"), "extra": loadPackages("extra")}
+
+
+def savePackages(listType: str, packages: Dict[str, List[str]]) -> None:
+    filePath = os.path.join(PACKAGES_FILES_PATH, PACKAGES_FILES[listType])
+
+    os.makedirs(os.path.dirname(filePath), exist_ok=True)
+
     with open(filePath, "w") as file:
         file.write("#!/bin/bash\n\n")
-        for key, values in packages.items():
-            file.write(f"{action}_{key}_packages=(\n")
-            for value in values:
-                file.write(f"	{value}\n")
+        for repoType in ["pacman", "aur"]:
+            file.write(f"{listType}_{repoType}_packages=(\n")
+            # Sort alphabetically and remove duplicates (using set)
+            sortedPackages = sorted(set(packages[repoType]))
+            for pkg in sortedPackages:
+                file.write(f"\t{pkg}\n")
             file.write(")\n\n")
 
 
-def listPackages(filePath: str) -> None:
-    packages: Dict[str, List[str]] = loadPackages(filePath)
-    print("Pacman packages:")
-    for pkg in packages["pacman"]:
-        print(f"  {pkg}")
-    print("\nAUR packages:")
-    for pkg in packages["aur"]:
-        print(f"  {pkg}")
+def findPackageLocation(pkgName: str, allPackages: Dict[str, Dict[str, List[str]]]) -> Optional[tuple[str, str]]:
+    for listCategory in ["base", "extra"]:
+        for packageCategory in ["pacman", "aur"]:
+            if pkgName in allPackages[listCategory][packageCategory]:
+                return listCategory, packageCategory
+    return None
 
 
-def addPackage(
-    fileType: str, filePath: str, packageType: str, packageName: str
-) -> None:
-    packages: Dict[str, List[str]] = loadPackages(filePath)
-    if packageName in packages[packageType]:
-        print(f"Package '{packageName}' already exists in {packageType} packages.")
+def addPackage(pkgName: str) -> None:
+    repoType: str = ""
+    if isInPacman(pkgName):
+        repoType = "pacman"
+    elif isInAur(pkgName):
+        repoType = "aur"
+    else:
+        print(f"{FORMAT_ERROR} Package '{pkgName}' was not found in Pacman or the AUR.{FORMAT_RESET}")
         return
-    packages[packageType].append(packageName)
-    savePackages(fileType, filePath, packages)
-    print(f"Package '{packageName}' added to {packageType} packages.")
 
-
-def removePackage(
-    fileType: str, filePath: str, packageType: str, packageName: str
-) -> None:
-    packages: Dict[str, List[str]] = loadPackages(filePath)
-    if packageName not in packages[packageType]:
-        print(f"Package '{packageName}' not found in {packageType} packages.")
+    allPackages: Dict[str, Dict[str, List[str]]] = loadAllPackages()
+    location: Optional[tuple[str,str]] = findPackageLocation(pkgName, allPackages)
+    if location:
+        listCat, pkgCat = location
+        print(f"{FORMAT_ERROR} Package '{pkgName}' is already registered in the {listCat} list ({pkgCat}).{FORMAT_RESET}")
         return
-    packages[packageType].remove(packageName)
-    savePackages(fileType, filePath, packages)
-    print(f"Package '{packageName}' removed from {packageType} packages.")
+
+    print(f"Package found in: {FORMAT_TITLE}{repoType.upper()}{FORMAT_RESET}")
+    listType: str = ""
+    while listType not in ["base", "extra"]:
+        listType = input("Which list do you want to add it to? (base/extra): ").strip().lower()
+
+    allPackages[listType][repoType].append(pkgName)
+    savePackages(listType, allPackages[listType])
+    print(f"{FORMAT_SUCCESS} Package '{pkgName}' successfully added to the '{listType}' list.{FORMAT_RESET}")
 
 
-def searchPackage(packageToSearch: str) -> None:
-    basePackages: Dict[str, List[str]] = loadPackages(
-        os.path.join(PACKAGES_FILES_PATH, PACKAGES_FILES["base"])
-    )
-    extraPackages: Dict[str, List[str]] = loadPackages(
-        os.path.join(PACKAGES_FILES_PATH, PACKAGES_FILES["extra"])
-    )
+def removePackage(pkgName: str) -> None:
+    allPackages: Dict[str, Dict[str, List[str]]] = loadAllPackages()
+    location: Optional[tuple[str,str]] = findPackageLocation(pkgName, allPackages)
 
-    for pkg in basePackages["pacman"]:
-        if packageToSearch == pkg:
-            print(f"Package '{packageToSearch}' found in base packages.")
-            return
-    for pkg in basePackages["aur"]:
-        if packageToSearch == pkg:
-            print(f"  {pkg}")
-            return
+    if location:
+        listCat, pkgCat = location
+        allPackages[listCat][pkgCat].remove(pkgName)
+        savePackages(listCat, allPackages[listCat])
+        print(f"{FORMAT_SUCCESS} Package '{pkgName}' was removed from the '{listCat}' list ({pkgCat}).{FORMAT_RESET}")
+    else:
+        print(f"{FORMAT_ERROR} Package '{pkgName}' was not found in any of your lists.{FORMAT_RESET}")
 
-    for pkg in extraPackages["pacman"]:
-        if packageToSearch == pkg:
-            print(f"Package '{packageToSearch}' found in extra packages.")
-            return
-    for pkg in extraPackages["aur"]:
-        if packageToSearch == pkg:
-            print(f"  {pkg}")
-            return
 
-    print("Package not found.")
-    return
+def searchPackage(pkgName: str) -> None:
+    allPackages: Dict[str, Dict[str, List[str]]] = loadAllPackages()
+    location: Optional[tuple[str,str]] = findPackageLocation(pkgName, allPackages)
+
+    if location:
+        listCat, pkgCat = location
+        print(f"{FORMAT_SUCCESS} Package '{pkgName}' found in list: {FORMAT_RESET}{listCat.upper()} ({pkgCat.upper()})")
+    else:
+        print(f"{FORMAT_ERROR} Package '{pkgName}' was not found in any of your lists.{FORMAT_RESET}")
+
+
+def listPackages(filterArg: Optional[str]) -> None:
+    allPackages: Dict[str, Dict[str, List[str]]] = loadAllPackages()
+    foundAny: bool = False
+
+    for listCategory in ["base", "extra"]:
+        if filterArg in [None, "pacman", "aur"] or filterArg == listCategory:
+            for packagescategory in ["pacman", "aur"]:
+                if filterArg in [None, "base", "extra"] or filterArg == packagescategory:
+                    pkgs = allPackages[listCategory][packagescategory]
+                    if pkgs:
+                        print(f"\n{FORMAT_TITLE}{listCategory.upper()} ({packagescategory.upper()}):{FORMAT_RESET}")
+                        rawText = "\n".join(sorted(pkgs))
+                        try:
+                            subprocess.run(['column'], input=rawText, text=True)
+                        except FileNotFoundError:
+                            print(rawText)
+                        foundAny = True
+    if not foundAny:
+        print("No packages to display with that filter.")
 
 
 def main():
-    if len(sys.argv) < 3:
+    if len(sys.argv) < 2:
         printHelp()
         return
 
     action: str = sys.argv[1]
 
-    if action == "search":
-        packageToSearch: str = sys.argv[2]
-        searchPackage(packageToSearch)
-        return
-
-    fileType: str = sys.argv[2]
-
-    if fileType not in PACKAGES_FILES:
-        print("Invalid file type. Use 'base' or 'extra'.")
-        return
-
-    filePath: str = os.path.join(PACKAGES_FILES_PATH, PACKAGES_FILES[fileType])
-
-    if action == "list":
-        listPackages(filePath)
-    elif action in ["add", "remove"]:
-        packageType: str = input("Enter package type (pacman/aur): ").strip()
-        if packageType not in ["pacman", "aur"]:
-            print("Invalid package type. Use 'pacman' or 'aur'.")
+    if action == "add":
+        if len(sys.argv) < 3:
+            print(f"{FORMAT_ERROR} You must specify a package: packages add <package>{FORMAT_RESET}")
             return
+        addPackage(sys.argv[2])
 
-        packageName: str = input("Enter package name: ").strip()
-        if not packageName:
-            print("Package name cannot be empty.")
+    elif action == "remove":
+        if len(sys.argv) < 3:
+            print(f"{FORMAT_ERROR} You must specify a package: packages remove <package>{FORMAT_RESET}")
             return
+        removePackage(sys.argv[2])
 
-        if action == "add":
-            addPackage(fileType, filePath, packageType, packageName)
-        elif action == "remove":
-            removePackage(fileType, filePath, packageType, packageName)
+    elif action == "search":
+        if len(sys.argv) < 3:
+            print(f"{FORMAT_ERROR} You must specify a package: packages search <package>{FORMAT_RESET}")
+            return
+        searchPackage(sys.argv[2])
+
+    elif action == "list":
+        filterArg = sys.argv[2].lower() if len(sys.argv) > 2 else None
+        if filterArg and filterArg not in ["base", "extra", "pacman", "aur"]:
+            print(f"{FORMAT_ERROR} Invalid filter. Use: base, extra, pacman or aur.{FORMAT_RESET}")
+            return
+        listPackages(filterArg)
+
     else:
-        print("Invalid action. Use 'list', 'add', or 'remove'.")
+        print(f"{FORMAT_ERROR} Invalid action.{FORMAT_RESET}")
+        printHelp()
 
 
 if __name__ == "__main__":

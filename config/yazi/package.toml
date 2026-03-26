@@ -4,11 +4,6 @@ rev = "32eb9f3"
 hash = "b6f691f01a2122bd94866800d4d12a22"
 
 [[plugin.deps]]
-use = "KKV9/compress"
-rev = "46a6b9f"
-hash = "771af2becc575a3f43d0542de823969d"
-
-[[plugin.deps]]
 use = "pirafrank/what-size"
 rev = "179ebf6"
 hash = "57056b9728006881d580ccabe8154a9c"

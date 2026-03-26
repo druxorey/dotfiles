@@ -15,7 +15,7 @@ prepend_keymap = [
 	{ on = [ "c", "a", "h" ], run = "plugin compress -ph", desc = "Archive selected files (password+header)" },
 	{ on = [ "c", "a", "l" ], run = "plugin compress -l", desc = "Archive selected files (compression level)" },
 	{ on = [ "c", "a", "u" ], run = "plugin compress -phl", desc = "Archive selected files (password+header+level)" },
-	{ on = [ ".", "s" ], run = "plugin what-size", desc = "Calc size of selection or cwd" },
-	{ on = [ ".", "e" ], run = "shell thunar .", desc = "Open thunar on cwd" },
-	{ on = [ ".", "n" ], run = "shell nvim --block", desc = "Open nvim on cwd" },
+	{ on = [ ">", "s" ], run = "plugin what-size", desc = "Calc size of selection or cwd" },
+	{ on = [ ">", "e" ], run = "shell thunar .", desc = "Open thunar on cwd" },
+	{ on = [ ">", "n" ], run = "shell nvim --block", desc = "Open nvim on cwd" },
 ]

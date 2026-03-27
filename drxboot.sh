@@ -10,8 +10,9 @@ declare SERVICES_TO_ENABLE=("bluetooth" "NetworkManager" "ufw" "tlp" "smb" "nmb"
 
 declare doSystemUpdate=false
 declare installMode=""
-declare installBase=false
-declare installExtra=false
+declare installServer=false
+declare installMinimal=false
+declare installDesktop=false
 declare installYay=false
 declare installZsh=false
 declare installDotfiles=false
@@ -28,21 +29,29 @@ declare hasRunCustomSetup=false
 function promptCustomPacman() {
 	local options=()
 	local status
-	local sortedBasePacman
-	local sortedExtraPacman
+	local sortedServerPacman
+	local sortedMinimalPacman
+	local sortedDesktopPacman
 
-	mapfile -t sortedBasePacman < <(printf "%s\n" "${base_pacman_packages[@]}" | sort)
-	for pkg in "${sortedBasePacman[@]}"; do
+	mapfile -t sortedServerPacman < <(printf "%s\n" "${server_pacman_packages[@]}" | sort)
+	for pkg in "${sortedServerPacman[@]}"; do
 		status="OFF"
 		[[ "$hasRunCustomSetup" == false ]] || [[ " ${customPacmanPackages[*]} " =~ " ${pkg} " ]] && status="ON"
-		options+=("$pkg" "Base" "$status")
+		options+=("$pkg" "Server" "$status")
 	done
 
-	mapfile -t sortedExtraPacman < <(printf "%s\n" "${extra_pacman_packages[@]}" | sort)
-	for pkg in "${sortedExtraPacman[@]}"; do
+	mapfile -t sortedMinimalPacman < <(printf "%s\n" "${minimal_pacman_packages[@]}" | sort)
+	for pkg in "${sortedMinimalPacman[@]}"; do
 		status="OFF"
 		[[ "$hasRunCustomSetup" == true ]] && [[ " ${customPacmanPackages[*]} " =~ " ${pkg} " ]] && status="ON"
-		options+=("$pkg" "Extra" "$status")
+		options+=("$pkg" "Minimal" "$status")
+	done
+
+	mapfile -t sortedDesktopPacman < <(printf "%s\n" "${desktop_pacman_packages[@]}" | sort)
+	for pkg in "${sortedDesktopPacman[@]}"; do
+		status="OFF"
+		[[ "$hasRunCustomSetup" == true ]] && [[ " ${customPacmanPackages[*]} " =~ " ${pkg} " ]] && status="ON"
+		options+=("$pkg" "Desktop" "$status")
 	done
 	
 	local choices
@@ -56,23 +65,31 @@ function promptCustomPacman() {
 function promptCustomAur() {
 	local options=()
 	local status
-	local sortedBaseAur
-	local sortedExtraAur
+	local sortedServerAur
+	local sortedMinimalAur
+	local sortedDesktopAur
 
-	mapfile -t sortedBaseAur < <(printf "%s\n" "${base_aur_packages[@]}" | sort)
-	for pkg in "${sortedBaseAur[@]}"; do
+	mapfile -t sortedServerAur < <(printf "%s\n" "${server_aur_packages[@]}" | sort)
+	for pkg in "${sortedServerAur[@]}"; do
 		status="OFF"
 		[[ "$hasRunCustomSetup" == false ]] || [[ " ${customAurPackages[*]} " =~ " ${pkg} " ]] && status="ON"
-		options+=("$pkg" "Base" "$status")
+		options+=("$pkg" "Server" "$status")
 	done
 
-	mapfile -t sortedExtraAur < <(printf "%s\n" "${extra_aur_packages[@]}" | sort)
-	for pkg in "${sortedExtraAur[@]}"; do
+	mapfile -t sortedMinimalAur < <(printf "%s\n" "${minimal_aur_packages[@]}" | sort)
+	for pkg in "${sortedMinimalAur[@]}"; do
 		status="OFF"
 		[[ "$hasRunCustomSetup" == true ]] && [[ " ${customAurPackages[*]} " =~ " ${pkg} " ]] && status="ON"
-		options+=("$pkg" "Extra" "$status")
+		options+=("$pkg" "Minimal" "$status")
 	done
 	
+	mapfile -t sortedDesktopAur < <(printf "%s\n" "${desktop_aur_packages[@]}" | sort)
+	for pkg in "${sortedDesktopAur[@]}"; do
+		status="OFF"
+		[[ "$hasRunCustomSetup" == true ]] && [[ " ${customAurPackages[*]} " =~ " ${pkg} " ]] && status="ON"
+		options+=("$pkg" "Desktop" "$status")
+	done
+
 	local choices
 	if choices=$(dialog --clear --no-lines --no-cancel --title "AUR Packages" --checklist "\nSelect AUR packages to install:" 40 60 10 "${options[@]}" 3>&1 1>&2 2>&3); then
 		choices=$(printf "%s" "$choices" | tr -d '"')
@@ -192,11 +209,12 @@ function runConfigurationUi() {
 		doSystemUpdate=true
 	fi
 
-	installMode=$(dialog --clear --no-lines --no-ok --no-cancel --title "Installation Mode" --menu "" 9 50 3 \
-		"Minimal" "" \
-		"Full"    "" \
-		"Custom"  "" \
-		3>&1 1>&2 2>&3)
+	installMode=$(dialog --clear --no-lines --no-ok --no-cancel --title "Installation Mode" --menu "\nSelect your preferred environment:" 12 52 4 \
+			"Server"  "Basic installation and configuration" \
+			"Minimal" "Richer environment with more tools" \
+			"Desktop" "Full installation with GUI" \
+			"Custom"  "Hand-pick installation wizard" \
+			3>&1 1>&2 2>&3)
 
 	if [[ -z "$installMode" ]]; then
 		clear
@@ -204,16 +222,23 @@ function runConfigurationUi() {
 		exit 0
 	fi
 
-	if [[ "$installMode" == "Minimal" ]]; then
-		installBase=true
+	if [[ "$installMode" == "Server" ]]; then
+		installServer=true
+		installYay=true
+		enableServices=true
+
+	elif [[ "$installMode" == "Minimal" ]]; then
+		installServer=true
+		installMinimal=true
 		installYay=true
 		installZsh=true
 		installDotfiles=true
 		enableServices=true
 
 	elif [[ "$installMode" == "Full" ]]; then
-		installBase=true
-		installExtra=true
+		installServer=true
+		installMinimal=true
+		installDesktop=true
 		installYay=true
 		installZsh=true
 		installDotfiles=true
@@ -258,16 +283,16 @@ function installAurHelper() {
 }
 
 
-function installBasePackages() {
-	printf "\n%bInstalling Base Pacman Packages%b\n" "$FORMAT_INFO" "$FORMAT_RESET"
-	for pkg in "${base_pacman_packages[@]}"; do
+function installServerPackages() {
+	printf "\n%bInstalling Server Pacman Packages%b\n" "$FORMAT_INFO" "$FORMAT_RESET"
+	for pkg in "${server_pacman_packages[@]}"; do
 		printf " %b->%b Installing %s...\n" "$FORMAT_INFO" "$FORMAT_RESET" "$pkg"
 		sudo pacman -S --needed --noconfirm "$pkg"
 	done
 
 	if [[ "$installYay" == true ]]; then
-		printf "\n%bInstalling Base AUR Packages%b\n" "$FORMAT_INFO" "$FORMAT_RESET"
-		for pkg in "${base_aur_packages[@]}"; do
+		printf "\n%bInstalling Server AUR Packages%b\n" "$FORMAT_INFO" "$FORMAT_RESET"
+		for pkg in "${server_aur_packages[@]}"; do
 			printf " %b->%b Installing %s (AUR)...\n" "$FORMAT_INFO" "$FORMAT_RESET" "$pkg"
 			yay -S --needed --noconfirm "$pkg"
 		done
@@ -275,16 +300,33 @@ function installBasePackages() {
 }
 
 
-function installExtraPackages() {
-	printf "\n%bInstalling Extra Pacman Packages%b\n" "$FORMAT_INFO" "$FORMAT_RESET"
-	for pkg in "${extra_pacman_packages[@]}"; do
+function installMinimalPackages() {
+	printf "\n%bInstalling Minimal Pacman Packages%b\n" "$FORMAT_INFO" "$FORMAT_RESET"
+	for pkg in "${minimal_pacman_packages[@]}"; do
 		printf " %b->%b Installing %s...\n" "$FORMAT_INFO" "$FORMAT_RESET" "$pkg"
 		sudo pacman -S --needed --noconfirm "$pkg"
 	done
 
 	if [[ "$installYay" == true ]]; then
-		printf "\n%bInstalling Extra AUR Packages%b\n" "$FORMAT_INFO" "$FORMAT_RESET"
-		for pkg in "${extra_aur_packages[@]}"; do
+		printf "\n%bInstalling Minimal AUR Packages%b\n" "$FORMAT_INFO" "$FORMAT_RESET"
+		for pkg in "${minimal_aur_packages[@]}"; do
+			printf " %b->%b Installing %s (AUR)...\n" "$FORMAT_INFO" "$FORMAT_RESET" "$pkg"
+			yay -S --needed --noconfirm "$pkg"
+		done
+	fi
+}
+
+
+function installDesktopPackages() {
+	printf "\n%bInstalling Desktop Pacman Packages%b\n" "$FORMAT_INFO" "$FORMAT_RESET"
+	for pkg in "${desktop_pacman_packages[@]}"; do
+		printf " %b->%b Installing %s...\n" "$FORMAT_INFO" "$FORMAT_RESET" "$pkg"
+		sudo pacman -S --needed --noconfirm "$pkg"
+	done
+
+	if [[ "$installYay" == true ]]; then
+		printf "\n%bInstalling Desktop AUR Packages%b\n" "$FORMAT_INFO" "$FORMAT_RESET"
+		for pkg in "${desktop_aur_packages[@]}"; do
 			printf " %b->%b Installing %s (AUR)...\n" "$FORMAT_INFO" "$FORMAT_RESET" "$pkg"
 			yay -S --needed --noconfirm "$pkg"
 		done
@@ -375,8 +417,8 @@ function main() {
 		updateSystem
 	fi
 
-	if [[ "$installMode" == "Minimal" || "$installMode" == "Full" ]]; then
-		if [[ "$installBase" == true || "$installExtra" == true ]]; then
+	if [[ "$installMode" =~ ^(Server|Minimal|Full)$ ]]; then
+		if [[ "$installServer" == true || "$installMinimal" == true || "$installDesktop" == true ]]; then
 			fetchPackageLists
 		fi
 	fi
@@ -385,17 +427,16 @@ function main() {
 		installAurHelper
 	fi
 
-	if [[ "$installMode" == "Minimal" || "$installMode" == "Full" ]]; then
-		if [[ "$installBase" == true ]]; then
-			installBasePackages
-		fi
-
-		if [[ "$installExtra" == true ]]; then
-			installExtraPackages
-		fi
-	elif [[ "$installMode" == "CustomReady" ]]; then
-		installCustomPackagesList
-	fi
+	case "$installMode" in
+		Server|Minimal|Full)
+			[[ "$installServer" == true ]] && installServerPackages
+			[[ "$installMinimal" == true ]] && installMinimalPackages
+			[[ "$installDesktop" == true ]] && installDesktopPackages
+			;;
+		CustomReady)
+			installCustomPackagesList
+			;;
+	esac
 
 	if [[ "$enableServices" == true ]]; then
 		enableSystemServices

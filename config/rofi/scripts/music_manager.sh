@@ -1,11 +1,11 @@
 #!/bin/bash
 
-FORMAT_ERROR="\e[1;31m[ERROR]"
-FORMAT_SUCCESS="\e[1;32m[SUCCESS]"
-FORMAT_WARNING="\e[1;33m[WARNING]"
-FORMAT_END="\e[0m"
+declare FORMAT_SUCCESS="\e[1;32m[SUCCESS]\e[0m"
+declare FORMAT_WARNING="\e[1;33m[WARNING]\e[0m"
+declare FORMAT_ERROR="\e[1;31m[ERROR]\e[0m"
 
-OPTION=2
+declare CONFIG_FILE="$HOME/.config/rofi/modules/music_manager.rasi"
+declare OPTION=2
 
 function checkCmus() {
 	bspc desktop -f ^5
@@ -23,25 +23,27 @@ function getThumbnail() {
 
 
 function main() {
-	status=$(cmus-remote -Q 2>/dev/null)
+	local status=$(cmus-remote -Q 2>/dev/null)
 
 	if [[ -z $status ]]; then
 		printf "%b Cmus is not running%b\n" "$FORMAT_WARNING" "$FORMAT_END"
 	fi
 
-	state=$(echo "$status" | grep "status" | awk '{print $2}')
-	artist=$(echo "$status" | grep "tag artist" | cut -d ' ' -f 3-)
-	title=$(echo "$status" | grep "tag title" | cut -d ' ' -f 3-)
-	message="$artist - $title"
+	local state=$(echo "$status" | grep "status" | awk '{print $2}')
+	local artist=$(echo "$status" | grep "tag artist" | cut -d ' ' -f 3-)
+	local title=$(echo "$status" | grep "tag title" | cut -d ' ' -f 3-)
 
-	isLofiRunning=$(pgrep -x "lofi" > /dev/null && echo true || echo false)
+	local message="$artist - $title"
+	local isLofiRunning=$(pgrep -x "lofi" > /dev/null && echo true || echo false)
 
 	if [ "$isLofiRunning" = false ] && getThumbnail "$title"; then
-		printf "${FORMAT_SUCCESS} Thumbnail updated for '%s' ${FORMAT_END}\n" "$title"
+		printf "%b Thumbnail updated for '%s'\n" "$FORMAT_SUCCESS" "$title"
 	else
-		printf "${FORMAT_ERROR} No thumbnail found for '%s' ${FORMAT_END}\n" "$title"
+		printf "%b No thumbnail found for '%s'\n" "$FORMAT_ERROR" "$title"
 	fi
 
+	local reproducerState=""
+	local lofiSelected=""
 	if [ "$isLofiRunning" == true ]; then
 		message="Lofi radio"
 		reproducerState="󰎊"
@@ -55,7 +57,7 @@ function main() {
 		message="No music playing"
 	fi
 
-	rofiOption=$(echo -e "\n󰒮\n$reproducerState\n󰒭\n󰋋" | rofi -dmenu -p -i -m -1 $lofiSelected -mesg "$message" -selected-row $OPTION -config ~/.config/rofi/modules/music_manager.rasi)
+	local rofiOption=$(echo -e "\n󰒮\n$reproducerState\n󰒭\n󰋋" | rofi -dmenu -p -i -m -1 $lofiSelected -mesg "$message" -selected-row $OPTION -config $CONFIG_FILE)
 
 	case "$rofiOption" in
 		"") cmus-remote --stop && OPTION=0 ;;

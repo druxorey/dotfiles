@@ -1,5 +1,8 @@
 #!/bin/bash
 
+declare FORMAT_SUCCESS="\e[1;32m[SUCCESS]\e[0m"
+declare FORMAT_ERROR="\e[1;31m[ERROR]\e[0m"
+
 declare CACHE_FILE=~/.cache/actual_theme
 declare ACTUAL_WALLPAPER_PATH="$HOME/.local/share/wallpaper_actual.png"
 
@@ -32,12 +35,13 @@ APP_FILE[zathura]="zathurarc"
 APP_FILE[yazi]="theme.toml"
 
 function toggleMode() {
-	mode=$1
+	local mode=$1
 
 	for app in "${!APP_ROUTES[@]}"; do
-		configPath="${APP_ROUTES[$app]}"
-		configFile="${APP_FILE[$app]}"
+		local configPath="${APP_ROUTES[$app]}"
+		local configFile="${APP_FILE[$app]}"
 
+		printf "Updating %s at %s\n" "$app" "$configPath"
 		rm -f "$configPath/$configFile"
 		if [[ "$app" =~ ^nvim.* ]]; then
 			cp "$configPath/${configFile}_${mode}.bak" "$configPath/$configFile.lua"
@@ -51,11 +55,10 @@ function toggleMode() {
 
 
 function main() {
-	if [[ ! -f $CACHE_FILE ]]; then
-		touch $CACHE_FILE
-	fi
+	[[ ! -f $CACHE_FILE ]] && touch $CACHE_FILE
 
-	mode=$(<$CACHE_FILE)
+	local mode=$(<$CACHE_FILE)
+	printf "Current mode detected: %s\n" "${mode:-none}"
 
 	if [[ $mode == "dark" ]]; then
 		toggleMode "light"
@@ -69,12 +72,23 @@ function main() {
 		echo "dark" > $CACHE_FILE
 	fi
 
-	ln -sf "$HOME/.local/share/wallpaper_$mode.png" "$ACTUAL_WALLPAPER_PATH"
+	printf "Updating wallpaper link for %s mode\n" "$mode"
+
+	if ln -sf "$HOME/.local/share/wallpaper_$mode.png" "$ACTUAL_WALLPAPER_PATH"; then
+		printf "%b Wallpaper link updated.\n" "$FORMAT_SUCCESS"
+	else
+		printf "%b Failed to update wallpaper link.\n" "$FORMAT_ERROR"
+	fi
+
+	printf "Refreshing system components...\n"
+	
 	bspc wm -r
 	killall -USR1 kitty
 	killall dunst; dunst &
 	killall polybar; polybar &
+
 	notify-send "Switched to $mode theme" --app-name "Toggle Theme" -u low
+	printf "Theme switch to %s completed.\n" "$mode"
 }
 
 main "$@"

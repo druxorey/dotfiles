@@ -34,7 +34,7 @@ window {
 	height: 300%;
 
 	children: [ "mainbox" ];
-	padding: 76em 130em;
+	padding: 76em 131em;
 }
 
 mainbox {

@@ -29,7 +29,7 @@ configuration {
 }
 
 window {
-	width: 28em;
+	width: 27em;
 }
 
 module {

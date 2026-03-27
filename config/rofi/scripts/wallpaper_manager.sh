@@ -1,9 +1,10 @@
 #!/bin/bash
 
-declare FORMAT_SUCCESS="\e[1;32m[SUCCESS]"
-declare FORMAT_WARNING="\e[1;33m[WARNING]"
-declare FORMAT_ERROR="\e[1;31m[ERROR]"
-declare FORMAT_RESET="\e[0m"
+declare FORMAT_SUCCESS="\e[1;32m[SUCCESS]\e[0m"
+declare FORMAT_WARNING="\e[1;33m[WARNING]\e[0m"
+declare FORMAT_ERROR="\e[1;31m[ERROR]\e[0m"
+
+declare CONFIG_FILE="$HOME/.config/rofi/modules/wallpaper_manager.rasi"
 
 declare DARK_WALLPAPERS_PATH="$HOME/Pictures/Wallpapers/Dracula"
 declare LIGHT_WALLPAPERS_PATH="$HOME/Pictures/Wallpapers/Alucard"
@@ -12,38 +13,35 @@ declare DARK_LINK="$HOME/.local/share/wallpaper_dark.png"
 declare LIGHT_LINK="$HOME/.local/share/wallpaper_light.png"
 
 function main() {
+	local wallpapersPath=$LIGHT_WALLPAPERS_PATH
+	local message="Wallpapers for Alucard"
+	local targetLink=$LIGHT_LINK
+
 	if [[ $(cat "$HOME/.cache/actual_theme") == "dark" ]]; then
 		wallpapersPath=$DARK_WALLPAPERS_PATH
 		message="Wallpapers for Dracula"
 		targetLink=$DARK_LINK
-	else
-		wallpapersPath=$LIGHT_WALLPAPERS_PATH
-		message="Wallpapers for Alucard"
-		targetLink=$LIGHT_LINK
 	fi
 
 	printf "Loading wallpapers from: %s\n" "$wallpapersPath"
 
-	selection=$(for img in "$wallpapersPath"/*.{jpg,jpeg,png}; do
+	local selection=$(for img in "$wallpapersPath"/*.{jpg,jpeg,png}; do
 		[ -e "$img" ] || continue
-		fileName=$(basename "$img")
-		echo -en "$fileName\0icon\x1f$img\n"
-	done | rofi -dmenu -i -m -1 -show-icons -p "Picture:" -mesg "$message" -config ~/.config/rofi/modules/wallpaper_manager.rasi)
+		echo -en "$(basename "$img")\0icon\x1f$img\n"
+	done | rofi -dmenu -i -m -1 -show-icons -p "Picture:" -mesg "$message" -config $CONFIG_FILE)
 
 	if [ -n "$selection" ]; then
-		fullPath="$wallpapersPath/$selection"
-
-		ln -sf "$fullPath" "$targetLink"
+		ln -sf "$wallpapersPath/$selection" "$targetLink"
 		ln -sf "$targetLink" "$ACTUAL_WALLPAPER_PATH"
 
 		if feh --bg-fill "$ACTUAL_WALLPAPER_PATH"; then
-			printf "%b Wallpaper set to: %b%s\n" "$FORMAT_SUCCESS" "$selection" "$FORMAT_RESET"
+			printf "%b Wallpaper set to: %s\n" "$FORMAT_SUCCESS" "$selection"
 		else
-			printf "%b Failed to set wallpaper: %b%s\n" "$FORMAT_ERROR" "$selection" "$FORMAT_RESET"
+			printf "%b Failed to set wallpaper: %s\n" "$FORMAT_ERROR" "$selection"
 			return 1
 		fi
 	else
-		printf "%b No wallpaper selected%b\n" "$FORMAT_WARNING" "$FORMAT_RESET"
+		printf "%b No wallpaper selected\n" "$FORMAT_WARNING"
 	fi
 	return 0
 }

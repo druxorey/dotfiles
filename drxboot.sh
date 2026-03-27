@@ -5,8 +5,7 @@ declare FORMAT_ERROR="\e[1;31m[ERROR]"
 declare FORMAT_INFO="\e[0;35m"
 declare FORMAT_RESET="\e[0m"
 
-declare PACKAGES_BASE_SOURCE="https://raw.githubusercontent.com/druxorey/dotfiles/refs/heads/main/drx-base.packages"
-declare PACKAGES_EXTRA_SOURCE="https://raw.githubusercontent.com/druxorey/dotfiles/refs/heads/main/drx-extra.packages"
+declare PACKAGES_SOURCE="https://raw.githubusercontent.com/druxorey/dotfiles/refs/heads/main/drxboot.packages"
 declare SERVICES_TO_ENABLE=("bluetooth" "NetworkManager" "ufw" "tlp" "smb" "nmb" "cups" "lightdm" "ipp-usb" "ollama")
 
 declare doSystemUpdate=false
@@ -232,14 +231,11 @@ function runConfigurationUi() {
 function fetchPackageLists() {
 	local quiet=$1
 	if [[ "$quiet" != "quiet" ]]; then
-		printf "\n%bFetching package lists from repository%b\n" "$FORMAT_INFO" "$FORMAT_RESET"
+		printf "\n%bFetching package list from repository%b\n" "$FORMAT_INFO" "$FORMAT_RESET"
 	fi
 
-	curl -sL "$PACKAGES_BASE_SOURCE" -o /tmp/drx-base.packages
-	curl -sL "$PACKAGES_EXTRA_SOURCE" -o /tmp/drx-extra.packages
-
-	source /tmp/drx-base.packages || exit 1
-	source /tmp/drx-extra.packages || exit 1
+	curl -sL "$PACKAGES_SOURCE" -o /tmp/drxboot.packages
+	source /tmp/drxboot.packages || exit 1
 }
 
 

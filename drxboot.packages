@@ -1,170 +1,109 @@
 #!/bin/bash
 
-base_pacman_packages=(
+server_pacman_packages=(
+	bluez-utils
+	brightnessctl
+	cups
+	cups-pdf
+	curl
+	dosfstools
+	exfat-utils
+	fastfetch
+	foomatic-db-gutenprint-ppds
+	fuse-exfat
+	fzf
+	git
+	glib2
+	gvfs
+	gvfs-mtp
+	gvfs-smb
+	iniparser
+	intel-media-sdk
+	intel-ucode
+	ipp-usb
+	libfdk-aac
+	libinput
+	linux
+	linux-firmware
+	linux-headers
+	mtpfs
+	ncurses
+	networkmanager
+	ntfs-3g
+	pulseaudio-bluetooth
+	python
+	reflector
+	samba
+	sane
+	sane-airscan
+	smbclient
+	speedtest-cli
+	tar
+	tlp
+	ufw
+	upower
+	usbutils
+	vim
+	wget
+	xorg
+	yazi
+)
+
+server_aur_packages=(
+	cnijfilter2
+	dotool
+	downgrade
+	gpk-bin
+)
+
+minimal_pacman_packages=(
 	7zip
-	alsa-utils
 	bash-completion
 	bat
 	bat-extras
 	bc
-	blueman
-	bluez-utils
-	brightnessctl
 	btop
 	caligula
 	cmatrix
 	cmus
 	cpufetch
-	curl
-	dosfstools
+	dialog
 	entr
-	exfat-utils
 	exiftool
 	eza
-	fastfetch
 	fd
 	ffmpeg
-	ffmpegthumbnailer
-	fuse-exfat
-	fzf
 	gdb
 	genact
-	git
 	github-cli
-	glib2
-	gnome-keyring
 	gping
-	gvfs
-	gvfs-mtp
-	gvfs-smb
+	gum
 	imagemagick
-	iniparser
-	intel-ucode
 	jdk-openjdk
-	libfdk-aac
-	linux
-	linux-firmware
-	linux-headers
+	lazygit
 	luarocks
 	mediainfo
-	mtpfs
 	ncdu
-	ncurses
 	neovim
 	nodejs
 	npm
-	ntfs-3g
+	ollama
+	onefetch
 	p7zip
 	pandoc-cli
+	pastel
 	php
-	playerctl
-	pulseaudio-bluetooth
 	pv
-	python
 	python-black
 	python-pip
 	python-setuptools
 	python-virtualenv
-	redshift
-	reflector
 	ripgrep
 	rsync
 	rust
 	rust-analyzer
-	samba
-	scrot
 	shellcheck
 	silicon
-	smbclient
-	speedtest-cli
-	tar
-	the_silver_searcher
-	tldr
-	tlp
-	tmux
-	tokei
-	translate-shell
-	trash-cli
-	tumbler
-	ufw
-	unrar
-	upower
-	usbutils
-	vim
-	wget
-	xclip
-	xsel
-	yazi
-	yt-dlp
-	zoxide
-)
-
-base_aur_packages=(
-	dotool
-	downgrade
-	gpk-bin
-	oh-my-posh
-	rich-cli
-	selenium
-	xdg-ninja
-)
-
-extra_pacman_packages=(
-	astroterm
-	autorandr
-	bspwm
-	clipmenu
-	cups
-	cups-pdf
-	dialog
-	discord
-	dunst
-	feh
-	flameshot
-	foomatic-db-gutenprint-ppds
-	fragments
-	gimp
-	gloobus-preview
-	gthumb
-	gum
-	inkscape
-	intel-media-sdk
-	ipp-usb
-	kitty
-	lazygit
-	libfdk-aac
-	libinput
-	libreoffice-fresh
-	lightdm
-	lightdm-gtk-greeter
-	lightdm-gtk-greeter-settings
-	lxappearance
-	nautilus
-	networkmanager
-	nitrogen
-	noto-fonts
-	noto-fonts-cjk
-	noto-fonts-emoji
-	nsxiv
-	obs-studio
-	obsidian
-	ollama
-	onefetch
-	papirus-icon-theme
-	pastel
-	pdfarranger
-	picom
-	polybar
-	qalculate-gtk
-	rofi
-	rofi-calc
-	sane
-	sane-airscan
-	sigil
-	simple-scan
-	steam
-	sxhkd
-	system-config-printer
 	texlive-bibtexextra
 	texlive-bin
 	texlive-binextra
@@ -177,39 +116,102 @@ extra_pacman_packages=(
 	texlive-mathscience
 	texlive-pictures
 	texlive-xetex
+	the_silver_searcher
+	tldr
+	tmux
+	tokei
+	translate-shell
+	trash-cli
+	unrar
+	viu
+	yt-dlp
+	zoxide
+)
+
+minimal_aur_packages=(
+	ani-cli
+	cava
+	gtypist
+	lutgen-bin
+	manga-cli-git
+	oh-my-posh
+	peaclock
+	pipes.sh
+	rich-cli
+	xdg-ninja
+)
+
+desktop_pacman_packages=(
+	astroterm
+	autorandr
+	blueman
+	bspwm
+	clipmenu
+	discord
+	dunst
+	feh
+	ffmpegthumbnailer
+	flameshot
+	fragments
+	gimp
+	gloobus-preview
+	gnome-keyring
+	gthumb
+	inkscape
+	kitty
+	libreoffice-fresh
+	lightdm
+	lightdm-gtk-greeter
+	lightdm-gtk-greeter-settings
+	lxappearance
+	nautilus
+	noto-fonts
+	noto-fonts-cjk
+	noto-fonts-emoji
+	nsxiv
+	obs-studio
+	obsidian
+	papirus-icon-theme
+	pdfarranger
+	picom
+	playerctl
+	polybar
+	qalculate-gtk
+	redshift
+	rofi
+	rofi-calc
+	scrot
+	sigil
+	simple-scan
+	steam
+	sxhkd
+	system-config-printer
 	thunar
 	thunderbird
 	timeshift
 	touchegg
 	transmission-gtk
+	tumbler
 	virtualbox
-	viu
 	vlc
 	wine
+	xclip
 	xcolor
-	xorg
+	xsel
 	zathura
 	zathura-pdf-mupdf
 )
 
-extra_aur_packages=(
-	ani-cli
+desktop_aur_packages=(
 	brave-bin
 	bsp-layout
-	cava
-	cnijfilter2
-	downgrade
 	eww
-	gtypist
 	localsend-bin
-	lutgen-bin
-	manga-cli-git
 	modrinth-app-bin
 	open-webui
-	peaclock
-	pipes.sh
 	proton-vpn-gtk-app
 	puddletag
+	selenium
 	tumbler-extra-thumbnailers
 	vbam-wx
 )

@@ -1,41 +1,43 @@
 #!/bin/bash
 
-TITLE="\e[1;34m"
-ERROR="\e[1;91m"
-SUCCESS="\e[1;92m"
-END="\e[0m"
+declare FORMAT_SUCCESS="\e[1;32m[SUCCESS]\e[0m"
+declare FORMAT_ERROR="\e[1;31m[ERROR]\e[0m"
 
-OBSIDIAN_DIR="$HOME/Documents/'A1 Obsidian'"
-EXCLUDE="--exclude=.git/ --exclude=.github --exclude=*.gitmodules --exclude=*.editorconfig --exclude=*.gitignore --exclude=*.gvsf.private"
-BOOKMARKS_DIR="$HOME/.config/BraveSoftware/Brave-Browser/Default/Bookmarks"
-YAML_DIR="$HOME/Workspace/Projects/dotfiles/config/brave/"
+declare OBSIDIAN_DIR="$HOME/Documents/'A1 Obsidian'"
+declare EXCLUDE="--exclude=.git/ --exclude=.github --exclude=*.gitmodules --exclude=*.editorconfig --exclude=*.gitignore --exclude=*.gvsf.private"
 
 function help() {
-	printf "
-${TITLE}USAGE:$END
-    dotbak.sh DIRECTORY
+	local FORMAT_BOLD="\e[1;34m"
+	local FORMAT_RESET="\e[0m"
+	echo -e "${FORMAT_BOLD}USAGE:${FORMAT_RESET} $(basename "$0") DIRECTORY
 
-${TITLE}DESCRIPTION:$END
+${FORMAT_BOLD}DESCRIPTION:${FORMAT_RESET}
     This script creates a backup of various system files and configurations
     to the specified directory. It uses rsync to synchronize important
     directories and files, ensuring they remain up-to-date.
 
-${TITLE}ARGUMENTS:$END
+${FORMAT_BOLD}ARGUMENTS:${FORMAT_RESET}
     DIRECTORY             The target directory where the backup will be stored.
 
-${TITLE}EXAMPLES:$END
-    dotbak.sh /path/to/backup
-
-${TITLE}REPORTING BUGS:$END
-    Report issues at: https://github.com/druxorey/dotfiles/issues
-
-"
+${FORMAT_BOLD}EXAMPLES:${FORMAT_RESET}
+    dotbak.sh /path/to/backup"
 	exit 1
 }
 
 
 function backupBookmarks() {
-    grep -E '"name":|\"url\":' "$BOOKMARKS_DIR" | awk '
+	local bookmarksDir="$HOME/.config/BraveSoftware/Brave-Browser/Default/Bookmarks"
+	local yamlDir="$HOME/Workspace/Projects/dotfiles/config/brave/"
+
+	# This pipeline extracts bookmarks from Brave's JSON-formatted bookmarks file and converts them to YAML:
+	# 1. grep -E '"name":|\"url\":': Filters the raw JSON to only include lines containing "name" or "url" keys.
+	# 2. awk '...': Processes the filtered stream to reconstruct the key-pair relationship.
+	#    - It captures the "name" line, then uses 'getline' to fetch the immediate next line.
+	#    - It verifies if the next line is a "url" using a regex match ($0 ~ /"url":/).
+	#    - The 'substr' and 'index' functions perform string manipulation to strip JSON syntax (quotes, colons, commas).
+	#    - Specifically, it calculates offsets to extract only the values, then prints them in YAML list format.
+
+    grep -E '"name":|\"url\":' "$bookmarksDir" | awk '
     BEGIN { name = ""; url = ""; }
     /"name":/ {
         name = $0;
@@ -45,22 +47,24 @@ function backupBookmarks() {
             print "- name: " substr(name, index(name, ":") + 3, length(name) - index(name, ":") - 4) "\n  url: " substr(url, index(url, ":") + 3, length(url) - index(url, ":") - 3);
         }
     }
-    ' > "$YAML_DIR/bookmarks.yaml"
+    ' > "$yamlDir/bookmarks.yaml" || return 1
+
+	return 0
 }
 
 
 function main() {
-	local directory="$1"
+	local directory=${1:-"."}
 
 	while getopts "h" opt; do
 		case $opt in
 			h) help ;;
-			*) help ;;
+			*) exit 1 ;;
 		esac
 	done
 
 	if [ -z "$directory" ]; then
-		printf "${ERROR} ⚠ [ERROR]: No directory specified. Please provide a target directory.$END\n"
+		printf "%b No directory specified. Please provide a target directory.\n" "$FORMAT_ERROR"
 		exit 1
 	fi
 
@@ -98,27 +102,28 @@ function main() {
 		["/var/spool/cron/druxorey"]="rsync -a /var/spool/cron/druxorey $directory/config/crontab"
 	)
 
-	index=1
+	local index=1
 	for name in "${!commandList[@]}"; do
-		command="${commandList[$name]}"
-		if ! eval "$command"; then
-			printf "\n$ERROR ⚠ [ERROR]: Unexpected interruption during (%s) backup.$END\n\n" "$name"
+		local output=$(eval "${commandList[$name]}" 2>&1)
+		if [ $? -ne 0 ]; then
+			printf "\r%b Unexpected interruption during (%s) backup\n" "$FORMAT_ERROR" "$name"
+			printf "Error detail: %s\n" "$output"
 			exit 1
 		fi
-		printf "\r${SUCCESS} ✔ [$END%02d${SUCCESS}] Successfully backed up:$END %s" "$index" "$name"
+		printf "\r\e[1;32m ✔ [\e[0m%02d\e[1;32m] Successfully backed up:\e[0m %s" "$index" "$name"
 		tput el
 		index=$((index + 1))
 	done
 
-	if [ -f "$directory/config/gitconfig" ]; then
-		sed -i '1,5c\# user data' "$directory/config/gitconfig"
+	[ -f "$directory/config/gitconfig" ] && sed -i '1,5c\# user data' "$directory/config/gitconfig"
+
+	if ! backupBookmarks >/dev/null 2>&1; then
+		printf "\r%b Failed to backup Brave bookmarks." "$FORMAT_ERROR" ; tput el ; printf "\n"
+		exit 1
 	fi
 
-	printf "\r${SUCCESS} ✔ All %02d files have been successfully backed up$END" "$index"
-	tput el
-	printf "\n"
-
-	backupBookmarks >/dev/null 2>&1
+	index=$((index + 1))
+	printf "\r%b All %02d files have been successfully backed up." "$FORMAT_SUCCESS" "$index" ; tput el; printf "\n"
 }
 
 main "$@"

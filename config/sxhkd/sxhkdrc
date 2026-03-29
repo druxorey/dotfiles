@@ -1,4 +1,3 @@
-
 # ======================================================================#
 #
 #
@@ -68,11 +67,11 @@ shift + XF86MonBrightnessDown
 
 # activate night light
 super + XF86MonBrightnessUp
-	redshift -O 5000 && notify-send "Night Mode Activated" --app-name "Brightness Manager" -u low -r 999
+	redshift -O 5000 && notify-send "Night Mode Activated" --app-name "Brightness Manager" -u low -r 998
 
 # desactivate night light
 super + XF86MonBrightnessDown
-	redshift -x && notify-send "Night Mode Deactivated" --app-name "Brightness Manager" -u low -r 999
+	redshift -x && notify-send "Night Mode Deactivated" --app-name "Brightness Manager" -u low -r 998
 
 # print a selected area
 @Print
@@ -179,11 +178,11 @@ super + m
 
 # change the window layer to the previous
 super + comma
-    bsp-layout previous --layouts tall,rtall,wide,rwide,grid,rgrid,even,tiled && notify-send "Changed Layout" --app-name "BSPWM" -u low
+    bsp-layout previous && notify-send "Layout: $(bsp-layout get)" --app-name "BSPWM" -u low -r 997
 
 # change the window layer to the next
 super + period
-    bsp-layout next --layouts tall,rtall,wide,rwide,grid,rgrid,even,tiled && notify-send "Changed Layout" --app-name "BSPWM" -u low
+    bsp-layout next && notify-send "Layout: $(bsp-layout get)" --app-name "BSPWM" -u low -r 997
 
 # set the node flags
 super + ctrl + {m,x,y,z}

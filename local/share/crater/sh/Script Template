@@ -1,22 +1,22 @@
 #!/bin/bash
 
-FORMAT_SUCCESS="\e[1;32m[SUCCESS]"
-FORMAT_WARNING="\e[1;33m[WARNING]"
-FORMAT_ERROR="\e[1;31m[ERROR]"
-FORMAT_TITLE="\e[0;34m"
-FORMAT_RESET="\e[0m"
+declare FORMAT_SUCCESS="\e[1;32m[SUCCESS]\e[0m"
+declare FORMAT_WARNING="\e[1;33m[WARNING]\e[0m"
+declare FORMAT_ERROR="\e[1;31m[ERROR]\e[0m"
 
 function help() {
-	printf "${FORMAT_TITLE}USAGE:${FORMAT_RESET} %s INPUT_FILE\n" "$(basename "$0")"
+	local FORMAT_BOLD="\e[1;34m"
+	local FORMAT_RESET="\e[0m"
+	printf "${FORMAT_BOLD}USAGE:${FORMAT_RESET} %s INPUT_FILE\n" "$(basename "$0")"
 	exit 1
 }
 
 function main() {
 	while getopts "ewsh" opt; do
 		case $opt in
-			e) printf "${FORMAT_ERROR} Error example for %s ${FORMAT_RESET}\n" "$opt" ;;
-			w) printf "${FORMAT_WARNING} Warning example for %s ${FORMAT_RESET}\n" "$opt" ;;
-			s) printf "${FORMAT_SUCCESS} Success example for %s ${FORMAT_RESET}\n" "$opt" ;;
+			s) printf "%b Success example for %s\n" "$FORMAT_SUCCESS" "$opt" ;;
+			w) printf "%b Warning example for %s\n" "$FORMAT_WARNING" "$opt" ;;
+			e) printf "%b Error example for %s\n" "$FORMAT_ERROR" "$opt" ;;
 			h) help ;;
 			*) exit 1 ;;
 		esac

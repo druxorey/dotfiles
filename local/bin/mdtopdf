@@ -1,0 +1,148 @@
+#!/bin/bash
+
+declare FORMAT_SUCCESS="\e[1;32m[SUCCESS]\e[0m"
+declare FORMAT_ERROR="\e[1;31m[ERROR]\e[0m"
+
+function help() {
+	echo -e "\e[1;34mUSAGE:\e[0m $(basename "$0") <file.md>"
+	exit 0
+}
+
+
+function createLuaFilter() {
+	local filterFile="$1"
+	cat << 'EOF' > "$filterFile"
+function Link(el)
+    if not el.target:match("^http") then
+        return el.content
+    end
+end
+
+function Table(el)
+	local totalWidth = 0
+	local adjusted = false
+	
+	for i, colspec in ipairs(el.colspecs) do
+		local width = colspec[2]
+		if width > 0 and width < 0.18 then
+			el.colspecs[i][2] = 0.18
+			adjusted = true
+		end
+		totalWidth = totalWidth + el.colspecs[i][2]
+	end
+	
+	if adjusted and totalWidth > 0 then
+		for i, colspec in ipairs(el.colspecs) do
+			el.colspecs[i][2] = colspec[2] / totalWidth
+		end
+	end
+	
+	return el
+end
+
+function BlockQuote(el)
+	if #el.content >= 1 and el.content[1].t == "Para" then
+		local p = el.content[1]
+		if #p.content >= 1 and p.content[1].t == "Str" and p.content[1].text:match("^%[%!%w+%]") then
+			local calloutType = p.content[1].text:match("^%[%!(%w+)%]"):upper()
+			
+			local titleElements = {}
+			local contentStart = 2
+			for i = 2, #p.content do
+				if p.content[i].t == "SoftBreak" or p.content[i].t == "LineBreak" then
+					contentStart = i + 1
+					break
+				end
+				table.insert(titleElements, p.content[i])
+			end
+			
+			local title = pandoc.utils.stringify(titleElements):gsub("^%s*", "")
+			if title == "" then title = calloutType end
+			
+			local new_para_content = {}
+			for i = contentStart, #p.content do
+				table.insert(new_para_content, p.content[i])
+			end
+			el.content[1].content = new_para_content
+			
+			local color = "drx-color-default"
+			if calloutType == "TODO" or calloutType == "BUG" or calloutType == "ERROR" or calloutType == "FAIL" then
+				color = "drx-color-red"
+			elseif calloutType == "IMPORTANT" or calloutType == "EXAMPLE" then
+				color = "drx-color-red"
+			elseif calloutType == "SUMMARY" or calloutType == "TLDR" or calloutType == "TIP" then
+				color = "drx-color-blue"
+			elseif calloutType == "SUCCESS" then
+				color = "drx-color-green"
+			elseif calloutType == "QUESTION" or calloutType == "WARNING" then
+				color = "drx-color-orange"
+			elseif calloutType == "QUOTE" then
+				color = "drx-color-purple"
+			end
+			
+			local latexBegin = string.format('\\begin{tcolorbox}[colback=white,colframe=%s,coltitle=white,title=\\textbf{%s}]\n', color, title)
+			local latexEnd = '\n\\end{tcolorbox}'
+			
+			table.insert(el.content, 1, pandoc.RawBlock('latex', latexBegin))
+			table.insert(el.content, pandoc.RawBlock('latex', latexEnd))
+			
+			return el.content
+		end
+	end
+end
+EOF
+}
+
+
+function main() {
+	[ -z "$1" ] || [ "$1" == "-h" ] && help
+
+    local inputFile="$1"
+    local filename="${inputFile%.*}"
+    local outputFile="${filename}.pdf"
+
+	local LUA_FILTER=$(mktemp /tmp/pandoc_obsidian_filter.XXXXXX.lua) || {
+		printf "%b Failed to create temporary file\n" "$FORMAT_ERROR"
+		return 1
+	}
+
+	trap 'rm -f "$LUA_FILTER"' EXIT
+	createLuaFilter "$LUA_FILTER"
+
+	if sed -E 's/<h1.*<\/h1>//g' "$inputFile" | pandoc \
+		-f markdown+wikilinks_title_after_pipe \
+		-o "$outputFile" \
+		--lua-filter="$LUA_FILTER" \
+		--pdf-engine=xelatex \
+		--highlight-style=breezedark \
+		-V lang=es-ES \
+		-V mainfont="Noto Serif" \
+		-V mainfontoptions="BoldFont=Noto Serif Bold" \
+		-V monofont="Hack Nerd Font" \
+		-V fontsize=10pt \
+		-V geometry:margin=2.5cm \
+		-V linestretch=1.25 \
+		-V papersize=letter \
+		-V parskip=half \
+		-V microtype=true \
+		-V colorlinks=true \
+		-V linkcolor=drx-color-red \
+		-V urlcolor=drx-color-red \
+		-V toccolor=black \
+		-V header-includes="\usepackage{tcolorbox}" \
+		-V header-includes="\definecolor{drx-color-red}{HTML}{CB3A2A}" \
+		-V header-includes="\definecolor{drx-color-orange}{HTML}{AF3A03}" \
+		-V header-includes="\definecolor{drx-color-green}{HTML}{14710A}" \
+		-V header-includes="\definecolor{drx-color-blue}{HTML}{036A96}" \
+		-V header-includes="\definecolor{drx-color-purple}{HTML}{644AC9}" \
+		-V header-includes="\definecolor{drx-color-default}{HTML}{6C664B}"; then
+
+		printf "%b PDF generated: «%s»\n" "$FORMAT_SUCCESS" "$outputFile"
+		exit 0
+	fi
+
+	printf "%b Compilation failed for file: «%s»\n" "$FORMAT_ERROR" "$inputFile"
+	exit 1
+}
+
+main "$@"

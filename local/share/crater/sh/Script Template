@@ -7,8 +7,26 @@ declare FORMAT_ERROR="\e[1;31m[ERROR]\e[0m"
 function help() {
 	local FORMAT_BOLD="\e[1;34m"
 	local FORMAT_RESET="\e[0m"
-	printf "${FORMAT_BOLD}USAGE:${FORMAT_RESET} %s INPUT_FILE\n" "$(basename "$0")"
-	exit 1
+	echo -e "${FORMAT_BOLD}USAGE:${FORMAT_RESET} $(basename "$0") [OPTIONS] [ARGUMENTS]
+
+${FORMAT_BOLD}DESCRIPTION:${FORMAT_RESET}
+    Brief description of what the script does.
+
+${FORMAT_BOLD}ARGUMENTS:${FORMAT_RESET}
+    ARG1               Description of the first argument.
+    ARG2               Description of the second argument.
+
+${FORMAT_BOLD}OPTIONS:${FORMAT_RESET}
+    -s                 Brief description for success flag.
+    -w                 Brief description for warning flag.
+    -e                 Brief description for error flag.
+    -h                 Display this help message.
+
+${FORMAT_BOLD}EXAMPLES:${FORMAT_RESET}
+    $(basename "$0") -s arg1
+    $(basename "$0") -e -w arg1 arg2"
+
+	return 0
 }
 
 function main() {
@@ -17,8 +35,8 @@ function main() {
 			s) printf "%b Success example for %s\n" "$FORMAT_SUCCESS" "$opt" ;;
 			w) printf "%b Warning example for %s\n" "$FORMAT_WARNING" "$opt" ;;
 			e) printf "%b Error example for %s\n" "$FORMAT_ERROR" "$opt" ;;
-			h) help ;;
-			*) exit 1 ;;
+			h) help && exit 0 ;;
+			*) printf "%b Try '%s -h' for more information.\n" "$FORMAT_ERROR" "$(basename "$0")" >&2 && exit 1 ;;
 		esac
 	done
 

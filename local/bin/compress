@@ -1,20 +1,20 @@
 #!/bin/bash
 
-declare FORMAT_SUCCESS="\e[1;32m[SUCCESS]"
-declare FORMAT_ERROR="\e[1;31m[ERROR]"
-declare FORMAT_TITLE="\e[1;34m"
-declare FORMAT_RESET="\e[0m"
+declare FORMAT_SUCCESS="\e[1;32m[SUCCESS]\e[0m"
+declare FORMAT_ERROR="\e[1;31m[ERROR]\e[0m"
 
 function help() {
-	echo -e "${FORMAT_TITLE}USAGE:${FORMAT_RESET} $(basename "$0") [OPTIONS] INPUT_FILE
+	local FORMAT_BOLD="\e[1;34m"
+	local FORMAT_RESET="\e[0m"
+	echo -e "${FORMAT_BOLD}USAGE:${FORMAT_RESET} $(basename "$0") [OPTIONS] INPUT_FILE
 
-${FORMAT_TITLE}DESCRIPTION:${FORMAT_RESET}
+${FORMAT_BOLD}DESCRIPTION:${FORMAT_RESET}
     Compresses a video file using ffmpeg with a specified compression level.
 
-${FORMAT_TITLE}ARGUMENTS:${FORMAT_RESET}
+${FORMAT_BOLD}ARGUMENTS:${FORMAT_RESET}
     INPUT_FILE             The video file to be compressed.
 
-${FORMAT_TITLE}OPTIONS:${FORMAT_RESET}
+${FORMAT_BOLD}OPTIONS:${FORMAT_RESET}
     -o OUTPUT_FILE         Specify the name of the output file. (Optional)
     -l COMPRESSION_LEVEL   Compression level (0-3). (Optional)
                            0: Low compression (default)
@@ -22,10 +22,11 @@ ${FORMAT_TITLE}OPTIONS:${FORMAT_RESET}
                            2: High compression
                            3: Maximum compression
 
-${FORMAT_TITLE}EXAMPLES:${FORMAT_RESET}
+${FORMAT_BOLD}EXAMPLES:${FORMAT_RESET}
     $(basename "$0") -o output.mkv -l 2 input.mp4
     $(basename "$0") input.mp4"
-	exit 0
+
+	return 0
 }
 
 
@@ -37,30 +38,23 @@ function main() {
 		case $opt in
 			o) outputFile="$OPTARG" ;;
 			l) compressionLevel="$OPTARG" ;;
-			h) help ;;
-			*) exit 1 ;;
+			h) help && exit 0 ;;
+			*) printf "%b Try '%s -h' for more information.\n" "$FORMAT_ERROR" "$(basename "$0")" >&2 && exit 1 ;;
 		esac
 	done
 
 	shift $((OPTIND - 1))
+
 	local inputFile="$1"
 
-	if [[ -z "$inputFile" ]]; then
-		printf "%b Input file is required%b\n" "${FORMAT_ERROR}" "${FORMAT_RESET}"
-		exit 1
-	fi
+	[[ -z "$inputFile" ]] && printf "%b Input file is required.\n" "$FORMAT_ERROR" >&2 && exit 1
 
-    local inputDir
-    local baseName
-    local extension
-    inputDir=$(dirname "$inputFile")
-    baseName=$(basename "$inputFile")
-    extension="${baseName##*.}"
-    baseName="${baseName%.*}"
+    local inputDir=$(dirname "$inputFile")
+    local extension="${inputFile##*.}"
+    local baseName=$(basename "${inputFile%.*}")
 
 	if [[ -z "$outputFile" ]]; then
 		outputFile="${inputDir}/${baseName}_${compressionLevel}.${extension}"
-		
 		local counter=1
 		while [[ -f "$outputFile" ]]; do
 			outputFile="${inputDir}/${baseName}_${compressionLevel}(${counter}).${extension}"
@@ -76,35 +70,27 @@ function main() {
 
 	case $compressionLevel in
 		0) crf=17; acodec="copy" ;;
-		1) crf=23; acodec="aac"; audioBitrate="192k";;
-		2) crf=28; acodec="aac"; audioBitrate="128k";;
-		3) crf=33; preset="slower"; acodec="aac"; audioBitrate="96k";;
-		*)
-			printf "%b Compression level '%s' is invalid. Valid options are: [0, 1, 2, 3]%b\n" "${FORMAT_ERROR}" "$compressionLevel" "${FORMAT_RESET}"
-			exit 1
-			;;
+		1) crf=23; acodec="aac"  ; audioBitrate="192k" ;;
+		2) crf=28; acodec="aac"  ; audioBitrate="128k" ;;
+		3) crf=33; acodec="aac"  ; audioBitrate="96k"  ; preset="slower" ;;
+		*) printf "%b Compression level '%s' is invalid. Valid options are: [0, 1, 2, 3].\n" "${FORMAT_ERROR}" "$compressionLevel" >&2 && exit 1 ;;
 	esac
 
 	local ffmpegCMD=(ffmpeg -hide_banner -y -i "$inputFile")
 	ffmpegCMD+=(-map 0)
 	ffmpegCMD+=(-c:v "$vcodec" -preset "$preset" -crf "$crf")
 	ffmpegCMD+=(-c:a "$acodec")
-	if [[ "$acodec" != "copy" ]]; then
-		ffmpegCMD+=(-b:a "$audioBitrate")
-	fi
 	ffmpegCMD+=(-c:s copy -map_metadata 0)
-	if [[ "${extension,,}" == "mp4" ]]; then
-		ffmpegCMD+=(-movflags +faststart)
-	fi
-
+	[[ "$acodec" != "copy" ]]       && ffmpegCMD+=(-b:a "$audioBitrate")
+	[[ "${extension,,}" == "mp4" ]] && ffmpegCMD+=(-movflags +faststart)
 	ffmpegCMD+=("$outputFile")
 
 	"${ffmpegCMD[@]}" || {
-		printf "%b Failed to compress the file '%s'%b\n" "${FORMAT_ERROR}" "$inputFile" "${FORMAT_RESET}"
+		printf "%b Failed to compress the file '%s'.\n" "${FORMAT_ERROR}" "$inputFile" >&2
 		exit 1
 	}
 
-	printf "\n%b File '%s' compressed to '%s' with compression level %s%b\n" "${FORMAT_SUCCESS}" "$inputFile" "$outputFile" "$compressionLevel" "${FORMAT_RESET}"
+	printf "\n%b File '%s' compressed to '%s' with compression level %s\n" "${FORMAT_SUCCESS}" "$inputFile" "$outputFile" "$compressionLevel"
 
 	return 0
 }

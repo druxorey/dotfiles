@@ -1,109 +1,118 @@
 #!/bin/bash
 
-declare FORMAT_SUCCESS="\e[1;32m[SUCCESS]"
-declare FORMAT_ERROR="\e[1;31m[ERROR]"
-declare FORMAT_TITLE="\e[1;34m"
-declare FORMAT_RESET="\e[0m"
+declare FORMAT_SUCCESS="\e[1;32m[SUCCESS]\e[0m"
+declare FORMAT_ERROR="\e[1;31m[ERROR]\e[0m"
 
 declare TEMPLATES_PATH="$HOME/.local/share/crater"
+declare EXTENSION=""
+declare -a FILES=()
 
 function help() {
-	echo -e "${FORMAT_TITLE}USAGE:${FORMAT_RESET} $(basename "$0") FILE_TYPE [-n FILE NAME]
+	local FORMAT_BOLD="\e[1;34m"
+	local FORMAT_RESET="\e[0m"
+	echo -e "${FORMAT_BOLD}USAGE:${FORMAT_RESET} $(basename "$0") [OPTIONS] FILE_TYPE
 
-${FORMAT_TITLE}DESCRIPTION:${FORMAT_RESET}
+${FORMAT_BOLD}DESCRIPTION:${FORMAT_RESET}
     Creates a default file in a specific programming language.
 
-${FORMAT_TITLE}ARGUMENTS:${FORMAT_RESET}
+${FORMAT_BOLD}ARGUMENTS:${FORMAT_RESET}
     FILE_TYPE              bash, c, c++, go, html, java, latex, lua, python, rust.
 
-${FORMAT_TITLE}OPTIONS:${FORMAT_RESET}
-    -n FILE NAME           The name of the file.
-    -h                     Display this help message.
+${FORMAT_BOLD}OPTIONS:${FORMAT_RESET}
+    -n FILE_NAME           The name of the file to create (default: default).
+    -i INDEX               The index of the template to use (skips manual selection).
 
-${FORMAT_TITLE}EXAMPLES:${FORMAT_RESET}
+${FORMAT_BOLD}EXAMPLES:${FORMAT_RESET}
     $(basename "$0") html
-    $(basename "$0") python -n code"
-	exit 0
+    $(basename "$0") -n code -i 2 python"
+
+	return 0
+}
+
+
+function copyFromTemplate() {
+	local index=$1
+
+	if [[ -z "${FILES[$index]}" ]] || ! [[ "$index" =~ ^[0-9]+$ ]]; then
+		printf "%b Invalid index: '%s'\n" "$FORMAT_ERROR" "$index" >&2
+		exit 1
+	fi
+
+	local templatePath="${FILES[$index]}"
+	[[ -d "$templatePath" ]] && filePath="${2}" || filePath="${2}.${EXTENSION}"
+
+	cp -rp "$templatePath" "$filePath" || {
+		printf "%b Failed to create file '%s'.\n" "$FORMAT_ERROR" "$filePath" >&2
+		exit 1
+	}
+
+	printf "%b File '%s' created.\n" "$FORMAT_SUCCESS" "$filePath"
+
+	return 0
 }
 
 
 function main() {
-	if [[ "$1" == "-h" || -z "$1" ]]; then
-		help
-	fi
+	local fileName="default"
+	local templateIndex=""
 
-	fileType=$1
-	shift
-	fileName="default"
-
-	while getopts "n:h" opt; do
-	case $opt in
-		n) fileName="$OPTARG" ;;
-		h) help ;;
-		*) exit 1 ;;
-	esac
+	while getopts "n:i:h" opt; do
+		case $opt in
+			n) fileName="$OPTARG" ;;
+			i) templateIndex="$OPTARG" ;;
+			h) help && exit 0 ;;
+			*) printf "%b Try '%s -h' for more information.\n" "$FORMAT_ERROR" "$(basename "$0")" >&2 && exit 1 ;;
+		esac
 	done
+
+	shift $((OPTIND - 1))
+
+	local fileType=$1
+
+	[[ -z "$fileType" ]] && printf "%b File type is required.\n" "$FORMAT_ERROR" >&2 && exit 1
+	[[ ! -d "$TEMPLATES_PATH" ]] && printf "%b Templates directory '%s' not found.\n" "$FORMAT_ERROR" "$TEMPLATES_PATH" >&2 && exit 1;
 
 	case $fileType in
-		"bash") extension="sh";;
-		"c") extension="c";;
-		"c++") extension="cpp";;
-		"cpp") extension="cpp";;
-		"golang") extension="go";;
-		"go") extension="go";;
-		"html") extension="html";;
-		"java") extension="java";;
-		"latex") extension="tex";;
-		"lua") extension="lua";;
-		"python") extension="py";;
-		"rust") extension="rs";;
-		"sh") extension="sh";;
-		"shell") extension="sh";;
-		"tex") extension="tex";;
-		*)
-			printf "${FORMAT_ERROR} File type '%s' not found.${FORMAT_RESET}\n" "$fileType"
-			exit 1
-		;;
+		"bash")   EXTENSION="sh"   ;;
+		"c")      EXTENSION="c"    ;;
+		"c++")    EXTENSION="cpp"  ;;
+		"cpp")    EXTENSION="cpp"  ;;
+		"golang") EXTENSION="go"   ;;
+		"go")     EXTENSION="go"   ;;
+		"html")   EXTENSION="html" ;;
+		"java")   EXTENSION="java" ;;
+		"latex")  EXTENSION="tex"  ;;
+		"lua")    EXTENSION="lua"  ;;
+		"python") EXTENSION="py"   ;;
+		"rust")   EXTENSION="rs"   ;;
+		"sh")     EXTENSION="sh"   ;;
+		"shell")  EXTENSION="sh"   ;;
+		"tex")    EXTENSION="tex"  ;;
+		*) printf "%b File type '%s' not found.\n" "$FORMAT_ERROR" "$fileType" >&2 && exit 1 ;;
 	esac
 
-	files=()
-	for file in "$TEMPLATES_PATH/$extension"/*; do
-		files+=("$file")
+	for file in "$TEMPLATES_PATH/$EXTENSION"/*; do
+		[[ -e "$file" ]] && FILES+=("$file")
 	done
 
-	printf "Available templates with extension '%s':\n" "$extension"
-	for index in "${!files[@]}"; do
-		if [[ -d ${files[$index]} ]]; then
-			printf "  [%d] ${FORMAT_TITLE}%s/${FORMAT_RESET}\n" "$index" "$(basename "${files[$index]}")"
+	if [[ -n "$templateIndex" ]]; then
+		copyFromTemplate "$templateIndex" "$fileName"
+		exit 0
+	fi
+
+	printf "Available templates with extension '%s':\n" "$EXTENSION"
+	for index in "${!FILES[@]}"; do
+		if [[ -d ${FILES[$index]} ]]; then
+			printf "  [%d] \e[1;34m%s/\e[0m\n" "$index" "$(basename "${FILES[$index]}")"
 		else
-			printf "  [%d] %s\n" "$index" "$(basename "${files[$index]}")"
+			printf "  [%d] %s\n" "$index" "$(basename "${FILES[$index]}")"
 		fi
 	done
 
-	printf "Enter the number corresponding to the file index: "
+	printf "Enter the file index [0-9]: "
 	read -r ans
 
-	if ! [[ "$ans" =~ ^[0-9]+$ ]]; then
-		printf "${FORMAT_ERROR} Invalid input: '%s'${FORMAT_RESET}\n" "$ans"
-		exit 1
-	fi
-
-	if [[ -d ${files[$ans]} ]]; then
-		newFileName="${fileName}"
-	else
-		newFileName="${fileName}.${extension}"
-	fi
-
-	cp -rp "${files[$ans]}" "$newFileName" || {
-		printf "${FORMAT_ERROR} Failed to create file '%s'${FORMAT_RESET}\n" "$newFileName"
-		exit 1
-	}
-
-	if [[ -s $newFileName ]]; then
-		printf "${FORMAT_SUCCESS} File '%s' created${FORMAT_RESET}\n" "$newFileName"
-	else
-		printf "${FORMAT_ERROR} Failed to create file '%s'${FORMAT_RESET}\n" "$newFileName"
-	fi
+	copyFromTemplate "$ans" "$fileName"
 
 	exit 0
 }

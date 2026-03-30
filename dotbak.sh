@@ -9,7 +9,7 @@ declare EXCLUDE="--exclude=.git/ --exclude=.github --exclude=*.gitmodules --excl
 function help() {
 	local FORMAT_BOLD="\e[1;34m"
 	local FORMAT_RESET="\e[0m"
-	echo -e "${FORMAT_BOLD}USAGE:${FORMAT_RESET} $(basename "$0") DIRECTORY
+	echo -e "${FORMAT_BOLD}USAGE:${FORMAT_RESET} $(basename "$0") [ARGUMENTS]
 
 ${FORMAT_BOLD}DESCRIPTION:${FORMAT_RESET}
     This script creates a backup of various system files and configurations
@@ -17,17 +17,18 @@ ${FORMAT_BOLD}DESCRIPTION:${FORMAT_RESET}
     directories and files, ensuring they remain up-to-date.
 
 ${FORMAT_BOLD}ARGUMENTS:${FORMAT_RESET}
-    DIRECTORY             The target directory where the backup will be stored.
+    DIRECTORY          The target directory where the backup will be stored.
 
 ${FORMAT_BOLD}EXAMPLES:${FORMAT_RESET}
-    dotbak.sh /path/to/backup"
-	exit 1
+    $(basename "$0") /path/to/backup"
+
+	return 0
 }
 
 
 function backupBookmarks() {
 	local bookmarksDir="$HOME/.config/BraveSoftware/Brave-Browser/Default/Bookmarks"
-	local yamlDir="$HOME/Workspace/Projects/dotfiles/config/brave/"
+	local yamlDir="$1/config/brave/"
 
 	# This pipeline extracts bookmarks from Brave's JSON-formatted bookmarks file and converts them to YAML:
 	# 1. grep -E '"name":|\"url\":': Filters the raw JSON to only include lines containing "name" or "url" keys.
@@ -54,21 +55,38 @@ function backupBookmarks() {
 
 
 function main() {
-	local directory=${1:-"."}
-
 	while getopts "h" opt; do
 		case $opt in
-			h) help ;;
-			*) exit 1 ;;
+			h) help && exit 0 ;;
+			*) printf "%b Try '%s -h' for more information.\n" "$FORMAT_ERROR" "$(basename "$0")" >&2 && exit 1 ;;
 		esac
 	done
 
-	if [ -z "$directory" ]; then
-		printf "%b No directory specified. Please provide a target directory.\n" "$FORMAT_ERROR"
+	[[ $# -gt 1 ]] && printf "%b Too many arguments provided.\n" "$FORMAT_ERROR" >&2 && exit 1
+
+	local directory=${1:-"."}
+
+	if [[ ! -d "$directory" ]]; then
+		printf "%b The specified path '%s' is not a valid directory.\n" "$FORMAT_ERROR" "$directory" >&2
 		exit 1
 	fi
 
-	mkdir -p "$directory/config" "$directory/local"
+	local extraDirs=(
+		"$directory/config"
+		"$directory/local"
+		"$directory/config/zsh"
+		"$directory/config/vencord"
+		"$directory/config/bash"
+		"$directory/config/obsidian"
+		"$directory/config/tlp"
+		"$directory/config/brave"
+		"$directory/local/share"
+	)
+
+	mkdir -p "${extraDirs[@]}" || {
+		printf "%b Failed to create necessary backup directories. Please check permissions and available disk space.\n" "$FORMAT_ERROR" >&2
+		exit 1;
+	}
 
 	declare -A commandList=(
 		["$HOME/.config/autorandr"]="rsync -a --delete $HOME/.config/autorandr $directory/config"
@@ -106,8 +124,8 @@ function main() {
 	for name in "${!commandList[@]}"; do
 		local output=$(eval "${commandList[$name]}" 2>&1)
 		if [ $? -ne 0 ]; then
-			printf "\r%b Unexpected interruption during (%s) backup\n" "$FORMAT_ERROR" "$name"
-			printf "Error detail: %s\n" "$output"
+			printf "\r%b Unexpected interruption during (%s) backup\n" "$FORMAT_ERROR" "$name" >&2
+			printf "Error detail: %s\n" "$output" >&2
 			exit 1
 		fi
 		printf "\r\e[1;32m ✔ [\e[0m%02d\e[1;32m] Successfully backed up:\e[0m %s" "$index" "$name"
@@ -117,8 +135,8 @@ function main() {
 
 	[ -f "$directory/config/gitconfig" ] && sed -i '1,5c\# user data' "$directory/config/gitconfig"
 
-	if ! backupBookmarks >/dev/null 2>&1; then
-		printf "\r%b Failed to backup Brave bookmarks." "$FORMAT_ERROR" ; tput el ; printf "\n"
+	if ! backupBookmarks $directory >/dev/null 2>&1; then
+		printf "\r%b Failed to backup Brave bookmarks." "$FORMAT_ERROR" >&2 ; tput el ; printf "\n"
 		exit 1
 	fi
 

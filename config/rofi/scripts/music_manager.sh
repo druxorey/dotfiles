@@ -5,69 +5,89 @@ declare FORMAT_WARNING="\e[1;33m[WARNING]\e[0m"
 declare FORMAT_ERROR="\e[1;31m[ERROR]\e[0m"
 
 declare CONFIG_FILE="$HOME/.config/rofi/modules/music_manager.rasi"
+declare THUMBNAIL_PATH="/tmp/thumbnail.jpg"
 declare OPTION=2
 
-function checkCmus() {
-	bspc desktop -f ^5
-	if [[ -z $1 ]]; then
-		bspc desktop -f ^5 && kitty cmus
+function checkLofi() {
+	if pgrep -x "lofi" > /dev/null; then
+		pkill -x "lofi"
+		return 0
+	else
+		cmus-remote --stop
+		kitty lofi
 	fi
+
+	return 0
 }
 
-
 function getThumbnail() {
-	cleanTitle=$(echo "$1" | sed 's/^[^a-zA-Z]*//;s/[^a-zA-Z]*$//')
-	thumbnail=$(find ~/Music/ -type f -iname "*${cleanTitle}*")
-    ffmpeg -y -i "$thumbnail" -an -vcodec copy "/tmp/thumbnail.jpg" 2>/dev/null || rm -f "/tmp/thumbnail.jpg"
+	rm -f "$THUMBNAIL_PATH"
+
+	if [ -z "$1" ]; then
+		printf "%b Cannot search for thumbnail: File not found\n" "$FORMAT_ERROR" >&2
+		return 1
+	fi
+
+	exiftool -b -Picture "$1" > "$THUMBNAIL_PATH"
+
+	if [ ! -s "$THUMBNAIL_PATH" ]; then
+		rm -f "$THUMBNAIL_PATH"
+		printf "%b Failed to extract thumbnail from '%s'\n" "$FORMAT_ERROR" "$1"
+		return 1
+	fi
+
+	printf "%b Thumbnail updated for '%s'\n" "$FORMAT_SUCCESS" "$title"
+
+	return 0
 }
 
 
 function main() {
 	local status=$(cmus-remote -Q 2>/dev/null)
 
-	if [[ -z $status ]]; then
-		printf "%b Cmus is not running%b\n" "$FORMAT_WARNING" "$FORMAT_END"
-	fi
+	[[ -z $status ]] && printf "%b Cmus is not running.\n" "$FORMAT_WARNING"
 
-	local state=$(echo "$status" | grep "status" | awk '{print $2}')
 	local artist=$(echo "$status" | grep "tag artist" | cut -d ' ' -f 3-)
 	local title=$(echo "$status" | grep "tag title" | cut -d ' ' -f 3-)
+	local message=$(printf "%s - %s" "$artist" "$title" | sed 's/&/\&amp;/g; s/</\&lt;/g; s/>/\&gt;/g')
 
-	local message="$artist - $title"
-	local isLofiRunning=$(pgrep -x "lofi" > /dev/null && echo true || echo false)
-
-	if [ "$isLofiRunning" = false ] && getThumbnail "$title"; then
-		printf "%b Thumbnail updated for '%s'\n" "$FORMAT_SUCCESS" "$title"
-	else
-		printf "%b No thumbnail found for '%s'\n" "$FORMAT_ERROR" "$title"
-	fi
-
+	local filePath=$(echo "$status" | grep "file" | cut -d ' ' -f 2-)
 	local reproducerState=""
 	local lofiSelected=""
-	if [ "$isLofiRunning" == true ]; then
-		message="Lofi radio"
+
+	printf "State:   %s\nArtist:  %s\nTitle:   %s\nPath:    %s\n" "${state:-N/A}" "${artist:-Unknown}" "${title:-Unknown}" "${filePath:-N/A}"
+
+	local state=$(echo "$status" | grep "status" | awk '{print $2}')
+	if pgrep -x "lofi" > /dev/null; then
 		reproducerState="󰎊"
 		lofiSelected="-u 4"
+		message="Lofi Radio"
 	elif [ "$state" = "playing" ]; then
 		reproducerState=""
 	elif [ "$state" = "paused" ]; then
+		reproducerState=""
+	elif [ "$state" = "stopped" ]; then
 		reproducerState=""
 	else
 		reproducerState=""
 		message="No music playing"
 	fi
 
+	[[ -z "$lofiSelected" ]] && getThumbnail "$filePath"
+
 	local rofiOption=$(echo -e "\n󰒮\n$reproducerState\n󰒭\n󰋋" | rofi -dmenu -p -i -m -1 $lofiSelected -mesg "$message" -selected-row $OPTION -config $CONFIG_FILE)
 
 	case "$rofiOption" in
 		"") cmus-remote --stop && OPTION=0 ;;
-		"󰒮") cmus-remote --prev  && OPTION=1 ;;
-		"") checkCmus "$status" && OPTION=-1 ;;
+		"󰒮") cmus-remote --prev && OPTION=1 ;;
+		"󰒭") cmus-remote --next && OPTION=3 ;;
+		"󰋋") bspc desktop -f ^5 ; checkLofi  & exit 0 ;;
+		"") bspc desktop -f ^5 ; kitty cmus & exit 0 ;;
 		"$reproducerState") cmus-remote --pause && OPTION=2 ;;
-		"󰒭") cmus-remote --next  && OPTION=3 ;;
-		"󰋋") cmus-remote --stop ; kitty lofi  && OPTION=-1 ;;
 		*) exit 1 ;;
 	esac
+
+	return 0
 }
 
 while [[ $OPTION -ne -1 ]]; do

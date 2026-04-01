@@ -18,4 +18,9 @@ prepend_keymap = [
 	{ on = [ ">", "s" ], run = "plugin what-size", desc = "Calc size of selection or cwd" },
 	{ on = [ ">", "e" ], run = "shell thunar .", desc = "Open thunar on cwd" },
 	{ on = [ ">", "n" ], run = "shell nvim --block", desc = "Open nvim on cwd" },
+	{ on = [ "X", "x", "x" ], run = "plugin lin-decompress -- --no-password", desc = "Extract hovered." },
+	{ on = [ "X", "x", "p" ], run = "plugin lin-decompress", desc = "Extract hovered. Password" },
+	{ on = [ "X", "x", "a" ], run = "plugin lin-decompress -- --no-hover --tabselect=all", desc = "Extract selected in all tabs" },
+	{ on = [ "X", "x", "A" ], run = "plugin lin-decompress -- --tabselect=all", desc = "Extract selected in all tabs. Hovered included" },
+	{ on = [ "X", "x", "c" ], run = "plugin lin-decompress -- --no-hover --tabselect=current", desc = "Extract selected in current tab only" },
 ]

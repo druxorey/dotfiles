@@ -33,5 +33,20 @@ use = "imsi32/yatline"
 rev = "c5d4b48"
 hash = "e6e98d12b1648d1894c2b560d85eeaa7"
 
+[[plugin.deps]]
+use = "KKV9/compress"
+rev = "46a6b9f"
+hash = "771af2becc575a3f43d0542de823969d"
+
+[[plugin.deps]]
+use = "Sonico98/exifaudio"
+rev = "4506f9d"
+hash = "4761fffb60a12d37096c34a356380cdf"
+
+[[plugin.deps]]
+use = "ZimCodes/lin-decompress"
+rev = "592fee3"
+hash = "1b1eb812c57d18a2047c1e8e1536274f"
+
 [flavor]
 deps = []

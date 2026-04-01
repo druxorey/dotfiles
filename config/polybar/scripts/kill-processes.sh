@@ -1,15 +1,12 @@
 #!/bin/bash
 
 function main() {
-	local apps=("Discord" "steam" "protonvpn-app" "obs" "localsend")
+	pkill -9 -i "Discord" 2>/dev/null
 
-	for app in "${apps[@]}"; do
-		if [[ "$app" == "Discord" ]]; then
-			pkill -9 -i "$app" 2>/dev/null
-		else
-			pkill -i "$app" 2>/dev/null
-		fi
-	done
+	local targets="steam|protonvpn-app|obs|localsend"
+	pkill -i "$targets" 2>/dev/null
+
+	return 0
 }
 
 main "$@"

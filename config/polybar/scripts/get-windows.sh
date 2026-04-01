@@ -1,23 +1,24 @@
 #!/bin/bash
 
 function main() {
-	windows=$(bspc query -N -d focused | wc -l)
+	local desktopStatus=$(bspc query -T -d)
 
-	if bspc query -T -d | grep -q "monocle"; then
-		mod=$(( windows / 2 ))
-
-		if [[ windows -ge 4 ]]; then
-			windows=$(( windows - mod ))
-		elif [[ windows -ge 3 ]]; then
-			windows=$(( windows - 1 ))
-		fi
-
-		printf "$windows"
-	else
+	if [[ "$desktopStatus" != *"\"layout\":\"monocle\""* ]]; then
 		printf "\n"
 		return 0
 	fi
 
+	local windows=$(bspc query -N -d focused | wc -l)
+
+	if (( windows >= 4 )); then
+		windows=$(( windows - (windows / 2) ))
+	elif (( windows == 3 )); then
+		windows=2
+	fi
+
+	printf "%s" "$windows"
+
+	return 0
 }
 
 main "$@"

@@ -1,34 +1,30 @@
 #!/bin/bash
 
-MAX_LENGTH=50
+declare -i MAX_LENGTH_TITLE=50
+declare -i MAX_LENGTH_ARTIST=25
 
 function main() {
-	status=$(cmus-remote -Q 2>/dev/null)
+	local status=$(cmus-remote -Q 2>/dev/null)
 
 	if [[ -z $status ]]; then
 		printf " "
 		exit 0
 	fi
 
-	state=$(echo "$status" | grep "status" | awk '{print $2}')
-	artist=$(echo "$status" | grep "tag artist" | cut -d ' ' -f 3-)
-	title=$(echo "$status" | grep "tag title" | cut -d ' ' -f 3-)
+	local state=$(echo "$status" | sed -n 's/^status //p')
+	local artist=$(echo "$status" | sed -n 's/^tag artist //p')
+	local title=$(echo "$status" | sed -n 's/^tag title //p')
 
-	if [ ${#title} -gt $MAX_LENGTH ]; then
-		title=$(echo "$title" | cut -c 1-$MAX_LENGTH)...
-	fi
+	[[ ${#title} -gt $MAX_LENGTH_TITLE ]] && title="${title:0:$MAX_LENGTH_TITLE}..."
+	[[ ${#artist} -gt $MAX_LENGTH_ARTIST ]] && artist="${artist:0:$MAX_LENGTH_ARTIST}..."
 
-	if [ ${#artist} -gt $MAX_LENGTH ]; then
-		artist=$(echo "$artist" | cut -c 1-$MAX_LENGTH)...
-	fi
+	case "$state" in
+		playing) printf "   %s  -  %s " "$artist" "$title" ;;
+		paused)  printf "   %s  -  %s " "$artist" "$title" ;;
+		*)       printf "   Stopped" ;;
+	esac
 
-	if [ "$state" = "playing" ]; then
-		printf "   %s  -  %s " "$artist" "$title"
-	elif [ "$state" = "paused" ]; then
-		printf "   %s  -  %s " "$artist" "$title"
-	else
-		printf "   Stopped"
-	fi
+	return 0
 }
 
 main "$@"

@@ -2,22 +2,20 @@
 
 function main() {
 	local icons=()
-	local processes
-	processes=$(ps aux)
 
-	echo "$processes" | grep -q "discord" && icons+=("󰙯")
-	echo "$processes" | grep -q "steam" && icons+=("󰓓")
-	echo "$processes" | grep -q "protonvpn-app" && icons+=("󰕣")
-	echo "$processes" | grep -q -w "obs" && icons+=("󰻃")
-	echo "$processes" | grep -q "localsend" && icons+=("")
+	pgrep -x "discord" > /dev/null && icons+=("󰙯")
+	pgrep -x "steam" > /dev/null && icons+=("󰓓")
+	pgrep -x "protonvpn-app" > /dev/null && icons+=("󰕣")
+	pgrep -x "obs" > /dev/null && icons+=("󰻃")
+	pgrep -x "localsend" > /dev/null && icons+=("")
 
 	if [ ${#icons[@]} -gt 0 ]; then
-		local IFS="@"
-		local output="${icons[*]}"
-		printf "%s" "${output//@/    }"
+		echo "${icons[*]}"
 	else
-		printf "\n"
+		echo ""
 	fi
+
+	return 0
 }
 
 main "$@"

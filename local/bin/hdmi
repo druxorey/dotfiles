@@ -1,14 +1,7 @@
 #!/bin/bash
 
-declare FORMAT_TITLE="\e[1;34m"
-declare FORMAT_WARNING="\e[1;33m[WARNING]"
-declare FORMAT_RESET="\e[0m"
-
-function help() {
-	printf "%bUSAGE:%b $(basename "$0") {connect|disconnect}\n" "$FORMAT_TITLE" "$FORMAT_RESET"
-	exit 1
-}
-
+declare -r FORMAT_SUCCESS="\e[1;32m[SUCCESS]\e[0m"
+declare -r FORMAT_ERROR="\e[1;31m[ERROR]\e[0m"
 
 function connect() {
 	printf "Select resolution:\n"
@@ -18,41 +11,62 @@ function connect() {
 	printf "Enter your choice [1-3]: "
 	read -r ans
 
-	local resolution="1330x768"
+	local resolution=""
 	case $ans in
 		1) resolution="1330x768" ;;
 		2) resolution="1600x900" ;;
 		3) resolution="1920x1080" ;;
-		*) printf "%b Invalid choice: '%s'%b\n" "$FORMAT_WARNING" "$ans" "$FORMAT_RESET";;
+		*) printf "%b Invalid choice: '%s'.\n" "$FORMAT_ERROR" "$ans" >&2 && exit 1 ;;
 	esac
 
-	printf "Setting HDMI resolution to %s %b\n" "$resolution" "$FORMAT_RESET"
+	printf "Setting HDMI resolution to %s.\n" "$resolution"
 
-	xrandr --output eDP-1 --primary --mode 1920x1080 --rotate normal --output HDMI-1 --mode $resolution --rate 60 --rotate normal --right-of eDP-1
-	bspc wm -r
+	xrandr --output eDP-1 --auto --primary  --output HDMI-1 --mode $resolution --right-of eDP-1
+
+	if [[ $? -ne 0 ]]; then
+		printf "%b Failed to connect HDMI.\n" "$FORMAT_ERROR" >&2
+		return 1
+	fi
+
+	return 0
 }
 
 
 function disconnect() {
 	xrandr --output HDMI-1 --off
-	bspc wm -r
+
+	if [[ $? -ne 0 ]]; then
+		printf "%b Failed to disconnect HDMI.\n" "$FORMAT_ERROR" >&2
+		return 1
+	fi
+	printf "%b HDMI disconnected successfully.\n" "$FORMAT_SUCCESS"
+
+	return 0
 }
 
 
 function main() {
-	if [[ $# -eq 0 ]]; then
-		help
-	fi
+	while getopts "h" opt; do
+		case $opt in
+			h) printf "\e[1;34mUSAGE:\e[0m %s {connect|disconnect}\n" "$(basename "$0")" && exit 0 ;;
+			*) printf "%b Try '%s -h' for more information.\n" "$FORMAT_ERROR" "$(basename "$0")" >&2 && exit 1 ;;
+		esac
+	done
 
-	option=$1
+	local option="$1"
+	[[ -z "$option" ]] && printf "%b No option provided. Try '%s -h' for more information.\n" "$FORMAT_ERROR" "$(basename "$0")" >&2 && exit 1
 
 	if [[ $option == "connect" ]]; then
 		connect
 	elif [[ $option == "disconnect" ]]; then
 		disconnect
 	else
-		help
+		printf "%b Invalid option: '%s'. Try '%s -h' for more information.\n" "$FORMAT_ERROR" "$option" "$(basename "$0")" >&2 && exit 1
 	fi
+
+	bspc wm -r
+
+	return 0
 }
 
 main "$@"

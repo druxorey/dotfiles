@@ -1,13 +1,7 @@
 #!/bin/bash
 
-declare FORMAT_SUCCESS="\e[1;32m[SUCCESS]\e[0m"
-declare FORMAT_ERROR="\e[1;31m[ERROR]\e[0m"
-
-function help() {
-	echo -e "\e[1;34mUSAGE:\e[0m $(basename "$0") <file.md>"
-	exit 0
-}
-
+declare -r FORMAT_SUCCESS="\e[1;32m[SUCCESS]\e[0m"
+declare -r FORMAT_ERROR="\e[1;31m[ERROR]\e[0m"
 
 function createLuaFilter() {
 	local filterFile="$1"
@@ -95,7 +89,12 @@ EOF
 
 
 function main() {
-	[ -z "$1" ] || [ "$1" == "-h" ] && help
+	while getopts "h" opt; do
+		case $opt in
+			h) printf "\e[1;34mUSAGE:\e[0m %s FILE_NAME\n" "$(basename "$0")" && exit 0 ;;
+			*) printf "%b Try '%s -h' for more information.\n" "$FORMAT_ERROR" "$(basename "$0")" >&2 && exit 1 ;;
+		esac
+	done
 
     local inputFile="$1"
     local filename="${inputFile%.*}"
@@ -138,11 +137,11 @@ function main() {
 		-V header-includes="\definecolor{drx-color-default}{HTML}{6C664B}"; then
 
 		printf "%b PDF generated: «%s»\n" "$FORMAT_SUCCESS" "$outputFile"
-		exit 0
+		return 0
 	fi
 
 	printf "%b Compilation failed for file: «%s»\n" "$FORMAT_ERROR" "$inputFile"
-	exit 1
+	return 1
 }
 
 main "$@"

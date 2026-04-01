@@ -1,11 +1,11 @@
 #!/bin/bash
 
-declare FORMAT_SUCCESS="\e[1;32m[SUCCESS]\e[0m"
-declare FORMAT_ERROR="\e[1;31m[ERROR]\e[0m"
+declare -r FORMAT_SUCCESS="\e[1;32m[SUCCESS]\e[0m"
+declare -r FORMAT_ERROR="\e[1;31m[ERROR]\e[0m"
 
 function help() {
-	local FORMAT_BOLD="\e[1;34m"
-	local FORMAT_RESET="\e[0m"
+	declare -r FORMAT_BOLD="\e[1;34m"
+	declare -r FORMAT_RESET="\e[0m"
 	echo -e "${FORMAT_BOLD}USAGE:${FORMAT_RESET} $(basename "$0") [OPTIONS] INPUT_FILE
 
 ${FORMAT_BOLD}DESCRIPTION:${FORMAT_RESET}

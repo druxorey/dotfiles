@@ -1,15 +1,15 @@
 #!/bin/bash
 
-declare FORMAT_SUCCESS="\e[1;32m[SUCCESS]\e[0m"
-declare FORMAT_ERROR="\e[1;31m[ERROR]\e[0m"
+declare -r FORMAT_SUCCESS="\e[1;32m[SUCCESS]\e[0m"
+declare -r FORMAT_ERROR="\e[1;31m[ERROR]\e[0m"
 
-declare TEMPLATES_PATH="$HOME/.local/share/crater"
-declare EXTENSION=""
+declare -r TEMPLATES_PATH="$HOME/.local/share/crater"
 declare -a FILES=()
+declare EXTENSION=""
 
 function help() {
-	local FORMAT_BOLD="\e[1;34m"
-	local FORMAT_RESET="\e[0m"
+	declare -r FORMAT_BOLD="\e[1;34m"
+	declare -r FORMAT_RESET="\e[0m"
 	echo -e "${FORMAT_BOLD}USAGE:${FORMAT_RESET} $(basename "$0") [OPTIONS] FILE_TYPE
 
 ${FORMAT_BOLD}DESCRIPTION:${FORMAT_RESET}
@@ -114,7 +114,7 @@ function main() {
 
 	copyFromTemplate "$ans" "$fileName"
 
-	exit 0
+	return 0
 }
 
 main "$@"

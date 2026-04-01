@@ -1,10 +1,10 @@
 #!/bin/bash
 
-declare FORMAT_SUCCESS="\e[1;32m[SUCCESS]\e[0m"
-declare FORMAT_ERROR="\e[1;31m[ERROR]\e[0m"
+declare -r FORMAT_SUCCESS="\e[1;32m[SUCCESS]\e[0m"
+declare -r FORMAT_ERROR="\e[1;31m[ERROR]\e[0m"
 
-declare CACHE_FILE=~/.cache/actual_theme
-declare ACTUAL_WALLPAPER_PATH="$HOME/.local/share/wallpaper_actual.png"
+declare -r CACHE_FILE=~/.cache/actual_theme
+declare -r ACTUAL_WALLPAPER_PATH="$HOME/.local/share/wallpaper_actual.png"
 
 declare -A APP_ROUTES
 
@@ -89,6 +89,8 @@ function main() {
 
 	notify-send "Switched to $mode theme" --app-name "Toggle Theme" -u low
 	printf "Theme switch to %s completed.\n" "$mode"
+
+	return 0
 }
 
 main "$@"

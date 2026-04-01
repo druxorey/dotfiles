@@ -1,16 +1,16 @@
 #!/bin/bash
 
-declare FORMAT_SUCCESS="\e[1;32m[SUCCESS]\e[0m"
-declare FORMAT_WARNING="\e[1;33m[WARNING]\e[0m"
-declare FORMAT_ERROR="\e[1;31m[ERROR]\e[0m"
+declare -r FORMAT_SUCCESS="\e[1;32m[SUCCESS]\e[0m"
+declare -r FORMAT_WARNING="\e[1;33m[WARNING]\e[0m"
+declare -r FORMAT_ERROR="\e[1;31m[ERROR]\e[0m"
 
-declare CONFIG_PATH="$HOME/.config/rofi/modules/start_menu.rasi"
-declare SCRIPTS_PATH="$HOME/.config/rofi/scripts"
-declare POLYBAR_CONFIG_PATH="$HOME/.config/rofi/polybar/start_menu_polybar.rasi"
+declare -r CONFIG_PATH="$HOME/.config/rofi/modules/start_menu.rasi"
+declare -r SCRIPTS_PATH="$HOME/.config/rofi/scripts"
+declare -r POLYBAR_CONFIG_PATH="$HOME/.config/rofi/polybar/start_menu_polybar.rasi"
 
 function main() {
 	local actualDate=$(date +"%H:%M  %A  %d/%m/%Y" | tr '[:lower:]' '[:upper:]')
-	local -a monitor=()
+	declare -a monitor=()
 
 	local configFile""
 	if [[ $1 == "polybar" ]]; then
@@ -57,6 +57,8 @@ function main() {
 			exit 1
 			;;
 	esac
+
+	return 0
 }
 
 main "$@"

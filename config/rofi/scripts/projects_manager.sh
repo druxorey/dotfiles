@@ -1,6 +1,6 @@
 #!/bin/bash
 
-declare WORKSPACE_DIR="$HOME/Workspace"
+declare -r WORKSPACE_DIR="$HOME/Workspace"
 
 function getProjects() {
     find "$WORKSPACE_DIR/Projects" "$WORKSPACE_DIR/Forks" "$WORKSPACE_DIR/Websites" -maxdepth 1 -mindepth 1 -type d 2>/dev/null
@@ -61,7 +61,8 @@ function main() {
 	fi
 
 	nohup kitty --title "Project: $sessionName" -e tmux attach-session -t "$sessionName" >/dev/null 2>&1 &
-	exit 0
+
+	return 0
 }
 
 main "$@"

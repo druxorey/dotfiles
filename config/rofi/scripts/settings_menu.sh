@@ -1,10 +1,10 @@
 #!/bin/bash
 
-declare FORMAT_SUCCESS="\e[1;32m[SUCCESS]\e[0m"
-declare FORMAT_WARNING="\e[1;33m[WARNING]\e[0m"
+declare -r FORMAT_SUCCESS="\e[1;32m[SUCCESS]\e[0m"
+declare -r FORMAT_WARNING="\e[1;33m[WARNING]\e[0m"
 
-declare CONFIG_FILE="$HOME/.config/rofi/modules/settings_menu.rasi"
-declare SCRIPTS_PATH=$HOME/.config/rofi/scripts
+declare -r CONFIG_FILE="$HOME/.config/rofi/modules/settings_menu.rasi"
+declare -r SCRIPTS_PATH=$HOME/.config/rofi/scripts
 
 function toggleAirplaneMode() {
 	printf "Checking network status...\n"
@@ -27,7 +27,7 @@ function toggleAirplaneMode() {
 
 function main() {
 	local actualDate=$(date +"%H:%M  %A  %d/%m/%Y" | tr '[:lower:]' '[:upper:]')
-	local actualTheme=$(cat ~/.cache/actual_theme 2>/dev/null || echo "dark")
+	local actualTheme=$(cat ~/.cache/actual_theme 2>/dev/null || printf "dark")
 	
 	printf "Initializing settings menu...\n"
 	printf "Current theme detected: %s\n" "$actualTheme"
@@ -40,7 +40,7 @@ function main() {
 	menuNames[2]="󰀝   Airplane Mode"
 	menuNames[3]="󰹑   Display"
 	menuNames[4]="󰂄   Energy"
-	menuNames[5]=$([[ "$actualTheme" == "dark" ]] && echo "   Light Mode" || echo "   Dark Mode")
+	menuNames[5]=$([[ "$actualTheme" == "dark" ]] && printf "   Light Mode" || printf "   Dark Mode")
 	menuNames[6]="   Wallpaper"
 
 	menuCommands[0]="sh $SCRIPTS_PATH/wifi_manager.sh"
@@ -70,6 +70,8 @@ function main() {
 	fi
 
 	eval "$selectedCommand"
+
+	return 0
 }
 
 main "$@"

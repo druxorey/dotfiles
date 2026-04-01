@@ -1,12 +1,12 @@
 #!/bin/bash
 
-declare FORMAT_SUCCESS="\e[1;32m[SUCCESS]\e[0m"
-declare FORMAT_WARNING="\e[1;33m[WARNING]\e[0m"
-declare FORMAT_ERROR="\e[1;31m[ERROR]\e[0m"
+declare -r FORMAT_SUCCESS="\e[1;32m[SUCCESS]\e[0m"
+declare -r FORMAT_WARNING="\e[1;33m[WARNING]\e[0m"
+declare -r FORMAT_ERROR="\e[1;31m[ERROR]\e[0m"
 
-declare CONFIG_FILE="$HOME/.config/rofi/modules/music_manager.rasi"
-declare THUMBNAIL_PATH="/tmp/thumbnail.jpg"
-declare OPTION=2
+declare -r CONFIG_FILE="$HOME/.config/rofi/modules/music_manager.rasi"
+declare -r THUMBNAIL_PATH="/tmp/thumbnail.jpg"
+declare -i OPTION=2
 
 function manageLofiStatus() {
 	case "$1" in

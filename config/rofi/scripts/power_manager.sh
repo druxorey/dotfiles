@@ -1,7 +1,7 @@
 #!/bin/bash
 
-declare FORMAT_WARNING="\e[1;33m[WARNING]\e[0m"
-declare CONFIG_FILE="$HOME/.config/rofi/modules/power_manager.rasi"
+declare -r FORMAT_WARNING="\e[1;33m[WARNING]\e[0m"
+declare -r CONFIG_FILE="$HOME/.config/rofi/modules/power_manager.rasi"
 
 function main() {
 	local uptime=$(uptime -p)
@@ -24,6 +24,8 @@ function main() {
 		"󰍃") bspc quit ;;
 		*) exit 1 ;;
 	esac
+
+	return 0
 }
 
 main "$@"

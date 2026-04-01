@@ -1,16 +1,16 @@
 #!/bin/bash
 
-declare FORMAT_SUCCESS="\e[1;32m[SUCCESS]\e[0m"
-declare FORMAT_WARNING="\e[1;33m[WARNING]\e[0m"
-declare FORMAT_ERROR="\e[1;31m[ERROR]\e[0m"
+declare -r FORMAT_SUCCESS="\e[1;32m[SUCCESS]\e[0m"
+declare -r FORMAT_WARNING="\e[1;33m[WARNING]\e[0m"
+declare -r FORMAT_ERROR="\e[1;31m[ERROR]\e[0m"
 
-declare CONFIG_FILE="$HOME/.config/rofi/modules/wallpaper_manager.rasi"
+declare -r CONFIG_FILE="$HOME/.config/rofi/modules/wallpaper_manager.rasi"
 
-declare DARK_WALLPAPERS_PATH="$HOME/Pictures/Wallpapers/Dracula"
-declare LIGHT_WALLPAPERS_PATH="$HOME/Pictures/Wallpapers/Alucard"
-declare ACTUAL_WALLPAPER_PATH="$HOME/.local/share/wallpaper_actual.png"
-declare DARK_LINK="$HOME/.local/share/wallpaper_dark.png"
-declare LIGHT_LINK="$HOME/.local/share/wallpaper_light.png"
+declare -r DARK_WALLPAPERS_PATH="$HOME/Pictures/Wallpapers/Dracula"
+declare -r LIGHT_WALLPAPERS_PATH="$HOME/Pictures/Wallpapers/Alucard"
+declare -r ACTUAL_WALLPAPER_PATH="$HOME/.local/share/wallpaper_actual.png"
+declare -r DARK_LINK="$HOME/.local/share/wallpaper_dark.png"
+declare -r LIGHT_LINK="$HOME/.local/share/wallpaper_light.png"
 
 function main() {
 	local wallpapersPath=$LIGHT_WALLPAPERS_PATH
@@ -43,6 +43,7 @@ function main() {
 	else
 		printf "%b No wallpaper selected\n" "$FORMAT_WARNING"
 	fi
+
 	return 0
 }
 

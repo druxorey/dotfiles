@@ -1,12 +1,12 @@
 #!/bin/bash
 
-declare FORMAT_SUCCESS="\e[1;32m[SUCCESS]\e[0m"
-declare FORMAT_WARNING="\e[1;33m[WARNING]\e[0m"
-declare FORMAT_ERROR="\e[1;31m[ERROR]\e[0m"
+declare -r FORMAT_SUCCESS="\e[1;32m[SUCCESS]\e[0m"
+declare -r FORMAT_WARNING="\e[1;33m[WARNING]\e[0m"
+declare -r FORMAT_ERROR="\e[1;31m[ERROR]\e[0m"
 
-declare CONFIG_FILE="$HOME/.config/rofi/modules/energy_manager.rasi"
-declare TLP_DIR="/etc"
-declare PICOM_DIR="$HOME/.config/picom"
+declare -r CONFIG_FILE="$HOME/.config/rofi/modules/energy_manager.rasi"
+declare -r TLP_DIR="/etc"
+declare -r PICOM_DIR="$HOME/.config/picom"
 
 function checkPicom() {
 	if ! pgrep -x "picom" > /dev/null && [[ "$powerPlan" != "performance" ]]; then
@@ -76,6 +76,8 @@ function main() {
 		fi
 		printf "%b Applied performance mode\n" "$FORMAT_SUCCESS"
 	fi
+
+	return 0
 }
 
 main "$@"

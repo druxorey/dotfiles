@@ -1,9 +1,9 @@
 #!/bin/bash
 
-declare FORMAT_SUCCESS="\e[1;32m[SUCCESS]\e[0m"
-declare FORMAT_WARNING="\e[1;33m[WARNING]\e[0m"
+declare -r FORMAT_SUCCESS="\e[1;32m[SUCCESS]\e[0m"
+declare -r FORMAT_WARNING="\e[1;33m[WARNING]\e[0m"
 
-declare CONFIG_FILE="$HOME/.config/rofi/modules/display_manager.rasi"
+declare -r CONFIG_FILE="$HOME/.config/rofi/modules/display_manager.rasi"
 
 function main() {
 	local message="Select display configuration"
@@ -36,6 +36,8 @@ function main() {
 
 	eval "$selectedCommand"
 	bspc wm -r
+
+	return 0
 }
 
 main "$@"

@@ -117,11 +117,15 @@ def saveAllPackages(packages: Dict[str, Dict[str, List[str]]]) -> None:
                 file.write(")\n\n")
 
 
-def findPackageLocation(pkgName: str, allPackages: Dict[str, Dict[str, List[str]]]) -> Optional[Tuple[str, str]]:
+def findPackageLocation(pkgName: str, allPackages: Dict[str, Dict[str, List[str]]]) -> Optional[Tuple[str, str, str]]:
+    suffixes = ["", "-git", "-bin"]
     for listCategory in CATEGORIES:
-        for packageCategory in REPOS:
-            if pkgName in allPackages[listCategory][packageCategory]:
-                return listCategory, packageCategory
+        for pkgCategory in REPOS:
+            pkgInCategory = allPackages[listCategory][pkgCategory]
+            for sfx in suffixes:
+                fullPkgName = f"{pkgName}{sfx}"
+                if fullPkgName in pkgInCategory:
+                    return listCategory, pkgCategory, fullPkgName
     return None
 
 
@@ -130,8 +134,8 @@ def addPackage(pkgName: str) -> None:
     location = findPackageLocation(pkgName, allPackages)
 
     if location:
-        listCat, pkgCat = location
-        print(f"{FORMAT_ERROR} Package '{pkgName}' is already registered in the '{listCat}' list ({pkgCat}).{FORMAT_RESET}")
+        listCategory, pkgCategory, fullPkgName = location
+        print(f"{FORMAT_ERROR} Package '{fullPkgName}' is already registered in the '{listCategory}' list ({pkgCategory}).{FORMAT_RESET}")
         return
 
     repoType: str = ""
@@ -160,10 +164,10 @@ def removePackage(pkgName: str) -> None:
     location = findPackageLocation(pkgName, allPackages)
 
     if location:
-        listCat, pkgCat = location
-        allPackages[listCat][pkgCat].remove(pkgName)
+        listCategory, pkgCategory, fullPkgName = location
+        allPackages[listCategory][pkgCategory].remove(pkgName)
         saveAllPackages(allPackages)
-        print(f"{FORMAT_SUCCESS} Package '{pkgName}' was removed from the '{listCat}' list ({pkgCat}).{FORMAT_RESET}")
+        print(f"{FORMAT_SUCCESS} Package '{fullPkgName}' was removed from the '{listCategory}' list ({pkgCategory}).{FORMAT_RESET}")
     else:
         print(f"{FORMAT_ERROR} Package '{pkgName}' was not found in any of your lists.{FORMAT_RESET}")
 
@@ -173,8 +177,8 @@ def searchPackage(pkgName: str) -> None:
     location = findPackageLocation(pkgName, allPackages)
 
     if location:
-        listCat, pkgCat = location
-        print(f"{FORMAT_SUCCESS} Package '{pkgName}' found in list: {FORMAT_RESET}{listCat.upper()} ({pkgCat.upper()})")
+        listCategory, pkgCategory, fullPkgName = location
+        print(f"{FORMAT_SUCCESS} Package '{fullPkgName}' found in list: {FORMAT_RESET}{listCategory.upper()} ({pkgCategory.upper()})")
     else:
         print(f"{FORMAT_ERROR} Package '{pkgName}' was not found in any of your lists.{FORMAT_RESET}")
 

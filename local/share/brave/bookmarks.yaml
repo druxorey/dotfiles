@@ -14,7 +14,7 @@
   url: https://www.w3schools.com/
 - name: OverAPI
   url: https://overapi.com/
-- name: Conest
+- name: UCV Conest
   url: https://conest.ciens.ucv.ve/webapp/
 - name: Scribbr
   url: https://www.scribbr.es/citar/generador/apa/
@@ -22,7 +22,7 @@
   url: https://notebooklm.google.com/
 - name: UCV Mail
   url: https://correo.ciens.ucv.ve/
-- name: Portalasig2
+- name: UCV Portalasig2
   url: https://portalasig2.ciens.ucv.ve/#/
 - name: Doc Downloader
   url: https://docdownloader.com/
@@ -36,7 +36,7 @@
   url: https://www.mathcha.io/editor
 - name: Simpletex - Image To LaTeX
   url: https://simpletex.cn/ai/latex_ocr
-- name: Campus Virtual
+- name: UCV Campus Virtual
   url: https://campusvirtualucv.org/login/index.php
 - name: FreeBSD Handbook
   url: https://docs.freebsd.org/en/books/handbook/
@@ -82,7 +82,7 @@
   url: https://www.virustotal.com/gui/home/upload
 - name: Druxorey Web
   url: https://druxorey.github.io/
-- name: Calendar
+- name: Google Calendar
   url: https://calendar.google.com/calendar/u/0/r
 - name: Daily.dev
   url: https://app.daily.dev/onboarding
@@ -94,15 +94,15 @@
   url: https://www.notion.so/
 - name: TechThings
   url: https://www.reddit.com/user/devdruxorey/m/techthings/
-- name: Drive
+- name: Google Drive
   url: https://drive.google.com/drive/my-drive
-- name: Translate
+- name: Google Translate
   url: https://translate.google.com/?sl=es&tl=en&op=translate
-- name: Remote Desktop
+- name: Google Remote Desktop
   url: https://remotedesktop.google.com/access
 - name: GeoGebra
   url: https://www.geogebra.org/calculator
-- name: Gmail
+- name: Google Gmail
   url: https://mail.google.com/mail/u/0/#inbox
 - name: Mercado Libre Venezuela
   url: https://www.mercadolibre.com.ve/
@@ -122,9 +122,9 @@
   url: https://annas-archive.li/
 - name: MyAnimeList
   url: https://myanimelist.net/
-- name: YouTube
+- name: Google YouTube
   url: https://www.youtube.com/
-- name: Photos
+- name: Google Photos
   url: https://photos.google.com/
 - name: Wallhaven.cc
   url: https://wallhaven.cc/

@@ -83,19 +83,23 @@ super + Print
 
 # open clipboard manager
 super + v
-	clipmenu -config ~/.config/rofi/modules/clipboard_manager.rasi
+	clipmenu -config ~/.config/rofi/shared/layout_find.rasi
 
 # general menu
 super + space
-	sh ~/.config/rofi/scripts/start_menu.sh
+	sh ~/.config/rofi/scripts/menu_start.sh
 
 # app launcher
 super + Home
-    rofi -show drun -config ~/.config/rofi/modules/app_launcher.rasi
+    rofi -show drun -config ~/.config/rofi/modules/launcher_apps.rasi
 
 # music manager
 super + p
-	sh ~/.config/rofi/scripts/music_manager.sh
+	sh ~/.config/rofi/scripts/panel_music.sh
+
+# search manager
+super + Insert
+	sh ~/.config/rofi/scripts/panel_search.sh
 
 #* ========================== applications ========================== *#
 

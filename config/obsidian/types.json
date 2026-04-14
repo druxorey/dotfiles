@@ -29,6 +29,9 @@
     "created": "datetime",
     "author": "text",
     "excalidraw-embed-md": "checkbox",
-    "excalidraw-export-internal-links": "checkbox"
+    "excalidraw-export-internal-links": "checkbox",
+    "last edited": "date",
+    "edited": "text",
+    "title": "text"
   }
 }

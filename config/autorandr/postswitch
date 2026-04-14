@@ -16,4 +16,3 @@ fi
 
 pkill polybar
 polybar &
-nitrogen --restore

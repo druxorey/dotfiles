@@ -40,7 +40,7 @@
 	offset = 10x60
 	scale = 0
 	notification_limit = 5
-	corner_radius = 10
+	corner_radius = 16
 
 	#* ============================ progress bar ============================ *#
 

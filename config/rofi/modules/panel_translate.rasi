@@ -1,0 +1,38 @@
+
+/* ========================================================================== !/
+/!
+/!                        ██████╗  ██████╗ ███████╗██╗
+/!                        ██╔══██╗██╔═══██╗██╔════╝██║
+/!                        ██████╔╝██║   ██║█████╗  ██║
+/!                        ██╔══██╗██║   ██║██╔══╝  ██║
+/!                        ██║  ██║╚██████╔╝██║     ██║
+/!                        ╚═╝  ╚═╝ ╚═════╝ ╚═╝     ╚═╝
+/!
+/!                                FILES MENU
+/!
+/!                            - Made by Druxorey -
+/!                         https://github.com/druxorey
+/!
+/! ========================================================================== */
+
+@import "../shared/layout_find.rasi"
+
+configuration {
+	case-sensitive: true;
+}
+
+window {
+	width: 48em;
+}
+
+textbox {
+	horizontal-align: 0;
+}
+
+entry {
+	placeholder: "   Usage: [src]:[tgt] <text> | [lang] <word>...";
+}
+
+listview {
+	lines: 4;
+}

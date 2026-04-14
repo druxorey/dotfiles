@@ -3,7 +3,7 @@
 declare -r FORMAT_SUCCESS="\e[1;32m[SUCCESS]\e[0m"
 declare -r FORMAT_WARNING="\e[1;33m[WARNING]\e[0m"
 
-declare -r CONFIG_FILE="$HOME/.config/rofi/modules/display_manager.rasi"
+declare -r ROFI_CONFIG="$HOME/.config/rofi/modules/panel_display.rasi"
 
 function main() {
 	local message="Select display configuration"
@@ -21,7 +21,7 @@ function main() {
 	displayCommands[2]="xrandr --output eDP-1 --auto --primary --output HDMI-1 --auto --right-of eDP-1"
 	displayCommands[3]="xrandr --output eDP-1 --auto --primary --output HDMI-1 --auto --same-as eDP-1"
 
-	local selectedIndex=$(printf "%s\n" "${displayNames[@]}" | rofi -dmenu -i -format i -p "Monitor Setup:" -mesg "$message" -config $CONFIG_FILE)
+	local selectedIndex=$(printf "%s\n" "${displayNames[@]}" | rofi -dmenu -m -1 -mesg "$message" -config $ROFI_CONFIG)
 
 	if [[ -z "$selectedIndex" ]]; then
 		printf "%b No option selected. Exiting.\n" "$FORMAT_WARNING"
@@ -34,8 +34,7 @@ function main() {
 	printf "Option selected: %s\n" "$selectedName"
 	printf "%b Applying configuration...\n" "$FORMAT_SUCCESS"
 
-	eval "$selectedCommand"
-	bspc wm -r
+	eval "$selectedCommand" && bspc wm -r
 
 	return 0
 }

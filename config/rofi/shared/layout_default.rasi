@@ -8,28 +8,118 @@
 /!                        ██║  ██║╚██████╔╝██║     ██║
 /!                        ╚═╝  ╚═╝ ╚═════╝ ╚═╝     ╚═╝
 /!
-/!                                COLORSCHEME
+/!                               LAYOUT DEFAULT
 /!
 /!                            - Made by Druxorey -
 /!                         https://github.com/druxorey
 /!
 /! ========================================================================== */
 
+@import "colorscheme.rasi"
+
 configuration {
-	kb-row-up: "K,Up";
-	kb-row-down: "J,Down";
+	me-select-entry: "MousePrimary";
+	me-accept-entry: "!MousePrimary";
+
+	disable-history: false;
+	case-sensitive: false;
+	icon-theme: "Papirus";
+}
+
+window {
+	location: center;
+	width: 24em;
+	background-color: @drx-color-base;
+	border-color: @drx-color-base;
+
+	children: [ "mainbox" ];
+}
+
+mainbox {
+	margin: 0.5em;
+	border-radius: @drx-border-small;
+	background-color: @drx-color-surface;
+
+	children: [ "module" ];
+}
+
+module {
+	spacing: 1em;
+	padding: 1em;
+}
+
+inputbar {
+	spacing: 0.5em;
+	children: [ "entry" ];
+}
+
+entry {
+	padding: 0.5em 0.75em;
+	border-radius: @drx-border-big;
+
+	background-color: @drx-color-base;
+	text-color: @drx-color-text;
+	cursor-color: @drx-color-text;
+
+	placeholder: "   Search...";
+	placeholder-color: @drx-color-highlight;
+}
+
+mode-switcher{
+	spacing: 0.5em;
+}
+
+button {
+	padding: 0.15em 0.65em;
+	cursor: pointer;
+
+	background-color: @drx-color-overlay;
+	text-color: @drx-color-text;
+	border-radius: @drx-border-big;
+}
+
+button selected {
+	padding: 0em 0.25em 0em 0.25em;
+
+	background-color: @drx-color-accent;
+	text-color: @drx-color-surface;
+}
+
+message {
+	border: 0;
+	padding: 0.5em;
+	border-radius: @drx-border-big;
+	background-color: @drx-color-overlay;
+	children: [ "textbox" ];
+}
+
+textbox {
+	horizontal-align: 0.5;
+	text-color: @drx-color-text;
+	background-color: @drx-color-overlay;
+	border-radius: @drx-border-big;
 }
 
 listview {
 	cycle: true;
 	scrollbar: false;
 	border: 0;
-	spacing: 0.5em;
+	spacing: 0.75em;
 }
 
 element {
-	padding: 0.5em 0em 0.5em 1em;
 	border-radius: @drx-border-big;
+	padding: 0.5em 0em 0.5em 1em;
+}
+
+element-text {
+	background-color: inherit;
+	text-color: inherit;
+}
+
+element-icon {
+	size: 1.25em;
+	padding: 0em 0.5em 0em 0.5em;
 }
 
 element.normal.normal {
@@ -39,22 +129,22 @@ element.normal.normal {
 
 element.normal.urgent {
 	background-color: @drx-color-urgent;
-	text-color: @drx-color-surface;
+	text-color: @drx-color-text;
 }
 
 element.normal.active {
 	background-color: @drx-color-accent;
-	text-color: @drx-color-surface;
+	text-color: @drx-color-text;
 }
 
 element.selected.normal {
-	background-color: @drx-color-highlight;
+	background-color: @drx-color-overlay;
 	text-color: @drx-color-text;
 }
 
 element.selected.urgent {
 	background-color: #FF6E6E;
-	text-color: @drx-color-surface;
+	text-color: @drx-color-text;
 }
 
 element.selected.active {
@@ -75,14 +165,4 @@ element.alternate.urgent {
 element.alternate.active {
 	background-color: @drx-color-accent;
 	text-color: @drx-color-surface;
-}
-
-element-icon {
-	size: 1.25em;
-	padding: 0em 0.5em 0em 0.5em;
-}
-
-element-text {
-	background-color: inherit;
-	text-color: inherit;
 }

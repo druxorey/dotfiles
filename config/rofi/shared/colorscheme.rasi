@@ -8,60 +8,31 @@
 /!                        ██║  ██║╚██████╔╝██║     ██║
 /!                        ╚═╝  ╚═╝ ╚═════╝ ╚═╝     ╚═╝
 /!
-/!                                START MENU
+/!                                COLORSCHEME
 /!
 /!                            - Made by Druxorey -
 /!                         https://github.com/druxorey
 /!
 /! ========================================================================== */
 
-@import "../shared/theme_layout.rasi"
-@import "../shared/theme_list_icons.rasi"
+* {
+    font: "Noto Sans Nerd Font 11";
 
-configuration {
-	show-icons: false;
-	disable-history: false;
-	case-sensitive: false;
-	kb-row-up: "k,Up";
-	kb-row-left: "h";
-	kb-row-right: "l";
-	kb-row-down: "j,Down";
-}
+	drx-color-base: #191A21;
+	drx-color-surface: #21222C;
+	drx-color-overlay: #343746;
+	drx-color-highlight: #44475A;
 
-window {
-	width: 27em;
-}
+	drx-color-text: #F8F8F2;
+	drx-color-subtext: #ADAFBC;
+	drx-color-deactivate: #6C6F89;
 
-module {
-	children: [ "message", "listview" ];
-	spacing: 1em;
-	padding: 1em;
-}
+	drx-color-comment: #6272A4;
+    drx-color-accent: #BD93F9;
+    drx-color-hover: #D6ACFF;
+    drx-color-urgent: #ff5555;
 
-message {
-	border-radius: @drx-border-big;
-	border: 0;
-	children: [ "textbox" ];
-	background-color: @drx-color-overlay;
-	padding: 10.5em 0.5em;
-	background-image: url("/tmp/thumbnail.jpg", width);
-}
-
-textbox {
-	text-color: @drx-color-text;
-	horizontal-align: 0.50;
-	background-color: @drx-color-overlay;
-	border-radius: @drx-border-big;
-	margin: 0em 2em;
-	padding: 0.5em;
-}
-
-listview {
-	cycle: true;
-	scrollbar: false;
-	layout: vertical;
-	border: 0;
-	columns: 7;
-	lines: 1;
-	spacing: 1em;
+	drx-border-big: 10px;
+	drx-border-small: 6px;
+	drx-border-round: 999px;
 }

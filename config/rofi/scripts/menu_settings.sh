@@ -3,8 +3,8 @@
 declare -r FORMAT_SUCCESS="\e[1;32m[SUCCESS]\e[0m"
 declare -r FORMAT_WARNING="\e[1;33m[WARNING]\e[0m"
 
-declare -r CONFIG_FILE="$HOME/.config/rofi/modules/settings_menu.rasi"
-declare -r SCRIPTS_PATH=$HOME/.config/rofi/scripts
+declare -r ROFI_CONFIG="$HOME/.config/rofi/modules/menu_settings.rasi"
+declare -r SCRIPTS_PATH="$HOME/.config/rofi/scripts"
 
 function toggleAirplaneMode() {
 	printf "Checking network status...\n"
@@ -26,10 +26,9 @@ function toggleAirplaneMode() {
 
 
 function main() {
-	local actualDate=$(date +"%H:%M  %A  %d/%m/%Y" | tr '[:lower:]' '[:upper:]')
-	local actualTheme=$(cat ~/.cache/actual_theme 2>/dev/null || printf "dark")
-	
 	printf "Initializing settings menu...\n"
+
+	local actualTheme=$(cat ~/.cache/actual_theme 2>/dev/null || printf "dark")
 	printf "Current theme detected: %s\n" "$actualTheme"
 
 	declare -a menuNames
@@ -43,15 +42,16 @@ function main() {
 	menuNames[5]=$([[ "$actualTheme" == "dark" ]] && printf "   Light Mode" || printf "   Dark Mode")
 	menuNames[6]="   Wallpaper"
 
-	menuCommands[0]="sh $SCRIPTS_PATH/wifi_manager.sh"
+	menuCommands[0]="sh $SCRIPTS_PATH/panel_wifi.sh"
 	menuCommands[1]="blueman-manager"
 	menuCommands[2]="toggleAirplaneMode"
-	menuCommands[3]="sh $SCRIPTS_PATH/display_manager.sh"
-	menuCommands[4]="sh $SCRIPTS_PATH/energy_manager.sh"
-	menuCommands[5]="sh $SCRIPTS_PATH/toggle_theme.sh"
-	menuCommands[6]="sh $SCRIPTS_PATH/wallpaper_manager.sh"
+	menuCommands[3]="sh $SCRIPTS_PATH/panel_display.sh"
+	menuCommands[4]="sh $SCRIPTS_PATH/panel_energy.sh"
+	menuCommands[5]="sh $SCRIPTS_PATH/panel_toggle_theme.sh"
+	menuCommands[6]="sh $SCRIPTS_PATH/panel_wallpaper.sh"
 
-	local selectedIndex=$(printf "%s\n" "${menuNames[@]}" | rofi -dmenu -i -format i -p "Settings" -mesg "$actualDate" -config $CONFIG_FILE)
+	local selectedIndex=$(printf "%s\n" "${menuNames[@]}" | rofi -dmenu -format i -m -1 -config $ROFI_CONFIG)
+	echo $selectedIndex
 
 	if [[ -z "$selectedIndex" ]]; then
 		printf "%b No option selected. Exiting.\n" "$FORMAT_WARNING"

@@ -4,7 +4,7 @@ declare -r FORMAT_SUCCESS="\e[1;32m[SUCCESS]\e[0m"
 declare -r FORMAT_WARNING="\e[1;33m[WARNING]\e[0m"
 declare -r FORMAT_ERROR="\e[1;31m[ERROR]\e[0m"
 
-declare -r CONFIG_FILE="$HOME/.config/rofi/modules/wallpaper_manager.rasi"
+declare -r ROFI_CONFIG="$HOME/.config/rofi/modules/panel_wallpaper.rasi"
 
 declare -r DARK_WALLPAPERS_PATH="$HOME/Pictures/Wallpapers/Dracula"
 declare -r LIGHT_WALLPAPERS_PATH="$HOME/Pictures/Wallpapers/Alucard"
@@ -28,7 +28,7 @@ function main() {
 	local selection=$(for img in "$wallpapersPath"/*.{jpg,jpeg,png}; do
 		[ -e "$img" ] || continue
 		echo -en "$(basename "$img")\0icon\x1f$img\n"
-	done | rofi -dmenu -i -m -1 -show-icons -p "Picture:" -mesg "$message" -config $CONFIG_FILE)
+	done | rofi -dmenu -m -1 -show-icons -mesg "$message" -config $ROFI_CONFIG)
 
 	if [ -n "$selection" ]; then
 		ln -sf "$wallpapersPath/$selection" "$targetLink"

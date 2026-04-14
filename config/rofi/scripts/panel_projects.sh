@@ -3,7 +3,7 @@
 declare -r WORKSPACE_DIR="$HOME/Workspace"
 
 function getProjects() {
-    find "$WORKSPACE_DIR/Projects" "$WORKSPACE_DIR/Forks" "$WORKSPACE_DIR/Websites" -maxdepth 1 -mindepth 1 -type d 2>/dev/null
+    find "$WORKSPACE_DIR/projects" "$WORKSPACE_DIR/forks" "$WORKSPACE_DIR/websites" -maxdepth 1 -mindepth 1 -type d 2>/dev/null
 
 	find -L "$WORKSPACE_DIR/Academic" \
 		-maxdepth 1 -mindepth 1 -type d \( -name "* - Proyectos" -o -name "* - Laboratorios" \) 2>/dev/null |

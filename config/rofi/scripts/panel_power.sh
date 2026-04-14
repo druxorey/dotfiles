@@ -1,15 +1,16 @@
 #!/bin/bash
 
 declare -r FORMAT_WARNING="\e[1;33m[WARNING]\e[0m"
-declare -r CONFIG_FILE="$HOME/.config/rofi/modules/power_manager.rasi"
+
+declare -r ROFI_CONFIG="$HOME/.config/rofi/modules/panel_power.rasi"
 
 function main() {
-	local uptime=$(uptime -p)
-	printf "System uptime: %s\n" "$uptime"
+	local message=$(uptime -p)
+	printf "System uptime: %s\n" "$message"
 
 	[[ ! $1 == "polybar" ]] && monitor="-m -1"
 
-	local rofiOption=$(echo -e "\n\n⏻\n\n󰍃" | rofi -dmenu -p -i $monitor -u 0 -mesg "$uptime" -config $CONFIG_FILE)
+	local rofiOption=$(echo -e "\n\n⏻\n\n󰍃" | rofi -dmenu $monitor -u 0 -mesg "$message" -config $ROFI_CONFIG)
 
 	if [[ -z "$rofiOption" ]]; then
 		printf "%b No option selected or Rofi closed. Exiting.\n" "$FORMAT_WARNING"

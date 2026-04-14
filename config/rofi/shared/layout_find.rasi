@@ -8,31 +8,24 @@
 /!                        ██║  ██║╚██████╔╝██║     ██║
 /!                        ╚═╝  ╚═╝ ╚═════╝ ╚═╝     ╚═╝
 /!
-/!                                COLORSCHEME
+/!                                LAYOUT FIND
 /!
 /!                            - Made by Druxorey -
 /!                         https://github.com/druxorey
 /!
 /! ========================================================================== */
 
-* {
-    font: "Noto Sans Nerd Font 11";
+@import "layout_default.rasi"
 
-	drx-color-base: #EDE9DA;
-	drx-color-surface: #fffbeb;
-	drx-color-overlay: #DEDBCC;
-    drx-color-highlight: #CECCC0;
+configuration {
+	kb-row-up: "K,Up";
+	kb-row-down: "J,Down";
+}
 
-    drx-color-text: #1F1F1F;
-    drx-color-subtext: #6C664B;
-    drx-color-deactivate: #BCBAB3;
+module {
+	children: [ "inputbar", "message", "listview" ];
+}
 
-	drx-color-comment: #6C664B;
-
-    drx-color-urgent: #A3144D;
-    drx-color-hover: #F01D71;
-    drx-color-accent: #CB3A2A;
-
-	drx-border-big: 10px;
-	drx-border-small: 6px;
+listview {
+	lines: 8;
 }

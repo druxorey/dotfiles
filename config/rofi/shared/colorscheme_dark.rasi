@@ -8,43 +8,31 @@
 /!                        ██║  ██║╚██████╔╝██║     ██║
 /!                        ╚═╝  ╚═╝ ╚═════╝ ╚═╝     ╚═╝
 /!
-/!                                 WIFI MENU
+/!                                COLORSCHEME
 /!
 /!                            - Made by Druxorey -
 /!                         https://github.com/druxorey
 /!
 /! ========================================================================== */
 
-/* ============================== configuration ============================= */
+* {
+    font: "Noto Sans Nerd Font 11";
 
-@import "../shared/theme_layout.rasi"
-@import "../shared/theme_list_text.rasi"
+	drx-color-base: #191A21;
+	drx-color-surface: #21222C;
+	drx-color-overlay: #343746;
+	drx-color-highlight: #44475A;
 
-configuration {
-	show-icons: false;
-	disable-history: false;
-	case-sensitive: false;
-	kb-row-up: "k,Up";
-	kb-row-left: "h";
-	kb-row-right: "l";
-	kb-row-down: "j,Down";
-}
+	drx-color-text: #F8F8F2;
+	drx-color-subtext: #ADAFBC;
+	drx-color-deactivate: #6C6F89;
 
-module {
-	background-color: @color-background-1;
-	spacing: 1em;
-	padding: 1.5em;
-	children: [  "listview" ];
-}
+	drx-color-comment: #6272A4;
+    drx-color-accent: #BD93F9;
+    drx-color-hover: #D6ACFF;
+    drx-color-urgent: #ff5555;
 
-listview {
-	cycle: true;
-	scrollbar: false;
-	border: 0;
-	columns: 1;
-	lines: 4;
-
-	background-color: @color-background-1;
-	border-radius: @border-radius-1;
-	border-color: @color-accent-1;
+	drx-border-big: 10px;
+	drx-border-small: 6px;
+	drx-border-round: 999px;
 }

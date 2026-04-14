@@ -8,55 +8,28 @@
 /!                        ██║  ██║╚██████╔╝██║     ██║
 /!                        ╚═╝  ╚═╝ ╚═════╝ ╚═╝     ╚═╝
 /!
-/!                                ENERGY MENU
+/!                                FILES SEARCH
 /!
 /!                            - Made by Druxorey -
-/!                         https: //github.com/druxorey
+/!                         https://github.com/druxorey
 /!
 /! ========================================================================== */
 
-/* ============================== configuration ============================= */
-
-@import "../shared/theme_layout.rasi"
-@import "../shared/theme_list_text.rasi"
+@import "../shared/layout_find.rasi"
 
 configuration {
-	show-icons: false;
-	disable-history: false;
-	case-sensitive: false;
-	kb-row-up: "k,Up";
-	kb-row-left: "h";
-	kb-row-right: "l";
-	kb-row-down: "j,Down";
+	modi: "recursivebrowser,filebrowser,projects:~/.config/rofi/scripts/panel_projects.sh";
+	display-recursivebrowser: "";
+	display-filebrowser: "";
+	display-projects: "󰈮";
+	drun-display-format: "{name}";
+	show-icons: true;
 }
 
-module {
-	spacing: 1em;
-	padding: 1.5em;
-	children: [ "message", "listview" ];
+window {
+	width: 48em;
 }
 
-message {
-	border-radius: @drx-border-big;
-	border: 0;
-	children: [ "textbox" ];
-	background-color: @drx-color-overlay;
-	padding: 0.5em;
-}
-
-textbox {
-	text-color: @drx-color-text;
-	horizontal-align: 0.5;
-}
-
-listview {
-	cycle: true;
-	scrollbar: false;
-	border: 0;
-	columns: 1;
-	lines: 3;
-}
-
-element {
-	padding: 0.5em 1em 0.5em 1em;
+inputbar {
+	children: [ "entry", "mode-switcher" ];
 }

@@ -1,0 +1,38 @@
+
+/* ========================================================================== !/
+/!
+/!                        ██████╗  ██████╗ ███████╗██╗
+/!                        ██╔══██╗██╔═══██╗██╔════╝██║
+/!                        ██████╔╝██║   ██║█████╗  ██║
+/!                        ██╔══██╗██║   ██║██╔══╝  ██║
+/!                        ██║  ██║╚██████╔╝██║     ██║
+/!                        ╚═╝  ╚═╝ ╚═════╝ ╚═╝     ╚═╝
+/!
+/!                                START MENU
+/!
+/!                            - Made by Druxorey -
+/!                         https://github.com/druxorey
+/!
+/! ========================================================================== */
+
+@import "../shared/layout_menu.rasi"
+
+window {
+	width: 38em;
+}
+
+listview {
+	columns: 4;
+}
+
+element {
+    children: [ "element-icon"];
+	orientation: vertical;
+	padding: 0em;
+}
+
+element-icon {
+	padding: 0em;
+    size: 7em;
+    cursor: inherit;
+}

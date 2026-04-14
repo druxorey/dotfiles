@@ -8,69 +8,63 @@
 /!                        ██║  ██║╚██████╔╝██║     ██║
 /!                        ╚═╝  ╚═╝ ╚═════╝ ╚═╝     ╚═╝
 /!
-/!                                START MENU
+/!                                LAYOUT MENU
 /!
 /!                            - Made by Druxorey -
 /!                         https://github.com/druxorey
 /!
 /! ========================================================================== */
 
-@import "../shared/theme_layout.rasi"
-@import "../shared/theme_list_icons.rasi"
+@import "layout_default.rasi"
 
 configuration {
-	show-icons: true;
-	disable-history: false;
-	case-sensitive: false;
 	kb-row-up: "k,Up";
+	kb-row-down: "j,Down";
 	kb-row-left: "h";
 	kb-row-right: "l";
-	kb-row-down: "j,Down";
 }
 
 window {
-	width: 38em;
+	width: 27em;
 }
 
 module {
 	children: [ "message", "listview" ];
-	spacing: 1em;
-	padding: 1em;
-}
-
-message {
-	border-radius: @drx-border-big;
-	border: 0;
-	children: [ "textbox" ];
-	background-color: @drx-color-overlay;
-	padding: 0.5em;
-}
-
-textbox {
-	text-color: @drx-color-text;
-	horizontal-align: 0.50;
 }
 
 listview {
-	cycle: true;
-	scrollbar: false;
 	layout: vertical;
-	border: 0;
-	columns: 4;
+	columns: 5;
 	lines: 1;
 	spacing: 1em;
 }
 
 element {
-    children: [ "element-icon"];
-	orientation: vertical;
-	padding: 0em;
+	padding: 20px;
 }
 
-element-icon {
+element.normal.normal {
+	background-color: @drx-color-overlay;
+	text-color: @drx-color-text;
+}
+
+element.alternate.normal {
+	background-color: @drx-color-overlay;
+	text-color: @drx-color-text;
+}
+
+element.selected.normal {
+	background-color: @drx-color-accent;
+	text-color: @drx-color-surface;
+}
+
+element.selected.active {
+	background-color: @drx-color-accent;
+	text-color: @drx-color-text;
+}
+
+element-text {
 	vertical-align: 0.5;
 	horizontal-align: 0.5;
-	padding: 0em;
-    size: 7em;
-    cursor: inherit;
+    font: "Noto Sans Nerd Font 18";
 }

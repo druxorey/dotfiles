@@ -6,6 +6,7 @@ declare -r FORMAT_ERROR="\e[1;31m[ERROR]\e[0m"
 
 declare -r QUERY_ROFI_CONFIG="$HOME/.config/rofi/shared/layout_scan.rasi"
 declare -r RESULTS_ROFI_CONFIG="$HOME/.config/rofi/modules/panel_search.rasi"
+declare -r BOOKMARKS_FILE="$HOME/Workspace/dotfiles/local/share/brave/bookmarks.yaml"
 
 function main() {
 	local query=$(rofi -dmenu -m -1 -mesg "Search via DuckDuckGo" -config "$QUERY_ROFI_CONFIG")
@@ -13,6 +14,37 @@ function main() {
 	if [[ -z "$query" ]]; then
 		printf "%b Search cancelled or empty.\n" "$FORMAT_WARNING"
 		exit 0
+	fi
+
+	if [[ "$query" =~ ^s:[[:space:]]*(.*)$ ]]; then
+		query="${BASH_REMATCH[1]}"
+		printf "Forced search. Query: '%s'\n" "$query"
+	elif [[ -f "$BOOKMARKS_FILE" ]]; then
+		local bookmarkUrl=$(awk -v q="$query" '
+			BEGIN { q = tolower(q) }
+			/^[ \t]*- name:/ {
+				# Clear the label to get only the name
+				sub(/^[ \t]*- name:[ \t]*/, "")
+				name = $0
+				# Read the next line to get the URL
+				getline
+				if ($0 ~ /^[ \t]*url:/) {
+					sub(/^[ \t]*url:[ \t]*/, "")
+					url = $0
+					# If the name starts exactly with the query
+					if (index(tolower(name), q) == 1) {
+						print url
+						exit
+					}
+				}
+			}
+		' "$BOOKMARKS_FILE" 2>/dev/null)
+
+		if [[ -n "$bookmarkUrl" ]]; then
+			printf "%b Bookmark found for '%s'. Opening URL...\n" "$FORMAT_SUCCESS" "$query"
+			xdg-open "$bookmarkUrl" >/dev/null 2>&1 &
+			exit 0
+		fi
 	fi
 
 	printf "Searching for: %s\n" "$query"

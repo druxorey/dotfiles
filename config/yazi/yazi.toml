@@ -40,10 +40,14 @@ download = [
 	{ run = "ya emit download --open %S", desc = "Download and open", for = "unix" },
 	{ run = "ya emit download %S",        desc = "Download",          for = "unix" },
 ]
+csv = [
+	{ run = "sheets %s", desc = "Sheets", for = "unix", block = true },
+]
 
 [open]
 rules = [
 	{ url = "*/", use = [ "edit", "open", "reveal" ] },
+	{ url = "*.csv", use = [ "csv", "reveal" ] },
 	{ mime = "text/*", use = [ "edit", "reveal" ] },
 	{ mime = "image/*", use = [ "image", "reveal" ] },
 	{ mime = "application/pdf", use = [ "pdf", "reveal" ] },
@@ -66,6 +70,6 @@ prepend_previewers = [
     { mime = "audio/*",   run = "exifaudio"}
 ]
 prepend_preloaders = [
-  { name = "/run/user/1000/gvfs/**/*", run = "noop" },
-  { name = "/run/media/druxorey/**/*", run = "noop" },
+	{ name = "/run/user/1000/gvfs/**/*", run = "noop" },
+	{ name = "/run/media/druxorey/**/*", run = "noop" },
 ]

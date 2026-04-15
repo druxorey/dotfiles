@@ -1,21 +1,15 @@
 <h1 align="center">Dotfiles</h1>
 
-<p align="center">A minimalist repository of my dotfiles for arch linux</p>
+<div align="center">
 
-<p align="center">
-	<a href="https://github.com/druxorey/dotfiles/stargazers">
-		<img src="https://img.shields.io/github/stars/druxorey/dotfiles?color=8BE9FD&labelColor=191A21&style=for-the-badge">
-	</a>
-	<a href="https://github.com/druxorey/dotfiles">
-		<img src="https://img.shields.io/github/repo-size/druxorey/dotfiles?label=Size&color=50FA7B&labelColor=191A21&style=for-the-badge">
-	</a>
-	<a href="https://visitorbadge.io/status?path=https%3A%2F%2Fgithub.com%2Fdruxorey%2Fdotfiles">
-		<img src="https://api.visitorbadge.io/api/visitors?path=https%3A%2F%2Fgithub.com%2Fdruxorey%2Fdotfiles&label=Views&labelColor=%23191A21&countColor=%23FFB86C">
-	</a>
-	<a href="https://github.com/druxorey/dotfiles/blob/main/LICENSE.md">
-		<img src="https://img.shields.io/github/license/druxorey/dotfiles?color=FF5555&labelColor=191A21&style=for-the-badge">
-	</a>
-</p>
+_A minimalist repository of my dotfiles for arch linux_
+
+[![stars](https://img.shields.io/github/stars/druxorey/dotfiles?color=8BE9FD&labelColor=191A21&style=for-the-badge)](https://github.com/druxorey/dotfiles/stargazers)
+[![size](https://img.shields.io/github/repo-size/druxorey/dotfiles?label=Size&color=50FA7B&labelColor=191A21&style=for-the-badge)](https://github.com/druxorey/dotfiles)
+[![Visitors](https://api.visitorbadge.io/api/visitors?path=https%3A%2F%2Fgithub.com%2Fdruxorey%2Fdotfiles&label=Views&labelColor=%23191A21&countColor=%23FFB86C)](https://visitorbadge.io/status?path=https%3A%2F%2Fgithub.com%2Fdruxorey%2Fdotfiles)
+[![license](https://img.shields.io/github/license/druxorey/dotfiles?color=FF5555&labelColor=191A21&style=for-the-badge)](https://github.com/druxorey/dotfiles/blob/main/LICENSE)
+
+</div>
 
 ## About
 
@@ -156,7 +150,7 @@ This setup is designed to be highly keyboard-centric. Below are some of the most
 
 For the complete list of shortcuts, check the full [sxhkdrc](config/sxhkd/sxhkdrc) file,
 
-## Custom Scripts
+## Scripts
 
 To maintain and manage this environment, I have developed several custom tools. These scripts are hosted in my [drxutils repository](https://github.com/druxorey/drxutils "null"). Here are the most important ones:
 

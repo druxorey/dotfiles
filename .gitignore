@@ -12,8 +12,8 @@
 # ======================================================================#
 
 # cmus
-!config/cmus/autosave
 config/cmus/*
+!config/cmus/rc
 
 # nvim
 config/nvim/plugins/installed/*
@@ -25,20 +25,19 @@ config/obsidian/themes/*
 config/obsidian/workspace.json
 
 # tmux
-!config/tmux/plugins/tmux/dracula.tmux
-!config/tmux/plugins/tmux/scripts
-config/tmux/plugins/tmux/
+config/tmux/plugins/
 
 # vencord
 config/vencord/dist
 
 # zsh
 config/zsh/.histfile
+config/zsh/.zcompdump
 config/zsh/zsh_history
 config/zsh/zsh-autosuggestions
 config/zsh/zsh-syntax-highlighting
 config/zsh/zsh-autocomplete
 
-# experiments
-*/_experiments
-local/share/applications/wine*
+# extra
+config/yazi/*
+config/touchegg/.touchegg:0.lock

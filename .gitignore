@@ -20,15 +20,11 @@ config/nvim/plugins/installed/*
 config/nvim/lua/plugins/prompts/*
 
 # obsidian
-config/obsidian/plugins/*
-config/obsidian/themes/*
 config/obsidian/workspace.json
-
-# tmux
-config/tmux/plugins/
-
-# vencord
-config/vencord/dist
+config/obsidian/workspace-mobile.json
+config/obsidian/graph.json
+config/obsidian/backlink.json
+config/obsidian/plugins/tasknotes/data.json
 
 # zsh
 config/zsh/.histfile
@@ -41,3 +37,5 @@ config/zsh/zsh-autocomplete
 # extra
 config/yazi/*
 config/touchegg/.touchegg:0.lock
+config/tmux/plugins/
+config/vencord/dist

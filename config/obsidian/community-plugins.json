@@ -1,7 +1,5 @@
 [
   "table-editor-obsidian",
-  "url-into-selection",
-  "obsidian-relative-line-numbers",
   "obsidian-tagfolder",
   "obsidian-latex-suite",
   "obsidian-icon-folder",
@@ -15,6 +13,10 @@
   "obsidian-vimrc-support",
   "obsidian-file-color",
   "obsidian-excalidraw-plugin",
+  "templater-obsidian",
+  "obsidian-kanban",
+  "obsidian-paste-image-rename",
   "omnisearch",
-  "templater-obsidian"
+  "settings-search",
+  "tasknotes"
 ]

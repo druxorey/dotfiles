@@ -7,7 +7,7 @@
     "margin": "0",
     "downscalePercent": 90
   },
-  "showLineNumber": true,
+  "showLineNumber": false,
   "attachmentFolderPath": "D9 Vault/V1 Assets",
   "readableLineLength": true,
   "showInlineTitle": false,
@@ -20,5 +20,5 @@
   "defaultViewMode": "source",
   "alwaysUpdateLinks": true,
   "showUnsupportedFiles": true,
-  "promptDelete": false
+  "promptDelete": true
 }

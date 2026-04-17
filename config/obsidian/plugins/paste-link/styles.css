@@ -1,0 +1,16 @@
+.paste-link-regex-input {
+    width: 100%;
+}
+
+.paste-link-regex-move-button.is-disabled {
+    pointer-events: none;
+    opacity: 0.2;
+}
+
+.paste-link-regex-delete-button {
+    color: var(--color-red);
+}
+
+.paste-link-regex-info-el {
+    display: none;
+}

@@ -49,14 +49,7 @@
       "key": "\\"
     }
   ],
-  "switcher:open": [
-    {
-      "modifiers": [
-        "Mod"
-      ],
-      "key": "K"
-    }
-  ],
+  "switcher:open": [],
   "obsidian-excalidraw-plugin:save": [],
   "auto-card-link:auto-card-link-enhance-selected-url": [],
   "auto-card-link:auto-card-link-paste-and-enhance": [
@@ -93,15 +86,6 @@
       "key": "M"
     }
   ],
-  "copilot:chat-toggle-window": [
-    {
-      "modifiers": [
-        "Mod",
-        "Shift"
-      ],
-      "key": "I"
-    }
-  ],
   "markdown:add-metadata-property": [],
   "editor:add-cursor-below": [
     {
@@ -129,8 +113,7 @@
   "global-search:open": [
     {
       "modifiers": [
-        "Mod",
-        "Shift"
+        "Mod"
       ],
       "key": "S"
     }
@@ -235,12 +218,47 @@
       "key": "E"
     }
   ],
-  "editor:save-file": [
+  "editor:save-file": [],
+  "templater-obsidian:jump-to-next-cursor-location": [
+    {
+      "modifiers": [
+        "Alt"
+      ],
+      "key": "Tab"
+    }
+  ],
+  "templater-obsidian:create-new-note-from-template": [],
+  "file-explorer:new-file": [],
+  "zk-prefixer": [
     {
       "modifiers": [
         "Mod"
       ],
-      "key": "S"
+      "key": "N"
+    }
+  ],
+  "copilot:chat-open-window": [
+    {
+      "modifiers": [
+        "Alt"
+      ],
+      "key": "I"
+    }
+  ],
+  "app:open-settings": [
+    {
+      "modifiers": [
+        "Mod"
+      ],
+      "key": "."
+    }
+  ],
+  "editor:toggle-fold-properties": [
+    {
+      "modifiers": [
+        "Alt"
+      ],
+      "key": "P"
     }
   ]
 }

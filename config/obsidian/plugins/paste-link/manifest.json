@@ -1,0 +1,10 @@
+{
+    "id": "paste-link",
+    "name": "Paste Link",
+    "version": "3.3.1",
+    "minAppVersion": "0.15.0",
+    "description": "Intelligently paste Markdown links.",
+    "author": "Jose Elias Alvarez",
+    "authorUrl": "https://github.com/jose-elias-alvarez",
+    "isDesktopOnly": false
+}

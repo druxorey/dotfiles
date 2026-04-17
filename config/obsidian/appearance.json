@@ -4,5 +4,6 @@
   "showViewHeader": false,
   "theme": "system",
   "monospaceFontFamily": "FiraMono Nerd Font",
-  "accentColor": "#bd93f9"
+  "accentColor": "#bd93f9",
+  "enabledCssSnippets": []
 }

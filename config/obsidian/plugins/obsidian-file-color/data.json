@@ -1,0 +1,143 @@
+{
+  "cascadeColors": true,
+  "colorBackground": true,
+  "palette": [
+    {
+      "id": "_oglVgfFUpCbVcU9z99B8",
+      "name": "Pink",
+      "value": "#ff79c6"
+    },
+    {
+      "id": "DoktmY9dhFBWUTFJbNuJX",
+      "name": "Purple",
+      "value": "#bd93f9"
+    },
+    {
+      "id": "awJpesJ6g_rG5na92A_Z1",
+      "name": "Yellow",
+      "value": "#f1fa8c"
+    },
+    {
+      "id": "ZWngA6Frw0t16fcS7OhWc",
+      "name": "Cyan",
+      "value": "#8be9fd"
+    },
+    {
+      "id": "2zMsk98OfN5ljmBd5hShI",
+      "name": "Green",
+      "value": "#50fa7b"
+    },
+    {
+      "id": "EddyZxTP6ivz1tY1lleWt",
+      "name": "Orange",
+      "value": "#ffb86c"
+    },
+    {
+      "id": "kEqs1gY7MZlKwwJQRtyaf",
+      "name": "Red",
+      "value": "#ff5555"
+    }
+  ],
+  "fileColors": [
+    {
+      "path": "D1 - Vault/S03 - Ingeniería de Software",
+      "color": "EddyZxTP6ivz1tY1lleWt"
+    },
+    {
+      "path": "D1 - Vault/S03 - Organización y Estructura del Computador II",
+      "color": "EddyZxTP6ivz1tY1lleWt"
+    },
+    {
+      "path": "D1 - Vault/S02 - Organización y Estructura del Computador I",
+      "color": "_oglVgfFUpCbVcU9z99B8"
+    },
+    {
+      "path": "D1 - Vault/S02 - Algoritmos y Estructuras de Datos",
+      "color": "_oglVgfFUpCbVcU9z99B8"
+    },
+    {
+      "path": "D1 - Vault/S02 - Matemáticas Discretas II",
+      "color": "_oglVgfFUpCbVcU9z99B8"
+    },
+    {
+      "path": "D1 - Vault/S01 - Matemáticas Discretas I",
+      "color": "2zMsk98OfN5ljmBd5hShI"
+    },
+    {
+      "path": "D1 - Vault/S01 - Introducción a la Informática",
+      "color": "2zMsk98OfN5ljmBd5hShI"
+    },
+    {
+      "path": "D1 - Vault/S01 - Algoritmos y Programación",
+      "color": "2zMsk98OfN5ljmBd5hShI"
+    },
+    {
+      "path": "D1 Academic/S02 - Algoritmos y Estructuras de Datos",
+      "color": "_oglVgfFUpCbVcU9z99B8"
+    },
+    {
+      "path": "D1 Academic/S02 - Organización y Estructura del Computador I",
+      "color": "_oglVgfFUpCbVcU9z99B8"
+    },
+    {
+      "path": "D1 Academic/S03 - Ingeniería de Software",
+      "color": "awJpesJ6g_rG5na92A_Z1"
+    },
+    {
+      "path": "D1 Academic/S03 - Organización y Estructura del Computador II",
+      "color": "awJpesJ6g_rG5na92A_Z1"
+    },
+    {
+      "path": "D1 Academic/S04 - Bases de Datos",
+      "color": "ZWngA6Frw0t16fcS7OhWc"
+    },
+    {
+      "path": "D1 Academic/S04 - Sistemas de Información",
+      "color": "ZWngA6Frw0t16fcS7OhWc"
+    },
+    {
+      "path": "D1 Academic/S04 - Sistemas Operativos",
+      "color": "ZWngA6Frw0t16fcS7OhWc"
+    },
+    {
+      "path": "D1 Academic/S04 - Matemáticas Discretas III",
+      "color": "ZWngA6Frw0t16fcS7OhWc"
+    },
+    {
+      "path": "D1 Academic/S05 - Probabilidad y Estadística",
+      "color": "DoktmY9dhFBWUTFJbNuJX"
+    },
+    {
+      "path": "D1 Academic/S05 - Lenguajes de Programación",
+      "color": "DoktmY9dhFBWUTFJbNuJX"
+    },
+    {
+      "path": "D1 Academic/S05 - Comunicación de Datos",
+      "color": "DoktmY9dhFBWUTFJbNuJX"
+    },
+    {
+      "path": "research.md",
+      "color": "2zMsk98OfN5ljmBd5hShI"
+    },
+    {
+      "path": "projects.md",
+      "color": "ZWngA6Frw0t16fcS7OhWc"
+    },
+    {
+      "path": "kanban.base",
+      "color": "awJpesJ6g_rG5na92A_Z1"
+    },
+    {
+      "path": "agenda.base",
+      "color": "_oglVgfFUpCbVcU9z99B8"
+    },
+    {
+      "path": "calendar.base",
+      "color": "DoktmY9dhFBWUTFJbNuJX"
+    },
+    {
+      "path": "tasks.base",
+      "color": "EddyZxTP6ivz1tY1lleWt"
+    }
+  ]
+}

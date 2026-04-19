@@ -24,7 +24,7 @@ config/obsidian/workspace.json
 config/obsidian/workspace-mobile.json
 config/obsidian/graph.json
 config/obsidian/backlink.json
-config/obsidian/plugins/tasknotes/data.json
+config/obsidian/plugins/*
 
 # zsh
 config/zsh/.histfile

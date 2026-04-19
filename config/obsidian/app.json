@@ -17,7 +17,7 @@
   "trashOption": "local",
   "strictLineBreaks": false,
   "propertiesInDocument": "visible",
-  "defaultViewMode": "source",
+  "defaultViewMode": "preview",
   "alwaysUpdateLinks": true,
   "showUnsupportedFiles": true,
   "promptDelete": true

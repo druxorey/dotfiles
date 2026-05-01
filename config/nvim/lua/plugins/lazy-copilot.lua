@@ -57,7 +57,6 @@ return {
 			},
 			prompts = {
 				Commit = load_prompt_from_file(vim.fn.expand("~/.config/nvim/lua/plugins/prompts/commit.prompt")),
-				Tasks = load_prompt_from_file(vim.fn.expand("~/.config/nvim/lua/plugins/prompts/tasks.prompt"))
 			}
 		}
 	}

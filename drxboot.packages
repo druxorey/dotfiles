@@ -21,6 +21,7 @@ server_pacman_packages=(
 	intel-media-sdk
 	intel-ucode
 	ipp-usb
+	jq
 	libfdk-aac
 	libinput
 	linux
@@ -47,6 +48,7 @@ server_pacman_packages=(
 	wget
 	xorg
 	yazi
+	yq
 )
 
 server_aur_packages=(
@@ -67,6 +69,7 @@ minimal_pacman_packages=(
 	cmatrix
 	cmus
 	cpufetch
+	ddgr
 	dialog
 	entr
 	exiftool
@@ -123,6 +126,7 @@ minimal_pacman_packages=(
 	translate-shell
 	trash-cli
 	unrar
+	vhs
 	viu
 	yt-dlp
 	zoxide
@@ -138,6 +142,8 @@ minimal_aur_packages=(
 	peaclock
 	pipes.sh
 	rich-cli
+	sheets-bin
+	tetro-tui
 	xdg-ninja
 )
 
@@ -165,7 +171,6 @@ desktop_pacman_packages=(
 	lightdm-gtk-greeter-settings
 	lxappearance
 	nautilus
-	noto-fonts
 	noto-fonts-cjk
 	noto-fonts-emoji
 	nsxiv
@@ -191,6 +196,7 @@ desktop_pacman_packages=(
 	timeshift
 	touchegg
 	transmission-gtk
+	ttf-nerd-fonts-symbols
 	tumbler
 	virtualbox
 	vlc
@@ -206,7 +212,7 @@ desktop_aur_packages=(
 	brave-bin
 	bsp-layout
 	eww
-	localsend-bin
+	localsend
 	modrinth-app-bin
 	open-webui
 	proton-vpn-gtk-app
@@ -215,4 +221,3 @@ desktop_aur_packages=(
 	tumbler-extra-thumbnailers
 	vbam-wx
 )
-

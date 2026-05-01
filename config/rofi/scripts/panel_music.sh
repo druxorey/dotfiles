@@ -10,8 +10,9 @@ declare -i OPTION=2
 
 function manageLofiStatus() {
 	case "$1" in
-		"reload") pkill -x "lofi"; kitty lofi 50 & ;;
-		"toggle") pkill -x "lofi" || { cmus-remote --stop; kitty lofi 50 & } ;;
+		"reload") pkill -x "lofi"; lofi -d 50 & ;;
+		"on"    ) cmus-remote --stop; lofi -d 50 & sleep 1 ;;
+		"off"   ) pkill -x "lofi" ;;
 	esac
 	return 0
 }
@@ -74,7 +75,7 @@ function main() {
 			reproducerState="󰎊"
 			lofiSelected="-u 4"
 			message="Lofi Radio"
-			options="󰝟\n󰝞\n󰑓\n󰝝\n󰋋"
+			options="󰝟\n󰝞\n󰑓\n󰝝\n󰟎"
 		elif [ "$state" = "playing" ]; then
 			reproducerState=""
 		elif [ "$state" = "paused" ]; then
@@ -98,8 +99,9 @@ function main() {
 			"") cmus-remote --stop ; OPTION=0 ;;
 			"󰒮") cmus-remote --prev ; OPTION=1 ;;
 			"󰒭") cmus-remote --next ; OPTION=3 ;;
-			"󰑓") bspc desktop -f ^5 ; manageLofiStatus reload ; exit 0 ;;
-			"󰋋") bspc desktop -f ^5 ; manageLofiStatus toggle ; exit 0 ;;
+			"󰑓") manageLofiStatus reload ;;
+			"󰋋") manageLofiStatus on  ;;
+			"󰟎") manageLofiStatus off && exit 0 ;;
 			"") bspc desktop -f ^5 ; kitty cmus & exit 0 ;;
 			"$reproducerState") cmus-remote --pause && OPTION=2 ;;
 			*) printf "%b No option selected. Exiting.\n" "${FORMAT_WARNING}" && exit 0 ;;

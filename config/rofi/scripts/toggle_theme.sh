@@ -64,11 +64,15 @@ function main() {
 		toggleMode "light"
 		mode="light"
 		gsettings set org.gnome.desktop.interface color-scheme 'default'
+		sed -i 's/^gtk-theme-name=.*/gtk-theme-name=Gruvbox/' ~/.config/gtk-3.0/settings.ini
+		sed -i 's/^gtk-icon-theme-name=.*/gtk-icon-theme-name=Gruvbox/' ~/.config/gtk-3.0/settings.ini
 		echo "light" > $CACHE_FILE
 	else
 		toggleMode "dark"
 		mode="dark"
 		gsettings set org.gnome.desktop.interface color-scheme 'prefer-dark'
+		sed -i 's/^gtk-theme-name=.*/gtk-theme-name=Dracula/' ~/.config/gtk-3.0/settings.ini
+		sed -i 's/^gtk-icon-theme-name=.*/gtk-icon-theme-name=Dracula/' ~/.config/gtk-3.0/settings.ini
 		echo "dark" > $CACHE_FILE
 	fi
 

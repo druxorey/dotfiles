@@ -82,10 +82,12 @@ function main() {
 
 	printf "Refreshing system components...\n"
 	
-	bspc wm -r
-	killall -USR1 kitty
-	killall dunst; dunst &
-	killall polybar; polybar &
+	killall polybar &
+	killall dunst &
+	bspc wm -r &
+	killall -USR1 kitty &
+
+	sleep 3
 
 	notify-send "Switched to $mode theme" --app-name "Toggle Theme" -u low
 	printf "Theme switch to %s completed.\n" "$mode"

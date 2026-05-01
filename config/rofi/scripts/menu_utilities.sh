@@ -12,15 +12,17 @@ function main() {
 	declare -a menuNames
 	declare -a menuCommands
 
-	menuNames[0]="   App Launcher"
-	menuNames[1]="󰖟   Search in Web"
-	menuNames[2]="󰗊   Translator"
-	menuNames[3]="󰘎   Text Extraction"
+	menuNames[0]="󰗊   Translator"
+	menuNames[1]="󰪚   Calculator"
+	menuNames[2]="󰘎   Text Extraction"
+	menuNames[3]="󰖟   Search in Web"
+	menuNames[4]="   App Launcher"
 
-	menuCommands[0]="rofi -show drun -i -config ~/.config/rofi/modules/launcher_apps.rasi"
-	menuCommands[1]="sh $SCRIPTS_PATH/panel_search.sh"
-	menuCommands[2]="sh $SCRIPTS_PATH/panel_translate.sh"
-	menuCommands[3]="sh $SCRIPTS_PATH/toggle_text_extract.sh"
+	menuCommands[0]="sh $SCRIPTS_PATH/panel_translate.sh"
+	menuCommands[1]="rofi -show calc -modi calc -no-show-match -no-sortj -config ~/.config/rofi/shared/layout_find.rasi"
+	menuCommands[2]="sh $SCRIPTS_PATH/toggle_text_extract.sh"
+	menuCommands[3]="sh $SCRIPTS_PATH/panel_search.sh"
+	menuCommands[4]="rofi -show drun -i -config ~/.config/rofi/modules/launcher_apps.rasi"
 
 	local selectedIndex=$(printf "%s\n" "${menuNames[@]}" | rofi -dmenu -format i -m -1 -config $ROFI_CONFIG)
 

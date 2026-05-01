@@ -26,9 +26,8 @@
 	horizontal_padding = 10
 	text_icon_padding = 0
 
-	frame_width = 2
-	frame_color = "#bd93f9"
-	separator_color = "#44475A"
+	frame_width = 0
+	separator_color = "#21222c"
 	sort = yes
 	idle_threshold = 0
 
@@ -85,32 +84,29 @@
 	class = Dunst
 	ignore_dbusclose = false
 
-	mouse_left_click = do_action close_current
+	mouse_left_click = do_action
 	mouse_middle_click = close_all
 	mouse_right_click = close_current
 
 [urgency_low]
-	background = "#282a36"
+	background = "#191A21"
 	foreground = "#50FA7B"
-	frame_color = "#50FA7B"
 	highlight = "#50FA7B"
-	default_icon = "~/.config/dunst/icons/bell-badge-low.svg"
+	default_icon = "~/.config/dunst/icons/dark-bell-badge-low.svg"
 	timeout = 5
 
 [urgency_normal]
-	background = "#282a36"
+	background = "#191A21"
 	foreground = "#F8F8F2"
-	frame_color = "#bd93f9"
 	highlight = "#bd93f9"
-	default_icon = "~/.config/dunst/icons/bell-badge-normal.svg"
+	default_icon = "~/.config/dunst/icons/dark-bell-badge-normal.svg"
 	timeout = 5
 	script = "~/.config/dunst/alert.sh"
 
 [urgency_critical]
-	background = "#282a36"
-	foreground = "#ff5555"
-	frame_color = "#ff5555"
+	background = "#ff5555"
+	foreground = "#191A21"
 	highlight = "#ff5555"
-	default_icon = "~/.config/dunst/icons/bell-badge-critical.svg"
-	timeout = 0
+	default_icon = "~/.config/dunst/icons/dark-bell-badge-critical.svg"
+	timeout = 10
 	script = "~/.config/dunst/alert.sh"

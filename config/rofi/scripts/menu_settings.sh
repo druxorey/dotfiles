@@ -47,7 +47,7 @@ function main() {
 	menuCommands[2]="toggleAirplaneMode"
 	menuCommands[3]="sh $SCRIPTS_PATH/panel_display.sh"
 	menuCommands[4]="sh $SCRIPTS_PATH/panel_energy.sh"
-	menuCommands[5]="sh $SCRIPTS_PATH/panel_toggle_theme.sh"
+	menuCommands[5]="sh $SCRIPTS_PATH/toggle_theme.sh"
 	menuCommands[6]="sh $SCRIPTS_PATH/panel_wallpaper.sh"
 
 	local selectedIndex=$(printf "%s\n" "${menuNames[@]}" | rofi -dmenu -format i -m -1 -config $ROFI_CONFIG)

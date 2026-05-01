@@ -16,7 +16,7 @@
 /! ========================================================================== */
 
 * {
-    font: "Noto Sans Nerd Font 11";
+    font: "Noto Sans Nerd Font Medium 11";
 
 	drx-color-base: #191A21;
 	drx-color-surface: #21222C;

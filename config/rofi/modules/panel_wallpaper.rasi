@@ -18,7 +18,7 @@
 @import "../shared/layout_menu.rasi"
 
 window {
-	width: 38em;
+	width: 48em;
 }
 
 listview {
@@ -26,13 +26,20 @@ listview {
 }
 
 element {
-    children: [ "element-icon"];
+    children: [ "element-icon", "element-text" ];
 	orientation: vertical;
-	padding: 0em;
+	padding: 0.25em;
 }
 
 element-icon {
 	padding: 0em;
-    size: 7em;
+    size: 22em;
+    cursor: inherit;
+}
+
+element-text {
+    font: "Noto Sans Nerd Font Medium 11";
+	padding: 0em 0em 1em 0em;
+    horizontal-align: 0.5;
     cursor: inherit;
 }

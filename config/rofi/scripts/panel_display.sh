@@ -21,7 +21,7 @@ function main() {
 	displayCommands[2]="xrandr --output eDP-1 --auto --primary --output HDMI-1 --auto --right-of eDP-1"
 	displayCommands[3]="xrandr --output eDP-1 --auto --primary --output HDMI-1 --auto --same-as eDP-1"
 
-	local selectedIndex=$(printf "%s\n" "${displayNames[@]}" | rofi -dmenu -m -1 -mesg "$message" -config $ROFI_CONFIG)
+	local selectedIndex=$(printf "%s\n" "${displayNames[@]}" | rofi -dmenu -format i -m -1 -mesg "$message" -config $ROFI_CONFIG)
 
 	if [[ -z "$selectedIndex" ]]; then
 		printf "%b No option selected. Exiting.\n" "$FORMAT_WARNING"

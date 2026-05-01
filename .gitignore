@@ -27,12 +27,14 @@ config/obsidian/backlink.json
 config/obsidian/plugins/*
 
 # zsh
-config/zsh/.histfile
 config/zsh/.zcompdump
-config/zsh/zsh_history
 config/zsh/zsh-autosuggestions
 config/zsh/zsh-syntax-highlighting
-config/zsh/zsh-autocomplete
+config/zsh/fzf-tab
+
+# tlp
+config/tlp/00-template.conf
+config/tlp/README
 
 # extra
 config/yazi/*

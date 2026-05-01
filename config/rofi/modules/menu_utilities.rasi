@@ -18,5 +18,5 @@
 @import "../shared/layout_list.rasi"
 
 listview {
-	lines: 3;
+	lines: 4;
 }

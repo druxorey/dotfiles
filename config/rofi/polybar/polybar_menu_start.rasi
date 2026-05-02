@@ -8,18 +8,16 @@
 /!                        ██║  ██║╚██████╔╝██║     ██║
 /!                        ╚═╝  ╚═╝ ╚═════╝ ╚═╝     ╚═╝
 /!
-/!                                 WIFI MENU
+/!                                START MENU
 /!
 /!                            - Made by Druxorey -
 /!                         https://github.com/druxorey
 /!
 /! ========================================================================== */
 
-@import "../modules/wifi_manager.rasi"
+@import "../modules/menu_start.rasi"
 
 window {
-    location: northeast;
+    location: north;
     y-offset: 3.1em;
-    x-offset: -0.5em;
-	width: 16em;
 }

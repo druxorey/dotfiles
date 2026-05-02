@@ -9,6 +9,8 @@ function main() {
 	pgrep -x "obs" > /dev/null && icons+=("󰻃")
 	pgrep -x "localsend" > /dev/null && icons+=("")
 
+	amixer -D pulse get Capture | grep -q '\[on\]' && icons+=("")
+
 	if [ ${#icons[@]} -gt 0 ]; then
 		echo "${icons[*]}"
 	else

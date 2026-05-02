@@ -54,7 +54,7 @@
 	font = Noto Sans 11
 	line_height = 0
 	markup = full
-	format = "<b>\n󰁕 %a</b>\n%s <i>%b\n</i>"
+	format = "<b>\n%a</b>\n%s <i>%b\n</i>"
 	alignment = left
 	vertical_alignment = center
 	show_age_threshold = 60
@@ -70,13 +70,15 @@
 	icon_position = left
 	min_icon_size = 64
 	max_icon_size = 64
-	icon_path = /usr/share/icons/gnome/16x16/status/:/usr/share/icons/gnome/16x16/devices/
+	icon_path = /usr/share/icons/Papirus/16x16/devices/:/usr/share/icons/Papirus/16x16/actions/
 
 	#* ============================== history =============================== *#
+
 	sticky_history = yes
 	history_length = 20
 
 	#* =========================== misc/advanced ============================ *#
+
 	dmenu = /usr/bin/dmenu -p dunst:
 	browser = /usr/bin/firefox -new-tab
 	always_run_script = true
@@ -90,9 +92,9 @@
 
 [urgency_low]
 	background = "#FFFBEB"
-	foreground = "#14710A"
-	highlight = "#14710A"
-	default_icon = "~/.config/dunst/icons/light-bell-badge-low.svg"
+	foreground = "#1F1F1F"
+	highlight = "#CB3A2A"
+	default_icon = "~/.config/dunst/icons/light-bell-badge-normal.svg"
 	timeout = 5
 
 [urgency_normal]
@@ -101,7 +103,7 @@
 	highlight = "#CB3A2A"
 	default_icon = "~/.config/dunst/icons/light-bell-badge-normal.svg"
 	timeout = 5
-	script = "~/.config/dunst/alert.sh"
+	script = "$HOME/.config/dunst/play_alert.sh"
 
 [urgency_critical]
 	background = "#CB3A2A"
@@ -109,4 +111,4 @@
 	highlight = "#FFFBEB"
 	default_icon = "~/.config/dunst/icons/light-bell-badge-critical.svg"
 	timeout = 10
-	script = "~/.config/dunst/alert.sh"
+	script = "$HOME/.config/dunst/play_error.sh"

@@ -36,7 +36,7 @@
 	width = 384
 	height = 192
 	origin = top-right
-	offset = 10x60
+	offset = 10x59
 	scale = 0
 	notification_limit = 5
 	corner_radius = 16
@@ -54,7 +54,7 @@
 	font = Noto Sans 11
 	line_height = 0
 	markup = full
-	format = "<b>\n󰁕 %a</b>\n%s <i>%b\n</i>"
+	format = "<b>\n%a</b>\n%s <i>%b\n</i>"
 	alignment = left
 	vertical_alignment = center
 	show_age_threshold = 60
@@ -70,13 +70,15 @@
 	icon_position = left
 	min_icon_size = 64
 	max_icon_size = 64
-	icon_path = /usr/share/icons/gnome/16x16/status/:/usr/share/icons/gnome/16x16/devices/
+	icon_path = /usr/share/icons/Papirus/16x16/devices/:/usr/share/icons/Papirus/16x16/actions/
 
 	#* ============================== history =============================== *#
+
 	sticky_history = yes
 	history_length = 20
 
 	#* =========================== misc/advanced ============================ *#
+
 	dmenu = /usr/bin/dmenu -p dunst:
 	browser = /usr/bin/firefox -new-tab
 	always_run_script = true
@@ -90,23 +92,23 @@
 
 [urgency_low]
 	background = "#191A21"
-	foreground = "#50FA7B"
-	highlight = "#50FA7B"
-	default_icon = "~/.config/dunst/icons/dark-bell-badge-low.svg"
+	foreground = "#F8F8F2"
+	highlight = "#BD93F9"
+	default_icon = "~/.config/dunst/icons/dark-bell-badge-normal.svg"
 	timeout = 5
 
 [urgency_normal]
 	background = "#191A21"
 	foreground = "#F8F8F2"
-	highlight = "#bd93f9"
+	highlight = "#BD93F9"
 	default_icon = "~/.config/dunst/icons/dark-bell-badge-normal.svg"
 	timeout = 5
-	script = "~/.config/dunst/alert.sh"
+	script = "$HOME/.config/dunst/play_alert.sh"
 
 [urgency_critical]
-	background = "#ff5555"
+	background = "#FF5555"
 	foreground = "#191A21"
-	highlight = "#ff5555"
+	highlight = "#FF5555"
 	default_icon = "~/.config/dunst/icons/dark-bell-badge-critical.svg"
 	timeout = 10
-	script = "~/.config/dunst/alert.sh"
+	script = "$HOME/.config/dunst/play_error.sh"

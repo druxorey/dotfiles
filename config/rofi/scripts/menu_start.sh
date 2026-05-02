@@ -3,7 +3,7 @@
 declare -r FORMAT_WARNING="\e[1;33m[WARNING]\e[0m"
 
 declare -r ROFI_CONFIG="$HOME/.config/rofi/modules/menu_start.rasi"
-declare -r POLYBAR_CONFIG="$HOME/.config/rofi/polybar/menu_start.rasi"
+declare -r POLYBAR_CONFIG="$HOME/.config/rofi/polybar/polybar_menu_start.rasi"
 declare -r SCRIPTS_PATH="$HOME/.config/rofi/scripts"
 
 function main() {

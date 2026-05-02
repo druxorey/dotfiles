@@ -10,7 +10,7 @@ declare -r POLYBAR_DIR="$ROFI_DIR/polybar"
 declare -r MAIN_ROFI_CONFIG="$ROFI_DIR/modules/panel_wifi.rasi"
 declare -r PROMPT_ROFI_CONFIG="$ROFI_DIR/shared/layout_scan.rasi"
 declare -r LIST_ROFI_CONFIG="$ROFI_DIR/shared/layout_find.rasi"
-declare -r POLYBAR_CONFIG="$POLYBAR_DIR/wifi_manager_polybar.rasi"
+declare -r POLYBAR_CONFIG="$POLYBAR_DIR/polybar_panel_wifi.rasi"
 
 declare MONITOR="-m -1"
 

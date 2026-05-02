@@ -36,10 +36,10 @@ function main() {
 
 		if feh --bg-fill "$ACTUAL_WALLPAPER_PATH"; then
 			printf "%b Wallpaper set to: %s\n" "$FORMAT_SUCCESS" "$selection"
-			notify-send "Wallpaper Changed" "New wallpaper: $selection" -i "$ACTUAL_WALLPAPER_PATH" -u low
+			notify-send "New wallpaper: $selection" -i "$ACTUAL_WALLPAPER_PATH" --app-name "Wallpaper Manager" -u low
 		else
 			printf "%b Failed to set wallpaper: %s\n" "$FORMAT_ERROR" "$selection"
-			notify-send "Wallpaper Error" "Failed to set wallpaper: $selection" -u critical
+			notify-send "Failed to set wallpaper: $selection" --app-name "Wallpaper Manager" -u critical
 			return 1
 		fi
 	else

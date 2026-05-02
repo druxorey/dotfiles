@@ -83,23 +83,31 @@ super + Print
 
 # open clipboard manager
 super + v
-	clipmenu -config ~/.config/rofi/shared/layout_find.rasi
+	clipmenu -config $HOME/.config/rofi/shared/layout_find.rasi
 
 # general menu
 super + space
-	sh ~/.config/rofi/scripts/menu_start.sh
+	sh $HOME/.config/rofi/scripts/menu_start.sh
 
 # app launcher
 super + Home
-    rofi -show drun -config ~/.config/rofi/modules/launcher_apps.rasi
+    rofi -show drun -config $HOME/.config/rofi/modules/launcher_apps.rasi
 
 # music manager
 super + p
-	sh ~/.config/rofi/scripts/panel_music.sh
+	sh $HOME/.config/rofi/scripts/panel_music.sh
 
 # search manager
 super + Insert
-	sh ~/.config/rofi/scripts/panel_search.sh
+	sh $HOME/.config/rofi/scripts/panel_search.sh
+
+# power menu
+super + Scroll_Lock
+	sh $HOME/.config/rofi/scripts/panel_power.sh
+
+# utilities menu
+super + End
+	sh $HOME/.config/rofi/scripts/menu_utilities.sh
 
 #* ========================== applications ========================== *#
 
@@ -132,8 +140,8 @@ super + alt + i
 	kitty nvim -c "CopilotChat" -c "wincmd h | q"
 super + o
 	obsidian
-super + t
-	bspc rule -a kitty -o state=floating && kitty nvim /home/druxorey/Documents/A1\ Obsidian/D1\ Core/tasks.md
+super + alt + o
+	kitty --directory "$HOME/Documents/A1 Obsidian" nvim
 
 # browser shortcuts
 super + b

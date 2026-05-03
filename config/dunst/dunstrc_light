@@ -23,7 +23,7 @@
 	transparency = 0
 	separator_height = 2
 	padding = 8
-	horizontal_padding = 10
+	horizontal_padding = 15
 	text_icon_padding = 0
 
 	frame_width = 0
@@ -94,21 +94,38 @@
 	background = "#FFFBEB"
 	foreground = "#1F1F1F"
 	highlight = "#CB3A2A"
-	default_icon = "~/.config/dunst/icons/light-bell-badge-normal.svg"
+	default_icon = "$HOME/.config/dunst/icons/light_normal_notification.svg"
 	timeout = 5
 
 [urgency_normal]
 	background = "#FFFBEB"
 	foreground = "#1F1F1F"
 	highlight = "#CB3A2A"
-	default_icon = "~/.config/dunst/icons/light-bell-badge-normal.svg"
+	default_icon = "$HOME/.config/dunst/icons/light_normal_notification.svg"
 	timeout = 5
-	script = "$HOME/.config/dunst/play_alert.sh"
+    script = "$HOME/.config/dunst/scripts/play_dialog_notification.sh"
 
 [urgency_critical]
 	background = "#CB3A2A"
 	foreground = "#FFFBEB"
 	highlight = "#FFFBEB"
-	default_icon = "~/.config/dunst/icons/light-bell-badge-critical.svg"
+	default_icon = "$HOME/.config/dunst/icons/light_critical_notification.svg"
 	timeout = 10
-	script = "$HOME/.config/dunst/play_error.sh"
+    script = "$HOME/.config/dunst/scripts/play_dialog_error.sh"
+
+[audio_manager]
+    appname = "Audio Manager"
+	default_icon = "$HOME/.config/dunst/icons/light_normal_audio.svg"
+	script = "$HOME/.config/dunst/scripts/play_audio_volume_change.sh"
+
+[brightness_manager]
+    appname = "Brightness Manager"
+	default_icon = "$HOME/.config/dunst/icons/light_normal_brightness.svg"
+
+[redshift]
+    appname = "Redshift"
+	default_icon = "$HOME/.config/dunst/icons/light_normal_redshift.svg"
+
+[bspwm]
+    appname = "Bspwm"
+	default_icon = "$HOME/.config/dunst/icons/light_normal_bspwm.svg"

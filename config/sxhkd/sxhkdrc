@@ -20,22 +20,22 @@
 # increase audio volume
 XF86AudioRaiseVolume
 	pactl set-sink-volume @DEFAULT_SINK@ +5% && \\
-	notify-send "Audio" "$(pactl get-sink-volume @DEFAULT_SINK@ | grep -Po '\d+(?=%)' | head -n 1)%" -i audio-volume-high --app-name "Audio Manager" -u normal -r 999
+	notify-send "Audio $(pactl get-sink-volume @DEFAULT_SINK@ | grep -Po '\d+(?=%)' | head -n 1)%" --app-name "Audio Manager" -u low -r 999
 
 # decrease audio volume
 XF86AudioLowerVolume
 	pactl set-sink-volume @DEFAULT_SINK@ -5% && \\
-	notify-send "Audio" "$(pactl get-sink-volume @DEFAULT_SINK@ | grep -Po '\d+(?=%)' | head -n 1)%" -i audio-volume-high --app-name "Audio Manager" -u normal -r 999
+	notify-send "Audio $(pactl get-sink-volume @DEFAULT_SINK@ | grep -Po '\d+(?=%)' | head -n 1)%" --app-name "Audio Manager" -u low -r 999
 
 # mute audio volume
 XF86AudioMute
 	pactl set-sink-mute @DEFAULT_SINK@ toggle && \\
-	notify-send "Audio" "$(pactl get-sink-mute @DEFAULT_SINK@ | grep -q 'yes' && echo 'Muted' || echo 'Unmuted')" -i audio-volume-muted --app-name "Audio Manager" -u low -r 999
+	notify-send "Audio $(pactl get-sink-mute @DEFAULT_SINK@ | grep -q 'yes' && echo 'Muted' || echo 'Unmuted')" --app-name "Audio Manager" -u low -r 999
 
 # mute mic
 XF86AudioMicMute
 	amixer -D pulse sset Capture toggle && \\
-	notify-send "Microphone" "$(amixer -D pulse get Capture | grep -q '\[off\]' && echo 'Activated' || echo 'Deactivated')" -i audio-input-microphone --app-name "Audio Manager" -u low -r 998
+	notify-send "Microphone $(amixer -D pulse get Capture | grep -q '\[off\]' && echo 'Deactivated' || echo 'Activated')" --app-name "Audio Manager" -u low -r 998
 
 # previous song
 XF86AudioPrev
@@ -56,32 +56,32 @@ XF86AudioStop
 # increase brightness
 XF86MonBrightnessUp
 	brightnessctl set +6000 && \\
-	notify-send "Actual Brightness" "$(( $(cat /sys/class/backlight/*/brightness) * 100 / 120000 ))%" -i brightnesssettings --app-name "Brightness Manager" -u low -r 997
+	notify-send "Actual Brightness $(( $(cat /sys/class/backlight/*/brightness) * 100 / 120000 ))%" --app-name "Brightness Manager" -u low -r 997
 
 # increase brightness slowly
 shift + XF86MonBrightnessUp
 	brightnessctl set +1200 && \\
-	notify-send "Actual Brightness" "$(( $(cat /sys/class/backlight/*/brightness) * 100 / 120000 ))%" -i brightnesssettings --app-name "Brightness Manager" -u low -r 997
+	notify-send "Actual Brightness $(( $(cat /sys/class/backlight/*/brightness) * 100 / 120000 ))%" --app-name "Brightness Manager" -u low -r 997
 
 # decrease brightness
 XF86MonBrightnessDown
 	brightnessctl set 6000- && \\
-	notify-send "Actual Brightness" "$(( $(cat /sys/class/backlight/*/brightness) * 100 / 120000 ))%" -i brightnesssettings --app-name "Brightness Manager" -u low -r 997
+	notify-send "Actual Brightness $(( $(cat /sys/class/backlight/*/brightness) * 100 / 120000 ))%" --app-name "Brightness Manager" -u low -r 997
 
 # decrease brightness slowly
 shift + XF86MonBrightnessDown
 	brightnessctl set 1200- && \\
-	notify-send "Actual Brightness" "$(( $(cat /sys/class/backlight/*/brightness) * 100 / 120000 ))%" -i brightnesssettings --app-name "Brightness Manager" -u low -r 997
+	notify-send "Actual Brightness $(( $(cat /sys/class/backlight/*/brightness) * 100 / 120000 ))%" --app-name "Brightness Manager" -u low -r 997
 
 # activate night light
 super + XF86MonBrightnessUp
 	redshift -P -O 3800 && \\
-	notify-send "Night Mode Activated" -i redeyes --app-name "Brightness Manager" -u low -r 996
+	notify-send "Night Mode Activated" --app-name "Redshift" -u low -r 996
 
 # desactivate night light
 super + XF86MonBrightnessDown
 	redshift -x && \\
-	notify-send "Night Mode Deactivated" -i redeyes --app-name "Brightness Manager" -u low -r 996
+	notify-send "Night Mode Deactivated" --app-name "Redshift" -u low -r 996
 
 # print a selected area
 @Print
@@ -89,7 +89,8 @@ super + XF86MonBrightnessDown
 
 # grab a color
 super + Print
-	xcolor -s && notify-send "Color picked and saved to clipboard" -i playlist-generator --app-name "Color Picker" -u low
+	xcolor -s && \\
+	notify-send "Color picked and saved to clipboard" --app-name "Color Picker" -u low
 
 # open clipboard manager
 super + v
@@ -200,11 +201,11 @@ super + m
 
 # change the window layer to the previous
 super + comma
-    bsp-layout previous && notify-send "Layout: $(bsp-layout get)" --app-name "BSPWM" -u low -r 997
+    bsp-layout previous && notify-send "Layout: $(bsp-layout get)" --app-name "Bspwm" -u low -r 995
 
 # change the window layer to the next
 super + period
-    bsp-layout next && notify-send "Layout: $(bsp-layout get)" --app-name "BSPWM" -u low -r 997
+    bsp-layout next && notify-send "Layout: $(bsp-layout get)" --app-name "Bspwm" -u low -r 995
 
 # set the node flags
 super + ctrl + {m,x,y,z}

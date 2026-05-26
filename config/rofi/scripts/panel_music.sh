@@ -100,7 +100,7 @@ function main() {
 			"󰒮") cmus-remote --prev ; OPTION=1 ;;
 			"󰒭") cmus-remote --next ; OPTION=3 ;;
 			"󰑓") manageLofiStatus reload ;;
-			"󰋋") manageLofiStatus on  ;;
+			"󰋋") manageLofiStatus on  && exit 0 ;;
 			"󰟎") manageLofiStatus off && exit 0 ;;
 			"") bspc desktop -f ^5 ; kitty cmus & exit 0 ;;
 			"$reproducerState") cmus-remote --pause && OPTION=2 ;;

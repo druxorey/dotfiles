@@ -22,12 +22,11 @@ configuration {
 	display-recursivebrowser: "";
 	display-filebrowser: "";
 	display-projects: "󰈮";
-	drun-display-format: "{name}";
 	show-icons: true;
 }
 
 window {
-	width: 48em;
+	width: 64em;
 }
 
 inputbar {

@@ -3,14 +3,13 @@
 declare -r formatSuccess="\e[1;32m[SUCCESS]\e[0m"
 declare -r formatError="\e[1;31m[ERROR]\e[0m"
 declare -r ocrLangs="spa+eng"
-declare -r notifyAppName="FlameshotOCR"
 
 function main() {
 	local extractedText=$(flameshot gui --raw | tesseract stdin stdout -l "$ocrLangs" 2>/dev/null)
 
 	if [[ -z "${extractedText//[[:space:]]/}" ]]; then
 		printf "%b No text detected or capture canceled.\n" "$formatError"
-		notify-send "OCR Failed" "No readable text detected." --app-name "$notifyAppName" -u normal
+		notify-send "OCR Failed" "No readable text detected." --app-name "FlameshotOCR" -u normal
 		return 1
 	fi
 

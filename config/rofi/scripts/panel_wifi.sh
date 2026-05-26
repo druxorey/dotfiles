@@ -20,7 +20,7 @@ function connectToWifi() {
 	local command="nmcli dev wifi con \"$nameWifi\" hidden yes"
 
 	if [[ -n "$passwordWifi" ]]; then
-		command="nmcli dev wifi con \"$nameWifi\" password \"$passwordWifi\" hidden yes"
+		command="nmcli dev wifi con \'$nameWifi\' password \'$passwordWifi\' hidden yes"
 	fi
 
 	local notifyId=8000

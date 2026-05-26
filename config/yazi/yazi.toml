@@ -64,12 +64,6 @@ rules = [
 prepend_previewers = [
 	{ url = "*.csv", run = "rich-preview"},
 	{ url = "*.md", run = "rich-preview" },
-	{ name = "*/", run = "folder" },
-	{ name = "/run/user/1000/gvfs/**/*", run = "noop" },
-	{ name = "/run/media/druxorey/**/*", run = "noop" },
-    { mime = "audio/*",   run = "exifaudio"}
-]
-prepend_preloaders = [
-	{ name = "/run/user/1000/gvfs/**/*", run = "noop" },
-	{ name = "/run/media/druxorey/**/*", run = "noop" },
+	{ url = "*/", run = "folder" },
+    { mime = "audio/*", run = "exifaudio"}
 ]

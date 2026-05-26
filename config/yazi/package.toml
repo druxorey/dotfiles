@@ -15,18 +15,13 @@ hash = "d64feec9761392cbc250d199ab4b8a3a"
 
 [[plugin.deps]]
 use = "yazi-rs/plugins:full-border"
-rev = "ac82af3"
-hash = "eff8ff12fa4e5f035a10d8aeeb4c258d"
-
-[[plugin.deps]]
-use = "yazi-rs/plugins:git"
-rev = "ac82af3"
-hash = "6849444b7c2df08eace83f3f86fb55a3"
+rev = "be524fb"
+hash = "7b625412411be411153886894d9acaf"
 
 [[plugin.deps]]
 use = "yazi-rs/plugins:mount"
-rev = "ac82af3"
-hash = "77e20b071404f97c09d3f9afdb9482e0"
+rev = "be524fb"
+hash = "e3260d0b1feded8c8e3ae3afa1169e30"
 
 [[plugin.deps]]
 use = "imsi32/yatline"
@@ -35,8 +30,8 @@ hash = "e6e98d12b1648d1894c2b560d85eeaa7"
 
 [[plugin.deps]]
 use = "KKV9/compress"
-rev = "46a6b9f"
-hash = "771af2becc575a3f43d0542de823969d"
+rev = "e60e122"
+hash = "fbaf0adc8efc59555b748d36aab62d40"
 
 [[plugin.deps]]
 use = "Sonico98/exifaudio"
@@ -45,8 +40,8 @@ hash = "4761fffb60a12d37096c34a356380cdf"
 
 [[plugin.deps]]
 use = "ZimCodes/lin-decompress"
-rev = "592fee3"
-hash = "1b1eb812c57d18a2047c1e8e1536274f"
+rev = "174c3ae"
+hash = "a921316c914f2d14e0febf4125f5dbae"
 
 [flavor]
 deps = []

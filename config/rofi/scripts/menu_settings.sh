@@ -12,12 +12,12 @@ function toggleAirplaneMode() {
 	bluetooth_status=$(rfkill list bluetooth | grep -i "Soft blocked" | awk '{print $3}')
 
 	if [[ "$wifi_status" == "disabled" && "$bluetooth_status" == "yes" ]]; then
-		notify-send -u low "Airplane Mode Deactivated"
+		notify-send "Deactivated" --app-name "Airplane Mode" -u low 
 		nmcli radio wifi on
 		rfkill unblock bluetooth
 		printf "%b Airplane Mode Deactivated\n" "$FORMAT_SUCCESS"
 	else
-		notify-send -u low "Airplane Mode Activated"
+		notify-send "Activated" --app-name "Airplane Mode" -u low 
 		nmcli radio wifi off
 		rfkill block bluetooth
 		printf "%b Airplane Mode Activated\n" "$FORMAT_SUCCESS"
@@ -37,18 +37,20 @@ function main() {
 	menuNames[0]="󰖩   Wifi"
 	menuNames[1]="   Bluetooth"
 	menuNames[2]="󰀝   Airplane Mode"
-	menuNames[3]="󰹑   Display"
-	menuNames[4]="󰂄   Energy"
-	menuNames[5]=$([[ "$actualTheme" == "dark" ]] && printf "   Light Mode" || printf "   Dark Mode")
-	menuNames[6]="   Wallpaper"
+	menuNames[3]="   Notifications"
+	menuNames[4]="󰹑   Display"
+	menuNames[5]="󰂄   Energy"
+	menuNames[6]=$([[ "$actualTheme" == "dark" ]] && printf "   Light Mode" || printf "   Dark Mode")
+	menuNames[7]="   Wallpaper"
 
 	menuCommands[0]="sh $SCRIPTS_PATH/panel_wifi.sh"
 	menuCommands[1]="blueman-manager"
 	menuCommands[2]="toggleAirplaneMode"
-	menuCommands[3]="sh $SCRIPTS_PATH/panel_display.sh"
-	menuCommands[4]="sh $SCRIPTS_PATH/panel_energy.sh"
-	menuCommands[5]="sh $SCRIPTS_PATH/toggle_theme.sh"
-	menuCommands[6]="sh $SCRIPTS_PATH/panel_wallpaper.sh"
+	menuCommands[3]="sh $SCRIPTS_PATH/toggle_dunst.sh"
+	menuCommands[4]="sh $SCRIPTS_PATH/panel_display.sh"
+	menuCommands[5]="sh $SCRIPTS_PATH/panel_energy.sh"
+	menuCommands[6]="sh $SCRIPTS_PATH/toggle_theme.sh"
+	menuCommands[7]="sh $SCRIPTS_PATH/panel_wallpaper.sh"
 
 	local selectedIndex=$(printf "%s\n" "${menuNames[@]}" | rofi -dmenu -format i -m -1 -config $ROFI_CONFIG)
 	echo $selectedIndex

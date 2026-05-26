@@ -122,6 +122,14 @@
     appname = "Brightness Manager"
 	default_icon = "$HOME/.config/dunst/icons/dark_normal_brightness.svg"
 
+[energy_manager]
+    appname = "Energy Manager"
+	default_icon = "$HOME/.config/dunst/icons/dark_normal_battery.svg"
+
+[wifi_manager]
+    appname = "Wifi Manager"
+	default_icon = "$HOME/.config/dunst/icons/dark_normal_wifi.svg"
+
 [redshift]
     appname = "Redshift"
 	default_icon = "$HOME/.config/dunst/icons/dark_normal_redshift.svg"
@@ -133,3 +141,10 @@
 [bspwm]
     appname = "Bspwm"
 	default_icon = "$HOME/.config/dunst/icons/dark_normal_bspwm.svg"
+
+[toggle_theme]
+    appname = "Toggle Theme"
+	default_icon = "$HOME/.config/dunst/icons/dark_normal_bspwm.svg"
+
+[airplane_mode]
+    appname = "Airplane Mode"

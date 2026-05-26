@@ -118,9 +118,17 @@
 	default_icon = "$HOME/.config/dunst/icons/light_normal_audio.svg"
 	script = "$HOME/.config/dunst/scripts/play_audio_volume_change.sh"
 
+[energy_manager]
+    appname = "Energy Manager"
+	default_icon = "$HOME/.config/dunst/icons/dark_normal_battery.svg"
+
 [brightness_manager]
     appname = "Brightness Manager"
 	default_icon = "$HOME/.config/dunst/icons/light_normal_brightness.svg"
+
+[wifi_manager]
+    appname = "Wifi Manager"
+	default_icon = "$HOME/.config/dunst/icons/dark_normal_wifi.svg"
 
 [redshift]
     appname = "Redshift"
@@ -129,3 +137,10 @@
 [bspwm]
     appname = "Bspwm"
 	default_icon = "$HOME/.config/dunst/icons/light_normal_bspwm.svg"
+
+[toggle_theme]
+    appname = "Toggle Theme"
+	default_icon = "$HOME/.config/dunst/icons/light_normal_bspwm.svg"
+
+[airplane_mode]
+    appname = "Airplane Mode"

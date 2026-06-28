@@ -118,6 +118,7 @@ setopt hist_find_no_dups
 # vim mode
 bindkey -v
 export KEYTIMEOUT=0
+source "$HOME/.zshenv_secrets"
 
 # key bindings
 bindkey '^?'    backward-delete-char

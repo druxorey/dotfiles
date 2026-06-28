@@ -10,12 +10,9 @@ return {
 		workspaces = {
 			{
 				name = "Workspace",
-				path = "~/Documents/A1 Obsidian",
+				path = "$HOME/Documents/A1 Obsidian",
 			}
 		},
 		disable_frontmatter = true,
-		ui = {
-			enable = false,
-		},
 	},
 }

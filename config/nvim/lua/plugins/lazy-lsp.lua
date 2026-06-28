@@ -5,7 +5,7 @@ return {
 			bashls = {
 				settings = {
 					bashIde = {
-						shellcheckArguments = "--exclude=SC2155,SC2086,SC2181",
+						shellcheckArguments = "--exclude=SC2155,SC2086,SC2181,SC1090",
 					},
 				},
 			},

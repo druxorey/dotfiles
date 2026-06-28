@@ -45,7 +45,7 @@ vim.keymap.set("n", "<C-j>", "<C-w>j", { noremap = true, silent = true })
 vim.keymap.set("n", "<C-k>", "<C-w>k", { noremap = true, silent = true })
 vim.keymap.set("n", "<C-l>", "<C-w>l", { noremap = true, silent = true })
 
---* ==================== pluggins configurations =================== *--
+--* ==================== plugins configurations =================== *--
 
 -- Conform format
 vim.keymap.set({ "n", "v" }, "<leader>cF", function()
@@ -53,8 +53,9 @@ vim.keymap.set({ "n", "v" }, "<leader>cF", function()
 end, { noremap = true, silent = true, desc = "Format buffer or selection" })
 
 -- Copilot Chat toggle
-vim.keymap.set("n", "<leader>ai", ":CopilotChat<CR>", { noremap = true, silent = true, desc = "Open Copilot Chat"})
-vim.keymap.set("v", "<leader>ai", ":'<,'>CopilotChat<CR>", { noremap = true, silent = true, desc = "Open Copilot Chat" })
+-- vim.keymap.set("n", "<leader>ai", ":CopilotChat<CR>", { noremap = true, silent = true, desc = "Open Copilot Chat"})
+-- vim.keymap.set("v", "<leader>ai", ":'<,'>CopilotChat<CR>", { noremap = true, silent = true, desc = "Open Copilot Chat" })
+vim.keymap.set("n", "<leader>ai", ":CodeCompanionChat<CR>", { noremap = true, silent = true, desc = "Open Gemini Chat"})
 
 -- Silicon toggle
 vim.keymap.set("v", "<leader>si", ":'<,'>Silicon<CR>", { noremap = true, silent = true, desc = "Take a screenshot" })
@@ -94,6 +95,4 @@ vim.api.nvim_set_keymap('n', '<leader>cxs', '<cmd>VimtexStop<CR>', { noremap = t
 vim.keymap.set('n', '<C-M-j>', '<C-d>', { noremap = true, silent = true, desc = 'Page down (half screen)' })
 vim.keymap.set('n', '<C-M-k>', '<C-u>', { noremap = true, silent = true, desc = 'Page up (half screen)' })
 
-vim.keymap.set('n', '<Leader>db', '<cmd>DBUIToggle<CR>', { noremap = false, desc = 'Toggle DBUI' })
-vim.keymap.set('v', '<Leader>dx', '<Plug>(DBUI_ExecuteQuery)', { noremap = false, desc = 'Tumama up (half screen)' })
-vim.keymap.set('n', '<Leader>dx', '<Plug>(DBUI_ExecuteQuery)', { noremap = false, desc = 'Tumama up (half screen)' })
+vim.keymap.set("n", "um", "<cmd>Markview<CR>", { noremap = true, silent = true, desc = "Toggle Markview" })

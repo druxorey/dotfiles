@@ -113,7 +113,8 @@
   "global-search:open": [
     {
       "modifiers": [
-        "Mod"
+        "Mod",
+        "Shift"
       ],
       "key": "S"
     }
@@ -218,7 +219,14 @@
       "key": "E"
     }
   ],
-  "editor:save-file": [],
+  "editor:save-file": [
+    {
+      "modifiers": [
+        "Mod"
+      ],
+      "key": "S"
+    }
+  ],
   "templater-obsidian:jump-to-next-cursor-location": [
     {
       "modifiers": [
@@ -259,6 +267,14 @@
         "Alt"
       ],
       "key": "P"
+    }
+  ],
+  "tasknotes:create-new-task": [
+    {
+      "modifiers": [
+        "Alt"
+      ],
+      "key": "N"
     }
   ]
 }

@@ -5,5 +5,9 @@
   "theme": "system",
   "monospaceFontFamily": "FiraMono Nerd Font",
   "accentColor": "#bd93f9",
-  "enabledCssSnippets": []
+  "enabledCssSnippets": [
+    "theme-override"
+  ],
+  "interfaceFontFamily": "NotoSans Nerd Font",
+  "textFontFamily": "NotoSans Nerd Font"
 }

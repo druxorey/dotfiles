@@ -138,7 +138,7 @@ super + alt + e
 
 # server managment
 super + s
-	thunar smb://192.168.1.119/
+	thunar smb://192.168.1.10/
 
 # file editor
 super + c
@@ -156,26 +156,26 @@ super + alt + o
 
 # browser shortcuts
 super + b
-	brave
+	brave-origin
 super + i
 	gtk-launch brave-gemini.desktop
 
 super + F1
-	brave github.com/druxorey
+	brave-origin github.com/druxorey
 super + F5
-	brave web.whatsapp.com
+	brave-origin web.whatsapp.com
 super + F6
-	brave youtube.com
+	brave-origin youtube.com
 super + F7
-	brave reddit.com
+	brave-origin reddit.com
 super + F9
-	brave gmail.com
+	brave-origin gmail.com
 super + F10
-	brave calendar.google.com
+	brave-origin calendar.google.com
 super + F11
-	brave drive.google.com
+	brave-origin drive.google.com
 super + F12
-	brave remotedesktop.google.com/access
+	brave-origin remotedesktop.google.com/access
 
 #! ================================================================== !#
 #!                               bspwm                                !#

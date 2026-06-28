@@ -40,7 +40,7 @@ FORMAT_TIME='\[\e[1;36m\]'
 FORMAT_RESET='\[\e[0m\]'
 
 PS0='$(getStartTime $ROOTPID)'
-PS1=" ${FORMAT_TIME}[\$(getStopTime \$ROOTPID)ms] ${FORMAT_DIR}\w${FORMAT_RESET} > "
+PS1="${FORMAT_TIME}[\$(getStopTime \$ROOTPID)ms] ${FORMAT_DIR}\w${FORMAT_RESET} > "
 eval "$(zoxide init bash)"
 
 #* ================================= aliases ================================ *#
@@ -57,11 +57,12 @@ alias cd='z'
 alias cdi='zi'
 alias ..='z ..'
 alias ...='z ../..'
-alias cpv='rsync -avh --info=progress2'
+alias play='z Playground'
 
 # remaping
 alias vim='nvim'
 alias cp='cp -i'
+alias cpv='rsync -avh --info=progress2'
 alias cat='bat -p'
 alias man='batman'
 alias fzf='fzf --preview "bat --color=always {}"'
@@ -70,7 +71,8 @@ alias grep='grep --color=auto'
 alias matrix='cmatrix -C blue'
 alias peaclock='peaclock --config ~/.config/peaclock'
 alias btop='btop --force-utf'
-alias oh-my-time='eval "$(oh-my-posh init zsh --config ~/.config/oh-my-posh/dracula-time.omp.json)"'
+alias buho='smbclient //192.168.1.119/files -U buho'
+alias th='trash -v'
 
 # development
 alias gadd='git add'
@@ -112,7 +114,7 @@ alias venv-desactivate='deactivate'
 # system
 alias logout='bspc quit'
 alias shutdown='shutdown now'
-alias reload='clear && source ~/.zprofile && source ~/.config/zsh/.zshrc'
+alias reload='clear && source ~/.bashrc'
 alias clip='xclip -selection clipboard'
 alias unlock='sudo rm /var/lib/pacman/db.lck'
 alias setkeys='setxkbmap us -variant intl'

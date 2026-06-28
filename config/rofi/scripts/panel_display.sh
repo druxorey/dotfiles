@@ -15,11 +15,13 @@ function main() {
 	displayNames[1]="Extend: HDMI Left of Laptop"
 	displayNames[2]="Extend: HDMI Right of Laptop"
 	displayNames[3]="Clone: HDMI Same as Laptop"
+	displayNames[4]="HDMI Only (Disconnect Laptop)"
 
 	displayCommands[0]="xrandr --output eDP-1 --auto --primary --output HDMI-1 --off"
 	displayCommands[1]="xrandr --output eDP-1 --auto --primary --output HDMI-1 --auto --left-of eDP-1"
 	displayCommands[2]="xrandr --output eDP-1 --auto --primary --output HDMI-1 --auto --right-of eDP-1"
 	displayCommands[3]="xrandr --output eDP-1 --auto --primary --output HDMI-1 --auto --same-as eDP-1"
+	displayCommands[4]="xrandr --output HDMI-1 --auto --primary --output eDP-1 --off"
 
 	local selectedIndex=$(printf "%s\n" "${displayNames[@]}" | rofi -dmenu -format i -m -1 -mesg "$message" -config $ROFI_CONFIG)
 

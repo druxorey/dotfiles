@@ -15,9 +15,16 @@ function getStatus() {
         return
     fi
 
-    local state=$(echo "$status" | sed -n 's/^status //p')
-    local artist=$(echo "$status" | sed -n 's/^tag artist //p')
-    local title=$(echo "$status" | sed -n 's/^tag title //p')
+    local state="" artist="" title=""
+    while IFS= read -r line; do
+        if [[ "$line" == "status "* ]]; then
+            state="${line#status }"
+        elif [[ "$line" == "tag artist "* ]]; then
+            artist="${line#tag artist }"
+        elif [[ "$line" == "tag title "* ]]; then
+            title="${line#tag title }"
+        fi
+    done <<< "$status"
 
     [[ ${#title} -gt $MAX_LENGTH_TITLE ]] && title="${title:0:$MAX_LENGTH_TITLE}..."
     [[ ${#artist} -gt $MAX_LENGTH_ARTIST ]] && artist="${artist:0:$MAX_LENGTH_ARTIST}..."

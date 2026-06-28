@@ -8,7 +8,9 @@ function main() {
 		return 0
 	fi
 
-	local windows=$(bspc query -N -d focused | wc -l)
+	local windowsList
+	mapfile -t windowsList < <(bspc query -N -d focused 2>/dev/null)
+	local windows=${#windowsList[@]}
 
 	if (( windows >= 4 )); then
 		windows=$(( windows - (windows / 2) ))

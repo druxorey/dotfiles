@@ -14,22 +14,18 @@
 #!
 #! ========================================================================== !#
 
-#* ================================= monitor ================================ *#
-
-bspc monitor eDP-1 -d     
-bspc monitor HDMI-1 -d   
-
 #* =========================== startup application ========================== *#
 
-sxhkd &
+feh --bg-fill "$HOME/.local/share/wallpaper_actual.png" &
 polybar &
 dunst &
 picom &
-autorandr --change &
-
-feh --bg-fill "$HOME/.local/share/wallpaper_actual.png" &
+sxhkd &
 
 #* ================================== bspc ================================== *#
+
+bspc monitor eDP-1 -d     
+bspc monitor HDMI-1 -d   
 
 bspc config pointer_modifier mod4
 bspc config pointer_action1 move
@@ -60,5 +56,17 @@ wmname LG3D
 
 #* ================================== init ================================== *#
 
-sudo ln -sf /etc/tlp.d/3-normal.conf /etc/tlp.conf &
+if xrandr | grep -q "HDMI-1 connected"; then
+	xset -dpms
+	xset s off
+else
+	xset +dpms
+	xset s 600
+fi
+
+sudo ln -sf /etc/tlp.d/01-normal.conf /etc/tlp.conf &
 sudo tlp start &
+xidlehook --not-when-fullscreen --not-when-audio --timer 900 \
+		  "sudo ln -sf '/etc/tlp.d/02-powersave.conf' '/etc/tlp.conf' && sudo tlp start" \
+		  "sudo ln -sf '/etc/tlp.d/01-normal.conf' '/etc/tlp.conf' && sudo tlp start" &
+systemctl --user enable --now clipmenud &

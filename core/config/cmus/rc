@@ -1,0 +1,23 @@
+set aaa_mode=artist
+set color_statusline_bg=lightblue
+set color_statusline_fg=white
+set color_win_cur=blue
+set color_win_cur_attr=bold
+set color_win_cur_sel_fg=white
+set color_win_inactive_cur_sel_fg=black
+set format_current= %t - %a %= %{album}
+set format_heading_playlist=%{?!panel?Playlist - }%{title}%=    %{duration}
+set format_playlist= %02n. %t %= %-28%{album} %-15%a %6%d
+set format_playlist_va= %02n. %t %= %-28%{album} %-15%a %6%d
+set lib_sort=title album albumartist date discnumber tracknumber filename play_count
+set pl_sort=album tracknumber
+set play_library=false
+set play_sorted=true
+set shuffle=tracks
+set start_view=playlist
+bind -f common 0 view settings
+bind -f common 1 view tree
+bind -f common 2 view sorted
+bind -f common 3 view playlist
+bind -f common 4 view browser
+bind -f common 5 view filters

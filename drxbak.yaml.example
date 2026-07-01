@@ -1,0 +1,45 @@
+# Copy this file to 'drxbak.yaml' and customize. Ignored by Git.
+#
+# Rules:
+# - Directories MUST end with '/' (e.g. ~/.config/kitty/).
+# - Files MUST NOT end with '/' (e.g. ~/.bashrc).
+# - Paths are automatically routed in the repo:
+#   - Inside .config/ -> parent/config/
+#   - Inside .local/  -> parent/local/
+#   - Inside home     -> parent/home/
+#   - Outside home    -> parent/extras/
+#   - .obsidian paths -> parent/config/obsidian (special exception)
+
+flavour: bspwm
+
+core:
+  - source: "~/.bashrc"
+  - source: "~/.bash_profile"
+  - source: "~/.gitconfig"
+  - source: "~/.zprofile"
+  - source: "~/.config/cmus/rc"
+  - source: "~/.config/fastfetch/"
+  - source: "~/.config/kitty/"
+  - source: "~/.config/nvim/"
+  - source: "~/.config/oh-my-posh/"
+  - source: "~/.config/tmux/"
+    exclude:
+      - "plugins/"
+  - source: "~/.config/yazi/"
+  - source: "~/.config/Vencord/"
+    exclude:
+      - "dist"
+  - source: "~/.config/zsh/"
+  - source: "~/.local/share/crater/"
+  - source: "~/Documents/A1 Obsidian/.obsidian/"
+    exclude:
+      - "plugins"
+      - "workspace.json"
+      - "workspace-mobile.json"
+      - "graph.json"
+      - "backlink.json"
+  - source: "/etc/tlp.d/"
+  - source: "/var/spool/cron/"
+
+bspwm:
+  - source: "~/.config/bspwm/"

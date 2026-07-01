@@ -11,33 +11,5 @@
 #
 # ======================================================================#
 
-# cmus
-config/cmus/*
-!config/cmus/rc
-
-# nvim
-config/nvim/plugins/installed/*
-config/nvim/lua/plugins/prompts/*
-
-# obsidian
-config/obsidian/workspace.json
-config/obsidian/workspace-mobile.json
-config/obsidian/graph.json
-config/obsidian/backlink.json
-config/obsidian/plugins/*
-
-# zsh
-config/zsh/.zcompdump
-config/zsh/zsh-autosuggestions
-config/zsh/zsh-syntax-highlighting
-config/zsh/fzf-tab
-
-# tlp
-config/tlp/00-template.conf
-config/tlp/README
-
-# extra
-config/yazi/*
-config/touchegg/.touchegg:0.lock
-config/tmux/plugins/
-config/vencord/dist
+# drxbak
+drxbak.yaml

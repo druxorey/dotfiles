@@ -1,0 +1,38 @@
+
+#! ========================================================================== !#
+#!
+#! ███████╗ █████╗ ████████╗██╗  ██╗██╗   ██╗██████╗  █████╗ ██████╗  ██████╗
+#! ╚══███╔╝██╔══██╗╚══██╔══╝██║  ██║██║   ██║██╔══██╗██╔══██╗██╔══██╗██╔════╝
+#!   ███╔╝ ███████║   ██║   ███████║██║   ██║██████╔╝███████║██████╔╝██║
+#!  ███╔╝  ██╔══██║   ██║   ██╔══██║██║   ██║██╔══██╗██╔══██║██╔══██╗██║
+#! ███████╗██║  ██║   ██║   ██║  ██║╚██████╔╝██║  ██║██║  ██║██║  ██║╚██████╗
+#! ╚══════╝╚═╝  ╚═╝   ╚═╝   ╚═╝  ╚═╝ ╚═════╝ ╚═╝  ╚═╝╚═╝  ╚═╝╚═╝  ╚═╝ ╚═════╝
+#!
+#!                         https://github.com/druxorey
+#!
+#! ========================================================================== !#
+
+set selection-clipboard clipboard
+
+set font "Noto Sans Nerd Font 11"
+
+set default-bg "#21222C"
+set statusbar-bg "#191A21"
+set statusbar-fg "#F8F8F2"
+set recolor-darkcolor "#F8F8F2"
+set recolor-lightcolor "#21222C"
+set index-bg "#21222C"
+set index-fg "#F8F8F2"
+set index-active-fg "#21222C"
+set index-active-bg "#BD93F9"
+set highlight-active-color "rgba(189, 147, 249, 0.5)"
+set highlight-color "rgba(189, 147, 249, 0.5)"
+set notification-error-bg "#FF5555"
+set notification-error-fg "#F8F8F2"
+set inputbar-bg "#191A21"
+set inputbar-fg "#F8F8F2"
+set recolor true
+
+set guioptions "hv"
+
+map <A-r> feedkeys ":source<Return>"

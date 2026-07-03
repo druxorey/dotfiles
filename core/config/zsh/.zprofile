@@ -9,18 +9,15 @@
 #!                          ╚══════╝╚══════╝╚═╝  ╚═╝
 #!
 #!                                  ZPROFILE
-#!
-#!                            - Made by Druxorey -
 #!                         https://github.com/druxorey
 #!
 #! ========================================================================== !#
 
 #* ============================= base directories =========================== *#
 
-export XDG_CONFIG_HOME="$HOME/.config"
+export XDG_CONFIG_HOME="$HOME/.config" && mkdir -p "$XDG_CONFIG_HOME/zsh"
+export XDG_CACHE_HOME="$HOME/.cache"   && mkdir -p "$XDG_CACHE_HOME/zsh"
 export XDG_DATA_HOME="$HOME/.local/share"
-export XDG_CACHE_HOME="$HOME/.cache"
-export ZDOTDIR="$XDG_CONFIG_HOME/zsh"
 
 #* ============================= default programs =========================== *#
 
@@ -47,6 +44,11 @@ export GOPATH="$XDG_CACHE_HOME/go"
 export GOBIN="$GOPATH/bin"
 export GNUPGHOME="$XDG_CONFIG_HOME/gnupg"
 
+export DOTNET_CLI_HOME="$HOME/.local/share/dotnet"
+export NUGET_PACKAGES="$HOME/.local/share/nuget"
+
+#* =============================== fzf options ============================== *#
+
 export FZF_DEFAULT_OPTS="
 	--color=fg:8,bg:-1,hl:12,fg+:7,bg+:15,hl+:4
 	--color=info:5,prompt:4,pointer:4,marker:1,spinner:6,header:1"
@@ -55,5 +57,7 @@ export FZF_CTRL_T_OPTS="
 	--walker-skip .git,node_modules,target,.local,.steam
 	--preview 'bat -n --color=always {}'
 	--bind 'ctrl-/:change-preview-window(down|hidden|)'"
+
+#* =============================== fzf options ============================== *#
 
 export PATH="$HOME/.local/bin:$CARGO_HOME/bin:$GOPATH/bin:$PATH"

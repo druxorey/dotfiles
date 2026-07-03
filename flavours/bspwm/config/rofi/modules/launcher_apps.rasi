@@ -1,0 +1,37 @@
+
+/* ========================================================================== !/
+/!
+/!                        ██████╗  ██████╗ ███████╗██╗
+/!                        ██╔══██╗██╔═══██╗██╔════╝██║
+/!                        ██████╔╝██║   ██║█████╗  ██║
+/!                        ██╔══██╗██║   ██║██╔══╝  ██║
+/!                        ██║  ██║╚██████╔╝██║     ██║
+/!                        ╚═╝  ╚═╝ ╚═════╝ ╚═╝     ╚═╝
+/!
+/!                               LAUNCHER MENU
+/!                         https://github.com/druxorey
+/!
+/! ========================================================================== */
+
+@import "../shared/layout_find.rasi"
+
+configuration {
+	modi: "drun,window,run";
+	display-drun: "";
+	display-run: "";
+	display-window: "";
+	drun-display-format: "{name}";
+	window-format: "{t}";
+	show-icons: true;
+
+    run {
+        fallback-icon: "utilities-terminal";
+    }
+    drun {
+        fallback-icon: "package-x-generic";
+    }
+}
+
+inputbar {
+	children: [ "entry", "mode-switcher" ];
+}

@@ -1,0 +1,88 @@
+
+#! ========================================================================== !#
+#!
+#!                    ████████╗███╗   ███╗██╗   ██╗██╗  ██╗
+#!                    ╚══██╔══╝████╗ ████║██║   ██║╚██╗██╔╝
+#!                       ██║   ██╔████╔██║██║   ██║ ╚███╔╝
+#!                       ██║   ██║╚██╔╝██║██║   ██║ ██╔██╗
+#!                       ██║   ██║ ╚═╝ ██║╚██████╔╝██╔╝ ██╗
+#!                       ╚═╝   ╚═╝     ╚═╝ ╚═════╝ ╚═╝  ╚═╝
+#!
+#!                         https://github.com/druxorey
+#!
+#! ========================================================================== !#
+
+#* ================================ bind key ================================ *#
+
+set -g prefix C-x
+unbind r
+bind r source-file ~/.config/tmux/tmux.conf
+
+#* ============================= configuration ============================== *#
+
+set -g escape-time 0
+set -g repeat-time 1000
+set -g base-index 1
+set -g pane-base-index 1
+set -sg terminal-overrides ",*:RGB"
+set-option -g allow-rename off
+set -g pane-border-lines single
+
+#* ================================ vim mode ================================ *#
+
+setw -g mode-keys vi
+bind-key h select-pane -L
+bind-key j select-pane -D
+bind-key k select-pane -U
+bind-key l select-pane -R
+set -g mouse on
+
+#* ============================= display popup ============================== *#
+
+bind e display-popup -h 80% -w 80% -d "#{pane_current_path}" -E 'tmux new-session yazi \; set status off'
+bind t display-popup -w 80% -h 80% -d "#{pane_current_path}"
+
+#* ================================= plugins ================================ *#
+
+set -g @plugin 'tmux-plugins/tpm'
+set -g @plugin 'dracula/tmux'
+
+set -g @dracula-plugins "git network-ping tmux-ram-usage"
+
+set -g status-position top
+set -g @dracula-show-flags true
+set -g @dracula-show-powerline true
+set -g @dracula-border-contrast true
+set -g @dracula-transparent-powerline-bg true
+
+set -g @dracula-show-left-icon "#S"
+set -g @dracula-left-icon-padding 0
+
+set -g @dracula-show-right-sep ""
+set -g @dracula-show-left-sep ""
+set -g @dracula-inverse-divider ""
+set -g @dracula-show-edge-icons true
+
+set -g @dracula-git-no-repo-message ""
+set -g @dracula-tmux-ram-usage-colors "red gray"
+set -g @dracula-tmux-ram-usage-label "󰍛"
+set -g @dracula-network-ping-colors "gray white"
+set -g @dracula-ping-server "google.com"
+set -g @dracula-ping-rate 5
+
+set -g @dracula-colors "
+	khite='#1F1F1F'
+	gray='#FFFBEB'
+	dark_gray='#DEDBCC'
+	light_purple='#644AC9'
+	dark_purple='#DEDBCC'
+	cyan='#179299'
+	green='#CB3A2A'
+	orange='#AF3A03'
+	red='#CB3A2A'
+	pink='#A3144D'
+	yellow='#846E15'
+"
+
+# Initialize TMUX plugin manager (keep this line at the very bottom of tmux.conf)
+run '~/.config/tmux/plugins/tpm/tpm'

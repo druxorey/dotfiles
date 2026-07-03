@@ -1,0 +1,16 @@
+#!/bin/bash
+
+function main() {
+	local sourceDesktops=(6 7 8)
+	local targetDesktop=5
+
+	for desktop in "${sourceDesktops[@]}"; do
+		for wid in $(bspc query -N -d "^$desktop"); do
+			bspc node "$wid" --to-desktop "^$targetDesktop"
+		done
+	done
+
+	return 0
+}
+
+main "$@"

@@ -1,0 +1,20 @@
+#!/bin/bash
+
+function main() {
+	sleep 2
+	if xrandr | grep -q "HDMI-1 connected" ; then
+		xset -dpms
+		xset s off
+		bspc monitor HDMI-1 -d   
+	else
+		xset +dpms
+		xset s 600
+		bspc monitor HDMI-1 -r
+	fi
+
+	feh --bg-fill "$HOME/.local/share/wallpaper_actual.png" &
+
+	return 0
+}
+
+main "$@"

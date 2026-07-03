@@ -1,0 +1,83 @@
+#! ========================================================================== !#
+#!
+#!                    ██╗  ██╗██╗████████╗████████╗██╗   ██╗
+#!                    ██║ ██╔╝██║╚══██╔══╝╚══██╔══╝╚██╗ ██╔╝
+#!                    █████╔╝ ██║   ██║      ██║    ╚████╔╝
+#!                    ██╔═██╗ ██║   ██║      ██║     ╚██╔╝
+#!                    ██║  ██╗██║   ██║      ██║      ██║
+#!                    ╚═╝  ╚═╝╚═╝   ╚═╝      ╚═╝      ╚═╝
+#!
+#!                         https://github.com/druxorey
+#!
+#! ========================================================================== !#
+
+#* ================================ terminal ================================ *#
+
+background_opacity          1
+window_padding_width        10
+
+font_size                   11.0
+
+font_family                 Hack Nerd Font
+bold_font                   Hack Nerd Font Bold
+italic_font                 Hack Nerd Font Italic
+bold_italic_font            Hack Nerd Font Bold Italic
+
+scrollback_lines            10000
+enable_audio_bell           no
+copy_on_select              clipboard
+
+#* =============================== colorscheme ============================== *#
+
+foreground                  #F8F8F2
+background                  #21222C
+selection_foreground        #FFFFFF
+selection_background        #6272A4
+
+url_color                   #8BE9FD
+
+# black (ansi_black, color0, term_black)
+color0  #191A21
+color8  #707487
+
+# red (ansi_red, color1, term_red)
+color1   #FF5555
+color9   #FF6E6E
+
+# green (ansi_green, color2, term_green)
+color2   #50FA7B
+color10  #69FF94
+
+# yellow (ansi_yellow, color3, term_yellow)
+color3   #F1FA8C
+color11  #FFFFA5
+
+# blue (ansi_blue, color4, term_blue)
+color4   #BD93F9
+color12  #D6ACFF
+
+# magenta (ansi_magenta, color5, term_magenta, purple)
+color5   #FF79C6
+color13  #FF92DF
+
+# cyan (ansi_cyan, color6, term_cyan)
+color6   #8BE9FD
+color14  #A4FFFF
+
+# white (ansi_white, color7, term_white)
+color7   #F8F8F2
+color15  #44475A
+
+cursor                      #F8F8F2
+cursor_text_color           background
+
+active_tab_foreground       #44475A
+active_tab_background       #F8F8F2
+inactive_tab_foreground     #44475A
+inactive_tab_background     #6272A4
+
+mark1_foreground            #44475A
+mark1_background            #FF5555
+
+active_border_color         #F8F8F2
+inactive_border_color       #FFFFFF

@@ -1,0 +1,86 @@
+
+#! ========================================================================== !#
+#!
+#!                    ██╗  ██╗██╗████████╗████████╗██╗   ██╗
+#!                    ██║ ██╔╝██║╚══██╔══╝╚══██╔══╝╚██╗ ██╔╝
+#!                    █████╔╝ ██║   ██║      ██║    ╚████╔╝
+#!                    ██╔═██╗ ██║   ██║      ██║     ╚██╔╝
+#!                    ██║  ██╗██║   ██║      ██║      ██║
+#!                    ╚═╝  ╚═╝╚═╝   ╚═╝      ╚═╝      ╚═╝
+#!
+#!                            - Made by Druxorey -
+#!                         https://github.com/druxorey
+#!
+#! ========================================================================== !#
+
+#* ================================ terminal ================================ *#
+
+background_opacity          1
+window_margin_width         10
+
+font_size                   11.0
+text_composition_strategy   1.5 20
+
+font_family                 FiraMono Nerd Font
+bold_font                   FiraMono Nerd Font Bold
+italic_font                 FiraMono Nerd Font Italic
+bold_italic_font            FiraMono Nerd Font Bold Italic
+
+scrollback_lines            10000
+enable_audio_bell           no
+copy_on_select              clipboard
+
+#* =============================== colorscheme ============================== *#
+
+foreground                  #1F1F1F
+background                  #FFFBEB
+selection_foreground        #FFFBEB
+selection_background        #6C664B
+
+url_color                   #047FB4
+
+# black (ansi_black, color0, term_black)
+color0  #1F1F1F
+color8  #6C664B
+
+# red (ansi_red, color1, term_red)
+color1  #CB3A2A
+color9  #D74C3D
+
+# green (ansi_green, color2, term_green)
+color2  #14710A
+color10 #198D0C
+
+# yellow (ansi_yellow, color3, term_yellow)
+color3  #644AC9
+color11 #7862D0
+
+# blue (ansi_blue, color4, term_blue)
+color4  #CB3A2A
+color12 #D74C3D
+
+# magenta (ansi_magenta, color5, term_magenta, purple)
+color5  #A3144D
+color13 #BF185A
+
+# cyan (ansi_cyan, color6, term_cyan)
+color6  #179299
+color14 #2AA198
+
+# white (ansi_white, color7, term_white)
+color7  #BCBAB3
+color15 #CECCC0
+
+cursor                      #CB3A2A
+cursor_text_color           background
+
+active_tab_foreground       #FFFBEB
+active_tab_background       #CB3A2A
+inactive_tab_foreground     #6C664B
+inactive_tab_background     #EDE9DA
+
+mark1_foreground            #FFFBEB
+mark1_background            #D74C3D
+
+active_border_color         #CB3A2A
+inactive_border_color       #DEDBCC

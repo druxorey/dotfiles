@@ -1,0 +1,24 @@
+{
+  "vimMode": true,
+  "pdfExportSettings": {
+    "includeName": false,
+    "pageSize": "A4",
+    "landscape": false,
+    "margin": "0",
+    "downscalePercent": 90
+  },
+  "showLineNumber": false,
+  "attachmentFolderPath": "D9 Vault/V1 Assets",
+  "readableLineLength": true,
+  "showInlineTitle": false,
+  "livePreview": true,
+  "newFileLocation": "folder",
+  "newFileFolderPath": "D2 Working",
+  "trashOption": "local",
+  "strictLineBreaks": false,
+  "propertiesInDocument": "visible",
+  "defaultViewMode": "source",
+  "alwaysUpdateLinks": true,
+  "showUnsupportedFiles": true,
+  "promptDelete": true
+}

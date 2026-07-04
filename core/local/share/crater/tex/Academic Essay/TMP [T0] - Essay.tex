@@ -1,0 +1,108 @@
+\documentclass[11pt]{article} % Define the document type and font size
+
+\usepackage[spanish]{babel} % Package for the Spanish language
+\usepackage[utf8]{inputenc} % Package for UTF-8 character encoding
+\usepackage{geometry} % Package to configure document margins
+% \usepackage{fancyhdr} % Package to customize headers and footers
+\usepackage{multicol} % Package for multiple columns
+\usepackage{amsmath} % Package for advanced mathematical symbols and environments
+\usepackage{amssymb} % Package for additional mathematical symbols
+\usepackage{graphicx} % Package to include images
+\usepackage{xcolor} % Package to define colors
+% \usepackage{listings} % Package to include source code in the document
+\usepackage{url} % Package to format URLs
+\usepackage{hyperref} % Package to create hyperlinks
+% \usepackage{float} % Package for improved interface for floating objects
+\usepackage{caption} % Package to customize captions
+% \usepackage{booktabs} % Package for professional quality tables
+% \usepackage{array} % Package for advanced table formatting
+
+% Font configuration
+\usepackage[T1]{fontenc} % Package for font encoding
+\usepackage{stix2} % Package for STIX2 fonts
+\usepackage{FiraMono} % Package for Fira Mono font
+\let\oldtexttt\texttt
+\renewcommand{\texttt}[1]{{\small\oldtexttt{#1}}} % Redefine \texttt to use a smaller font size
+\captionsetup{hypcap=false}
+
+\geometry{ % Configuration of document margins
+	a4paper,
+	left=25mm,
+	right=25mm,
+	top=25mm,
+	bottom=25mm
+}
+
+\setlength{\parskip}{1em} % Space between paragraphs
+\setlength{\parindent}{0pt} % Without indentation for paragraphs
+
+% Definition of colors for source code
+\definecolor{COLOR_COMMENTS}{HTML}{7C6F64}
+\definecolor{COLOR_KEYWORDS}{HTML}{CC241D}
+\definecolor{COLOR_EMPH}{HTML}{076678}
+\definecolor{COLOR_STRINGS}{HTML}{98971A}
+
+\hypersetup{
+	colorlinks=true, % Enable colored links
+	linkcolor=COLOR_EMPH, % Color for internal links (e.g., TOC)
+	urlcolor=COLOR_EMPH, % Color for external links (e.g., references)
+	citecolor=COLOR_EMPH % Color for citations
+}
+
+\title{
+	\vspace*{-2.5cm}
+	\begin{minipage}{0.15\textwidth} \includegraphics[width=\textwidth]{TMP [T0] - Recursos/logo_ucv.png} \end{minipage}
+	\hfill
+	\begin{minipage}{0.15\textwidth} \includegraphics[width=\textwidth]{TMP [T0] - Recursos/logo_ciens.png} \end{minipage} \\ [1.5cm]
+	\textbf{Título del Ensayo Académico} \\
+	{\large{Análisis de Métricas y Símbolos en el entorno \LaTeX}}
+}
+\author{\textit{Nombre Apellido, Nombre Apellido}} % Reduce espacio antes del autor
+\date{\vspace{-1.5em}\today} % Reduce espacio antes de la fecha
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+¿Quisquam «est qui ``dolorem 'ipsum' quia'' dolor» sit amet? Elit @consectetur [adipiscing] vélit, sed quia non-numquam (eius) modi 15\% tempora incidunt ut labore \& dolore magnam \{aliquam\} quaerat voluptatem. Ut enim ad mínima veniam, quis nostrum \$10.99 exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi \^{}consequatur?
+\end{abstract}
+
+\section{Desarrollo}
+
+\begin{multicols}{2}
+	Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae \_consequatur, vel illum qui dolorem eum fugiat $\aleph_0$ quo voluptas nulla \#pariatur! Nam libero tempore, cum soluta nobis est eligendi <optio> cumque nihil $\nabla$ impedit quo minus id quod maxime placeat facere possimus, omnis voluptas [assumenda] est, omnis dolor repellendus.
+
+	\begin{equation} \label{eq:einstein_lorem}
+		R_{\mu\nu} - \frac{1}{2}R g_{\mu\nu} + \Lambda g_{\mu\nu} = \frac{8\pi G}{c^4} T_{\mu\nu}
+	\end{equation}
+
+	Temporibus autem quibusdam et aut officiis debitis aut rerum necessitatibus \~{s}aepe\~{} eveniet ut et voluptates repudiandae sint et molestiae non recusandae. Nam libero tempore, cum soluta nobis est eligendi <optio> cumque nihil impedit quo minus id quod maxime placeat facere possimus, omnis voluptas [assumenda] est, omnis $\oiiint$ dolor repellendus.
+
+	Itaque earum rerum [\ref{eq:einstein_lorem}] hic tenetúr a sapiente delectus, ut aut reiciendis voluptatibus maiores alias consequatur aut perferendis doloribus asperiores repellat. ¿Aenean massa cum sociis natoque \{nascetur\} ridiculus mus? Donec quam felis, 50\% de [ultricies] nec, pellentesque eu, pretium quis, sem. Eu fugiat du x > y \&\& z < w; ¿verdol? Ea vaxianza $\sigma^2$ enim justo, rhoncus ut, imperdiet a [0, 100] scelerisque ut, mollis sed f(x) $\rightarrow$ \{y\} vitae sapien ut libero venenatis @metadata.
+\end{multicols}
+
+\begin{center}
+	\begin{equation}
+		\mathcal{Z} = \int \mathcal{D}\phi \exp \left\{ \frac{i}{\hbar} \int d^4x \left[ \frac{1}{2} (\partial_\mu \phi)^2 - \frac{1}{2} m^2 \phi^2 - \frac{\lambda}{4!} \phi^4 \right] \right\}
+	\end{equation}
+	\captionof{figure}{Tellus eget condimentum $\alpha_0$ rhoncus}
+	\vspace{1cm}
+\end{center}
+
+\newpage
+
+\section{Referencias Bibliográficas}
+\vspace{-4em}
+\renewcommand{\refname}{} % Remove the default bibliography title
+\renewcommand{\bibname}{} % For book/report classes
+\begin{thebibliography}{99}
+\hbadness=10000
+\sloppy
+\urlstyle{same}
+
+\bibitem{downey2009} Downey, A. B. (2009). \textit{The Little Book of Semaphores}. \url{http://greenteapress.com/semaphores/index.html}
+
+\end{thebibliography}
+
+\end{document}

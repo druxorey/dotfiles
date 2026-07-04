@@ -1,0 +1,9 @@
+#!/bin/bash
+
+function main() {
+	echo "Hello World"
+
+	return 0
+}
+
+main "$@"

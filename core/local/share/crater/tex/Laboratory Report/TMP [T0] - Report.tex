@@ -1,0 +1,276 @@
+\documentclass[12pt]{article} % Define the document type and font size
+
+\usepackage[spanish]{babel} % Package for the Spanish language
+\usepackage[utf8]{inputenc} % Package for UTF-8 character encoding
+\usepackage{geometry} % Package to configure document margins
+% \usepackage{fancyhdr} % Package to customize headers and footers
+% \usepackage{multicol} % Package for multiple columns
+\usepackage{amsmath} % Package for advanced mathematical symbols and environments
+\usepackage{amssymb} % Package for additional mathematical symbols
+\usepackage{graphicx} % Package to include images
+\usepackage{xcolor} % Package to define colors
+\usepackage{listings} % Package to include source code in the document
+\usepackage{url} % Package to format URLs
+\usepackage{hyperref} % Package to create hyperlinks
+% \usepackage{float} % Package for improved interface for floating objects
+\usepackage{caption} % Package to customize captions
+% \usepackage{booktabs} % Package for professional quality tables
+% \usepackage{array} % Package for advanced table formatting
+
+% Font configuration
+\usepackage[T1]{fontenc} % Package for font encoding
+\usepackage{stix2} % Package for STIX2 fonts
+\usepackage{FiraMono} % Package for Fira Mono font
+\let\oldtexttt\texttt
+\renewcommand{\texttt}[1]{{\small\oldtexttt{#1}}} % Redefine \texttt to use a smaller font size
+\captionsetup{hypcap=false}
+
+\geometry{ % Configuration of document margins
+	a4paper,
+	left=25mm,
+	right=25mm,
+	top=25mm,
+	bottom=25mm
+}
+
+\setlength{\parskip}{1em} % Space between paragraphs
+\setlength{\parindent}{0pt} % Without indentation for paragraphs
+
+% Definition of colors for source code
+\definecolor{COLOR_COMMENTS}{HTML}{7C6F64}
+\definecolor{COLOR_KEYWORDS}{HTML}{CC241D}
+\definecolor{COLOR_EMPH}{HTML}{076678}
+\definecolor{COLOR_STRINGS}{HTML}{98971A}
+
+\hypersetup{
+	colorlinks=true, % Enable colored links
+	linkcolor=COLOR_EMPH, % Color for internal links (e.g., TOC)
+	urlcolor=COLOR_EMPH, % Color for external links (e.g., references)
+	citecolor=COLOR_EMPH % Color for citations
+}
+
+% Configuration of the listings environment to display source code
+\lstdefinestyle{base}{
+	frame=shadowbox,
+	aboveskip=10mm,
+	xleftmargin=5mm,
+	basicstyle={\footnotesize\ttfamily},
+	numberstyle=\tiny\color{COLOR_COMMENTS},
+	commentstyle=\color{COLOR_COMMENTS},
+	keywordstyle=\color{COLOR_KEYWORDS},
+	emphstyle=\color{COLOR_EMPH},
+	stringstyle=\color{COLOR_STRINGS},
+	breaklines=true,
+	breakatwhitespace=true,
+	showstringspaces=false,
+	columns=flexible,
+	numbers=left,
+	keepspaces=true,
+	tabsize=4,
+	captionpos=b
+}
+
+\lstdefinestyle{c}{
+	style=base,
+	language=c,
+	morekeywords={NULL},
+	emph={int,long,short,float,double,char,bool,void,size_t,ssize_t,uint8_t,
+		uint16_t,uint32_t,uint64_t,int8_t,int16_t,int32_t,int64_t,pthread_t,
+		pthread_attr_t,pthread_mutex_t,pthread_mutexattr_t,pthread_cond_t,
+		pthread_condattr_t,sem_t,sig_atomic_t,sigset_t,atomic_flag,pid_t,
+		off_t,time_t},
+    literate=
+		{=}{{\textcolor{COLOR_KEYWORDS}{=}}}1
+		{*}{{{\textcolor{COLOR_KEYWORDS}{*}}}}1
+		{&}{{\textcolor{COLOR_KEYWORDS}{\&}}}1
+		{+}{{\textcolor{COLOR_KEYWORDS}{+}}}1
+		{-}{{\textcolor{COLOR_KEYWORDS}{-}}}1
+		{<}{{\textcolor{COLOR_KEYWORDS}{<}}}1
+		{>}{{\textcolor{COLOR_KEYWORDS}{>}}}1
+		{!}{{\textcolor{COLOR_KEYWORDS}{!}}}1
+		{.}{{\textcolor{COLOR_KEYWORDS}{.}}}1
+		{::}{{\textcolor{COLOR_KEYWORDS}{::}}}2
+		{->}{{\textcolor{COLOR_KEYWORDS}{->}}}2
+}
+
+\lstdefinestyle{cpp}{
+	style=base,
+	language=c++,
+	morekeywords={std},
+	emph={int,long,short,float,double,char,bool,void,size_t,ssize_t,uint8_t,
+		uint16_t,uint32_t,uint64_t,int8_t,int16_t,int32_t,int64_t,string,
+		vector,i32,i64,f32,f64},
+    literate=
+		{=}{{\textcolor{COLOR_KEYWORDS}{=}}}1
+		{*}{{{\textcolor{COLOR_KEYWORDS}{*}}}}1
+		{&}{{\textcolor{COLOR_KEYWORDS}{\&}}}1
+		{+}{{\textcolor{COLOR_KEYWORDS}{+}}}1
+		{-}{{\textcolor{COLOR_KEYWORDS}{-}}}1
+		{<}{{\textcolor{COLOR_KEYWORDS}{<}}}1
+		{>}{{\textcolor{COLOR_KEYWORDS}{>}}}1
+		{!}{{\textcolor{COLOR_KEYWORDS}{!}}}1
+		{.}{{\textcolor{COLOR_KEYWORDS}{.}}}1
+		{::}{{\textcolor{COLOR_KEYWORDS}{::}}}2
+		{->}{{\textcolor{COLOR_KEYWORDS}{->}}}2
+}
+
+\lstdefinestyle{python}{
+	style=base,
+	language=Python,
+	morekeywords={...},
+	emph={int,float,str,bool,list,tuple,dict,set,None}
+}
+
+\lstdefinestyle{bash}{
+	style=base,
+	language=Bash,
+	morekeywords={...},
+	emph={...},
+	literate=
+		{=}{{\textcolor{COLOR_KEYWORDS}{=}}}1
+		{\$}{{\textcolor{COLOR_KEYWORDS}{\$}}}1
+		{@}{{\textcolor{COLOR_KEYWORDS}{@}}}1
+		{\&\&}{{\textcolor{COLOR_KEYWORDS}{\&\&}}}2
+		{||}{{\textcolor{COLOR_KEYWORDS}{||}}}2
+}
+
+\lstdefinestyle{consola}{
+	style=base,
+	keepspaces=true,
+	numbers=none,
+	xleftmargin=10mm,
+	xrightmargin=10mm,
+}
+
+\title{Título del Informe} % Document title
+\author{Nombre} % Document author
+\date{\today} % Document date
+
+\begin{document}
+
+\begin{titlepage}
+	\centering
+	\begin{center}
+		\includegraphics[width=3cm]{TMP [T0] - Recursos/logo_ucv.png}
+	\end{center}
+	{\vspace{-1.5em} \large {UNIVERSIDAD CENTRAL DE VENEZUELA}\par}
+	{\vspace{-1em} \large {FACULTAD DE CIENCIAS}\par}
+	{\vspace{-1em} \large {ESCUELA DE COMPUTACIÓN}\par}
+	{\vspace{-1em} \large {MATERIA}\par}
+	\vspace{6cm}
+	{\LARGE \textbf{TÍTULO DEL INFORME}\par}
+	{\Large INFORME DE LABORATORIO\par}
+	\vfill
+	{\large Nombre Apellido, Nombre Apellido\par}
+	{\large \today\par}
+\end{titlepage}
+
+\setcounter{tocdepth}{2} % Depth of the table of contents
+\tableofcontents % Table of contents
+
+\newpage
+
+\section{Objetivos}
+
+\subsection{Objetivo General}
+
+\begin{itemize}
+    \item Comprender los procesos y su comunicación en sistemas operativos.
+\end{itemize}
+
+\subsection{Objetivos Específicos}
+
+\begin{itemize}
+    \item Entender el concepto de proceso y su estructura
+    \item Entender las diferencias entre las llamadas al sistema \texttt{fork()} y \texttt{vfork()}
+    \item Conocer las herramientas disponibles en los sistemas operativos para realizar comunicación entre procesos
+    \item Adquirir destrezas en el desarrollo de soluciones, basadas en la bifurcación de instrucciones y comunicación entre procesos
+\end{itemize}
+
+\newpage
+
+\section{Marco Teórico}
+
+¿Quisquam «est qui ``dolorem 'ipsum' quia'' dolor» sit amet? Elit @consectetur [adipiscing] vélit, sed quia non-numquam (eius) modi 15\% tempora incidunt ut labore \& dolore magnam \{aliquam\} quaerat voluptatem. Ut enim ad mínima veniam, quis nostrum \$10.99 exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi \^{}consequatur? Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae \_consequatur, vel illum qui dolorem eum fugiat $\aleph_0$ quo voluptas nulla \#pariatur! Nam libero tempore, cum soluta nobis est eligendi <optio> cumque nihil $\nabla$ impedit quo minus id quod maxime placeat facere possimus, omnis voluptas [assumenda] est, omnis $\oiiint$ dolor repellendus. Temporibus autem quibusdam et aut officiis debitis aut rerum necessitatibus \~{s}aepe\~{} eveniet ut et voluptates repudiandae sint et molestiae non recusandae.
+
+\subsection{Maecenas Tempus Aellus Eget}
+
+Nam libero tempore, cum soluta nobis est eligendi <optio> cumque nihil impedit quo minus id quod maxime placeat facere possimus, omnis voluptas [assumenda] est, omnis dolor repellendus. Itaque earum rerum hic tenetúr a sapiente delectus, ut aut reiciendis voluptatibus maiores alias consequatur aut perferendis doloribus asperiores repellat. ¿Aenean massa cum sociis natoque \{nascetur\} ridiculus mus? Donec quam felis, 50\% de [ultricies] nec, pellentesque eu, pretium quis, sem. Eu fugiat du x > y \&\& z < w; ¿verdol? Ea vaxianza $\sigma^2$ enim justo, rhoncus ut, imperdiet a [0, 100] scelerisque ut, mollis sed f(x) $\rightarrow$ \{y\} vitae sapien ut libero venenatis @metadata.
+
+\begin{itemize} \item \textbf{«Aenean» commodo ligula:} Eget dolor \#1. Aenean massa; Cum sociis natoque penatibus et magnis (dis) parturient montes, nascetur $\wp$ ridiculus mus! Donec quam felis, 50\% de [ultricies] nec, pellentesque eu, pretium quis, sem. Nulla consequat $\complement$ massa quis enim. Donec pede justo, fringilla $\exists!$ vel, aliquet nec, vulputate $\nexists$ eget, arcu. In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo.
+
+\item \textbf{Nullam dictum felis:} Eu pede mollis pretium. Integer tincidunt. Cras dapibus. Vivamus elementum semper nisi. Aenean vulputate eleifend tellus. Aenean leo $\because$ ligula, porttitor eu, consequat vitae, eleifend $\therefore$ ac, enim.
+
+\item \textbf{Aliquam lorem ante:} Sapibus in, viverra quis, feugiat a, tellus. Phasellus viverra nulla ut metus varius laoreet. Quisque rutrum. Aenean imperdiet. Etiam ultricies nisi vel augue. Curabitur ullamcorper ultricies nisi. Nam eget dui.
+
+\end{itemize}
+
+\newpage
+
+\section{Desarrollo}
+
+Etiam rhoncus $\beta \approx 0.5$. Maecenas tempus, tellus eget condimentum $\alpha_0$ rhoncus, sem quam semper libero $\sum_{j=0}^{\infty} \chi_j$, sit amet adipiscing sem neque sed ipsum.
+
+\begin{lstlisting}[style=cpp, caption={Ejemplo de Código de C++}]
+#include <vector>
+#include <algorithm>
+
+int main(int argc, char *argv[]) {
+	std::vector<i64> numbers = {5, 3, 8, 6, 2};
+	std::sort(numbers.begin(), numbers.end());
+	// Apply a lambda function to print the square of each number
+	std::for_each(numbers.begin(), numbers.end(), [](i64 x) {
+		std::cout << x * x << " ";
+	});
+}
+\end{lstlisting}
+
+¿Quisquam «est qui ``dolorem 'ipsum' quia'' dolor» sit amet? Elit @consectetur [adipiscing] vélit, sed quia non-numquam (eius) modi 15\% tempora incidunt ut labore \& dolore magnam \{aliquam\} quaerat voluptatem. Ut enim ad mínima veniam, quis nostrum \$10.99 exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi \^{}consequatur? Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae \_consequatur. «¡Nam quam nunc, blandit @vel, 'luctus' pulvinar!», hendrerit id, lorem \#23. Maecenas nec odio et ante tincidunt tempus [75\%]. Donec vitae sapien ut libero venenatis faucibus $\{ \mu, \sigma \}$.
+
+\begin{lstlisting}[style=python, caption={Ejemplo de Código de Python}]
+def factorial(n: int) -> int:
+	# Base case: factorial of 0 or 1 is 1
+	if n == 0 or n == 1:
+		return 1
+	return n * factorial(n - 1)
+
+if __name__ == "__main__":
+	num: int = int(input("Enter a number: "))
+	print(f"The factorial of {num} is {factorial(num)}")
+\end{lstlisting}
+
+Nullam quis ante $\neq$ null. Etiam sit amet orci eget eros faucibus tincidunt $\int_a^b f(x)dx$. Duis leo $\Rightarrow$ «Ep "miño 'aoñí' comp" ia bigünña».
+
+\begin{lstlisting}[style=consola, caption={Resultado de ejecución del programa \texttt{r1.c}}]
+llamando read(3, c, 10).  valor de retorno: 10 bytes leidos
+se imprimen los bytes leidos: Jim Plank
+\end{lstlisting}
+
+\newpage
+
+\section{Conclusión}
+
+Sed fringilla mauris sit amet nibh. Donec sodales sagittis magna. Sed consequat, leo eget bibendum sodales, augue velit cursus nunc, quis gravida magna mi a libero. Fusce vulputate eleifend sapien $\Omega_{total}$. Vestibulum purus quam, scelerisque ut, mollis sed, nonummy id, metus. Nullam accumsan lorem in dui $\pm 1.96$. Cras ultricies mi eu turpis hendrerit fringilla. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; In ac dui quis mi consectetuer lacinia.
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=0.75\textwidth]{TMP [T0] - Recursos/img_0001.png}
+	\caption{Descripción de la imagen}
+\end{figure}
+
+\newpage
+
+\section{Referencias Bibliográficas}
+\vspace{-4em}
+\renewcommand{\refname}{} % Remove the default bibliography title
+\renewcommand{\bibname}{} % For book/report classes
+\begin{thebibliography}{99}
+\hbadness=10000
+\sloppy
+\urlstyle{same}
+
+\bibitem{downey2009} Downey, A. B. (2009). \textit{The Little Book of Semaphores}. \url{http://greenteapress.com/semaphores/index.html}
+
+\end{thebibliography}
+
+\end{document}

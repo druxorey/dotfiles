@@ -49,6 +49,7 @@ bspc rule -a Qalculate-gtk state=floating center=true
 bspc rule -a simple-scan state=floating center=true
 bspc rule -a Gloobus-preview state=floating
 bspc rule -a Screenkey manage=off
+bspc rule -a Flameshot state=floating sticky=on manage=off
 
 wmname LG3D
 
@@ -68,3 +69,4 @@ systemctl --user enable --now clipmenud &
 xidlehook --not-when-fullscreen --not-when-audio --timer 900 \
 		  "sudo ln -sf '/etc/tlp.d/02-powersave.conf' '/etc/tlp.conf' && sudo tlp start" \
 		  "sudo ln -sf '/etc/tlp.d/01-normal.conf' '/etc/tlp.conf' && sudo tlp start" &
+blueman-applet &

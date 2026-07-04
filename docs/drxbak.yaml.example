@@ -10,26 +10,31 @@
 #   - Outside home    -> parent/extras/
 #   - .obsidian paths -> parent/config/obsidian (special exception)
 
-flavour: bspwm
+flavour: temporal
 
 core:
   - source: "~/.bashrc"
   - source: "~/.bash_profile"
   - source: "~/.gitconfig"
-  - source: "~/.zprofile"
   - source: "~/.config/cmus/rc"
   - source: "~/.config/fastfetch/"
   - source: "~/.config/kitty/"
+  - source: "~/.config/mods/"
   - source: "~/.config/nvim/"
   - source: "~/.config/oh-my-posh/"
   - source: "~/.config/tmux/"
     exclude:
       - "plugins/"
   - source: "~/.config/yazi/"
-  - source: "~/.config/Vencord/"
     exclude:
-      - "dist"
+      - "gvfs.private"
+      - "plugins"
   - source: "~/.config/zsh/"
+    exclude:
+      - "fzf-tab"
+      - "zsh-autosuggestions"
+      - "zsh-syntax-highlighting"
+      - "secrets.zsh"
   - source: "~/.local/share/crater/"
   - source: "~/Documents/A1 Obsidian/.obsidian/"
     exclude:
@@ -38,8 +43,6 @@ core:
       - "workspace-mobile.json"
       - "graph.json"
       - "backlink.json"
-  - source: "/etc/tlp.d/"
-  - source: "/var/spool/cron/"
 
-bspwm:
-  - source: "~/.config/bspwm/"
+temporal:
+  - source: "~/.config/xxx/"

@@ -1,0 +1,7 @@
+
+
+
+
+return {
+	"voldikss/vim-floaterm",
+}

@@ -1,0 +1,31 @@
+name: core
+routes:
+  - source: "~/.bashrc"
+  - source: "~/.bash_profile"
+  - source: "~/.gitconfig"
+  - source: "~/.config/cmus/rc"
+  - source: "~/.config/fastfetch/"
+  - source: "~/.config/kitty/"
+  - source: "~/.config/mods/"
+  - source: "~/.config/nvim/"
+  - source: "~/.config/oh-my-posh/"
+  - source: "~/.config/tmux/"
+    exclude:
+      - "plugins/"
+  - source: "~/.config/yazi/"
+    exclude:
+      - "gvfs.private"
+      - "plugins"
+  - source: "~/.config/zsh/"
+    exclude:
+      - "fzf-tab"
+      - "zsh-autosuggestions"
+      - "zsh-syntax-highlighting"
+      - "secrets.zsh"
+  - source: "~/.local/share/crater/"
+  - source: "~/Documents/A1 Obsidian/.obsidian/"
+    exclude:
+      - "plugins"
+      - "workspace*"
+      - "graph.json"
+      - "backlink.json"

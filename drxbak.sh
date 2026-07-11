@@ -16,16 +16,54 @@ function help() {
 	local -r FORMAT_BOLD="\e[1;34m"
 	local -r FORMAT_RESET="\e[0m"
 	
-	echo -e "${FORMAT_BOLD}USAGE:${FORMAT_RESET} $(basename "$0") [OPTIONS]
+	echo -e "${FORMAT_BOLD}USAGE:${FORMAT_RESET} $(basename "$0") [OPTIONS] [FLAVOUR]
 
 ${FORMAT_BOLD}DESCRIPTION:${FORMAT_RESET}
     Backs up active dotfiles configuration from your system to the repository.
 
 ${FORMAT_BOLD}OPTIONS:${FORMAT_RESET}
-    -d          Show changes without modifying repository files.
-    -h          Show this help screen."
+    -d              Show changes without modifying repository files.
+    -f FLAVOUR      Force backup for a specific flavour (e.g. bspwm, cinnamon, kde, mangowm).
+    -h              Show this help screen."
 
 	return 0
+}
+
+function detectFlavour() {
+	# Priority 1: Check active session environment variables
+	local desktop
+	desktop=$(echo "${XDG_CURRENT_DESKTOP:-}${DESKTOP_SESSION:-}" | tr '[:upper:]' '[:lower:]')
+	
+	if [[ "$desktop" == *"kde"* ]] || [[ "$desktop" == *"plasma"* ]]; then
+		echo "kde"
+		return 0
+	elif [[ "$desktop" == *"cinnamon"* ]]; then
+		echo "cinnamon"
+		return 0
+	elif [[ "$desktop" == *"bspwm"* ]]; then
+		echo "bspwm"
+		return 0
+	elif [[ "$desktop" == *"mangowm"* ]]; then
+		echo "mangowm"
+		return 0
+	fi
+	
+	# Priority 2: Check running processes
+	if pgrep -x "bspwm" >/dev/null 2>&1; then
+		echo "bspwm"
+		return 0
+	elif pgrep -x "cinnamon" >/dev/null 2>&1; then
+		echo "cinnamon"
+		return 0
+	elif pgrep -x "plasmashell" >/dev/null 2>&1 || pgrep -x "kwin" >/dev/null 2>&1; then
+		echo "kde"
+		return 0
+	elif pgrep -x "mangowm" >/dev/null 2>&1; then
+		echo "mangowm"
+		return 0
+	fi
+	
+	return 1
 }
 
 function cleanQuotes() {
@@ -184,29 +222,11 @@ function backupItem() {
 function parseConfig() {
 	local yamlFile="$1"
 	
-	# Pass 1: Extract active flavour
-	while IFS= read -r line || [[ -n "$line" ]]; do
-		local noComment="${line%%#*}"
-		local cleanLine="${noComment#${noComment%%[![:space:]]*}}"
-		cleanLine="${cleanLine%${cleanLine##*[![:space:]]}}"
-		
-		[[ -z "$cleanLine" ]] && continue
-		
-		if [[ "$cleanLine" == flavour:* ]]; then
-			local val="${cleanLine#flavour:}"
-			FLAVOUR=$(cleanQuotes "$(echo "$val" | xargs)")
-			break
-		fi
-	done < "$yamlFile"
-	
-	if [[ -z "$FLAVOUR" ]]; then
-		printf "%b Active flavour not defined in %s. Defaulting to empty (core-only).\n" "$FORMAT_ERROR" "$yamlFile" >&2
+	if [[ ! -f "$yamlFile" ]]; then
+		printf "%b Configuration file not found: %s\n" "$FORMAT_ERROR" "$yamlFile" >&2
+		return 1
 	fi
-	
-	printf "Backing up dotfiles (Flavour: %s)\n" "$FLAVOUR"
-	[[ "$IS_DRY_RUN" -eq 1 ]] && printf "Dry-run mode enabled. No files will be modified.\n"
 
-	# Pass 2: Execute backup items
 	while IFS= read -r line || [[ -n "$line" ]]; do
 		local strippedLine="${line#"${line%%[![:space:]]*}"}"
 		local indent=$(( ${#line} - ${#strippedLine} ))
@@ -219,11 +239,11 @@ function parseConfig() {
 
 		# Section check at indent 0
 		if [[ "$indent" -eq 0 ]]; then
-			if [[ "$cleanLine" == *":" ]]; then
+			if [[ "$cleanLine" == name:* ]]; then
+				local val="${cleanLine#name:}"
+				CURRENT_SECTION=$(cleanQuotes "$(echo "$val" | xargs)")
+			elif [[ "$cleanLine" == routes: ]]; then
 				backupItem
-				
-				local sectionName="${cleanLine%:}"
-				[[ "$sectionName" != "flavour" ]] && CURRENT_SECTION="$sectionName"
 				IS_EXCLUDE=0
 			fi
 		elif [[ -n "$CURRENT_SECTION" ]]; then
@@ -252,9 +272,11 @@ function parseConfig() {
 function main() {
 	cd "$REPOSITORY_ROOT" || exit 1
 	
-	while getopts "dh-:" opt; do
+	local forcedFlavour=""
+	while getopts "df:h" opt; do
 		case $opt in
 			d) IS_DRY_RUN=1 ;;
+			f) forcedFlavour="$OPTARG" ;;
 			h) help && exit 0 ;;
 			*) printf "%b Invalid option: '-%s'. Try '%s -h' for more information.\n" "$FORMAT_ERROR" "$OPTARG" "$(basename "$0")" >&2 && exit 1 ;;
 		esac
@@ -262,25 +284,60 @@ function main() {
 	
 	shift $((OPTIND - 1))
 	
-	if [[ ! -f "drxbak.yaml" ]]; then
-		printf "[INFO] drxbak.yaml not found. Creating from example template...\n"
-		if [[ -f "drxbak.yaml.example" ]]; then
-			cp "drxbak.yaml.example" "drxbak.yaml"
-			printf "%b Created drxbak.yaml. Please configure your active flavour and run again.\n" "$FORMAT_SUCCESS"
-		else
-			printf "%b drxbak.yaml.example not found in root. Cannot copy template.\n" "$FORMAT_ERROR" >&2
-		fi
-		exit 0
+	# If flavour was not forced via option, check if it was forced via positional argument
+	if [[ -z "$forcedFlavour" ]] && [[ -n "$1" ]]; then
+		forcedFlavour="$1"
 	fi
 	
-	parseConfig "drxbak.yaml"
+	# Determine if we have an active flavour
+	if [[ -n "$forcedFlavour" ]]; then
+		# Verify that the forced flavour directory exists
+		if [[ ! -d "flavours/$forcedFlavour" ]]; then
+			printf "%b Forced flavour '%s' does not exist in flavours/ directory.\n" "$FORMAT_ERROR" "$forcedFlavour" >&2
+			exit 1
+		fi
+		FLAVOUR="$forcedFlavour"
+		printf "Backing up dotfiles (Flavour forced: %s)\n" "$FLAVOUR"
+	else
+		# Try to detect automatically
+		local detected
+		detected=$(detectFlavour)
+		if [[ $? -eq 0 ]] && [[ -n "$detected" ]]; then
+			FLAVOUR="$detected"
+			printf "Backing up dotfiles (Flavour auto-detected: %s)\n" "$FLAVOUR"
+		else
+			printf "Backing up dotfiles (Core only, no matching flavour active/detected)\n"
+		fi
+	fi
+	
+	[[ "$IS_DRY_RUN" -eq 1 ]] && printf "Dry-run mode enabled. No files will be modified.\n"
+	
+	# 1. Parse core/core.yaml
+	if [[ -f "core/core.yaml" ]]; then
+		parseConfig "core/core.yaml"
+	else
+		printf "%b Core configuration 'core/core.yaml' not found. Cannot proceed.\n" "$FORMAT_ERROR" >&2
+		exit 1
+	fi
+	
+	# 2. Parse flavours/$FLAVOUR/$FLAVOUR.yaml if active
+	if [[ -n "$FLAVOUR" ]]; then
+		local flavourYaml="flavours/$FLAVOUR/$FLAVOUR.yaml"
+		if [[ -f "$flavourYaml" ]]; then
+			parseConfig "$flavourYaml"
+		else
+			printf "[INFO] Flavour configuration not found: %s. Skipping flavour backup.\n" "$flavourYaml"
+		fi
+	fi
+	
 	backupBookmarks
 	
 	# Redact user details in the backed up gitconfig file
 	local gitconfigPath="$REPOSITORY_ROOT/core/home/.gitconfig"
 	if [[ -f "$gitconfigPath" ]]; then
 		if [[ "$IS_DRY_RUN" -eq 0 ]]; then
-			sed -i -E 's/(name[[:space:]]*=[[:space:]]*).*/\1user/' "$gitconfigPath"
+			sed -i -E 's/(user[[:space:]]*=[[:space:]]*).*/\1user/' "$gitconfigPath"
+			sed -i -E 's/(name[[:space:]]*=[[:space:]]*).*/\1name/' "$gitconfigPath"
 			sed -i -E 's/(email[[:space:]]*=[[:space:]]*).*/\1user@mail.com/' "$gitconfigPath"
 			sed -i -E 's/(signingkey[[:space:]]*=[[:space:]]*).*/\1SIGNING_KEY/' "$gitconfigPath"
 		else

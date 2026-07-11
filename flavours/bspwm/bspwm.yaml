@@ -1,0 +1,17 @@
+name: bspwm
+routes:
+  - source: "~/.config/autorandr/"
+  - source: "~/.config/bspwm/"
+  - source: "~/.config/dunst/"
+  - source: "~/.config/flameshot/"
+  - source: "~/.config/picom/"
+  - source: "~/.config/polybar/"
+  - source: "~/.config/rofi/"
+  - source: "~/.config/sxhkd/"
+  - source: "~/.config/touchegg/"
+    exclude:
+      - "*.lock"
+  - source: "~/.config/zathura/"
+  - source: "/etc/tlp.d/"
+  - source: "/etc/X11/xorg.conf.d/"
+  - source: "/var/spool/cron/"

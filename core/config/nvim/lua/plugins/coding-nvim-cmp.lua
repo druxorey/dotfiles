@@ -44,7 +44,7 @@ return {
 				["<C-f>"] = cmp.mapping.scroll_docs(4),
 				["<C-Space>"] = cmp.mapping.complete(),
 				["<C-e>"] = cmp.mapping.abort(),
-				["<CR>"] = cmp.config.disable, -- User override: disable Enter confirming completion
+				["<cr>"] = cmp.config.disable, -- User override: disable Enter confirming completion
 				["<Tab>"] = cmp.mapping.confirm({ select = true }), -- User override: Tab confirms completion
 				["<C-n>"] = cmp.mapping(function(fallback)
 					if cmp.visible() then

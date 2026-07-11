@@ -50,7 +50,7 @@ return {
 				theme = generate_theme(),
 				component_separators = " ",
 				section_separators = { left = "", right = "" },
-				disabled_filetypes = { statusline = { "dashboard" } },
+				disabled_filetypes = { statusline = { "dashboard", "neo-tree" } },
 				ignore_focus = {},
 				always_divide_middle = true,
 				globalstatus = false,

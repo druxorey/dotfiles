@@ -4,9 +4,7 @@
 -- Enables neat documentation previews directly inside active buffers.
 
 return {
-	"OXY2DEV/markview.nvim",
-	ft = { "markdown" },
-	config = function()
-		require("markview").setup()
-	end
+	"MeanderingProgrammer/render-markdown.nvim",
+	dependencies = { "nvim-treesitter/nvim-treesitter", "nvim-tree/nvim-web-devicons" },
+	opts = {},
 }

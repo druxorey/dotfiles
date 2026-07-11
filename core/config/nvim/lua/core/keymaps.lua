@@ -21,7 +21,7 @@ end
 -- ================================= GENERAL ================================ --
 
 -- Save file
-vim.keymap.set("n", "<C-s>", ":w<CR>", { noremap = true, silent = true, desc = "Save File" })
+vim.keymap.set("n", "<C-s>", "<cmd>w<cr>", { noremap = true, silent = true, desc = "Save File" })
 
 -- Escape and clear search highlight
 vim.keymap.set({ "i", "n", "s" }, "<esc>", function()
@@ -48,8 +48,8 @@ vim.keymap.set("n", "gcO", "O<esc>Vcx<esc><cmd>normal gcc<cr>fxa<bs>", { desc = 
 vim.keymap.set("n", "gco", "o<esc>Vcx<esc><cmd>normal gcc<cr>fxa<bs>", { desc = "Add comment below" })
 
 -- Move selected lines up/down in Visual mode
-vim.keymap.set("x", "J", ":move '>+1<CR>gv-gv", { noremap = true, silent = true, desc = "Move block down" })
-vim.keymap.set("x", "K", ":move '<-2<CR>gv-gv", { noremap = true, silent = true, desc = "Move block up" })
+vim.keymap.set("x", "J", ":move '>+1<cr>gv-gv", { noremap = true, silent = true, desc = "Move block down" })
+vim.keymap.set("x", "K", ":move '<-2<cr>gv-gv", { noremap = true, silent = true, desc = "Move block up" })
 
 -- =============================== NAVIGATION =============================== --
 
@@ -78,21 +78,21 @@ vim.keymap.set("n", "<C-k>", "<C-w>k", { noremap = true, silent = true, desc = "
 vim.keymap.set("n", "<C-l>", "<C-w>l", { noremap = true, silent = true, desc = "Go to right window" })
 
 -- Window resizing
-vim.keymap.set("n", "<M-h>", ":vertical resize -2<CR>", { noremap = true, silent = true, desc = "Decrease window width" })
-vim.keymap.set("n", "<M-j>", ":resize -2<CR>", { noremap = true, silent = true, desc = "Decrease window height" })
-vim.keymap.set("n", "<M-k>", ":resize +2<CR>", { noremap = true, silent = true, desc = "Increase window height" })
-vim.keymap.set("n", "<M-l>", ":vertical resize +2<CR>", { noremap = true, silent = true, desc = "Increase window width" })
+vim.keymap.set("n", "<M-h>", "<cmd>vertical resize -2<cr>", { noremap = true, silent = true, desc = "Decrease window width" })
+vim.keymap.set("n", "<M-j>", "<cmd>resize -2<cr>", { noremap = true, silent = true, desc = "Decrease window height" })
+vim.keymap.set("n", "<M-k>", "<cmd>resize +2<cr>", { noremap = true, silent = true, desc = "Increase window height" })
+vim.keymap.set("n", "<M-l>", "<cmd>vertical resize +2<cr>", { noremap = true, silent = true, desc = "Increase window width" })
 
 -- Buffer tabs navigation (if not in VSCode)
 if vim.g.vscode == nil then
-	vim.keymap.set("n", "<s-tab>", ":bprevious<CR>", { noremap = true, silent = true, desc = "Previous buffer" })
-	vim.keymap.set("n", "<tab>", ":bnext<CR>", { noremap = true, silent = true, desc = "Next buffer" })
+	vim.keymap.set("n", "<s-tab>", "<cmd>bprevious<cr>", { noremap = true, silent = true, desc = "Previous buffer" })
+	vim.keymap.set("n", "<tab>", "<cmd>bnext<cr>", { noremap = true, silent = true, desc = "Next buffer" })
 end
 
 -- ============================ LEADER SUBGROUPS ============================ --
 
 -- Buffer Management
-vim.keymap.set("n", "<leader>bd", "<cmd>:bd<cr>", { desc = "Delete buffer and window" })
+vim.keymap.set("n", "<leader>bd", "<cmd>bd<cr>", { desc = "Delete buffer and window" })
 vim.keymap.set("n", "<leader>bi", function() require("snacks").bufdelete.invisible() end, { desc = "Delete invisible buffers" })
 vim.keymap.set("n", "<leader>bo", function() require("snacks").bufdelete.other() end, { desc = "Delete other buffers" })
 vim.keymap.set("n", "<C-b>", function() require("snacks").bufdelete() end, { desc = "Delete buffer" })
@@ -113,14 +113,13 @@ vim.keymap.set("n", "<leader>ws", "<C-W>x", { desc = "Swap Current With Next", r
 vim.keymap.set("n", "<leader>wd", "<C-W>c", { desc = "Delete Window", remap = true })
 vim.keymap.set("n", "<leader>wm", function() require("snacks").toggle.zoom()() end, { desc = "Toggle Maximize Window" })
 
--- File Utilities & File Search (Telescope / Neo-tree / Terminal / Scratch)
+-- File Utilities & File Search
 vim.keymap.set("n", "<leader>e", function() require("neo-tree.command").execute({ toggle = true, dir = vim.uv.cwd() }) end, { desc = "Explorer (cwd)" })
 vim.keymap.set("n", "<leader>E", function() require("neo-tree.command").execute({ toggle = true, dir = get_root() }) end, { desc = "Explorer (Root Dir)" })
-vim.keymap.set("n", "<leader>t", "<CMD>FloatermNew<CR>", { desc = "Terminal" })
-vim.keymap.set("n", "<leader>.", function() require("snacks").scratch() end, { desc = "Toggle Scratch Buffer" })
-vim.keymap.set("n", "<leader>S", function() require("snacks").scratch.select() end, { desc = "Select Scratch Buffer" })
+vim.keymap.set("n", "<leader>t", "<cmd>FloatermNew<cr>", { desc = "Terminal" })
+vim.keymap.set("n", "<leader>.", function() require("snacks").scratch() end, { desc = "Scratch Buffer" })
 vim.keymap.set("n", "<leader>fb", function() require("telescope.builtin").buffers() end, { desc = "Telescope buffers" })
-vim.keymap.set("n", "<leader>ff", function() require("telescope.builtin").find_files() end, { desc = "Telescope find files" })
+vim.keymap.set("n", "<leader><leader>", function() require("telescope.builtin").find_files() end, { desc = "Find files" })
 vim.keymap.set("n", "<leader>fg", function() require("telescope.builtin").live_grep() end, { desc = "Telescope live grep" })
 vim.keymap.set("n", "<leader>fh", function() require("telescope.builtin").help_tags() end, { desc = "Telescope help tags" })
 vim.keymap.set("n", "<leader>fx", function() require("telescope.builtin").find_files({ cwd = "~" }) end, { desc = "Telescope find files (Home Dir)" })
@@ -136,18 +135,18 @@ vim.keymap.set({ "n", "x" }, "<leader>fr", function()
 end, { desc = "Search and Replace" })
 vim.keymap.set("v", "<leader>fs", function() require("nvim-silicon").shoot() end, { desc = "Create code screenshot" })
 
--- Git Mappings (Fugitive / LazyGit / Telescope)
-vim.keymap.set("n", "<leader>gc", ":Git commit<CR>", { noremap = true, silent = true, desc = "Git Commit (Fugitive)" })
-vim.keymap.set("n", "<leader>gC", "<cmd>Telescope git_commits<CR>", { noremap = true, silent = true, desc = "Git Commits History" })
-vim.keymap.set("n", "<leader>gg", ":vertical Git<CR>", { noremap = true, silent = true, desc = "Git Changes (Fugitive)" })
-vim.keymap.set("n", "<leader>gl", function() require("snacks").lazygit({ cwd = get_root() }) end, { desc = "Lazygit (Root Dir)" })
-vim.keymap.set("n", "<leader>gp", ":Git push<CR>", { noremap = true, silent = true, desc = "Git Push (Fugitive)" })
-vim.keymap.set("n", "<leader>gs", "<cmd>Telescope git_status<CR>", { noremap = true, silent = true, desc = "Git Status History" })
- vim.keymap.set("n", "<leader>gL", function() require("snacks").picker.git_log() end, { desc = "Git Log (cwd)" })
- vim.keymap.set("n", "<leader>gf", function() require("snacks").picker.git_log_file() end, { desc = "Git Current File History" })
-vim.keymap.set({ "n", "x" }, "<leader>gB", function() require("snacks").gitbrowse() end, { desc = "Git Browse (open)" })
+-- Git Mappings
+vim.keymap.set("n", "<leader>gc", "<cmd>Git commit<cr>", { noremap = true, silent = true, desc = "Git Commit" })
+vim.keymap.set("n", "<leader>gl", "<cmd>Telescope git_commits<cr>", { noremap = true, silent = true, desc = "Git Logs" })
+vim.keymap.set("n", "<leader>gg", "<cmd>LazyGit<cr>", { desc = "Lazygit" })
+vim.keymap.set("n", "<leader>gp", "<cmd>Git push<cr>", { noremap = true, silent = true, desc = "Git Push" })
+vim.keymap.set("n", "<leader>gs", "<cmd>Telescope git_status<cr>", { noremap = true, silent = true, desc = "Git Status" })
+vim.keymap.set("n", "<leader>gf", function() require("snacks").picker.git_log_file() end, { desc = "Git Current File History" })
+vim.keymap.set({ "n", "x" }, "<leader>gb", function() require("snacks").gitbrowse() end, { desc = "Git Browse" })
+vim.keymap.set("n", "<leader>gac", function() require("utils.git_ai").git_ai_commit() end, { desc = "Generate Git Commit" })
+vim.keymap.set("n", "<leader>gab", function() require("utils.git_ai").git_ai_branch() end, { desc = "Generate Git Branch" })
 
--- Git Hunks & Blame (Gitsigns)
+-- Git Hunks & Blame
 vim.keymap.set("n", "<leader>ghb", function() require("gitsigns").blame_line({ full = true }) end, { desc = "Blame Line" })
 vim.keymap.set("n", "<leader>ghB", function() require("gitsigns").blame() end, { desc = "Blame Buffer" })
 vim.keymap.set("n", "<leader>ghd", function() require("gitsigns").diffthis() end, { desc = "Diff This" })
@@ -177,18 +176,16 @@ vim.keymap.set("n", "<leader>oi", vim.show_pos, { desc = "Inspect Pos" })
 vim.keymap.set("n", "<leader>oI", function() vim.treesitter.inspect_tree() vim.api.nvim_input("I") end, { desc = "Inspect Tree" })
 vim.keymap.set("n", "<leader>ol", function() require("snacks").toggle.line_number():toggle() end, { desc = "Toggle Line Numbers" })
 vim.keymap.set("n", "<leader>oL", function() require("snacks").toggle.option("relativenumber", { name = "Relative Number" }):toggle() end, { desc = "Toggle Relative Line Numbers" })
-vim.keymap.set("n", "<leader>or", "<Cmd>nohlsearch<Bar>diffupdate<Bar>normal! <C-L><CR>", { desc = "Redraw / Clear hlsearch / Diff Update" })
+vim.keymap.set("n", "<leader>or", "<cmd>nohlsearch<Bar>diffupdate<Bar>normal! <C-L><cr>", { desc = "Redraw / Clear hlsearch / Diff Update" })
 vim.keymap.set("n", "<leader>oS", function() require("snacks").toggle.scroll():toggle() end, { desc = "Toggle Smooth Scroll" })
 vim.keymap.set("n", "<leader>os", function() require("snacks").toggle.option("spell", { name = "Spelling" }):toggle() end, { desc = "Toggle Spelling" })
 vim.keymap.set("n", "<leader>oT", function() require("snacks").toggle.treesitter():toggle() end, { desc = "Toggle Treesitter" })
 vim.keymap.set("n", "<leader>ow", function() require("snacks").toggle.option("wrap", { name = "Wrap" }):toggle() end, { desc = "Toggle Wrap" })
-
--- Package Managers
 vim.keymap.set("n", "<leader>oZ", "<cmd>Lazy<cr>", { desc = "Lazy" })
 vim.keymap.set("n", "<leader>oM", "<cmd>Mason<cr>", { desc = "Mason" })
 
 -- Miscellaneous Leader Mappings
-vim.keymap.set("n", "<leader>?", function() require("which-key").show({ global = false }) end, { desc = "Buffer Keymaps (which-key)" })
+vim.keymap.set("n", "<leader>?", function() require("which-key").show({ global = false }) end, { desc = "Keymaps (which-key)" })
 vim.keymap.set("n", "<leader>K", "<cmd>norm! K<cr>", { desc = "Keywordprg" })
 
 -- ============================ BRACKET MAPPINGS ============================ --
@@ -308,7 +305,7 @@ vim.api.nvim_create_autocmd("LspAttach", {
 		-- Code actions, rename and diagnostics
 		vim.keymap.set({ "n", "v" }, "<leader>ca", vim.lsp.buf.code_action, vim.tbl_extend("force", opts, { desc = "Code Action" }))
 		vim.keymap.set("n", "<leader>cd", vim.diagnostic.open_float, vim.tbl_extend("force", opts, { desc = "Line Diagnostics" }))
-		vim.keymap.set("n", "<leader>cL", "<cmd>LspInfo<CR>", vim.tbl_extend("force", opts, { desc = "Lsp Info" }))
+		vim.keymap.set("n", "<leader>cL", "<cmd>LspInfo<cr>", vim.tbl_extend("force", opts, { desc = "Lsp Info" }))
 		vim.keymap.set("n", "<leader>cr", vim.lsp.buf.rename, vim.tbl_extend("force", opts, { desc = "Rename Symbol" }))
 	end,
 })
@@ -325,11 +322,29 @@ vim.api.nvim_create_autocmd("FileType", {
 vim.api.nvim_create_autocmd("FileType", {
 	pattern = "tex",
 	callback = function()
-		vim.keymap.set("n", "<localleader>lc", "<cmd>VimtexCompile<CR>", { noremap = true, silent = true, desc = "LaTeX Compile" })
-		vim.keymap.set("n", "<localleader>ls", "<cmd>VimtexStop<CR>", { noremap = true, silent = true, desc = "LaTeX Stop" })
-		vim.keymap.set("n", "<localleader>lv", "<cmd>VimtexView<CR>", { noremap = true, silent = true, desc = "LaTeX View" })
+		vim.keymap.set("n", "<localleader>lc", "<cmd>VimtexCompile<cr>", { noremap = true, silent = true, desc = "LaTeX Compile" })
+		vim.keymap.set("n", "<localleader>ls", "<cmd>VimtexStop<cr>", { noremap = true, silent = true, desc = "LaTeX Stop" })
+		vim.keymap.set("n", "<localleader>lv", "<cmd>VimtexView<cr>", { noremap = true, silent = true, desc = "LaTeX View" })
 	end,
 })
 
-vim.keymap.set('n', 'gt', "<CMD>TSJToggle<CR>", { desc = "Toggle Node Under Cursor" })
-vim.keymap.set('n', 'gT', "<CMD>TSJToggle<CR>", { desc = "which_key_ignore" })
+-- TODO: new
+
+vim.keymap.set('n', 'gt', "<cmd>TSJToggle<cr>", { desc = "Toggle Node Under Cursor" })
+vim.keymap.set('n', 'gT', "<cmd>TSJToggle<cr>", { desc = "which_key_ignore" })
+
+-- ============================== HARPOON =================================== --
+
+vim.keymap.set("n", "<leader>ha", function() require("harpoon"):list():add() end, { desc = "Harpoon Add File" })
+vim.keymap.set("n", "<leader>he", function()
+	local harpoon = require("harpoon")
+	harpoon.ui:toggle_quick_menu(harpoon:list())
+end, { desc = "Harpoon Toggle Menu" })
+
+vim.keymap.set("n", "<leader>h1", function() require("harpoon"):list():select(1) end, { desc = "Harpoon File 1" })
+vim.keymap.set("n", "<leader>h2", function() require("harpoon"):list():select(2) end, { desc = "Harpoon File 2" })
+vim.keymap.set("n", "<leader>h3", function() require("harpoon"):list():select(3) end, { desc = "Harpoon File 3" })
+vim.keymap.set("n", "<leader>h4", function() require("harpoon"):list():select(4) end, { desc = "Harpoon File 4" })
+
+vim.keymap.set("n", "<leader>hp", function() require("harpoon"):list():prev() end, { desc = "Harpoon Prev File" })
+vim.keymap.set("n", "<leader>hn", function() require("harpoon"):list():next() end, { desc = "Harpoon Next File" })

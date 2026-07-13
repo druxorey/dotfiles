@@ -1,3 +1,4 @@
+
 return {
 	-- Mason package manager to install formatters, linters, and LSP servers.
 	-- Installs binaries and dependencies automatically inside stdpath data.
@@ -98,11 +99,6 @@ return {
 				},
 				handlers = {
 					function(server_name)
-						-- Avoid configuring rust_analyzer here as rustaceanvim handles it
-						if server_name == "rust_analyzer" then
-							return
-						end
-
 						local opts = {
 							capabilities = capabilities,
 						}
@@ -189,52 +185,6 @@ return {
 		config = function() end,
 	},
 
-	-- Rust language support helper wrapper for rust-analyzer.
-	-- Configures debuggers, cargo features, and macro diagnostics automatically.
-	-- Streamlines default settings for rust files without complex integrations.
-	{
-		"mrcjkb/rustaceanvim",
-		version = "^4",
-		ft = { "rust" },
-		opts = {
-			server = {
-				default_settings = {
-					["rust-analyzer"] = {
-						cargo = {
-							allFeatures = true,
-							loadOutDirsFromCargo = true,
-							buildScripts = {
-								enable = true,
-							},
-						},
-						checkOnSave = {
-							command = "clippy",
-						},
-						procMacro = {
-							enable = true,
-						},
-					},
-				},
-			},
-		},
-		config = function(_, opts)
-			vim.g.rustaceanvim = vim.tbl_deep_extend("force", {}, opts or {})
-		end,
-	},
-
-	-- Rust crates manager helper checking dependency status in Cargo.toml.
-	-- Displays latest versions, features, and documentation links inline.
-	-- Works alongside nvim-cmp to auto-complete registry crate versions.
-	{
-		"saecki/crates.nvim",
-		event = { "BufRead Cargo.toml" },
-		opts = {
-			completion = {
-				cmp = { enabled = true },
-			},
-		},
-	},
-
 	-- Python virtual environments selector helper using Telescope search.
 	-- Automatically scans poetry, conda, pipenv, and global virtual directories.
 	-- Updates active pyright configs dynamically upon changing environments.
@@ -247,5 +197,23 @@ return {
 		},
 		cmd = "VenvSelect",
 		opts = {},
+	},
+
+	-- Neovim configuration development helper with dynamic typing.
+	-- Configures Lua LSP settings automatically for nvim APIs and plugins.
+	-- Enhances completion and diagnostics when writing local user configs.
+
+	{
+		"folke/lazydev.nvim",
+		ft = "lua",
+		cmd = "LazyDev",
+		opts = {
+			library = {
+				{ path = "${3rd}/luv/library", words = { "vim%.uv" } },
+				{ path = "snacks.nvim", words = { "Snacks" } },
+				{ path = "lazy.nvim", words = { "LazyVim" } },
+				{ path = "nvim-lspconfig", words = { "lspconfig.settings" } },
+			},
+		},
 	},
 }

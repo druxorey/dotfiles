@@ -36,11 +36,8 @@ return {
 				"python",
 				"rasi",
 				"toml",
-				"tsx",
 				"typescript",
-				"vim",
 				"yaml",
-				"rust",
 			},
 		},
 		config = function(_, opts)
@@ -65,5 +62,36 @@ return {
 		opts = {
 			enable_autocmd = false,
 		},
+	},
+
+	-- Treesitter-based code splitting and joining utility. Allows to toggle code
+	-- blocks between one-line and multi-line formats. Uses AST nodes to
+	-- intelligently restructure function calls, objects, and arrays.
+	{
+		"Wansmer/treesj",
+		dependencies = { "nvim-treesitter/nvim-treesitter" },
+		config = function()
+			require("treesj").setup({
+				use_default_keymaps = false,
+			})
+		end,
+	},
+
+	-- HTML auto tags renaming and closing utility using Treesitter.
+	-- Automatically closes tags as you type and updates matching elements.
+	-- Supports XML, JSX, TSX, HTML, and other markup syntax nodes.
+	{
+		"windwp/nvim-ts-autotag",
+		event = "VeryLazy",
+		opts = {},
+	},
+
+	-- Improves comment syntax, lets Neovim handle multiple
+	-- types of comments for a single language, and relaxes rules
+	-- for uncommenting.
+	{
+		"folke/ts-comments.nvim",
+		event = "VeryLazy",
+		opts = {},
 	},
 }

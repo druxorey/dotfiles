@@ -9,11 +9,8 @@ return {
 	opts = {
 		events = { "BufWritePost", "BufReadPost", "InsertLeave" },
 		linters_by_ft = {
-			fish = { "fish" },
 			javascript = { "eslint_d" },
 			typescript = { "eslint_d" },
-			javascriptreact = { "eslint_d" },
-			typescriptreact = { "eslint_d" },
 			go = { "golangci-lint" },
 			python = { "ruff" },
 			bash = { "shellcheck" },

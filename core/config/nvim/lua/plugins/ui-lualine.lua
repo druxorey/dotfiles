@@ -7,9 +7,9 @@ local colors = require("core.colorscheme")
 local function generate_theme()
 	return {
 		normal = {
-			a = { bg = colors.drx_color_accent, fg = colors.drx_color_base, gui = "bold" },
+			a = { bg = colors.drx_color_accent,    fg = colors.drx_color_base, gui = "bold" },
 			b = { bg = colors.drx_color_overlay, fg = colors.drx_color_text },
-			c = { bg = colors.drx_color_surface, fg = colors.drx_color_text },
+			c = { bg = colors.drx_color_surface,   fg = colors.drx_color_text },
 		},
 		insert = {
 			a = { bg = colors.drx_color_green_2, fg = colors.drx_color_base, gui = "bold" },
@@ -32,7 +32,7 @@ local function generate_theme()
 			c = { bg = colors.drx_color_surface, fg = colors.drx_color_text },
 		},
 		inactive = {
-			a = { bg = colors.drx_color_highlight, fg = colors.drx_color_subtext },
+			a = { bg = colors.drx_color_highlight, fg = colors.drx_color_text },
 			b = { bg = colors.drx_color_overlay, fg = colors.drx_color_subtext },
 			c = { bg = colors.drx_color_surface, fg = colors.drx_color_subtext },
 		},
@@ -92,7 +92,7 @@ return {
 						color = function()
 							if vim.fn.reg_recording() ~= "" then
 								return {
-									bg = colors.drx_color_red,
+									bg = colors.drx_color_red_2,
 									fg = colors.drx_color_base,
 									gui = "bold",
 								}
@@ -107,11 +107,7 @@ return {
 						icon = "",
 					},
 				},
-				lualine_b = { "diff", "diagnostics" },
-				lualine_c = {
-					{
-						"%=",
-					},
+				lualine_b = {
 					{
 						"buffers",
 						symbols = {
@@ -120,17 +116,18 @@ return {
 							directory = "",
 						},
 						buffers_color = {
-							active = "lualine_a_normal",
+							active = "lualine_a_inactive",
 							inactive = "lualine_b_inactive",
 						},
 						separator = {
 							left = "",
-							right = " ",
+							right = "",
 						},
 					},
 				},
-				lualine_x = {},
-				lualine_y = { "tabs", "selectioncount", "searchcount" },
+				lualine_c = { },
+				lualine_x = { },
+				lualine_y = { "diff", "diagnostics", "selectioncount", "searchcount" },
 				lualine_z = {
 					{
 						"location",
@@ -138,7 +135,7 @@ return {
 							left = "",
 							right = "",
 						},
-						icon = "",
+						icon = " ",
 					},
 				},
 			},

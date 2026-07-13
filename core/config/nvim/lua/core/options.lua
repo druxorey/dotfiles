@@ -1,3 +1,4 @@
+
 -- ========================================================================== --
 --
 --
@@ -22,7 +23,7 @@ gen.mapleader = " "                                                -- Set leader
 gen.maplocalleader = "\\"                                          -- Set local leader key to backslash
 gen.lazyvim_picker = "auto"                                        -- Picker to use (auto, telescope, fzf)
 gen.lazyvim_cmp = "auto"                                           -- Completion engine to use (auto, nvim-cmp, blink.cmp)
-gen.ai_cmp = false                                                 -- Use AI completion source instead of inline suggestions if supported
+gen.ai_cmp = false                                                 -- Use Ai completion source instead of inline suggestions if supported
 gen.root_spec = { "lsp", { ".git", "lua" }, "cwd" }                -- List of detectors for project root detection
 gen.root_lsp_ignore = { "copilot" }                                -- Ignore these LSP servers for root detection
 gen.lazygit_config = true                                          -- Setup lazygit config automatically

@@ -10,10 +10,15 @@ return {
 		preset = "helix",
 		icons = {
 			rules = {
-				{ pattern = "explorer", icon = " ", color = "orange" },
+				{ pattern = "explorer", icon = "󰙅 ", color = "orange" },
 				{ pattern = "harpoon", icon = "  ", color = "cyan" },
 				{ pattern = "options", icon = " ", color = "white" },
 				{ pattern = "terminal", icon = " ", color = "red" },
+				{ pattern = "ai", icon = "󱜙 ", color = "red" },
+				{ pattern = "keywordprg", icon = "󰗚 ", color = "green" },
+				{ pattern = "yank", icon = " ", color = "pink" },
+				{ pattern = "keymaps", icon = "󰌌 ", color = "purple" },
+				{ pattern = "scratch", icon = "󰏫 ", color = "cyan" },
 			},
 		},
 		spec = {
@@ -33,8 +38,7 @@ return {
 			{ mode = { "n", "v" }, { "g", group = "goto" } },
 			{ mode = { "n", "v" }, { "z", group = "fold" } },
 			{ mode = { "n", "v" }, { "gs", group = "surround" } },
-			{ mode = { "n", "v" }, { "<leader>gh", group = "Hunks", icon = "󰊢 " } },
-			{ mode = { "n", "v" }, { "<leader>ga", group = "Ai Generate", icon = "󰊢 " } },
+			{ mode = { "n", "v" }, { "<leader>gh", group = "Hunks" } },
 			{ mode = { "n", "v" }, { "<localleader>l", group = "LaTeX", icon = " " } },
 			{
 				mode = { "n", "v" },

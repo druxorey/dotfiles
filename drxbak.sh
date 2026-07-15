@@ -7,7 +7,6 @@ declare FLAVOUR=""
 declare CURRENT_SECTION=""
 declare SOURCE_PATH=""
 declare -a EXCLUDES=()
-declare -r REPOSITORY_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 declare -i IS_EXCLUDE=0
 declare -i IS_DRY_RUN=0
 declare -i backupIndex=0
@@ -29,87 +28,54 @@ ${FORMAT_BOLD}OPTIONS:${FORMAT_RESET}
 	return 0
 }
 
+
 function detectFlavour() {
-	# Priority 1: Check active session environment variables
-	local desktop
-	desktop=$(echo "${XDG_CURRENT_DESKTOP:-}${DESKTOP_SESSION:-}" | tr '[:upper:]' '[:lower:]')
+	local desktop=$(echo "${XDG_CURRENT_DESKTOP:-}${DESKTOP_SESSION:-}" | tr '[:upper:]' '[:lower:]')
 	
-	if [[ "$desktop" == *"kde"* ]] || [[ "$desktop" == *"plasma"* ]]; then
-		echo "kde"
-		return 0
-	elif [[ "$desktop" == *"cinnamon"* ]]; then
-		echo "cinnamon"
-		return 0
-	elif [[ "$desktop" == *"bspwm"* ]]; then
-		echo "bspwm"
-		return 0
-	elif [[ "$desktop" == *"mangowm"* ]]; then
-		echo "mangowm"
-		return 0
-	fi
+	case "$desktop" in
+		*kde*|*plasma*)     echo "kde"; return 0 ;;
+		*cinnamon*)         echo "cinnamon"; return 0 ;;
+		*bspwm*)            echo "bspwm"; return 0 ;;
+		*mangowm*)          echo "mangowm"; return 0 ;;
+	esac
 	
-	# Priority 2: Check running processes
-	if pgrep -x "bspwm" >/dev/null 2>&1; then
-		echo "bspwm"
-		return 0
-	elif pgrep -x "cinnamon" >/dev/null 2>&1; then
-		echo "cinnamon"
-		return 0
-	elif pgrep -x "plasmashell" >/dev/null 2>&1 || pgrep -x "kwin" >/dev/null 2>&1; then
-		echo "kde"
-		return 0
-	elif pgrep -x "mangowm" >/dev/null 2>&1; then
-		echo "mangowm"
-		return 0
-	fi
+	# Check running processes only for Wayland sessions (kde and mangowm)
+	pgrep -x "mangowm" >/dev/null 2>&1 && echo "mangowm" && return 0
+	(pgrep -x "plasmashell" || pgrep -x "kwin") >/dev/null 2>&1 && echo "kde" && return 0
 	
 	return 1
 }
 
-function cleanQuotes() {
-	local val="$1"
-	val="${val%\"}"
-	val="${val#\"}"
-	val="${val%\'}"
-	val="${val#\'}"
+
+function cleanValue() {
+	local val="${1#"${1%%[![:space:]]*}"}"
+	val="${val%"${val##*[![:space:]]}"}"
+	val="${val#[\"\']}"
+	val="${val%[\"\']}"
 	echo "$val"
 }
+
 
 function getTargetPath() {
 	local section="$1"
 	local src="$2"
-	local parent
+	local parent="flavours/$section"
+	[[ "$section" == "core" ]] && parent="core"
 	
-	if [[ "$section" == "core" ]]; then
-		parent="core"
-	else
-		parent="flavours/$section"
-	fi
-	
-	if [[ "$src" == *".obsidian"* ]]; then
-		echo "$parent/config/obsidian"
-	elif [[ "$src" == *".config/"* ]]; then
-		local subpath="${src#*.config/}"
-		echo "$parent/config/$subpath"
-	elif [[ "$src" == *".local/"* ]]; then
-		local subpath="${src#*.local/}"
-		echo "$parent/local/$subpath"
-	elif [[ "$src" == "~/"* ]] || [[ "$src" == "$HOME/"* ]]; then
-		local subpath="${src#\~/}"
-		subpath="${subpath#$HOME/}"
-		echo "$parent/home/$subpath"
-	elif [[ "$src" == "~"* ]]; then
-		local subpath="${src#\~}"
-		echo "$parent/home/$subpath"
-	else
-		local subpath="${src#/}"
-		echo "$parent/extras/$subpath"
-	fi
+	case "$src" in
+		*".obsidian"*)  echo "$parent/config/obsidian" ;;
+		*".config/"*)   echo "$parent/config/${src#*.config/}" ;;
+		*".local/"*)    echo "$parent/local/${src#*.local/}" ;;
+		"~/"*|"$HOME/"*) local tmp="${src#\~/}"; echo "$parent/home/${tmp#$HOME/}" ;;
+		"~"*)           echo "$parent/home/${src#\~}" ;;
+		*)              echo "$parent/extras/${src#/}" ;;
+	esac
 }
+
 
 function backupBookmarks() {
 	local bookmarksDir="$HOME/.config/BraveSoftware/Brave-Origin/Profile 1/Bookmarks"
-	local yamlDir="$REPOSITORY_ROOT/core/local/share/brave"
+	local yamlDir="core/local/share/brave"
 	
 	if [[ ! -f "$bookmarksDir" ]]; then
 		printf "\n\e[0;33m[SKIP]\e[0m Brave bookmarks file not found: %s\n" "$bookmarksDir"
@@ -145,6 +111,7 @@ function backupBookmarks() {
 	return 0
 }
 
+
 function backupItem() {
 	[[ -z "$SOURCE_PATH" ]] && return 0
 	
@@ -171,9 +138,8 @@ function backupItem() {
 		return 0
 	fi
 
-	local targetRel
-	targetRel=$(getTargetPath "$CURRENT_SECTION" "$cleanSrc")
-	local targetPath="$REPOSITORY_ROOT/$targetRel"
+	local targetRel=$(getTargetPath "$CURRENT_SECTION" "$cleanSrc")
+	local targetPath="$targetRel"
 	
 	if [[ "$isDir" -eq 0 ]]; then
 		if [[ "$IS_DRY_RUN" -eq 1 ]]; then
@@ -219,6 +185,7 @@ function backupItem() {
 	return 0
 }
 
+
 function parseConfig() {
 	local yamlFile="$1"
 	
@@ -237,30 +204,22 @@ function parseConfig() {
 		
 		[[ -z "$cleanLine" ]] && continue
 
-		# Section check at indent 0
-		if [[ "$indent" -eq 0 ]]; then
+		if [[ "$indent" -eq 0 ]]; then          # Section check at indent 0
 			if [[ "$cleanLine" == name:* ]]; then
-				local val="${cleanLine#name:}"
-				CURRENT_SECTION=$(cleanQuotes "$(echo "$val" | xargs)")
+				CURRENT_SECTION=$(cleanValue "${cleanLine#name:}")
 			elif [[ "$cleanLine" == routes: ]]; then
 				backupItem
 				IS_EXCLUDE=0
 			fi
-		elif [[ -n "$CURRENT_SECTION" ]]; then
-			# Inside a section
+		elif [[ -n "$CURRENT_SECTION" ]]; then  # Inside a section
 			if [[ "$cleanLine" == "- source:"* ]]; then
 				backupItem
 				IS_EXCLUDE=0
-				
-				local val="${cleanLine#*- source:}"
-				SOURCE_PATH=$(cleanQuotes "$(echo "$val" | xargs)")
+				SOURCE_PATH=$(cleanValue "${cleanLine#*- source:}")
 			elif [[ "$cleanLine" == "exclude:"* ]]; then
 				IS_EXCLUDE=1
 			elif [[ "$IS_EXCLUDE" -eq 1 ]] && [[ "$cleanLine" == "- "* ]] && [[ "$indent" -ge 4 ]]; then
-				local val="${cleanLine#*- }"
-				local pattern
-				pattern=$(cleanQuotes "$(echo "$val" | xargs)")
-				EXCLUDES+=("$pattern")
+				EXCLUDES+=($(cleanValue "${cleanLine#*- }"))
 			fi
 		fi
 	done < "$yamlFile"
@@ -269,8 +228,40 @@ function parseConfig() {
 	return 0
 }
 
+
+function backupUtils() {
+	local binDir="$HOME/.local/bin"
+	local utilsDir="utils"
+	
+	if [[ ! -d "$binDir" ]]; then
+		printf "\n\e[0;33m[SKIP]\e[0m Local bin directory not found: %s\n" "$binDir"
+		return 0
+	fi
+	
+	if [[ "$IS_DRY_RUN" -eq 1 ]]; then
+		printf "\e[1;34m[DRY-RUN]\e[0m rsync %s/ -> %s/\n" "$binDir" "$utilsDir"
+		rsync -av --delete --no-perms --dry-run "$binDir/" "$utilsDir/" | grep -E '^deleting |^[^/]+$' | grep -vE '^sending|^sent|^total|^$' | sed 's/^/  -> /'
+		return 0
+	fi
+
+	mkdir -p "$utilsDir"
+	if ! rsync -av --delete --no-perms "$binDir/" "$utilsDir/" >/dev/null 2>&1; then
+		printf "\n%b Failed to backup local utils.\n" "$FORMAT_ERROR" >&2
+		return 1
+	fi
+
+	backupIndex=$((backupIndex + 1))
+	printf "\r\e[1;32m ✔ [\e[0m%02d\e[1;32m] Successfully backed up:\e[0m %s" "$backupIndex" "local utils"
+	tput el
+	return 0
+}
+
+
 function main() {
-	cd "$REPOSITORY_ROOT" || exit 1
+	if [[ "$(pwd)" != "$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)" ]]; then
+		printf "%b You have to run it inside the repository directory\n" "$FORMAT_SUCCESS"
+		return 1
+	fi
 	
 	local forcedFlavour=""
 	while getopts "df:h" opt; do
@@ -282,16 +273,7 @@ function main() {
 		esac
 	done
 	
-	shift $((OPTIND - 1))
-	
-	# If flavour was not forced via option, check if it was forced via positional argument
-	if [[ -z "$forcedFlavour" ]] && [[ -n "$1" ]]; then
-		forcedFlavour="$1"
-	fi
-	
-	# Determine if we have an active flavour
 	if [[ -n "$forcedFlavour" ]]; then
-		# Verify that the forced flavour directory exists
 		if [[ ! -d "flavours/$forcedFlavour" ]]; then
 			printf "%b Forced flavour '%s' does not exist in flavours/ directory.\n" "$FORMAT_ERROR" "$forcedFlavour" >&2
 			exit 1
@@ -299,9 +281,7 @@ function main() {
 		FLAVOUR="$forcedFlavour"
 		printf "Backing up dotfiles (Flavour forced: %s)\n" "$FLAVOUR"
 	else
-		# Try to detect automatically
-		local detected
-		detected=$(detectFlavour)
+		local detected=$(detectFlavour)
 		if [[ $? -eq 0 ]] && [[ -n "$detected" ]]; then
 			FLAVOUR="$detected"
 			printf "Backing up dotfiles (Flavour auto-detected: %s)\n" "$FLAVOUR"
@@ -312,15 +292,15 @@ function main() {
 	
 	[[ "$IS_DRY_RUN" -eq 1 ]] && printf "Dry-run mode enabled. No files will be modified.\n"
 	
-	# 1. Parse core/core.yaml
-	if [[ -f "core/core.yaml" ]]; then
-		parseConfig "core/core.yaml"
-	else
+	# Parse core/core.yaml
+	if [[ ! -f "core/core.yaml" ]]; then
 		printf "%b Core configuration 'core/core.yaml' not found. Cannot proceed.\n" "$FORMAT_ERROR" >&2
 		exit 1
 	fi
+
+	parseConfig "core/core.yaml"
 	
-	# 2. Parse flavours/$FLAVOUR/$FLAVOUR.yaml if active
+	# Parse flavours/$FLAVOUR/$FLAVOUR.yaml if active
 	if [[ -n "$FLAVOUR" ]]; then
 		local flavourYaml="flavours/$FLAVOUR/$FLAVOUR.yaml"
 		if [[ -f "$flavourYaml" ]]; then
@@ -331,9 +311,10 @@ function main() {
 	fi
 	
 	backupBookmarks
+	backupUtils
 	
 	# Redact user details in the backed up gitconfig file
-	local gitconfigPath="$REPOSITORY_ROOT/core/home/.gitconfig"
+	local gitconfigPath="core/home/.gitconfig"
 	if [[ -f "$gitconfigPath" ]]; then
 		if [[ "$IS_DRY_RUN" -eq 0 ]]; then
 			sed -i -E 's/(user[[:space:]]*=[[:space:]]*).*/\1user/' "$gitconfigPath"
@@ -346,7 +327,7 @@ function main() {
 	fi
 	
 	if [[ "$IS_DRY_RUN" -eq 0 ]]; then
-		printf "\r%b All %02d files have been successfully backed up." "$FORMAT_SUCCESS" "$backupIndex"
+		printf "\r%b All %02d configurations have been successfully backed up." "$FORMAT_SUCCESS" "$backupIndex"
 		tput el
 		printf "\n"
 	else

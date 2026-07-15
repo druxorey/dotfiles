@@ -13,7 +13,7 @@ return {
 			typescript = { "eslint_d" },
 			go = { "golangci-lint" },
 			python = { "ruff" },
-			bash = { "shellcheck" },
+			bash = {},
 			yaml = { "yamllint" },
 			latex = { "chktex" },
 			css = { "stylelint" },

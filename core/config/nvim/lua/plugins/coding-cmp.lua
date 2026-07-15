@@ -20,12 +20,11 @@ return {
 		local cmp = require("cmp")
 		local luasnip = require("luasnip")
 
-		-- Register LSP capabilities with cmp-nvim-lsp
-		local lspconfig = require("lspconfig")
+		-- Register LSP capabilities with cmp-nvim-lsp via native vim.lsp.config
 		local capabilities = require("cmp_nvim_lsp").default_capabilities()
-		-- Apply capabilities to all future lsp configurations
-		local lsp_defaults = lspconfig.util.default_config
-		lsp_defaults.capabilities = vim.tbl_deep_extend("force", lsp_defaults.capabilities, capabilities)
+		vim.lsp.config("*", {
+			capabilities = capabilities,
+		})
 
 		-- Load friendly-snippets
 		require("luasnip.loaders.from_vscode").lazy_load()

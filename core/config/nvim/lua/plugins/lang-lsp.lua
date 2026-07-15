@@ -78,8 +78,53 @@ return {
 			"b0o/SchemaStore.nvim",
 		},
 		config = function()
-			local lspconfig = require("lspconfig")
 			local capabilities = require("cmp_nvim_lsp").default_capabilities()
+
+			vim.lsp.config("*", {
+				capabilities = capabilities,
+			})
+
+			vim.lsp.config("bashls", {
+				settings = {
+					bashIde = {
+						shellcheckArguments = "--exclude=SC2155,SC2086,SC2181,SC1090",
+					},
+				},
+			})
+
+			vim.lsp.config("jsonls", {
+				settings = {
+					json = {
+						schemas = require("schemastore").json.schemas(),
+						validate = { enable = true },
+					},
+				},
+			})
+
+			vim.lsp.config("yamlls", {
+				settings = {
+					yaml = {
+						schemaStore = {
+							enable = false,
+							url = "",
+						},
+						schemas = require("schemastore").yaml.schemas(),
+					},
+				},
+			})
+
+			vim.lsp.config("lua_ls", {
+				settings = {
+					Lua = {
+						workspace = {
+							checkThirdParty = false,
+						},
+						completion = {
+							callSnippet = "Replace",
+						},
+					},
+				},
+			})
 
 			local mason_lspconfig = require("mason-lspconfig")
 			mason_lspconfig.setup({
@@ -97,58 +142,9 @@ return {
 					"ts_ls",
 					"texlab",
 				},
-				handlers = {
-					function(server_name)
-						local opts = {
-							capabilities = capabilities,
-						}
-
-						-- Custom settings for specific servers:
-						if server_name == "bashls" then
-							-- Custom settings matching user options for bashls
-							opts.settings = {
-								bashIde = {
-									shellcheckArguments = "--exclude=SC2155,SC2086,SC2181,SC1090",
-								},
-							}
-						elseif server_name == "jsonls" then
-							-- SchemaStore schemas integration
-							opts.settings = {
-								json = {
-									schemas = require("schemastore").json.schemas(),
-									validate = { enable = true },
-								},
-							}
-						elseif server_name == "yamlls" then
-							-- SchemaStore schemas integration
-							opts.settings = {
-								yaml = {
-									schemaStore = {
-										enable = false,
-										url = "",
-									},
-									schemas = require("schemastore").yaml.schemas(),
-								},
-							}
-						elseif server_name == "lua_ls" then
-							opts.settings = {
-								Lua = {
-									workspace = {
-										checkThirdParty = false,
-									},
-									completion = {
-										callSnippet = "Replace",
-									},
-								},
-							}
-						end
-
-						lspconfig[server_name].setup(opts)
-					end,
-				},
+				automatic_enable = true,
 			})
 
-			-- Set default diagnostic icons
 			local signs = { Error = " ", Warn = " ", Hint = " ", Info = " " }
 			for type, icon in pairs(signs) do
 				local hl = "DiagnosticSign" .. type

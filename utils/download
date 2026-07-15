@@ -1,0 +1,65 @@
+#!/bin/bash
+
+declare -r FORMAT_SUCCESS="\e[1;32m[SUCCESS]\e[0m"
+declare -r FORMAT_ERROR="\e[1;31m[ERROR]\e[0m"
+
+function downloadLinks() {
+	local links=("$@")
+	
+	if [ ${#links[@]} -eq 0 ]; then
+		printf "%b No links provided to download.\n" "$FORMAT_ERROR"
+		return 1
+	fi
+
+	printf "Starting download of %d files...\n" "${#links[@]}"
+
+	local -i index=1
+	for link in "${links[@]}"; do
+		wget -q --show-progress "$link"
+		if [ $? -ne 0 ]; then
+			printf "%b Failed to download file %d\n" "$FORMAT_ERROR" "$index"
+		else
+			((index++))
+		fi
+	done
+	printf "%b Successfully downloaded %d files\n" "$FORMAT_SUCCESS" "$index"
+}
+
+
+function main() {
+	while getopts "h" opt; do
+		case $opt in
+			h) printf "\e[1;34mUSAGE:\e[0m %s\n" "$(basename "$0")" && exit 0 ;;
+			*) printf "%b Try '%s -h' for more information.\n" "$FORMAT_ERROR" "$(basename "$0")" >&2 && exit 1 ;;
+		esac
+	done
+
+	if ! command -v xclip &> /dev/null; then
+		printf "%b 'xclip' is required to monitor clipboard.\n" "$FORMAT_ERROR"
+		exit 1
+	fi
+
+	local lastClipboard=""
+	local currentClipboard=""
+	local links=()
+
+	echo "Monitoring clipboard. Copy links to add them. Press ENTER to start downloads or Ctrl+C to exit."
+
+	while true; do
+		if read -t 0.1 -r; then
+			downloadLinks "${links[@]}"
+			exit 0
+		fi
+
+		currentClipboard=$(xclip -selection clipboard -o 2>/dev/null)
+		
+		if [[ "$currentClipboard" != "$lastClipboard" ]] && [[ "$currentClipboard" =~ ^https?://.*\.[a-zA-Z0-9]+/?$ ]]; then
+			links+=("$currentClipboard")
+			lastClipboard="$currentClipboard"
+			printf " ⮞ Added: %s (Total: %d)\n" "$currentClipboard" "${#links[@]}"
+		fi
+		sleep 1
+	done
+}
+
+main "$@"

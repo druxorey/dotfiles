@@ -1,0 +1,220 @@
+#!/bin/bash
+
+declare -r FORMAT_SUCCESS="\e[1;32m[SUCCESS]\e[0m"
+declare -r FORMAT_WARNING="\e[1;33m[WARNING]\e[0m"
+declare -r FORMAT_ERROR="\e[1;31m[ERROR]\e[0m"
+declare -r FORMAT_INFO="\e[1;34m[INFO]\e[0m"
+
+declare -g  IS_DRY_RUN="false"
+declare -g  CONFIG_FILE="$HOME/.config/backup.conf"
+declare -gA OBSCURED_PASSWORDS
+
+[ -f "$CONFIG_FILE" ] && source "$CONFIG_FILE"
+
+# This script securely imports its sensitive credentials and environment variables
+# from an external configuration file named 'sysbackup.conf' located at the user's config folder.
+#
+# The 'sysbackup.conf' file must contain the following declarations:
+#
+# declare -g IP_SERVER="nas_server_ip"
+# declare -g LOG_FILE="log_file_path"
+#
+# declare -A SMB_USERS=(
+#     [files]="files_username"
+#     [media]="media_username"
+# )
+# declare -A SMB_PASSWORDS=(
+#     [files]="files_password"
+#     [media]="media_password"
+# )
+#
+# declare -a BACKUPS=(
+#     "files|copy|/home/user/Workspace|dev/Workspace"
+#     "media|sync|/home/user/Music|media/Music"
+# )
+#
+# Backup task format: "credential_profile|backup_type|local_path|remote_path"
+# Supported types (4 characters):
+#   - copy: Mirror local to remote. Files in remote but not in local are deleted.
+#   - sync: Bidirectional sync. Remote overwrites local in case of conflict.
+
+function help() {
+	local FORMAT_BOLD="\e[1;34m"
+	local FORMAT_RESET="\e[0m"
+	echo -e "${FORMAT_BOLD}USAGE:${FORMAT_RESET} $(basename "$0") [OPTIONS]
+
+${FORMAT_BOLD}DESCRIPTION:${FORMAT_RESET}
+    Backs up local directories to an SMB server, supporting both 
+    full file synchronization and mirroring.
+
+${FORMAT_BOLD}OPTIONS:${FORMAT_RESET}
+    -d     Dry-run simulation mode. Shows what would be copied without
+           making real changes.
+    -h     Displays this help message.
+
+${FORMAT_BOLD}EXAMPLES:${FORMAT_RESET}
+    $(basename "$0")
+    $(basename "$0") -d"
+
+	return 0
+}
+
+
+function loadConfiguration() {
+	declare -gr LOCAL_USER=$(id -un)
+
+	if [ ! -f "$CONFIG_FILE" ]; then
+		printf "%b %s\n" "$FORMAT_ERROR" "Configuration file not found at '$CONFIG_FILE'" >&2
+		exit 1
+	fi
+
+	# Validate core configuration variables
+	if [ -z "$LOCAL_USER" ] || [ -z "$IP_SERVER"  ] || [ -z "$LOG_FILE" ]; then
+		printf "%b %s\n" "$FORMAT_ERROR" "Incomplete configuration in '$CONFIG_FILE'. Check IP_SERVER and LOG_FILE." >&2
+		exit 1
+	fi
+
+	# Validate associative arrays for SMB credentials
+	if [ ${#SMB_USERS[@]} -eq 0 ] || [ ${#SMB_PASSWORDS[@]} -eq 0 ]; then
+		printf "%b %s\n" "$FORMAT_ERROR" "SMB_USERS or SMB_PASSWORDS are not defined or empty in '$CONFIG_FILE'." >&2
+		exit 1
+	fi
+
+	# Validate backup tasks list
+	if [ ${#BACKUPS[@]} -eq 0 ]; then
+		printf "%b %s\n" "$FORMAT_ERROR" "No backup tasks defined in 'BACKUPS' array in '$CONFIG_FILE'." >&2
+		exit 1
+	fi
+}
+
+
+function obscurePasswords() {
+	# rclone obscure command translates plain-text passwords into obscured format on-the-fly.
+	# I use --config /dev/null to silence the default config file notices.
+	for key in "${!SMB_PASSWORDS[@]}"; do
+		OBSCURED_PASSWORDS[$key]=$(rclone --config /dev/null obscure "${SMB_PASSWORDS[$key]}")
+	done
+}
+
+
+function performBackup() {
+	local credProfile="$1"
+	local backupType="$2"
+	local localPath="$3"
+	local remotePath="$4"
+
+	local rcloneOpts=("-v" "--stats=0")
+	[ "$IS_DRY_RUN" = "true" ] && rcloneOpts+=("--dry-run")
+
+	local user="${SMB_USERS[$credProfile]}"
+	local pass="${OBSCURED_PASSWORDS[$credProfile]}"
+
+	if [ -z "$user" ] || [ -z "$pass" ]; then
+		printf "%b %s\n" "$FORMAT_ERROR" "Credentials not found for profile '$credProfile' (Task: $localPath -> $remotePath)" >&2
+		return 1
+	fi
+
+	local exitStatus=0
+
+	if [ "$backupType" = "copy" ]; then
+		printf "%b %s\n" "$FORMAT_INFO" "Starting mirror sync ('copy') of '$localPath' to '$remotePath'..."
+		
+		# Execute one-way mirror: local to remote.
+		# Extra files on the remote that are not present locally will be deleted.
+		rclone --config /dev/null sync "$localPath" :smb:"$remotePath" \
+			--smb-host "$IP_SERVER" \
+			--smb-user "$user" \
+			--smb-pass "$pass" \
+			"${rcloneOpts[@]}"
+		exitStatus=$?
+			
+	elif [ "$backupType" = "sync" ]; then
+		printf "%b %s\n" "$FORMAT_INFO" "Starting bidirectional sync ('sync') of '$localPath' with '$remotePath'..."
+
+		# Server -> Local (Remote takes priority, overwrites local on mismatch)
+		printf "%b %s\n" "$FORMAT_INFO" "Synchronizing: Server -> Local (Remote priority)..."
+		rclone --config /dev/null copy :smb:"$remotePath" "$localPath" \
+			--smb-host "$IP_SERVER" \
+			--smb-user "$user" \
+			--smb-pass "$pass" \
+			"${rcloneOpts[@]}"
+		[ $? -ne 0 ] && exitStatus=1
+
+		# Local -> Server (Copies new local files to remote)
+		printf "%b %s\n" "$FORMAT_INFO" "Synchronizing: Local -> Server..."
+		rclone --config /dev/null copy "$localPath" :smb:"$remotePath" \
+			--smb-host "$IP_SERVER" \
+			--smb-user "$user" \
+			--smb-pass "$pass" \
+			"${rcloneOpts[@]}"
+		[ $? -ne 0 ] && exitStatus=1
+	else
+		printf "%b %s\n" "$FORMAT_ERROR" "Unsupported backup type '$backupType' (Task: $localPath -> $remotePath)" >&2
+		return 1
+	fi
+
+	if [ $exitStatus -eq 0 ]; then
+		printf "%b %s\n" "$FORMAT_SUCCESS" "Backup of '$localPath' completed successfully."
+		return 0
+	else
+		printf "%b %s\n" "$FORMAT_WARNING" "There were minor issues or updates during backup of '$localPath'."
+		return 1
+	fi
+}
+
+
+function main() {
+	while getopts "dh" opt; do
+		case $opt in
+		d) IS_DRY_RUN="true" ;;
+		h) help && exit 0 ;;
+		*) printf "%b Try '%s -h' for help.\n" "$FORMAT_ERROR" "$(basename "$0")" >&2 && exit 1 ;;
+		esac
+	done
+
+	loadConfiguration
+
+	if ! command -v rclone &> /dev/null; then
+		printf "%b %s\n" "$FORMAT_ERROR" "The 'rclone' utility is required but not installed." >&2
+		exit 1
+	fi
+
+	if ! timeout 3 bash -c "true > /dev/tcp/$IP_SERVER/445" &> /dev/null; then
+		printf "%b %s\n" "$FORMAT_ERROR" "Connection to $IP_SERVER on port 445 (SMB) failed." >&2
+		exit 1
+	fi
+
+	mkdir -p "$(dirname "$LOG_FILE")"
+	exec > >(tee -i -a "$LOG_FILE") 2>&1
+
+	printf "╒════════════════════════════════════════════════════════════════════════╕\n"
+	printf "│                  Backup started: %s                   │\n" "$(date '+%Y-%m-%d %H:%M:%S')"
+	[ "$IS_DRY_RUN" = "true" ] && printf "│        SIMULATION MODE ACTIVE (No real changes will be applied)        │\n"
+	printf "╘════════════════════════════════════════════════════════════════════════╛\n"
+
+	obscurePasswords
+
+	local exitCode=0
+	for backupEntry in "${BACKUPS[@]}"; do
+		# Parse entry: profile|type|local_path|remote_path
+		IFS='|' read -r credentialProfile backupType localPath remotePath <<< "$backupEntry"
+
+		if [ -z "$credentialProfile" ] || [ -z "$backupType" ] || [ -z "$localPath" ] || [ -z "$remotePath" ]; then
+			printf "%b %s\n" "$FORMAT_ERROR" "Invalid backup entry format: '$backupEntry'" >&2
+			exitCode=1
+			continue
+		fi
+
+		if ! performBackup "$credentialProfile" "$backupType" "$localPath" "$remotePath"; then
+			exitCode=1
+		fi
+	done
+
+	printf "╒════════════════════════════════════════════════════════════════════════╕\n"
+	printf "│                 Backup completed: %s                  │\n" "$(date '+%Y-%m-%d %H:%M:%S')"
+	printf "╘════════════════════════════════════════════════════════════════════════╛\n"
+
+	return $exitCode
+}
+
+main "$@"

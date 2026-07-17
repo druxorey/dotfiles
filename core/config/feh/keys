@@ -1,0 +1,44 @@
+# Unbind default key actions to prevent conflicts
+next_img
+prev_img
+scroll_up
+scroll_down
+scroll_left
+scroll_right
+reload_plus
+reload_minus
+reload_image
+render
+zoom_in
+zoom_out
+zoom_default
+zoom_fit
+zoom_fill
+
+# Image navigation keys
+next_img L Right
+prev_img H Left
+
+# Image rotation commands
+orient_3 R
+orient_1 r
+
+# Panning and scrolling inside a zoomed image
+scroll_up k Up
+scroll_down j Down
+scroll_left h Left
+scroll_right l Right
+
+# Zoom control adjustments
+zoom_in plus K
+zoom_out minus J
+zoom_default d
+zoom_fit equal s
+
+# Toggles for overlays and fullscreen mode
+toggle_info i
+toggle_exif e
+toggle_fullscreen f
+
+# Application exit shortcuts
+quit q Escape

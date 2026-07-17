@@ -1,0 +1,16 @@
+# Unbind default mouse actions to prevent conflicts
+pan
+zoom
+prev_img
+next_img
+
+# Image navigation using the mouse scroll wheel
+prev_img 4
+next_img 5
+
+# Image zooming using the mouse scroll wheel
+zoom_in 4
+zoom_out 5
+
+# Image panning using the left click drag
+pan 1

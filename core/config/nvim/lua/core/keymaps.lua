@@ -124,18 +124,19 @@ vim.keymap.set("n", "<leader>fr", function() require("telescope.builtin").oldfil
 vim.keymap.set("n", "<leader>fn", function() require("utils.keymaps").create_new_file() end, { desc = "Create New File" })
 
 -- AI Assistant Mappings
-vim.keymap.set({ "n", "x" }, "<leader>i", function() require("utils.ai").ask_ai() end, { desc = "Ask Ai" })
-vim.keymap.set("n", "<leader>gC", function() require("utils.git_ai").git_ai_commit() end, { desc = "Generate Ai Commit" })
-vim.keymap.set("n", "<leader>gB", function() require("utils.git_ai").git_ai_branch() end, { desc = "Generate Ai Branch" })
+vim.keymap.set({ "n", "x" }, "<leader>ai", function() require("utils.ai").ask_ai() end, { desc = "Ask Ai" })
+vim.keymap.set("n", "<leader>ac", function() require("utils.git_ai").git_ai_commit() end, { desc = "Generate Ai Commit" })
+vim.keymap.set("n", "<leader>ab", function() require("utils.git_ai").git_ai_branch() end, { desc = "Generate Ai Branch" })
 
 -- Git Mappings
 vim.keymap.set("n", "<leader>gc", "<cmd>Git commit<cr>", { noremap = true, silent = true, desc = "Git Commit" })
 vim.keymap.set("n", "<leader>gl", "<cmd>Telescope git_commits<cr>", { noremap = true, silent = true, desc = "Git Logs" })
 vim.keymap.set("n", "<leader>gg", "<cmd>LazyGit<cr>", { desc = "Lazygit" })
-vim.keymap.set("n", "<leader>gp", "<cmd>Git push<cr>", { noremap = true, silent = true, desc = "Git Push" })
+vim.keymap.set("n", "<leader>gp", "<cmd>Git pull<cr>", { noremap = true, silent = true, desc = "Git Pull" })
+vim.keymap.set("n", "<leader>gP", "<cmd>Git push<cr>", { noremap = true, silent = true, desc = "Git Push" })
 vim.keymap.set("n", "<leader>gs", "<cmd>Telescope git_status<cr>", { noremap = true, silent = true, desc = "Git Status" })
 vim.keymap.set("n", "<leader>gf", function() require("snacks").picker.git_log_file() end, { desc = "Git Current File History" })
-vim.keymap.set({ "n", "x" }, "<leader>gb", function() require("snacks").gitbrowse() end, { desc = "Git Browse" })
+vim.keymap.set({ "n", "x" }, "<leader>gB", function() require("snacks").gitbrowse() end, { desc = "Git Browse" })
 
 -- Git Ai, Hunks & Blame
 vim.keymap.set("n", "<leader>ghb", function() require("gitsigns").blame_line({ full = true }) end, { desc = "Blame Line" })

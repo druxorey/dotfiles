@@ -37,5 +37,5 @@ return {
 	drx_color_pink_2 = "#FF79C6",
 	drx_color_pink_3 = "#E660AD",
 
-	dx_color_white = "#FFFFFF",
+	drx_color_white = "#FFFFFF",
 }

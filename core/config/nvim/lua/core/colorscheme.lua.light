@@ -1,4 +1,4 @@
-return = {
+return {
 	drx_color_base = "#FFFBEB",
 	drx_color_surface = "#EDE9DA",
 	drx_color_overlay = "#DEDBCC",

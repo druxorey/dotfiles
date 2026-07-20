@@ -18,30 +18,70 @@ return {
 			},
 			indent = { enable = true },
 			ensure_installed = {
+				"awk",
 				"bash",
 				"c",
 				"cpp",
 				"css",
+				"csv",
+				"gitcommit",
+				"gitignore",
+				"git_config",
+				"git_rebase",
 				"go",
 				"gomod",
 				"gowork",
+				"gnuplot",
+				"haskell",
 				"html",
+				"java",
 				"javascript",
+				"jq",
 				"json",
 				"latex",
-				"less",
 				"lua",
+				"make",
 				"markdown",
 				"markdown_inline",
 				"python",
 				"rasi",
+				"rust",
+				"scss",
 				"toml",
 				"typescript",
 				"yaml",
+				"zsh",
 			},
 		},
 		config = function(_, opts)
-			require("nvim-treesitter").setup(opts)
+			-- Configure the plugin with standard settings (install_dir, etc.)
+			require("nvim-treesitter").setup({
+				install_dir = opts.install_dir,
+			})
+
+			-- Automatically install missing parsers defined in ensure_installed
+			if opts.ensure_installed then
+				require("nvim-treesitter").install(opts.ensure_installed)
+			end
+
+			-- Automatically enable Treesitter highlighting and indent for languages with a parser
+			vim.api.nvim_create_autocmd("FileType", {
+				group = vim.api.nvim_create_augroup("nvim_treesitter_highlight", { clear = true }),
+				callback = function(ev)
+					local lang = vim.treesitter.language.get_lang(ev.match) or ev.match
+					if lang and lang ~= "" then
+						-- Check if parser is installed
+						local ok, _ = pcall(vim.treesitter.get_string_parser, "", lang)
+						if ok then
+							-- Enable highlighting
+							pcall(vim.treesitter.start, ev.buf, lang)
+
+							-- Enable treesitter-based indentation (experimental)
+							vim.bo[ev.buf].indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
+						end
+					end
+				end,
+			})
 		end,
 	},
 

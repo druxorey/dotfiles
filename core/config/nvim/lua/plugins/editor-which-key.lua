@@ -27,6 +27,7 @@ return {
 			{ mode = { "n", "v" }, { "<leader>s", group = "Search" } },
 			{ mode = { "n", "v" }, { "<leader>f", group = "File" } },
 			{ mode = { "n", "v" }, { "<leader>c", group = "Code" } },
+			{ mode = { "n", "v" }, { "<leader>cl", group = "Chainsaw / Log", icon = "󰹈 " } },
 			{ mode = { "n", "v" }, { "<leader>w", group = "Windows" } },
 			{ mode = { "n", "v" }, { "<leader>u", group = "Ui" } },
 			{ mode = { "n", "v" }, { "<leader>h", group = "Harpoon" } },

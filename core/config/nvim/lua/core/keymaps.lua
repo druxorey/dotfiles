@@ -116,6 +116,32 @@ vim.keymap.set("v", "<leader>cs", function() require("nvim-silicon").shoot() end
 vim.keymap.set("n", "<leader>cS", "<cmd>Trouble lsp toggle<cr>", { desc = "LSP References & Definitions" })
 vim.keymap.set({ "n", "v" }, "<leader>cf", function() require("utils.keymaps").format_buffer() end, { noremap = true, silent = true, desc = "Format Buffer or Selection" })
 
+-- Chainsaw Logging (<leader>cl)
+vim.keymap.set({ "n", "v" }, "<leader>clv", function() require("chainsaw").variableLog() end, { desc = "Log Variable" })
+vim.keymap.set({ "n", "v" }, "<leader>clo", function() require("chainsaw").objectLog() end, { desc = "Log Object" })
+vim.keymap.set({ "n", "v" }, "<leader>clt", function() require("chainsaw").typeLog() end, { desc = "Log Type" })
+vim.keymap.set({ "n", "v" }, "<leader>cly", function() require("chainsaw").typeLog() end, { desc = "Log Type (Alias)" })
+vim.keymap.set({ "n", "v" }, "<leader>cla", function() require("chainsaw").assertLog() end, { desc = "Log Assert" })
+vim.keymap.set("n", "<leader>cle", function() require("chainsaw").emojiLog() end, { desc = "Log Emoji" })
+vim.keymap.set("n", "<leader>cls", function() require("chainsaw").sound() end, { desc = "Log Sound" })
+vim.keymap.set("n", "<leader>clm", function() require("chainsaw").messageLog() end, { desc = "Log Message" })
+vim.keymap.set("n", "<leader>clT", function() require("chainsaw").timeLog() end, { desc = "Log Time Duration" })
+vim.keymap.set("n", "<leader>cld", function() require("chainsaw").debugLog() end, { desc = "Log Debugger / Breakpoint" })
+vim.keymap.set("n", "<leader>clS", function() require("chainsaw").stacktraceLog() end, { desc = "Log Stacktrace" })
+vim.keymap.set("n", "<leader>clc", function() require("chainsaw").clearLog() end, { desc = "Log Clear Console" })
+vim.keymap.set({ "n", "v" }, "<leader>clr", function() require("chainsaw").removeLogs() end, { desc = "Remove All Logs" })
+vim.keymap.set("n", "<leader>cll", function()
+	local marker = require("chainsaw.config.config").config.marker
+	require("snacks").picker.grep_word({
+		title = marker .. " Log Statements",
+		cmd = "rg",
+		args = { "--trim" },
+		search = marker,
+		regex = false,
+		live = false,
+	})
+end, { desc = "List Log Statements in Project" })
+
 -- File Utilities & File Search
 vim.keymap.set("n", "<leader>fb", function() require("telescope.builtin").buffers() end, { desc = "Find Buffer" })
 vim.keymap.set("n", "<leader>ff", function() require("telescope.builtin").find_files() end, { desc = "Find File" })

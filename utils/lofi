@@ -1,8 +1,8 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
-declare -r FORMAT_ERROR="\e[1;31m[ERROR]\e[0m"
+declare -r FORMAT_FAILURE="\e[1;31m[FAILURE]\e[0m"
+
 declare -r COVER_PATH="$HOME/.local/share/lofi.jpg"
-
 declare -a SOURCES=(
 	"http://youtu.be/X4VbdwhkE10"
 	"http://youtu.be/4xDzrJKXOOY"
@@ -14,17 +14,17 @@ declare -a SOURCES=(
 function help() {
 	declare -r FORMAT_BOLD="\e[1;34m"
 	declare -r FORMAT_RESET="\e[0m"
-	echo -e "${FORMAT_BOLD}USAGE:${FORMAT_RESET} $(basename "$0") [OPTIONS] [VOLUME]
+	echo -e "${FORMAT_BOLD}USAGE:${FORMAT_RESET} ${0##*/} [OPTIONS] [VOLUME]
 
 ${FORMAT_BOLD}DESCRIPTION:${FORMAT_RESET}
-    Streams random Lofi music from YouTube and visualizes it using cava.
+  Streams random Lofi music from YouTube and visualizes it using cava.
 
 ${FORMAT_BOLD}ARGUMENTS:${FORMAT_RESET}
-    VOLUME         Set the initial volume (0-100). Default: 50.
+  VOLUME     Set the initial volume (0-100). Default: 50.
 
 ${FORMAT_BOLD}OPTIONS:${FORMAT_RESET}
-    -d             Debug mode: Run in foreground and show output.
-    -s SOURCE      Specify a custom YouTube URL to stream."
+  -d         Debug mode: Run in foreground and show output.
+  -s SOURCE  Specify a custom YouTube URL to stream."
 
 	return 0
 }
@@ -35,12 +35,12 @@ function main() {
 	local source="${SOURCES[$RANDOM % ${#SOURCES[@]}]}"
 
 	if ! command -v cava &> /dev/null; then
-		printf "%b 'cava' is not installed.\n" "$FORMAT_ERROR"
+		printf "%b 'cava' is not installed.\n" "$FORMAT_FAILURE"
 		exit 1
 	fi
 
 	if ! command -v yt-dlp &> /dev/null; then
-		printf "%b 'yt-dlp' tool is not installed.\n" "$FORMAT_ERROR"
+		printf "%b 'yt-dlp' tool is not installed.\n" "$FORMAT_FAILURE"
 		exit 1
 	fi
 
@@ -49,7 +49,7 @@ function main() {
 			h) help && exit 0 ;;
 			d) isDebug=true ;;
 			s) source="$OPTARG" ;;
-			*) printf "%b Try '%s -h' for more information.\n" "$FORMAT_ERROR" "$(basename "$0")" >&2 && exit 1 ;;
+			*) printf "%b Try '%s -h' for more information.\n" "$FORMAT_FAILURE" "${0##*/}" >&2 && exit 1 ;;
 		esac
 	done
 

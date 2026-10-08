@@ -1,0 +1,496 @@
+#!/usr/bin/env bash
+
+declare -r FORMAT_SUCCESS="\e[1;32m[SUCCESS]\e[0m"
+declare -r FORMAT_WARNING="\e[1;33m[WARNING]\e[0m"
+declare -r FORMAT_FAILURE="\e[1;31m[FAILURE]\e[0m"
+
+declare -r SUBS_DIR='Subs'
+
+function help() {
+	local -r HELP_BOLD="\e[1;34m"
+	local -r HELP_RESET="\e[0m"
+
+	echo -e "${HELP_BOLD}USAGE:${HELP_RESET} ${0##*/} <COMMAND> [OPTIONS] [ARGUMENTS]
+
+${HELP_BOLD}COMMANDS:${HELP_RESET}
+  to-mkv                 Convert an MP4 file into MKV preserving all streams.
+  extract-subs           Extract all internal subtitles to '${SUBS_DIR}/' and remove them from the MKV.
+  extract-audio <ID>     Extract the specified audio track by ID.
+  list-subs              List internal subtitle tracks with their IDs, formats, and titles.
+  list-audio             List audio tracks with their IDs, metadata, and byte sizes.
+  rename-audio <ID> <N>  Update the track title/name of an audio track.
+  rename-sub <ID> <N>    Update the track title/name of a subtitle track.
+  attach-subs            Attach all subtitle files found in '${SUBS_DIR}/' into the MKV.
+  remove-audio <ID>      Remove the specified audio track from the container.
+
+${HELP_BOLD}OPTIONS:${HELP_RESET}
+  -h                    Show this help message."
+	exit 0
+}
+
+function checkDependencies() {
+	local -a deps=('mkvmerge' 'mkvextract' 'mkvpropedit' 'jq')
+	local dep
+	for dep in "${deps[@]}"; do
+		if ! command -v "$dep" &> /dev/null; then
+			printf "%b Missing required dependency: '%s'\n" "$FORMAT_FAILURE" "$dep" >&2
+			exit 1
+		fi
+	done
+}
+
+function findVideoFile() {
+	local videoFile
+	videoFile=$(find . -maxdepth 1 -type f \( -name "*.mkv" -o -name "*.mp4" \) ! -name "*_temp.mkv" | head -n 1)
+	videoFile="${videoFile#./}"
+	echo "$videoFile"
+}
+
+function findMp4File() {
+	local mp4File
+	mp4File=$(find . -maxdepth 1 -type f -name "*.mp4" | head -n 1)
+	mp4File="${mp4File#./}"
+	echo "$mp4File"
+}
+
+function getAudioExtension() {
+	local codec="$1"
+	case "$codec" in
+		*"AAC"*) echo 'aac' ;;
+		*"AC-3"*|*"E-AC-3"*) echo 'ac3' ;;
+		*"DTS"*) echo 'dts' ;;
+		*"TrueHD"*) echo 'thd' ;;
+		*"FLAC"*) echo 'flac' ;;
+		*"Opus"*) echo 'opus' ;;
+		*"Vorbis"*) echo 'ogg' ;;
+		*"MP3"*) echo 'mp3' ;;
+		*) echo 'mka' ;;
+	esac
+}
+
+function getSubExtension() {
+	local codec="$1"
+	case "$codec" in
+		*"SubRip"*|*"SRT"*) echo 'srt' ;;
+		*"SubStationAlpha"*|*"ASS"*) echo 'ass' ;;
+		*"HDMV PGS"*) echo 'sup' ;;
+		*"VobSub"*) echo 'sub' ;;
+		*) echo 'mks' ;;
+	esac
+}
+
+function convertMp4ToMkv() {
+	local mp4File
+	mp4File=$(findMp4File)
+
+	if [[ -z $mp4File ]]; then
+		printf "%b No MP4 file found in current directory.\n" "$FORMAT_FAILURE" >&2
+		return 1
+	fi
+
+	local baseName="${mp4File%.*}"
+	local finalOutput="${baseName}.mkv"
+
+	if [[ -f $finalOutput ]]; then
+		printf "%b Target '%s' already exists. Aborting to avoid overwrite.\n" "$FORMAT_WARNING" "$finalOutput"
+		return 1
+	fi
+
+	printf "Remuxing '%s' to MKV container...\n" "$mp4File"
+	if mkvmerge -o "$finalOutput" "$mp4File" > /dev/null 2>&1; then
+		rm -f "$mp4File"
+		printf "%b Remux completed successfully: '%s'\n" "$FORMAT_SUCCESS" "$finalOutput"
+	else
+		printf "%b Failed to remux '%s' to MKV.\n" "$FORMAT_FAILURE" "$mp4File" >&2
+		rm -f "$finalOutput"
+		return 1
+	fi
+
+	return 0
+}
+
+function listSubtitleTracks() {
+	local inputFile="$1"
+	local jsonInfo
+	jsonInfo=$(mkvmerge -J "$inputFile")
+
+	local -i subTracksCount
+	subTracksCount=$(jq '[.tracks[] | select(.type=="subtitles")] | length' <<< "$jsonInfo")
+
+	if ((subTracksCount == 0)); then
+		printf "%b No subtitle tracks found in '%s'.\n" "$FORMAT_WARNING" "$inputFile"
+		return 0
+	fi
+
+	printf "Subtitle tracks for '%s':\n\n" "$inputFile"
+	printf "%-4s | %-6s | %-16s | %-10s | %s\n" "ID" "LANG" "CODEC" "FLAGS" "NAME"
+	printf "--------------------------------------------------------------------------------\n"
+
+	local trackId lang codec name isDefault isForced flags
+
+	while IFS='|' read -r trackId lang codec isDefault isForced name; do
+		[[ -z $trackId ]] && continue
+
+		flags=""
+		[[ $isDefault == "true" ]] && flags+="[def]"
+		[[ $isForced == "true" ]] && flags+="[forced]"
+		[[ -z $flags ]] && flags="-"
+
+		[[ -z $name || $name == "null" ]] && name="<No Title>"
+		[[ -z $lang || $lang == "null" ]] && lang="und"
+
+		printf "%-4s | %-6s | %-16s | %-10s | %s\n" "$trackId" "$lang" "$codec" "$flags" "$name"
+	done < <(jq -r '.tracks[] | select(.type=="subtitles") | "\(.id)|\(.properties.language // "und")|\(.codec)|\(.properties.default_track // false)|\(.properties.forced_track // false)|\(.properties.track_name // "")"' <<< "$jsonInfo")
+
+	echo ""
+	return 0
+}
+
+function extractSubtitles() {
+	local inputFile="$1"
+	local baseName="${inputFile%.*}"
+	local jsonInfo
+	jsonInfo=$(mkvmerge -J "$inputFile")
+
+	local -i subTracksCount
+	subTracksCount=$(jq '[.tracks[] | select(.type=="subtitles")] | length' <<< "$jsonInfo")
+
+	if ((subTracksCount == 0)); then
+		printf "%b No subtitle tracks found in '%s'.\n" "$FORMAT_WARNING" "$inputFile"
+		return 0
+	fi
+
+	mkdir -p "$SUBS_DIR"
+
+	local -i extractedCount=0
+	local -a extractArgs=()
+	local trackId lang codec ext targetFile
+
+	while IFS='|' read -r trackId lang codec; do
+		[[ -z $trackId ]] && continue
+		ext=$(getSubExtension "$codec")
+		targetFile="$SUBS_DIR/${baseName}.track_${trackId}.${lang}.${ext}"
+		extractArgs+=("$trackId:$targetFile")
+		((extractedCount++))
+	done < <(jq -r '.tracks[] | select(.type=="subtitles") | "\(.id)|\(.properties.language // "und")|\(.codec)"' <<< "$jsonInfo")
+
+	printf "Extracting %d subtitle track(s) to '%s/'...\n" "$extractedCount" "$SUBS_DIR"
+	if ! mkvextract tracks "$inputFile" "${extractArgs[@]}" > /dev/null 2>&1; then
+		printf "%b Failed to extract subtitles.\n" "$FORMAT_FAILURE" >&2
+		return 1
+	fi
+	printf "%b Extraction complete.\n" "$FORMAT_SUCCESS"
+
+	local tempOutput="${baseName}_temp.mkv"
+	local finalOutput="${baseName}.mkv"
+
+	printf "Stripping subtitles from container...\n"
+	if mkvmerge -o "$tempOutput" --no-subtitles "$inputFile" > /dev/null 2>&1; then
+		mv -f "$tempOutput" "$finalOutput"
+		if [[ $inputFile != "$finalOutput" ]]; then
+			rm -f "$inputFile"
+		fi
+		printf "%b MKV container updated with subtitles removed.\n" "$FORMAT_SUCCESS"
+	else
+		printf "%b Error stripping subtitles from container.\n" "$FORMAT_FAILURE" >&2
+		rm -f "$tempOutput"
+		return 1
+	fi
+
+	return 0
+}
+
+function attachSubtitles() {
+	local inputFile="$1"
+	local baseName="${inputFile%.*}"
+	local tempOutput="${baseName}_temp.mkv"
+	local finalOutput="${baseName}.mkv"
+
+	if [[ ! -d $SUBS_DIR ]]; then
+		printf "%b Directory '%s' does not exist.\n" "$FORMAT_FAILURE" "$SUBS_DIR" >&2
+		return 1
+	fi
+
+	local -a subFiles=()
+	local file
+	while IFS= read -r -d '' file; do
+		subFiles+=("$file")
+	done < <(find "$SUBS_DIR" -maxdepth 1 -type f \( -name "*.srt" -o -name "*.ass" -o -name "*.sup" -o -name "*.vtt" \) -print0)
+
+	if ((${#subFiles[@]} == 0)); then
+		printf "%b No subtitle files found in '%s/'.\n" "$FORMAT_WARNING" "$SUBS_DIR"
+		return 0
+	fi
+
+	local -a mkvmergeArgs=(-o "$tempOutput" "$inputFile")
+
+	for file in "${subFiles[@]}"; do
+		local fileName="${file##*/}"
+		local lang="und"
+
+		if [[ $fileName =~ \.([a-z]{2,3})\.[a-zA-Z0-9]+$ ]]; then
+			lang="${BASH_REMATCH[1]}"
+		fi
+
+		printf "  [+] Queueing subtitle: '%s' (Lang: %s)\n" "$fileName" "$lang"
+		mkvmergeArgs+=(--language 0:"$lang" "$file")
+	done
+
+	printf "Remuxing into container...\n"
+	if mkvmerge "${mkvmergeArgs[@]}" > /dev/null 2>&1; then
+		mv -f "$tempOutput" "$finalOutput"
+		if [[ $inputFile != "$finalOutput" ]]; then
+			rm -f "$inputFile"
+		fi
+		printf "%b Subtitles attached successfully to '%s'.\n" "$FORMAT_SUCCESS" "$finalOutput"
+	else
+		printf "%b Failed to attach subtitles.\n" "$FORMAT_FAILURE" >&2
+		rm -f "$tempOutput"
+		return 1
+	fi
+
+	return 0
+}
+
+function listAudioTracks() {
+	local inputFile="$1"
+	local jsonInfo
+	jsonInfo=$(mkvmerge -J "$inputFile")
+
+	printf "Audio tracks for '%s':\n\n" "$inputFile"
+	printf "%-4s | %-6s | %-12s | %-10s | %-20s | %s\n" "ID" "LANG" "CODEC" "CHANNELS" "SIZE" "NAME"
+	printf "--------------------------------------------------------------------------------\n"
+
+	local trackId lang codec channels name sizeBytes sizeDisplay bps durationSec
+	durationSec=$(jq -r '.container.properties.duration // 0' <<< "$jsonInfo")
+
+	while IFS='|' read -r trackId lang codec channels name sizeBytes bps; do
+		[[ -z $trackId ]] && continue
+
+		if [[ -n $sizeBytes && $sizeBytes != "null" && $sizeBytes -gt 0 ]]; then
+			sizeDisplay=$(awk -v b="$sizeBytes" 'BEGIN { printf "%.2f MB", b / (1024 * 1024) }')
+		elif [[ -n $bps && $bps != "null" && $bps -gt 0 && -n $durationSec && $durationSec != "0" ]]; then
+			sizeDisplay=$(awk -v rate="$bps" -v dur="$durationSec" 'BEGIN { printf "%.2f MB (est)", (rate * dur) / (8 * 1024 * 1024) }')
+		else
+			sizeDisplay="N/A"
+		fi
+
+		[[ -z $name || $name == "null" ]] && name="<No Title>"
+		[[ -z $lang || $lang == "null" ]] && lang="und"
+
+		printf "%-4s | %-6s | %-12s | %-10s | %-20s | %s\n" "$trackId" "$lang" "$codec" "${channels}ch" "$sizeDisplay" "$name"
+	done < <(jq -r '.tracks[] | select(.type=="audio") | "\(.id)|\(.properties.language // "und")|\(.codec)|\(.properties.audio_channels // "?")|\(.properties.track_name // "")|\(.properties.tag_number_of_bytes // "")|\(.properties.tag_bps // "")"' <<< "$jsonInfo")
+
+	echo ""
+	return 0
+}
+
+function extractAudioTrack() {
+	local inputFile="$1"
+	local -i targetId="$2"
+	local baseName="${inputFile%.*}"
+
+	local jsonInfo
+	jsonInfo=$(mkvmerge -J "$inputFile")
+
+	local codec lang
+	codec=$(jq -r --argjson id "$targetId" '.tracks[] | select(.id==$id and .type=="audio") | .codec' <<< "$jsonInfo")
+	lang=$(jq -r --argjson id "$targetId" '.tracks[] | select(.id==$id and .type=="audio") | .properties.language // "und"' <<< "$jsonInfo")
+
+	if [[ -z $codec || $codec == "null" ]]; then
+		printf "%b Audio track with ID %d not found.\n" "$FORMAT_FAILURE" "$targetId" >&2
+		return 1
+	fi
+
+	local ext
+	ext=$(getAudioExtension "$codec")
+	local outputFile="${baseName}.audio_${targetId}.${lang}.${ext}"
+
+	printf "Extracting audio track %d (%s) -> '%s'...\n" "$targetId" "$codec" "$outputFile"
+	if mkvextract tracks "$inputFile" "${targetId}:${outputFile}" > /dev/null 2>&1; then
+		printf "%b Audio track extracted successfully: '%s'\n" "$FORMAT_SUCCESS" "$outputFile"
+	else
+		printf "%b Failed to extract audio track.\n" "$FORMAT_FAILURE" >&2
+		return 1
+	fi
+
+	return 0
+}
+
+function removeAudioTrack() {
+	local inputFile="$1"
+	local -i targetId="$2"
+	local baseName="${inputFile%.*}"
+	local tempOutput="${baseName}_temp.mkv"
+	local finalOutput="${baseName}.mkv"
+
+	local jsonInfo
+	jsonInfo=$(mkvmerge -J "$inputFile")
+
+	local exists
+	exists=$(jq -r --argjson id "$targetId" '.tracks[] | select(.id==$id and .type=="audio") | .id' <<< "$jsonInfo")
+
+	if [[ -z $exists || $exists == "null" ]]; then
+		printf "%b Audio track ID %d not found in '%s'.\n" "$FORMAT_FAILURE" "$targetId" "$inputFile" >&2
+		return 1
+	fi
+
+	local -a keepAudio=()
+	local id
+	while IFS= read -r id; do
+		if ((id != targetId)); then
+			keepAudio+=("$id")
+		fi
+	done < <(jq -r '.tracks[] | select(.type=="audio") | .id' <<< "$jsonInfo")
+
+	local -a mkvmergeArgs=(-o "$tempOutput")
+	if ((${#keepAudio[@]} > 0)); then
+		local audioList
+		audioList=$(IFS=','; echo "${keepAudio[*]}")
+		mkvmergeArgs+=(--audio-tracks "$audioList")
+	else
+		mkvmergeArgs+=(--no-audio)
+	fi
+
+	mkvmergeArgs+=("$inputFile")
+
+	printf "Removing audio track %d from '%s'...\n" "$targetId" "$inputFile"
+	if mkvmerge "${mkvmergeArgs[@]}" > /dev/null 2>&1; then
+		mv -f "$tempOutput" "$finalOutput"
+		if [[ $inputFile != "$finalOutput" ]]; then
+			rm -f "$inputFile"
+		fi
+		printf "%b Audio track %d removed successfully.\n" "$FORMAT_SUCCESS" "$targetId"
+	else
+		printf "%b Failed to remove audio track.\n" "$FORMAT_FAILURE" >&2
+		rm -f "$tempOutput"
+		return 1
+	fi
+
+	return 0
+}
+
+function renameTrack() {
+	local inputFile="$1"
+	local trackType="$2"
+	local -i targetId="$3"
+	local newName="$4"
+
+	if [[ ! $inputFile =~ \.mkv$ ]]; then
+		printf "%b Header editing requires an MKV file.\n" "$FORMAT_FAILURE" >&2
+		return 1
+	fi
+
+	local jsonInfo
+	jsonInfo=$(mkvmerge -J "$inputFile")
+
+	local -i trackIndex=1
+	local -i targetIndex=0
+	local id
+
+	while IFS= read -r id; do
+		if ((id == targetId)); then
+			targetIndex=$trackIndex
+			break
+		fi
+		((trackIndex++))
+	done < <(jq -r --arg type "$trackType" '.tracks[] | select(.type==$type) | .id' <<< "$jsonInfo")
+
+	if ((targetIndex == 0)); then
+		printf "%b %s track ID %d not found.\n" "$FORMAT_FAILURE" "$trackType" "$targetId" >&2
+		return 1
+	fi
+
+	local selector
+	if [[ $trackType == 'audio' ]]; then
+		selector="a${targetIndex}"
+	else
+		selector="s${targetIndex}"
+	fi
+
+	printf "Updating track name for %s ID %d -> '%s'...\n" "$trackType" "$targetId" "$newName"
+	if mkvpropedit "$inputFile" --edit "track:${selector}" --set "name=${newName}" > /dev/null 2>&1; then
+		printf "%b Track name updated successfully.\n" "$FORMAT_SUCCESS"
+	else
+		printf "%b Failed to update track title via mkvpropedit.\n" "$FORMAT_FAILURE" >&2
+		return 1
+	fi
+
+	return 0
+}
+
+function main() {
+	checkDependencies
+
+	local command="${1:-}"
+	[[ -z $command || $command == "-h" || $command == "--help" ]] && help
+
+	if [[ $command == "to-mkv" ]]; then
+		convertMp4ToMkv
+		exit $?
+	fi
+
+	local videoFile
+	videoFile=$(findVideoFile)
+	if [[ -z $videoFile ]]; then
+		printf "%b No valid video file (.mkv, .mp4) found in current directory.\n" "$FORMAT_FAILURE" >&2
+		exit 1
+	fi
+
+	case "$command" in
+		extract-subs)
+			extractSubtitles "$videoFile"
+			;;
+		attach-subs)
+			attachSubtitles "$videoFile"
+			;;
+		list-subs)
+			listSubtitleTracks "$videoFile"
+			;;
+		list-audio)
+			listAudioTracks "$videoFile"
+			;;
+		extract-audio)
+			local targetId="${2:-}"
+			if [[ -z $targetId ]]; then
+				printf "%b Track ID required. Usage: %s extract-audio <ID>\n" "$FORMAT_FAILURE" "${0##*/}" >&2
+				exit 1
+			fi
+			extractAudioTrack "$videoFile" "$targetId"
+			;;
+		remove-audio)
+			local targetId="${2:-}"
+			if [[ -z $targetId ]]; then
+				printf "%b Track ID required. Usage: %s remove-audio <ID>\n" "$FORMAT_FAILURE" "${0##*/}" >&2
+				exit 1
+			fi
+			removeAudioTrack "$videoFile" "$targetId"
+			;;
+		rename-audio)
+			local targetId="${2:-}"
+			local newTitle="${3:-}"
+			if [[ -z $targetId || -z $newTitle ]]; then
+				printf "%b Arguments missing. Usage: %s rename-audio <ID> <TITLE>\n" "$FORMAT_FAILURE" "${0##*/}" >&2
+				exit 1
+			fi
+			renameTrack "$videoFile" "audio" "$targetId" "$newTitle"
+			;;
+		rename-sub)
+			local targetId="${2:-}"
+			local newTitle="${3:-}"
+			if [[ -z $targetId || -z $newTitle ]]; then
+				printf "%b Arguments missing. Usage: %s rename-sub <ID> <TITLE>\n" "$FORMAT_FAILURE" "${0##*/}" >&2
+				exit 1
+			fi
+			renameTrack "$videoFile" "subtitles" "$targetId" "$newTitle"
+			;;
+		*)
+			printf "%b Unknown command: '%s'. Try '%s -h' for help.\n" "$FORMAT_FAILURE" "$command" "${0##*/}" >&2
+			exit 1
+			;;
+	esac
+
+	return 0
+}
+
+main "$@"

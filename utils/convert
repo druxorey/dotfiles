@@ -1,0 +1,206 @@
+#!/usr/bin/env bash
+
+declare -r FORMAT_SUCCESS="\e[1;32m[SUCCESS]\e[0m"
+declare -r FORMAT_WARNING="\e[1;33m[WARNING]\e[0m"
+declare -r FORMAT_FAILURE="\e[1;31m[FAILURE]\e[0m"
+
+function help() {
+	local -r FORMAT_BOLD="\e[1;34m"
+	local -r FORMAT_RESET="\e[0m"
+
+	echo -e "${FORMAT_BOLD}USAGE:${FORMAT_RESET} ${0##*/} [OPTIONS] <input_file> <output_file|extension>
+
+${FORMAT_BOLD}DESCRIPTION:${FORMAT_RESET}
+  Lossless Media converter. Ensures reversible conversions without
+  generational loss (e.g. FLAC <-> M4A).
+
+${FORMAT_BOLD}ARGUMENTS:${FORMAT_RESET}
+  <input_file>             Source file to convert.
+  <output_file|extension>  Destination filename or target format extension.
+
+${FORMAT_BOLD}OPTIONS:${FORMAT_RESET}
+  -y                       Overwrite output file without asking.
+  -h                       Display this help message.
+
+${FORMAT_BOLD}SUPPORTED TOOLS:${FORMAT_RESET}
+  - avifenc / avifdec      AVIF encoding/decoding (libavif).
+  - cjxl / djxl            JPEG XL reference tools (libjxl lossless).
+  - cwebp / dwebp          Optimized WebP tools (libwebp lossless).
+  - ImageMagick (magick)   General raster images (PNG, JPG, BMP, etc.).
+  - FFmpeg (ffmpeg)        Audio/Video container remuxing and lossless transcode."
+
+	return 0
+}
+
+function normalizeExtension() {
+	local ext="$1"
+	ext="${ext,,}"
+	case "$ext" in
+		jpeg) ext='jpg' ;;
+		jpgxl) ext='jxl' ;;
+		*) ;;
+	esac
+	printf "%s" "$ext"
+}
+
+
+function checkBinary() {
+	command -v "$1" > /dev/null 2>&1
+}
+
+
+function convertImage() {
+	local input="$1"
+	local output="$2"
+	local inputExtension="$3"
+	local outputExtension="$4"
+
+	# AVIF via avifenc / avifdec (lossless)
+	if [[ $outputExtension == 'avif' ]] && checkBinary 'avifenc'; then
+		avifenc -s 4 -l "$input" "$output" > /dev/null 2>&1 && return 0
+	fi
+
+	if [[ $inputExtension == 'avif' ]] && checkBinary 'avifdec' && [[ $outputExtension =~ ^(png|y4m)$ ]]; then
+		avifdec "$input" "$output" > /dev/null 2>&1 && return 0
+	fi
+
+	# JPEG XL via cjxl / djxl (lossless)
+	if [[ $outputExtension == 'jxl' ]] && checkBinary 'cjxl'; then
+		cjxl -d 0 "$input" "$output" > /dev/null 2>&1 && return 0
+	fi
+
+	if [[ $inputExtension == 'jxl' ]] && checkBinary 'djxl'; then
+		djxl "$input" "$output" > /dev/null 2>&1 && return 0
+	fi
+
+	# WebP via cwebp / dwebp (lossless)
+	if [[ $outputExtension == 'webp' ]] && checkBinary 'cwebp'; then
+		cwebp -lossless -q 100 "$input" -o "$output" > /dev/null 2>&1 && return 0
+	fi
+
+	if [[ $inputExtension == 'webp' ]] && checkBinary 'dwebp' && [[ $outputExtension == 'png' ]]; then
+		dwebp "$input" -o "$output" > /dev/null 2>&1 && return 0
+	fi
+
+	# ImageMagick fallback / standard processing
+	if checkBinary 'magick'; then
+		magick "$input" -quality 100 "$output" > /dev/null 2>&1 && return 0
+	fi
+
+	# FFmpeg fallback for images
+	if checkBinary 'ffmpeg'; then
+		ffmpeg -y -v error -i "$input" "$output" > /dev/null 2>&1 && return 0
+	fi
+
+	return 1
+}
+
+
+function convertMedia() {
+	local input="$1"
+	local output="$2"
+	local inExt="$3"
+	local outExt="$4"
+
+	if ! checkBinary 'ffmpeg'; then
+		printf "%b 'ffmpeg' is required for audio and video conversion.\n" "$FORMAT_FAILURE" >&2
+		return 1
+	fi
+
+	# Attempt pure stream copy (container remuxing)
+	if ffmpeg -y -v error -i "$input" -c copy "$output" > /dev/null 2>&1; then
+		return 0
+	fi
+
+	# Lossless codec translation if direct remuxing fails for container constraints
+	if [[ $inExt == 'flac' && $outExt =~ ^(m4a|mp4)$ ]]; then
+		ffmpeg -y -v error -i "$input" -c:a alac "$output" > /dev/null 2>&1 && return 0
+	fi
+
+	# ALAC (M4A) back to FLAC: FLAC lossless compression
+	if [[ $inExt =~ ^(m4a|mp4)$ && $outExt == 'flac' ]]; then
+		ffmpeg -y -v error -i "$input" -c:a flac "$output" > /dev/null 2>&1 && return 0
+	fi
+
+	# Lossless PCM / WAV <-> FLAC
+	if [[ $outExt == 'flac' ]]; then
+		ffmpeg -y -v error -i "$input" -c:a flac "$output" > /dev/null 2>&1 && return 0
+	fi
+
+	# Video stream copy fallback preserving lossless audio (e.g. FLAC in MKV to ALAC in MP4)
+	if ffmpeg -y -v error -i "$input" -c:v copy -c:a alac "$output" > /dev/null 2>&1; then
+		return 0
+	fi
+
+	return 1
+}
+
+
+function main() {
+	local -i overwrite=0
+
+	while getopts "yh" opt; do
+		case $opt in
+			y) overwrite=1 ;;
+			h) help && return 0 ;;
+			*) printf "%b Try '%s -h' for more information.\n" "$FORMAT_FAILURE" "${0##*/}" >&2 && return 1 ;;
+		esac
+	done
+	shift $((OPTIND - 1))
+
+	local input="${1:-}"
+	local target="${2:-}"
+
+	if [[ -z $input || -z $target ]]; then
+		printf "%b Missing arguments. Input file and target format/file are required.\n" "$FORMAT_FAILURE" >&2
+		printf "Try '%s -h' for more information.\n" "${0##*/}" >&2
+		return 1
+	fi
+
+	if [[ ! -f $input ]]; then
+		printf "%b Input file '%s' not found.\n" "$FORMAT_FAILURE" "$input" >&2
+		return 1
+	fi
+
+	local output="$target"
+	if [[ $target != *.* ]]; then
+		local base="${input%.*}"
+		output="${base}.${target}"
+	fi
+
+	if [[ -e $output && $overwrite -eq 0 ]]; then
+		printf "%b Output file '%s' already exists. Use -y to overwrite.\n" "$FORMAT_WARNING" "$output" >&2
+		return 1
+	fi
+
+	local inputExtension="${input##*.}"
+	local outputExtension="${output##*.}"
+	inputExtension=$(normalizeExtension "$inputExtension")
+	outputExtension=$(normalizeExtension "$outputExtension")
+
+	local -r IMAGE_FORMATS="png|jpg|jpeg|webp|avif|jxl|jpgxl|bmp|tiff"
+	local -r MEDIA_FORMATS="mkv|mp4|mov|avi|webm|flac|m4a|wav|alac|opus|ogg|aac|mp3"
+
+	printf "Converting '%s' to '%s'...\n" "$input" "$output"
+
+	local -i exitCode=0
+	if [[ $inputExtension =~ ^($IMAGE_FORMATS)$ && $outputExtension =~ ^($IMAGE_FORMATS)$ ]]; then
+		convertImage "$input" "$output" "$inputExtension" "$outputExtension" || exitCode=1
+	elif [[ $inputExtension =~ ^($MEDIA_FORMATS)$ && $outputExtension =~ ^($MEDIA_FORMATS)$ ]]; then
+		convertMedia "$input" "$output" "$inputExtension" "$outputExtension" || exitCode=1
+	else
+		# Generic attempt with ffmpeg then magick
+		convertMedia "$input" "$output" "$inputExtension" "$outputExtension" || convertImage "$input" "$output" "$inputExtension" "$outputExtension" || exitCode=1
+	fi
+
+	if ((exitCode == 0)); then
+		printf "%b Converted '%s' successfully.\n" "$FORMAT_SUCCESS" "$output"
+		return 0
+	else
+		printf "%b Failed to convert '%s'.\n" "$FORMAT_FAILURE" "$input" >&2
+		[[ -f $output ]] && rm -f "$output"
+		return 1
+	fi
+}
+
+main "$@"

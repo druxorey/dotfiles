@@ -1,0 +1,581 @@
+#!/usr/bin/env bash
+
+declare -r FORMAT_SUCCESS="\e[1;32m[SUCCESS]\e[0m"
+declare -r FORMAT_WARNING="\e[1;33m[WARNING]\e[0m"
+declare -r FORMAT_FAILURE="\e[1;31m[FAILURE]\e[0m"
+
+declare -i HOUR_MIN=9
+declare -i HOUR_MAX=12
+declare -i MINUTE_MIN=0
+declare -i MINUTE_MAX=59
+declare -i SECOND_MIN=0
+declare -i SECOND_MAX=59
+
+declare -ra IMG_EXTENSIONS=('jpg' 'jpeg' 'gif' 'png' 'heic' 'avif' 'jxl' 'JPG' 'JPEG' 'GIF' 'PNG' 'HEIC' 'AVIF' 'JXL')
+
+function help() {
+	local -r HELP_BOLD="\e[1;34m"
+	local -r HELP_RESET="\e[0m"
+
+	echo -e "${HELP_BOLD}USAGE:${HELP_RESET} ${0##*/} [OPTIONS] <COMMAND> [DIRECTORY]
+
+${HELP_BOLD}DESCRIPTION:${HELP_RESET}
+  Batch management CLI tool for image files (jpg, gif, png, heic, avif, jxl).
+  Processes target files inside DIRECTORY (defaults to the current working directory).
+
+${HELP_BOLD}COMMANDS:${HELP_RESET}
+  replace-placeholders  Replace %H, %M, %S, and %L in filenames with calculated/random values.
+  rename-exif           Rename files using internal EXIF metadata (YYYYMMDD-HHMMSS-LLL).
+  rename-mtime          Rename files using file modification dates (YYYYMMDD-HHMMSS-LLL).
+  write-exif            Write EXIF DateTimeOriginal/CreateDate from filename timestamps.
+  convert-avif          Convert JPG/HEIC images to AVIF and move originals to ORIGINALS/.
+  convert-jxl           Convert PNG images to JXL (lossless) and move originals to ORIGINALS/.
+
+${HELP_BOLD}OPTIONS:${HELP_RESET}
+    -h                      Show this help screen."
+	exit 0
+}
+
+function checkDependencies() {
+	if ! command -v avifenc &> /dev/null; then
+		printf "%b The 'avifenc' utility is required but not installed.\n" "$FORMAT_FAILURE" >&2
+		exit 1
+	fi
+	if ! command -v cjxl &> /dev/null; then
+		printf "%b The 'cjxl' utility is required but not installed.\n" "$FORMAT_FAILURE" >&2
+		exit 1
+	fi
+	if ! command -v exiftool &> /dev/null; then
+		printf "%b The 'exiftool' utility is required but not installed.\n" "$FORMAT_FAILURE" >&2
+		exit 1
+	fi
+	return 0
+}
+
+function printLog() {
+	local -r prefix="$1"
+	local -r message="$2"
+	printf "\r\e[K%b %s\n" "$prefix" "$message"
+}
+
+function printProgressBar() {
+	local -i current="$1"
+	local -i total="$2"
+	local currentFile="${3:-}"
+	local -i width=$(( $(tput cols) - 50 ))
+	local -i percent=$(( total > 0 ? (current * 100) / total : 100 ))
+	local -i completed=$(( total > 0 ? (width * current) / total : width ))
+	local -i remaining=$(( width - completed ))
+
+	local barFilled=''
+	local barEmpty=''
+	printf -v barFilled "%*s" "$completed" ''
+	barFilled="${barFilled// /=}"
+	printf -v barEmpty "%*s" "$remaining" ''
+
+	if ((${#currentFile} > 28)); then
+		currentFile="${currentFile:0:25}..."
+	fi
+
+	printf "\r\e[K %3d%% [\e[1;34m%s\e[0m%s] (%d/%d) %s" "$percent" "$barFilled" "$barEmpty" "$current" "$total" "$currentFile"
+	((current == total)) && printf "\n"
+}
+
+# Replace %H, %M, %S and %L placeholders with incremental and random values
+function replacePlaceholders() {
+	local -a files=()
+	local ext=''
+	local f=''
+	local file=''
+
+	for ext in "${IMG_EXTENSIONS[@]}"; do
+		for f in *."$ext"; do
+			[[ -f $f ]] || continue
+			if [[ $f == *"%H"* || $f == *"%M"* || $f == *"%S"* || $f == *"%L"* ]]; then
+				files+=("$f")
+			fi
+		done
+	done
+
+	local -i total=${#files[@]}
+	if ((total == 0)); then
+		printf "%b No files with placeholders (%%H, %%M, %%S, %%L) were found.\n" "$FORMAT_WARNING"
+		return 0
+	fi
+
+	printf "Processing %d files with temporal placeholders...\n" "$total"
+
+	local -i i=0
+	local -i renamedCount=0
+	local newName=''
+	local valH=''
+	local valM=''
+	local valS=''
+	local valL=''
+	local fileExt=''
+	local baseName=''
+	local -i counter=2
+
+	for file in "${files[@]}"; do
+		((i++))
+		printProgressBar "$i" "$total" "$file"
+
+		newName="$file"
+
+		if [[ $newName == *"%H"* ]]; then
+			printf -v valH "%02d" $(( total > 1 ? HOUR_MIN + ((i - 1) * (HOUR_MAX - HOUR_MIN)) / (total - 1) : HOUR_MIN ))
+			newName="${newName//%H/$valH}"
+		fi
+
+		if [[ $newName == *"%M"* ]]; then
+			printf -v valM "%02d" $(( total > 1 ? MINUTE_MIN + ((i - 1) * (MINUTE_MAX - MINUTE_MIN)) / (total - 1) : MINUTE_MIN ))
+			newName="${newName//%M/$valM}"
+		fi
+
+		if [[ $newName == *"%S"* ]]; then
+			printf -v valS "%02d" $(( total > 1 ? SECOND_MIN + ((i - 1) * (SECOND_MAX - SECOND_MIN)) / (total - 1) : SECOND_MIN ))
+			newName="${newName//%S/$valS}"
+		fi
+
+		if [[ $newName == *"%L"* ]]; then
+			printf -v valL "%03d" $(( RANDOM % 1000 ))
+			newName="${newName//%L/$valL}"
+		fi
+
+		fileExt="${file##*.}"
+		fileExt="${fileExt,,}"
+		[[ $fileExt == 'jpeg' ]] && fileExt='jpg'
+
+		baseName="${newName%.*}"
+		newName="${baseName}.${fileExt}"
+
+		if [[ -e $newName && $file != "$newName" ]]; then
+			counter=2
+			while [[ -e "${baseName}_(${counter}).${fileExt}" && $file != "${baseName}_(${counter}).${fileExt}" ]]; do
+				((counter++))
+			done
+			newName="${baseName}_(${counter}).${fileExt}"
+		fi
+
+		if [[ $file != "$newName" ]]; then
+			if mv -n "$file" "$newName"; then
+				((renamedCount++))
+			else
+				printLog "$FORMAT_FAILURE" "Failed to rename '$file' to '$newName'."
+			fi
+		fi
+	done
+
+	printf "%b Placeholder replacement finished. Renamed files: %d/%d\n" "$FORMAT_SUCCESS" "$renamedCount" "$total"
+	return 0
+}
+
+# Rename based on EXIF/XMP metadata (YYYYMMDD-HHMMSS-LLL.ext)
+function renameFromExif() {
+	local -a files=()
+	local ext=''
+	local f=''
+	local file=''
+
+	for ext in "${IMG_EXTENSIONS[@]}"; do
+		for f in *."$ext"; do
+			[[ -f $f ]] && files+=("$f")
+		done
+	done
+
+	local -i total=${#files[@]}
+	if ((total == 0)); then
+		printf "%b No images found in the directory.\n" "$FORMAT_WARNING"
+		return 0
+	fi
+
+	printf "Reading EXIF metadata from %d files...\n" "$total"
+
+	local -i i=0
+	local -i renamedCount=0
+	local dateStr=''
+	local tempDate=''
+	local subSec=''
+	local dateAcqRaw=''
+	local fileExt=''
+	local baseName=''
+	local newName=''
+	local -i counter=2
+
+	for file in "${files[@]}"; do
+		((i++))
+		printProgressBar "$i" "$total" "$file"
+
+		dateStr=''
+		tempDate=''
+
+		# 1. DateTimeOriginal
+		tempDate=$(exiftool -s3 -d '%Y%m%d-%H%M%S' -DateTimeOriginal "$file" 2>/dev/null)
+		[[ $tempDate =~ ^[1-9][0-9]{7}-[0-9]{6}$ ]] && dateStr="$tempDate"
+
+		# 2. CreateDate
+		if [[ -z $dateStr ]]; then
+			tempDate=$(exiftool -s3 -d '%Y%m%d-%H%M%S' -CreateDate "$file" 2>/dev/null)
+			[[ $tempDate =~ ^[1-9][0-9]{7}-[0-9]{6}$ ]] && dateStr="$tempDate"
+		fi
+
+		# 3. EXIF Date and Time (ModifyDate / IFD0:DateTime)
+		if [[ -z $dateStr ]]; then
+			tempDate=$(exiftool -s3 -d '%Y%m%d-%H%M%S' -ModifyDate "$file" 2>/dev/null)
+			[[ $tempDate =~ ^[1-9][0-9]{7}-[0-9]{6}$ ]] && dateStr="$tempDate"
+		fi
+
+		# 4. XMP Date Acquired
+		if [[ -z $dateStr ]]; then
+			tempDate=$(exiftool -s3 -d '%Y%m%d-%H%M%S' -DateAcquired "$file" 2>/dev/null)
+			[[ $tempDate =~ ^[1-9][0-9]{7}-[0-9]{6}$ ]] && dateStr="$tempDate"
+		fi
+
+		if [[ -z $dateStr ]]; then
+			printLog "$FORMAT_WARNING" "Missing valid EXIF timestamp: '$file'. Skipping."
+			continue
+		fi
+
+		subSec=$(exiftool -s3 -SubSecTimeOriginal "$file" 2>/dev/null)
+		[[ -z $subSec ]] && subSec=$(exiftool -s3 -SubSecTime "$file" 2>/dev/null)
+
+		if [[ -z $subSec ]]; then
+			dateAcqRaw=$(exiftool -s3 -DateAcquired "$file" 2>/dev/null)
+			if [[ $dateAcqRaw =~ \.([0-9]+) ]]; then
+				subSec="${BASH_REMATCH[1]}"
+			fi
+		fi
+
+		if [[ -n $subSec ]]; then
+			subSec="${subSec//[^0-9]/}"
+			while ((${#subSec} < 3)); do
+				subSec="${subSec}0"
+			done
+			subSec="${subSec:0:3}"
+		else
+			printf -v subSec "%03d" $(( RANDOM % 1000 ))
+		fi
+
+		fileExt="${file##*.}"
+		fileExt="${fileExt,,}"
+		[[ $fileExt == 'jpeg' ]] && fileExt='jpg'
+
+		baseName="${dateStr}-${subSec}"
+		newName="${baseName}.${fileExt}"
+
+		if [[ -e $newName && $file != "$newName" ]]; then
+			counter=2
+			while [[ -e "${baseName}_(${counter}).${fileExt}" && $file != "${baseName}_(${counter}).${fileExt}" ]]; do
+				((counter++))
+			done
+			newName="${baseName}_(${counter}).${fileExt}"
+		fi
+
+		if [[ $file != "$newName" ]]; then
+			if mv -n "$file" "$newName"; then
+				((renamedCount++))
+			else
+				printLog "$FORMAT_FAILURE" "Failed to rename '$file' to '$newName'."
+			fi
+		fi
+	done
+
+	printf "%b Successfully renamed %d/%d files using EXIF metadata.\n" "$FORMAT_SUCCESS" "$renamedCount" "$total"
+	return 0
+}
+
+# Write EXIF metadata from filename timestamp
+function writeExifFromName() {
+	local -a files=()
+	local ext=''
+	local f=''
+	local file=''
+
+	for ext in "${IMG_EXTENSIONS[@]}"; do
+		for f in *."$ext"; do
+			[[ -f $f ]] && files+=("$f")
+		done
+	done
+
+	local -i total=${#files[@]}
+	if ((total == 0)); then
+		printf "%b No images found in the directory.\n" "$FORMAT_WARNING"
+		return 0
+	fi
+
+	printf "Writing EXIF dates from filenames for %d files...\n" "$total"
+
+	local -i i=0
+	local -i updatedCount=0
+	local d=''
+	local h=''
+	local m=''
+	local s=''
+	local subSec=''
+	local formattedDate=''
+	local -a exifArgs=()
+
+	for file in "${files[@]}"; do
+		((i++))
+		printProgressBar "$i" "$total" "$file"
+
+		# Matches YYYYMMDD and HHMMSS separated by '-' or '_', with optional subseconds
+		if [[ $file =~ ([0-9]{8})[-_]([0-9]{2})([0-9]{2})([0-9]{2})([-_]([0-9]{1,3}))? ]]; then
+			d="${BASH_REMATCH[1]}"
+			h="${BASH_REMATCH[2]}"
+			m="${BASH_REMATCH[3]}"
+			s="${BASH_REMATCH[4]}"
+			subSec="${BASH_REMATCH[6]}"
+
+			formattedDate="${d:0:4}:${d:4:2}:${d:6:2} ${h}:${m}:${s}"
+			exifArgs=(-overwrite_original -AllDates="$formattedDate")
+
+			if [[ -n $subSec ]]; then
+				while ((${#subSec} < 3)); do
+					subSec="${subSec}0"
+				done
+				subSec="${subSec:0:3}"
+				exifArgs+=(
+					-SubSecTimeOriginal="$subSec"
+					-SubSecTimeDigitized="$subSec"
+					-SubSecTime="$subSec"
+				)
+			fi
+
+			if exiftool "${exifArgs[@]}" "$file" > /dev/null 2>&1; then
+				((updatedCount++))
+			else
+				printLog "$FORMAT_FAILURE" "Failed to write EXIF metadata to '$file'."
+			fi
+		else
+			printLog "$FORMAT_WARNING" "Filename does not match YYYYMMDD[_-]HHMMSS format: '$file'"
+		fi
+	done
+
+	printf "%b Updated EXIF metadata in %d/%d files.\n" "$FORMAT_SUCCESS" "$updatedCount" "$total"
+	return 0
+}
+
+# Rename based on file modification date (YYYYMMDD-HHMMSS-LLL.ext)
+function renameFromModifiedDate() {
+	local -a files=()
+	local ext=''
+	local f=''
+	local file=''
+
+	for ext in "${IMG_EXTENSIONS[@]}"; do
+		for f in *."$ext"; do
+			[[ -f $f ]] && files+=("$f")
+		done
+	done
+
+	local -i total=${#files[@]}
+	if ((total == 0)); then
+		printf "%b No images found in the directory.\n" "$FORMAT_WARNING"
+		return 0
+	fi
+
+	printf "Reading file modification dates from %d files...\n" "$total"
+
+	local -i i=0
+	local -i renamedCount=0
+	local dateStr=''
+	local subSec=''
+	local fileExt=''
+	local baseName=''
+	local newName=''
+	local -i counter=2
+
+	for file in "${files[@]}"; do
+		((i++))
+		printProgressBar "$i" "$total" "$file"
+
+		dateStr=$(exiftool -s3 -d '%Y%m%d-%H%M%S' -FileModifyDate "$file" 2>/dev/null)
+
+		if [[ -z $dateStr ]]; then
+			printLog "$FORMAT_WARNING" "Missing file modification timestamp: '$file'. Skipping."
+			continue
+		fi
+
+		printf -v subSec "%03d" $(( RANDOM % 1000 ))
+
+		fileExt="${file##*.}"
+		fileExt="${fileExt,,}"
+		[[ $fileExt == 'jpeg' ]] && fileExt='jpg'
+
+		baseName="${dateStr}-${subSec}"
+		newName="${baseName}.${fileExt}"
+
+		if [[ -e $newName && $file != "$newName" ]]; then
+			counter=2
+			while [[ -e "${baseName}_(${counter}).${fileExt}" && $file != "${baseName}_(${counter}).${fileExt}" ]]; do
+				((counter++))
+			done
+			newName="${baseName}_(${counter}).${fileExt}"
+		fi
+
+		if [[ $file != "$newName" ]]; then
+			if mv -n "$file" "$newName"; then
+				((renamedCount++))
+			else
+				printLog "$FORMAT_FAILURE" "Failed to rename '$file' to '$newName'."
+			fi
+		fi
+	done
+
+	printf "%b Successfully renamed %d/%d files using file modification date.\n" "$FORMAT_SUCCESS" "$renamedCount" "$total"
+	return 0
+}
+
+# Convert lossy images (JPG, HEIC) to AVIF with progress bar and metadata copy
+function convertToAvif() {
+	local -a files=()
+	local ext=''
+	local extLower=''
+	local f=''
+	local file=''
+
+	for ext in "${IMG_EXTENSIONS[@]}"; do
+		extLower="${ext,,}"
+		if [[ $extLower == 'gif' || $extLower == 'jxl' || $extLower == 'png' || $extLower == 'avif' ]]; then
+			continue
+		fi
+		for f in *."$ext"; do
+			[[ -f $f ]] && files+=("$f")
+		done
+	done
+
+	local -i total=${#files[@]}
+	if ((total == 0)); then
+		printf "%b No compatible images found for AVIF conversion.\n" "$FORMAT_WARNING"
+		return 0
+	fi
+
+	mkdir -p 'ORIGINALS' || {
+		printf "%b Failed to create 'ORIGINALS' directory.\n" "$FORMAT_FAILURE" >&2
+		return 1
+	}
+
+	printf "Converting %d images to AVIF...\n" "$total"
+
+	local -i i=0
+	local -i convertedCount=0
+	local baseName=''
+	local avifName=''
+
+	for file in "${files[@]}"; do
+		((i++))
+		printProgressBar "$i" "$total" "$file"
+
+		baseName="${file%.*}"
+		avifName="${baseName}.avif"
+
+		if avifenc -q 80 -s 0 -j all "$file" "$avifName" > /dev/null 2>&1; then
+			exiftool -overwrite_original -TagsFromFile "$file" -all:all "$avifName" > /dev/null 2>&1
+			mv "$file" 'ORIGINALS/'
+			((convertedCount++))
+		else
+			printLog "$FORMAT_WARNING" "Failed to convert '$file' to AVIF."
+		fi
+	done
+
+	printf "%b Successfully converted %d/%d files to AVIF.\n" "$FORMAT_SUCCESS" "$convertedCount" "$total"
+	return 0
+}
+
+# Convert PNG images to JXL (lossless) with progress bar and metadata copy
+function convertToJxl() {
+	local -a files=()
+	local ext=''
+	local extLower=''
+	local f=''
+	local file=''
+
+	for ext in "${IMG_EXTENSIONS[@]}"; do
+		extLower="${ext,,}"
+		if [[ $extLower != 'png' ]]; then
+			continue
+		fi
+		for f in *."$ext"; do
+			[[ -f $f ]] && files+=("$f")
+		done
+	done
+
+	local -i total=${#files[@]}
+	if ((total == 0)); then
+		printf "%b No PNG images found for JXL conversion.\n" "$FORMAT_WARNING"
+		return 0
+	fi
+
+	mkdir -p 'ORIGINALS' || {
+		printf "%b Failed to create 'ORIGINALS' directory.\n" "$FORMAT_FAILURE" >&2
+		return 1
+	}
+
+	printf "Converting %d PNG images to JXL (lossless)...\n" "$total"
+
+	local -i i=0
+	local -i convertedCount=0
+	local baseName=''
+	local jxlName=''
+
+	for file in "${files[@]}"; do
+		((i++))
+		printProgressBar "$i" "$total" "$file"
+
+		baseName="${file%.*}"
+		jxlName="${baseName}.jxl"
+
+		# -d 0: Lossless | -e 7: Fast stress level and high compression
+		if cjxl "$file" "$jxlName" -d 0 -e 7 > /dev/null 2>&1; then
+			exiftool -overwrite_original -TagsFromFile "$file" -all:all "$jxlName" > /dev/null 2>&1
+			mv "$file" 'ORIGINALS/'
+			((convertedCount++))
+		else
+			printLog "$FORMAT_FAILURE" "Failed to convert '$file' to JXL."
+		fi
+	done
+
+	printf "%b Successfully converted %d/%d files to JXL.\n" "$FORMAT_SUCCESS" "$convertedCount" "$total"
+	return 0
+}
+
+function main() {
+	while getopts "h" opt; do
+		case $opt in
+			h) help ;;
+			*) printf "%b Try '%s -h' for more information.\n" "$FORMAT_FAILURE" "${0##*/}" >&2 && return 1 ;;
+		esac
+	done
+
+	shift $((OPTIND - 1))
+
+	local subcommand="${1:-}"
+
+	checkDependencies
+
+	local targetDir="${2:-.}"
+	if [[ ! -d $targetDir ]]; then
+		printf "%b Directory '%s' does not exist.\n" "$FORMAT_FAILURE" "$targetDir" >&2
+		return 1
+	fi
+
+	cd "$targetDir" || return 1
+
+	case "$subcommand" in
+		replace-placeholders) replacePlaceholders ;;
+		rename-exif)          renameFromExif ;;
+		rename-mtime)         renameFromModifiedDate ;;
+		write-exif)           writeExifFromName ;;
+		convert-avif)         convertToAvif ;;
+		convert-jxl)          convertToJxl ;;
+		*)
+			printf "%b Unknown subcommand '%s'. Try '%s -h' for available commands.\n" "$FORMAT_FAILURE" "$subcommand" "${0##*/}" >&2
+			return 1
+			;;
+	esac
+
+	return 0
+}
+
+main "$@"

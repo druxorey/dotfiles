@@ -1,0 +1,375 @@
+#!/usr/bin/env bash
+
+declare -r FORMAT_SUCCESS="\e[1;32m[SUCCESS]\e[0m"
+declare -r FORMAT_WARNING="\e[1;33m[WARNING]\e[0m"
+declare -r FORMAT_FAILURE="\e[1;31m[FAILURE]\e[0m"
+
+declare -r GEMINI_FAST_MODEL='gemini:gemini-3.5-flash-lite'
+declare -r GEMINI_COMPLEX_MODEL='gemini:gemini-3.7-flash'
+declare -r GEMINI_UTILITY_MODEL='gemini:gemini-3.5-flash-lite'
+
+function help() {
+	local -r HELP_BOLD="\e[1;34m"
+	local -r HELP_RESET="\e[0m"
+
+	echo -e "${HELP_BOLD}USAGE:${HELP_RESET} ${0##*/} [OPTIONS] [SUBCOMMAND] [ARGUMENTS...]
+
+${HELP_BOLD}DESCRIPTION:${HELP_RESET}
+  Unified CLI interface for Cortana AI using aichat. Supports cloud reasoning via
+  Google Gemini with seamless automatic fallback to local Ollama models.
+
+${HELP_BOLD}SUBCOMMANDS:${HELP_RESET}
+  (none)            General assistant chat
+  science           Computer science specialist
+  code              Senior software engineer
+  shell             Linux sysadmin & terminal command generator
+  commit [HINT]     Scoped Commits generator
+  dict WORD         Comprehensive multilingual dictionary
+  trans TEXT        Direct multilingual bidirectional translator
+
+${HELP_BOLD}OPTIONS:${HELP_RESET}
+  -m BACKEND/MODEL  Specify backend ('gemini', 'ollama') or model ('3.7', 'complex',
+                    or full identifier like 'gemini:gemini-3.7-flash').
+  -c                Force code-only output mode.
+  -S                Disable streaming output.
+  -s SESSION        Start or resume an aichat session.
+  -h                Display this help message and exit."
+	exit 0
+}
+
+
+function checkConnectivity() {
+	# Step 1: Fast ping check to Google DNS
+	if ! ping -c 1 -W 1 8.8.8.8 &>/dev/null; then
+		return 1
+	fi
+
+	# Step 2: TCP socket test against Gemini API endpoint
+	if ! (timeout 1 bash -c '</dev/tcp/generativelanguage.googleapis.com/443') 2>/dev/null; then
+		return 1
+	fi
+
+	return 0
+}
+
+
+function checkOllamaStatus() {
+	if ! (timeout 0.5 bash -c '</dev/tcp/localhost/11434') 2>/dev/null; then
+		printf "%b Local Ollama service is not reachable at localhost:11434.\n" "$FORMAT_FAILURE" >&2
+		printf " Please start it with 'ollama serve' or 'systemctl start ollama'.\n" >&2
+		return 1
+	fi
+	return 0
+}
+
+
+function resolveBackend() {
+	local requestedModel="$1"
+	local -n outBackendRef="$2"
+
+	if [[ -n $requestedModel ]]; then
+		case "$requestedModel" in
+			'ollama') outBackendRef='ollama' && return 0 ;;
+			'gemini') outBackendRef='gemini' && return 0 ;;
+			ollama:*) outBackendRef='ollama' && return 0 ;;
+			gemini:*) outBackendRef='gemini' && return 0 ;;
+			*)        outBackendRef='custom' && return 0 ;;
+		esac
+	fi
+
+	# Default mode: Check connectivity and Gemini API key
+	if [[ -z ${GEMINI_API_KEY:-} ]]; then
+		printf "%b GEMINI_API_KEY environment variable is not set. Using local Ollama.\n" "$FORMAT_WARNING" >&2
+		outBackendRef='ollama'
+		return 0
+	fi
+
+	if checkConnectivity; then
+		outBackendRef='gemini'
+	else
+		outBackendRef='ollama'
+	fi
+
+	return 0
+}
+
+
+function buildCommitPrompt() {
+	local backend="$1"
+	local hint="$2"
+	local stdinContent="$3"
+	local -n outPromptRef="$4"
+
+	local diff=""
+	if [[ -n $stdinContent ]]; then
+		diff="$stdinContent"
+	elif git rev-parse --is-inside-work-tree &>/dev/null; then
+		diff=$(git diff --cached 2>/dev/null)
+		[[ -z $diff ]] && diff=$(git diff HEAD 2>/dev/null)
+		[[ -z $diff ]] && diff=$(git diff 2>/dev/null)
+	fi
+
+	if [[ -z $diff ]]; then
+		printf "%b No staged changes or git diff detected.\n" "$FORMAT_FAILURE" >&2
+		printf " Please stage changes with 'git add' or pass diff via pipe.\n" >&2
+		return 1
+	fi
+
+	local commitHistory=""
+	if git rev-parse --is-inside-work-tree &>/dev/null; then
+		local -i historyLimit=5
+		[[ $backend == 'gemini' ]] && historyLimit=20
+		commitHistory=$(git log -n "$historyLimit" --format="### Commit: %s%n%b" 2>/dev/null)
+	fi
+
+	local payload="Analyze the following Git diff and generate exactly 3 commit suggestions adhering to the Scoped Commits BNF specification."
+
+	if [[ -n $hint ]]; then
+		payload="$payload
+
+================ USER GUIDANCE HINT ================
+Focus specifically on: $hint
+===================================================="
+	fi
+
+	if [[ -n $commitHistory ]]; then
+		payload="$payload
+
+================ RECENT COMMIT HISTORY (CONTEXT) ================
+$commitHistory
+================================================================="
+	fi
+
+	payload="$payload
+
+================ STAGED GIT DIFF ================
+$diff
+================================================="
+
+	outPromptRef="$payload"
+	return 0
+}
+
+
+function main() {
+	local requestedModel=""
+	local sessionName=""
+	local forceCode=false
+	local forceNoStream=false
+	local -a remainingArgs=()
+
+	while [[ $# -gt 0 ]]; do
+		case "$1" in
+			-m)
+				if [[ $# -lt 2 ]]; then
+					printf "%b Option -m requires an argument.\n" "$FORMAT_FAILURE" >&2
+					return 1
+				fi
+				requestedModel="$2"
+				shift 2
+				;;
+			-c)
+				forceCode=true
+				shift
+				;;
+			-S)
+				forceNoStream=true
+				shift
+				;;
+			-s)
+				if [[ $# -lt 2 ]]; then
+					printf "%b Option -s requires an argument.\n" "$FORMAT_FAILURE" >&2
+					return 1
+				fi
+				sessionName="$2"
+				shift 2
+				;;
+			-h|--help)
+				help
+				;;
+			*)
+				remainingArgs+=("$1")
+				shift
+				;;
+		esac
+	done
+
+	local stdinInput=""
+	[[ ! -t 0 ]] && stdinInput=$(cat)
+
+	local subcommand=""
+	local -a positionalArgs=()
+	if (( ${#remainingArgs[@]} > 0 )); then
+		case "${remainingArgs[0]}" in
+			'science'|'code'|'shell'|'commit'|'dict'|'trans')
+				subcommand="${remainingArgs[0]}"
+				positionalArgs=("${remainingArgs[@]:1}")
+				;;
+			*)
+				positionalArgs=("${remainingArgs[@]}")
+				;;
+		esac
+	fi
+
+	local userArgs="${positionalArgs[*]}"
+	local backend=""
+	resolveBackend "$requestedModel" backend || return 1
+
+	if [[ $backend == 'ollama' ]]; then
+		checkOllamaStatus || return 1
+	fi
+
+	local activeRole="cortana"
+	local activeModel=""
+	local codeMode=$forceCode
+	local filterBold=false
+
+	case "$subcommand" in
+		'science')
+			activeRole='science'
+			[[ $backend == 'gemini' ]] && activeModel="$GEMINI_COMPLEX_MODEL" || activeModel='ollama:cortana-science'
+			;;
+		'code')
+			activeRole='code'
+			codeMode=true
+			[[ $backend == 'gemini' ]] && activeModel="$GEMINI_COMPLEX_MODEL" || activeModel='ollama:cortana-code'
+			;;
+		'shell')
+			activeRole='shell'
+			codeMode=true
+			[[ $backend == 'gemini' ]] && activeModel="$GEMINI_FAST_MODEL" || activeModel='ollama:cortana-shell'
+			;;
+		'commit')
+			activeRole='commit'
+			[[ $backend == 'gemini' ]] && activeModel="$GEMINI_FAST_MODEL" || activeModel='ollama:commit'
+			local commitPrompt=""
+			buildCommitPrompt "$backend" "$userArgs" "$stdinInput" commitPrompt || return 1
+			userArgs="$commitPrompt"
+			stdinInput=""
+			;;
+		'dict')
+			activeRole='dict'
+			filterBold=true
+			[[ $backend == 'gemini' ]] && activeModel="$GEMINI_UTILITY_MODEL" || activeModel='ollama:dict'
+			;;
+		'trans')
+			activeRole='translator'
+			[[ $backend == 'gemini' ]] && activeModel="$GEMINI_UTILITY_MODEL" || activeModel='ollama:translator'
+			;;
+		*)
+			activeRole='cortana'
+			[[ $backend == 'gemini' ]] && activeModel="$GEMINI_FAST_MODEL" || activeModel='ollama:cortana'
+			;;
+	esac
+
+	if [[ -n $requestedModel ]]; then
+		case "$requestedModel" in
+			'complex') activeModel="$GEMINI_COMPLEX_MODEL" ;;
+			'gemini') ;;
+			'ollama') ;;
+			*) activeModel="$requestedModel" ;;
+		esac
+	fi
+
+	local -a aichatArgs=()
+
+	if [[ -n $activeModel ]]; then
+		aichatArgs+=("-m" "$activeModel")
+	fi
+
+	# Only pass -r for Gemini backend; Ollama models already have optimized prompts compiled in.
+	if [[ $backend == 'gemini' && -n $activeRole ]]; then
+		aichatArgs+=("-r" "$activeRole")
+	fi
+
+	if [[ -n $sessionName ]]; then
+		aichatArgs+=("-s" "$sessionName")
+	fi
+
+	if [[ $codeMode == true ]]; then
+		aichatArgs+=("-c")
+	fi
+
+	# Disable streaming for utility subcommands, when piping, or if explicitly requested
+	case "$subcommand" in
+		'trans'|'dict'|'commit'|'shell')
+			aichatArgs+=("-S")
+			;;
+		*)
+			if [[ $forceNoStream == true || ! -t 1 ]]; then
+				aichatArgs+=("-S")
+			fi
+			;;
+	esac
+
+	# Determine execution mode: Interactive REPL vs One-shot query
+	local fullQuery=""
+	if [[ -n $stdinInput && -n $userArgs ]]; then
+    	fullQuery="$userArgs"$'\n\n'"$stdinInput"
+	elif [[ -n $stdinInput ]]; then
+		fullQuery="$stdinInput"
+	elif [[ -n $userArgs ]]; then
+		fullQuery="$userArgs"
+	fi
+
+	if [[ -n $fullQuery ]]; then
+		# One-shot mode: pass query directly
+		local exitCode=0
+		if [[ $filterBold == true ]]; then
+			aichat "${aichatArgs[@]}" "$fullQuery" | sed -E 's/\*\*([^*]+)\*\*/'$'\e[1m''\1'$'\e[22m''/g'
+			exitCode=${PIPESTATUS[0]}
+		else
+			aichat "${aichatArgs[@]}" "$fullQuery"
+			exitCode=$?
+		fi
+
+		# If Gemini API failed at runtime and was not explicitly forced, fallback to Ollama
+		if (( exitCode != 0 )) && [[ $backend == 'gemini' && $requestedModel != 'gemini' ]]; then
+			printf "\n%b Gemini API error. Retrying query with local Ollama...\n" "$FORMAT_WARNING" >&2
+			local fallbackModel=""
+			case "$subcommand" in
+				'science') fallbackModel='ollama:cortana-science' ;;
+				'code')    fallbackModel='ollama:cortana-code' ;;
+				'shell')   fallbackModel='ollama:shell' ;;
+				'commit')  fallbackModel='ollama:commit' ;;
+				'dict')    fallbackModel='ollama:dict' ;;
+				'trans')   fallbackModel='ollama:translator' ;;
+				*)         fallbackModel='ollama:cortana' ;;
+			esac
+			local -a fallbackArgs=("-m" "$fallbackModel")
+			[[ $codeMode == true ]] && fallbackArgs+=("-c")
+			case "$subcommand" in
+				'trans'|'dict'|'commit'|'shell')
+					fallbackArgs+=("-S")
+					;;
+				*)
+					if [[ $forceNoStream == true || ! -t 1 ]]; then
+						fallbackArgs+=("-S")
+					fi
+					;;
+			esac
+
+			if [[ $filterBold == true ]]; then
+				aichat "${fallbackArgs[@]}" "$fullQuery" | sed -E 's/\*\*([^*]+)\*\*/'$'\e[1m''\1'$'\e[22m''/g'
+			else
+				aichat "${fallbackArgs[@]}" "$fullQuery"
+			fi
+		fi
+	elif [[ -t 0 ]]; then
+		if [[ $backend == 'gemini' ]]; then
+			printf "\e[1;35m╭─ Cortana AI ──────────────────────────────────────╮\e[0m\n"
+			printf "\e[1;35m│\e[0m \e[1;32m●\e[0m Backend: \e[1mCloud (Gemini)\e[0m \e[2m[%s]\e[0m\n" "$activeModel"
+			printf "\e[1;35m╰───────────────────────────────────────────────────╯\e[0m\n\n"
+		else
+			printf "\e[1;35m╭─ Cortana AI ──────────────────────────────────────╮\e[0m\n"
+			printf "\e[1;35m│\e[0m \e[1;33m●\e[0m Backend: \e[1mLocal (Ollama)\e[0m \e[2m[%s]\e[0m\n" "$activeModel"
+			printf "\e[1;35m╰───────────────────────────────────────────────────╯\e[0m\n\n"
+		fi
+		aichat "${aichatArgs[@]}"
+	else
+		printf "%b Empty input provided.\n" "$FORMAT_FAILURE" >&2
+		return 1
+	fi
+}
+
+main "$@"

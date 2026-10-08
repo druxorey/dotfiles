@@ -1,0 +1,98 @@
+#!/usr/bin/env bash
+
+declare -r FORMAT_SUCCESS="\e[1;32m[SUCCESS]\e[0m"
+declare -r FORMAT_WARNING="\e[1;33m[WARNING]\e[0m"
+declare -r FORMAT_FAILURE="\e[1;31m[FAILURE]\e[0m"
+
+function help() {
+	local -r BOLD="\e[1;34m"
+	local -r RESET="\e[0m"
+
+	echo -e "${BOLD}USAGE:${RESET} ${0##*/} [OPTIONS] INPUT_FILE OUTPUT_FILE
+
+${BOLD}DESCRIPTION:${RESET} Compresses a video file with a predetermined compression level.
+
+${BOLD}ARGUMENTS:${RESET}
+  INPUT_FILE            The video file to be compressed.
+  OUTPUT_FILE           Specify the name of the output file. (Optional)
+
+${BOLD}OPTIONS:${RESET}
+  -l COMPRESSION_LEVEL  Compression level (0-3). (Optional)
+                          0: Low compression (default)
+                          1: Medium compression
+                          2: High compression
+                          3: Maximum compression"
+	exit 0
+}
+
+
+function main() {
+	local -i compressionLevel=0
+
+	while getopts "l:h" opt; do
+		case $opt in
+			l) compressionLevel="$OPTARG" ;;
+			h) help ;;
+			*) printf "%b Try '%s -h' for more information.\n" "$FORMAT_FAILURE" "${0##*/}" >&2 && return 1 ;;
+		esac
+	done
+	shift $((OPTIND - 1))
+
+	local inputFile="$1"
+	local outputFile="${2:-}"
+
+	[[ -z "$inputFile" ]] && printf "%b Input file is required.\n" "$FORMAT_FAILURE" >&2 && return 1
+
+    local inputDirectory=$(dirname "$inputFile")
+    local inputExtension="${inputFile##*.}"
+    local inputName=$(basename "${inputFile%.*}")
+
+	if [[ -z "${outputFile}" ]]; then
+		outputFile="${inputDirectory}/${inputName}_${compressionLevel}.${inputExtension}"
+		local -i counter=1
+		while [[ -f "${outputFile}" ]]; do
+			outputFile="${inputDirectory}/${inputName}_${compressionLevel}(${counter}).${inputExtension}"
+			((counter++))
+		done
+		printf "%b No output name was specified, it will be used: %s\n" "$FORMAT_WARNING" "$outputFile"
+	fi
+
+	local vcodec="libx265"
+	local preset="slow"
+	local -i crf=17
+	local acodec="copy"
+	local audioBitrate="128k"
+
+	case $compressionLevel in
+		0) ;;
+		1) crf=23; acodec="aac" ; audioBitrate="192k" ;;
+		2) crf=28; acodec="aac" ; audioBitrate="128k" ;;
+		3) crf=33; acodec="aac" ; audioBitrate="96k"  ; preset="slower" ;;
+		*) printf "%b Compression level '%s' is invalid. Valid options are: [0..3].\n" "$FORMAT_FAILURE" "$compressionLevel" >&2 && exit 1 ;;
+	esac
+
+	local -a ffmpegCMD=(
+		ffmpeg -hide_banner -y -i "$inputFile"
+		-map 0:v:0 -map 0:a -map 0:s? -map 0:t?
+		-fps_mode cfr
+		-c:v "$vcodec" -preset "$preset" -crf "$crf" -pix_fmt yuv420p10le
+		-c:a "$acodec"
+		-c:s copy -c:t copy -map_metadata 0
+	)
+
+	[[ "$acodec" != "copy" ]]            && ffmpegCMD+=(-b:a "$audioBitrate")
+	[[ "${inputExtension,,}" == "mp4" ]] && ffmpegCMD+=(-movflags +faststart)
+
+	ffmpegCMD+=("$outputFile")
+
+	"${ffmpegCMD[@]}" || {
+		printf "%b Failed to compress the file '%s'.\n" "$FORMAT_FAILURE" "$inputFile" >&2
+		return 1
+	}
+
+	printf "\n%b File '%s' compressed to '%s' with compression level %s\n" "$FORMAT_SUCCESS" "$inputFile" "$outputFile" "$compressionLevel"
+
+	return 0
+}
+
+main "$@"

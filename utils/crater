@@ -1,120 +1,219 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 declare -r FORMAT_SUCCESS="\e[1;32m[SUCCESS]\e[0m"
-declare -r FORMAT_ERROR="\e[1;31m[ERROR]\e[0m"
+declare -r FORMAT_FAILURE="\e[1;31m[FAILURE]\e[0m"
 
 declare -r TEMPLATES_PATH="$HOME/.local/share/crater"
-declare -a FILES=()
-declare EXTENSION=""
+declare -rA EXTENSION_MAP=(
+	['bash']='sh'
+	['c']='c'
+	['cpp']='cpp'
+	['c++']='cpp'
+	['go']='go'
+	['golang']='go'
+	['html']='html'
+	['java']='java'
+	['latex']='tex'
+	['lua']='lua'
+	['py']='py'
+	['python']='py'
+	['rs']='rs'
+	['rust']='rs'
+	['sh']='sh'
+	['shell']='sh'
+	['tex']='tex'
+)
 
 function help() {
-	declare -r FORMAT_BOLD="\e[1;34m"
-	declare -r FORMAT_RESET="\e[0m"
-	echo -e "${FORMAT_BOLD}USAGE:${FORMAT_RESET} $(basename "$0") [OPTIONS] FILE_TYPE
+	local -r BOLD="\e[1;34m"
+	local -r RESET="\e[0m"
 
-${FORMAT_BOLD}DESCRIPTION:${FORMAT_RESET}
-    Creates a default file in a specific programming language.
+	echo -e "${BOLD}USAGE:${RESET} ${0##*/} [OPTIONS] <FILE_TYPE> [OUTPUT_NAME]
 
-${FORMAT_BOLD}ARGUMENTS:${FORMAT_RESET}
-    FILE_TYPE              bash, c, c++, go, html, java, latex, lua, python, rust.
+${BOLD}DESCRIPTION:${RESET}
+  Creates template-based files and project structures.
 
-${FORMAT_BOLD}OPTIONS:${FORMAT_RESET}
-    -n FILE_NAME           The name of the file to create (default: default).
-    -i INDEX               The index of the template to use (skips manual selection).
+${BOLD}ARGUMENTS:${RESET}
+  FILE_TYPE    Language identifier (e.g., bash, c, cpp, go, python, rust, latex).
+  OUTPUT_NAME  Destination file or directory name (default: 'default').
 
-${FORMAT_BOLD}EXAMPLES:${FORMAT_RESET}
-    $(basename "$0") html
-    $(basename "$0") -n code -i 2 python"
+${BOLD}OPTIONS:${RESET}
+  -i INDEX     Select template non-interactively by index.
+  -l           List all supported categories and available templates.
+  -p           Print template content to stdout instead of copying.
+  -h           Display this help message."
+	exit 0
+}
+
+
+function listTemplates() {
+	if [[ ! -d $TEMPLATES_PATH ]]; then
+		printf "%b Templates directory '%s' not found.\n" "$FORMAT_FAILURE" "$TEMPLATES_PATH" >&2
+		return 1
+	fi
+
+	local categoryDir
+	local -a items=()
+	local -i count=0
+
+	for categoryDir in "$TEMPLATES_PATH"/*; do
+		[[ ! -d $categoryDir ]] && continue
+
+		local ext="${categoryDir##*/}"
+		printf "\e[1;32m[%s]\e[0m\n" "$ext"
+
+		items=()
+		for item in "$categoryDir"/*; do
+			[[ -e $item ]] && items+=("$item")
+		done
+
+		if ((${#items[@]} == 0)); then
+			printf "  (No templates found)\n"
+		else
+			for ((i = 0; i < ${#items[@]}; i++)); do
+				local name="${items[i]##*/}"
+				if [[ -d ${items[i]} ]]; then
+					printf "  [%d] \e[1;34m%s/\e[0m\n" "$i" "$name"
+				else
+					printf "  [%d] %s\n" "$i" "$name"
+				fi
+			done
+		fi
+		printf "\n"
+		((count++))
+	done
+
+	if ((count == 0)); then
+		printf "No template categories found in '%s'.\n" "$TEMPLATES_PATH"
+	fi
 
 	return 0
 }
 
 
-function copyFromTemplate() {
-	local index=$1
+function printTemplate() {
+	local srcPath="$1"
+	if [[ -d $srcPath ]]; then
+		printf "%b Cannot print directory template '%s' to standard output.\n" "$FORMAT_FAILURE" "${srcPath##*/}" >&2
+		return 1
+	fi
+	cat "$srcPath"
+	return 0
+}
 
-	if [[ -z "${FILES[$index]}" ]] || ! [[ "$index" =~ ^[0-9]+$ ]]; then
-		printf "%b Invalid index: '%s'\n" "$FORMAT_ERROR" "$index" >&2
-		exit 1
+
+function copyTemplate() {
+	local srcPath="$1"
+	local destName="$2"
+	local ext="$3"
+	local destPath
+
+	if [[ -d $srcPath ]]; then
+		destPath="$destName"
+	else
+		if [[ $destName == *."$ext" ]]; then
+			destPath="$destName"
+		else
+			destPath="$destName.$ext"
+		fi
 	fi
 
-	local templatePath="${FILES[$index]}"
-	[[ -d "$templatePath" ]] && filePath="${2}" || filePath="${2}.${EXTENSION}"
+	if [[ -e $destPath ]]; then
+		printf "%b Target '%s' already exists. Aborting to avoid overwrite.\n" "$FORMAT_FAILURE" "$destPath" >&2
+		return 1
+	fi
 
-	cp -rp "$templatePath" "$filePath" || {
-		printf "%b Failed to create file '%s'.\n" "$FORMAT_ERROR" "$filePath" >&2
-		exit 1
+	cp -rp "$srcPath" "$destPath" || {
+		printf "%b Failed to copy template to '%s'.\n" "$FORMAT_FAILURE" "$destPath" >&2
+		return 1
 	}
 
-	printf "%b File '%s' created.\n" "$FORMAT_SUCCESS" "$filePath"
-
+	printf "%b Created '%s' from template '%s'.\n" "$FORMAT_SUCCESS" "$destPath" "${srcPath##*/}"
 	return 0
 }
 
 
 function main() {
-	local fileName="default"
-	local templateIndex=""
+	local optIndex=''
+	local flagPrint=false
 
-	while getopts "n:i:h" opt; do
+	while getopts "i:lph" opt; do
 		case $opt in
-			n) fileName="$OPTARG" ;;
-			i) templateIndex="$OPTARG" ;;
-			h) help && exit 0 ;;
-			*) printf "%b Try '%s -h' for more information.\n" "$FORMAT_ERROR" "$(basename "$0")" >&2 && exit 1 ;;
+			i) optIndex="$OPTARG" ;;
+			l) listTemplates ; return $? ;;
+			p) flagPrint=true ;;
+			h) help ;;
+			*) printf "%b Try '%s -h' for more information.\n" "$FORMAT_FAILURE" "${0##*/}" >&2 && return 1 ;;
 		esac
 	done
-
 	shift $((OPTIND - 1))
 
-	local fileType=$1
+	local fileType="$1"
+	local outputName="${2:-default}"
 
-	[[ -z "$fileType" ]] && printf "%b File type is required.\n" "$FORMAT_ERROR" >&2 && exit 1
-	[[ ! -d "$TEMPLATES_PATH" ]] && printf "%b Templates directory '%s' not found.\n" "$FORMAT_ERROR" "$TEMPLATES_PATH" >&2 && exit 1;
+	[[ -z $fileType ]] && printf "%b File type is required.\n" "$FORMAT_FAILURE" >&2 && return 1
+	[[ ! -d $TEMPLATES_PATH ]] && printf "%b Templates directory '%s' not found.\n" "$FORMAT_FAILURE" "$TEMPLATES_PATH" >&2 && return 1
 
-	case $fileType in
-		"bash")   EXTENSION="sh"   ;;
-		"c")      EXTENSION="c"    ;;
-		"c++")    EXTENSION="cpp"  ;;
-		"cpp")    EXTENSION="cpp"  ;;
-		"golang") EXTENSION="go"   ;;
-		"go")     EXTENSION="go"   ;;
-		"html")   EXTENSION="html" ;;
-		"java")   EXTENSION="java" ;;
-		"latex")  EXTENSION="tex"  ;;
-		"lua")    EXTENSION="lua"  ;;
-		"python") EXTENSION="py"   ;;
-		"rust")   EXTENSION="rs"   ;;
-		"sh")     EXTENSION="sh"   ;;
-		"shell")  EXTENSION="sh"   ;;
-		"tex")    EXTENSION="tex"  ;;
-		*) printf "%b File type '%s' not found.\n" "$FORMAT_ERROR" "$fileType" >&2 && exit 1 ;;
-	esac
-
-	for file in "$TEMPLATES_PATH/$EXTENSION"/*; do
-		[[ -e "$file" ]] && FILES+=("$file")
-	done
-
-	if [[ -n "$templateIndex" ]]; then
-		copyFromTemplate "$templateIndex" "$fileName"
-		exit 0
+	local ext="${EXTENSION_MAP[$fileType]:-}"
+	if [[ -z $ext ]]; then
+		printf "%b Unsupported file type '%s'.\n" "$FORMAT_FAILURE" "$fileType" >&2
+		return 1
 	fi
 
-	printf "Available templates with extension '%s':\n" "$EXTENSION"
-	for index in "${!FILES[@]}"; do
-		if [[ -d ${FILES[$index]} ]]; then
-			printf "  [%d] \e[1;34m%s/\e[0m\n" "$index" "$(basename "${FILES[$index]}")"
-		else
-			printf "  [%d] %s\n" "$index" "$(basename "${FILES[$index]}")"
-		fi
+	local templateDir="$TEMPLATES_PATH/$ext"
+	if [[ ! -d $templateDir ]]; then
+		printf "%b Template category directory '%s' does not exist.\n" "$FORMAT_FAILURE" "$templateDir" >&2
+		return 1
+	fi
+
+	local -a templates=()
+	for item in "$templateDir"/*; do
+		[[ -e $item ]] && templates+=("$item")
 	done
 
-	printf "Enter the file index [0-9]: "
-	read -r ans
+	local -i totalTemplates=${#templates[@]}
+	if ((totalTemplates == 0)); then
+		printf "%b No templates found in '%s'.\n" "$FORMAT_FAILURE" "$templateDir" >&2
+		return 1
+	fi
 
-	copyFromTemplate "$ans" "$fileName"
+	local -i selectedIndex=-1
 
-	return 0
+	if [[ -n $optIndex ]]; then
+		if [[ ! $optIndex =~ ^[0-9]+$ ]] || ((optIndex < 0 || optIndex >= totalTemplates)); then
+			printf "%b Invalid index '%s'. Available range: 0 to %d.\n" "$FORMAT_FAILURE" "$optIndex" $((totalTemplates - 1)) >&2
+			return 1
+		fi
+		selectedIndex=$optIndex
+	elif ((totalTemplates == 1)); then
+		selectedIndex=0
+	else
+		printf "Available templates for '%s':\n" "$fileType"
+		for i in "${!templates[@]}"; do
+			local name="${templates[i]##*/}"
+			if [[ -d ${templates[i]} ]]; then
+				printf "  [%d] \e[1;34m%s/\e[0m\n" "$i" "$name"
+			else
+				printf "  [%d] %s\n" "$i" "$name"
+			fi
+		done
+
+		printf "Enter template index [0-%d]: " $((totalTemplates - 1))
+		local userInput
+		read -r userInput
+
+		if [[ ! $userInput =~ ^[0-9]+$ ]] || ((userInput < 0 || userInput >= totalTemplates)); then
+			printf "%b Invalid selection '%s'.\n" "$FORMAT_FAILURE" "$userInput" >&2
+			return 1
+		fi
+		selectedIndex=$userInput
+	fi
+
+	if [[ $flagPrint == true ]]; then
+		printTemplate "${templates[selectedIndex]}"
+	else
+		copyTemplate "${templates[selectedIndex]}" "$outputName" "$ext"
+	fi
 }
 
 main "$@"

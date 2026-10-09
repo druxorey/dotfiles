@@ -1,90 +1,71 @@
+
+-- ========================================================================== --
+--
+--                        ██╗   ██╗ █████╗ ███████╗██╗
+--                        ╚██╗ ██╔╝██╔══██╗╚══███╔╝██║
+--                         ╚████╔╝ ███████║  ███╔╝ ██║
+--                          ╚██╔╝  ██╔══██║ ███╔╝  ██║
+--                           ██║   ██║  ██║███████╗██║
+--                           ╚═╝   ╚═╝  ╚═╝╚══════╝╚═╝
+--
+--                                   INIT
+--                         https://github.com/druxorey
+--
+-- ========================================================================== --
+
 require("gvfs"):setup({
 	which_keys = "1234567890qwertyuiopasdfghjklzxcvbnm-=[]\\;',./!@#$%^&*()_+{}|:\"<>?",
-	blacklist_devices = { { name = "Wireless Device", scheme = "mtp" }, { scheme = "file" }, "Device Name"},
+	blacklist_devices = { { name = "Wireless Device", scheme = "mtp" }, { scheme = "file" }, "Device Name" },
 	save_path = os.getenv("HOME") .. "/.config/yazi/gvfs.private",
 	save_path_automounts = os.getenv("HOME") .. "/.config/yazi/gvfs_automounts.private",
 	input_position = { "center", y = 0, w = 60 },
 	password_vault = "keyring",
-	key_grip = "BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB",
 	save_password_autoconfirm = true,
 })
 
-require("full-border"):setup ({
+require("full-border"):setup({
 	type = ui.Border.ROUNDED,
 })
 
-require("yatline"):setup({
-	section_separator = { open = "", close = "" },
-	part_separator = { open = " ", close = " " },
-	inverse_separator = { open = "", close = "" },
+require("omp"):setup({ config = "/home/druxorey/.config/oh-my-posh/yazi.omp.json" })
 
-	padding = { inner = 1, outer = 1 },
+require("center-media"):setup({
+	target = "mediainfo",
+	horizontal = true,
+	vertical = true,
+	text = "block",
 
-	style_a = {
-		bg = "#6272A4",
-		fg = "#191A21",
-		bg_mode = {
-			normal = "#BD93F9",
-			select = "#F1FA8C",
-			un_set = "#FF5555",
-		},
+	sections = {
+		audio = { "General", "Audio" },
 	},
-	style_b = { bg = "#343746", fg = "#F8F8F2" },
-	style_c = { bg = "#191A21", fg = "#F8F8F2" },
-
-	permissions_t_fg = "#50FA7B",
-	permissions_r_fg = "#F1FA8C",
-	permissions_w_fg = "#FF5555",
-	permissions_x_fg = "#72D0E4",
-	permissions_s_fg = "#F8F8F2",
-
-	tab_width = 20,
-
-	selected = { icon = "󰻭", fg = "#F1FA8C" },
-	copied = { icon = "", fg = "#50FA7B" },
-	cut = { icon = "", fg = "#FF5555" },
-
-	files = { icon = "", fg = "#BD93F9" },
-	filtereds = { icon = "", fg = "#FF79C6" },
-
-	total = { icon = "󰮍", fg = "#F1FA8C" },
-	success = { icon = "", fg = "#50FA7B" },
-	failed = { icon = "", fg = "#FF5555" },
-
-	show_background = false,
-
-	display_header_line = true,
-	display_status_line = true,
-
-	component_positions = { "header", "tab", "status" },
-
-	header_line = {
-		left = {
-			section_a = {
-				{ type = "line", name = "tabs" },
-			},
-		},
+	skip_labels = {
+		"Complete name",
+		"CompleteName_Last",
+		"Unique ID",
+		"File size",
+		"Format/Info",
+		"Codec ID/Info",
+		"MD5 of the unencoded content",
+		"Color space",
+		"Bit depth",
+		"Compression",
+		"Compression mode",
+		"Stream size",
 	},
+	skip_section_labels = {},
+})
 
-	status_line = {
-		left = {
-			section_a = {
-				{ type = "string", name = "tab_mode" },
-			},
-			section_b = {
-				{ type = "string", name = "hovered_size" },
-			},
-			section_c = {
-				{ type = "string", name = "hovered_path" },
-			},
-		},
-		right = {
-			section_a = {
-				{ type = "string", name = "cursor_position" },
-			},
-			section_c = {
-				{ type = "coloreds", name = "permissions" },
-			},
-		},
-	},
+require("sduf"):setup({
+  filled_bg       = "#37EB62", -- bar color (normal usage)
+  filled_bg_warn  = "#FFB86C", -- bar color when usage >= warn_at
+  filled_bg_danger= "#F75353", -- bar color when usage >= danger_at
+  unfilled_bg     = "#44475A", -- empty part of the bar
+  text_fg         = "#F8F8F2", -- bar text color
+  error_fg        = "red",     -- color of the "Disk: ??" fallback
+  warn_at         = 75,        -- threshold (%) for the warn color
+  danger_at       = 90,        -- threshold (%) for the danger color
+  border_open     = "",       -- left cap of the bar
+  border_close    = "",       -- right cap of the bar
+  margin          = " ",       -- padding around the meter
+  position        = 2900,      -- status bar priority
 })

@@ -1,7 +1,23 @@
+
+#! ========================================================================== !#
+#!
+#!                        ██╗   ██╗ █████╗ ███████╗██╗
+#!                        ╚██╗ ██╔╝██╔══██╗╚══███╔╝██║
+#!                         ╚████╔╝ ███████║  ███╔╝ ██║
+#!                          ╚██╔╝  ██╔══██║ ███╔╝  ██║
+#!                           ██║   ██║  ██║███████╗██║
+#!                           ╚═╝   ╚═╝  ╚═╝╚══════╝╚═╝
+#!
+#!                                   KEYMAP
+#!                         https://github.com/druxorey
+#!
+#! ========================================================================== !#
+
 [mgr]
 prepend_keymap = [
-	{ on = [ "y" ], run = [ "shell 'for path in %*; do echo \"file://$path\"; done | xclip -i -selection clipboard -t text/uri-list'", "yank" ], desc = "Yank and copy to system clipboard" },
-    { on = [ "x" ], run = [ "shell 'for path in %*; do echo \"file://$path\"; done | xclip -i -selection clipboard -t text/uri-list'", "yank --cut" ], desc = "Cut and copy to system clipboard" },
+	{ on = [ "y" ], run = [ "yank", 'plugin x-clipboard -- --action=copy' ], desc = "Yank selected files (copy)" },
+	{ on = [ "x" ], run = [ "yank --cut", 'plugin x-clipboard -- --action=copy' ], desc = "Yank selected files (cut)" },
+	{ on = [ "<C-p>" ], run = [ 'plugin x-clipboard -- --action=paste' ], desc = "Paste yanked system clipboard files" },
 	{ on = [ "M", "m" ], run = "plugin gvfs -- select-then-mount", desc = "Select device then mount" },
 	{ on = [ "M", "M" ], run = "plugin gvfs -- select-then-mount --jump", desc = "Select device to mount and jump to its mount point" },
 	{ on = [ "M", "R" ], run = "plugin gvfs -- remount-current-cwd-device", desc = "Remount device under cwd" },
@@ -11,21 +27,30 @@ prepend_keymap = [
 	{ on = [ "M", "e" ], run = "plugin gvfs -- edit-mount", desc = "Edit a GVFS mount URI" },
 	{ on = [ "M", "r" ], run = "plugin gvfs -- remove-mount", desc = "Remove a GVFS mount URI" },
 	{ on = [ "M", "o" ], run = "plugin mount", desc = "Mount USB drives and other devices" },
-	{ on = [ "c", "a", "a" ], run = "plugin compress", desc = "Archive selected files" },
-	{ on = [ "c", "a", "p" ], run = "plugin compress -p", desc = "Archive selected files (password)" },
-	{ on = [ "c", "a", "h" ], run = "plugin compress -ph", desc = "Archive selected files (password+header)" },
-	{ on = [ "c", "a", "l" ], run = "plugin compress -l", desc = "Archive selected files (compression level)" },
-	{ on = [ "c", "a", "u" ], run = "plugin compress -phl", desc = "Archive selected files (password+header+level)" },
+	{ on = [ "C", "a", "a" ], run = "plugin compress", desc = "Archive selected files" },
+	{ on = [ "C", "a", "p" ], run = "plugin compress -p", desc = "Archive selected files (password)" },
+	{ on = [ "C", "a", "h" ], run = "plugin compress -ph", desc = "Archive selected files (password+header)" },
+	{ on = [ "C", "a", "l" ], run = "plugin compress -l", desc = "Archive selected files (compression level)" },
+	{ on = [ "C", "a", "u" ], run = "plugin compress -phl", desc = "Archive selected files (password+header+level)" },
 	{ on = [ ".", "." ], run = "hidden toggle", desc = "Toggle hidden files" },
 	{ on = [ ".", "s" ], run = "plugin what-size", desc = "Calc size of selection or cwd" },
 	{ on = [ ".", "e" ], run = "shell thunar .", desc = "Open thunar on cwd" },
 	{ on = [ ".", "n" ], run = "shell nvim --block", desc = "Open nvim on cwd" },
 	{ on = [ ".", "k" ], run = 'shell "kitty --directory %c &" --block', desc = "Open Kitty here" },
-	{ on = [ "X", "x", "x" ], run = "plugin lin-decompress -- --no-password", desc = "Extract hovered." },
-	{ on = [ "X", "x", "p" ], run = "plugin lin-decompress", desc = "Extract hovered. Password" },
-	{ on = [ "X", "x", "a" ], run = "plugin lin-decompress -- --no-hover --tabselect=all", desc = "Extract selected in all tabs" },
-	{ on = [ "X", "x", "A" ], run = "plugin lin-decompress -- --tabselect=all", desc = "Extract selected in all tabs. Hovered included" },
-	{ on = [ "X", "x", "c" ], run = "plugin lin-decompress -- --no-hover --tabselect=current", desc = "Extract selected in current tab only" },
+	{ on = [ "E", "x", "x" ], run = "plugin lin-decompress -- --no-password", desc = "Extract hovered." },
+	{ on = [ "E", "x", "p" ], run = "plugin lin-decompress", desc = "Extract hovered. Password" },
+	{ on = [ "E", "x", "a" ], run = "plugin lin-decompress -- --no-hover --tabselect=all", desc = "Extract selected in all tabs" },
+	{ on = [ "E", "x", "A" ], run = "plugin lin-decompress -- --tabselect=all", desc = "Extract selected in all tabs. Hovered included" },
+	{ on = [ "E", "x", "c" ], run = "plugin lin-decompress -- --no-hover --tabselect=current", desc = "Extract selected in current tab only" },
 	{ on = [ "g", "u" ], run = "cd /run/media/druxorey", desc = "Go to USB drives/MicroSD" },
 	{ on = [ "g", "v" ], run = "cd /run/user/1000/gvfs", desc = "Go to GVFS devices" },
+	{ on = [ "g", "t" ], run = "cd $HOME/.local/share/Trash/files", desc = "Go to Trash Bin" },
+	{ on = [ "T", "a" ], run = "plugin toggle-pane min-parent", desc = "Show or hide the parent pane" },
+	{ on = [ "T", "p" ], run = "plugin toggle-pane min-preview", desc = "Show or hide the preview pane" },
+	{ on = [ "R" ], run = "plugin rsync", desc = "Copy files using rsync" },
+	{ on = [ "P", "c", "m" ], run = "plugin center-media -- toggle-metadata", desc = "Toggle media metadata" },
+	{ on = [ "P", "c", "p" ], run = "plugin center-media -- toggle-preview", desc = "Toggle media image" },
+	{ on = [ "P", "c", "r" ], run = "plugin center-media -- reset", desc = "Reset media preview" },
+	{ on = [ "P", "d" ], run = "plugin diff", desc = "Diff the selected with the hovered file" },
+	{ on = [ "P", "m" ], run = "plugin chmod", desc = "Chmod on selected files" },
 ]

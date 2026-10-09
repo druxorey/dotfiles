@@ -1,37 +1,27 @@
 [[plugin.deps]]
 use = "boydaihungst/gvfs"
-rev = "3abc0a2"
-hash = "eed89e75671723c8f9390a2862af0e4e"
+rev = "c92953c"
+hash = "d1e8d33ed36d339d5588f036dc3a9204"
 
 [[plugin.deps]]
 use = "pirafrank/what-size"
-rev = "179ebf6"
-hash = "57056b9728006881d580ccabe8154a9c"
+rev = "1cb456f"
+hash = "7699acf73a1079f8a4afef5cec84ce73"
 
 [[plugin.deps]]
 use = "AnirudhG07/rich-preview"
-rev = "7d616ad"
-hash = "d64feec9761392cbc250d199ab4b8a3a"
-
-[[plugin.deps]]
-use = "yazi-rs/plugins:full-border"
-rev = "38efe09"
-hash = "7b625412411be411153886894d9acaf"
+rev = "02597c4"
+hash = "33982a6e2d6df07619a2a0fc163a0950"
 
 [[plugin.deps]]
 use = "yazi-rs/plugins:mount"
-rev = "38efe09"
-hash = "e3260d0b1feded8c8e3ae3afa1169e30"
-
-[[plugin.deps]]
-use = "imsi32/yatline"
-rev = "c5d4b48"
-hash = "e6e98d12b1648d1894c2b560d85eeaa7"
+rev = "33dde28"
+hash = "b95f898e6dc60b52edbc415952e14395"
 
 [[plugin.deps]]
 use = "KKV9/compress"
-rev = "e60e122"
-hash = "fbaf0adc8efc59555b748d36aab62d40"
+rev = "80e5268"
+hash = "868db729374b97871bc30b96d0e9061f"
 
 [[plugin.deps]]
 use = "Sonico98/exifaudio"
@@ -40,8 +30,58 @@ hash = "4761fffb60a12d37096c34a356380cdf"
 
 [[plugin.deps]]
 use = "ZimCodes/lin-decompress"
-rev = "174c3ae"
-hash = "a921316c914f2d14e0febf4125f5dbae"
+rev = "f974efc"
+hash = "e4f0d667cee7d68f227ade2bf52d6b1c"
+
+[[plugin.deps]]
+use = "yazi-rs/plugins:full-border"
+rev = "33dde28"
+hash = "f281261ff04ad7ec867c3f802a50835f"
+
+[[plugin.deps]]
+use = "XYenon/clipboard"
+rev = "a2655fd"
+hash = "90625fa33e3372073d60f124c3c867"
+
+[[plugin.deps]]
+use = "ENEmyr/center-media"
+rev = "3fca3a5"
+hash = "bb567d35068b64c80569c1d86f1a053a"
+
+[[plugin.deps]]
+use = "AleMenon/exiftool"
+rev = "4c35573"
+hash = "44ef03e4d7151fa4094dd6b87a553033"
+
+[[plugin.deps]]
+use = "yazi-rs/plugins:diff"
+rev = "6229767"
+hash = "14558d2829c0aa05e99c57de8f74d199"
+
+[[plugin.deps]]
+use = "yazi-rs/plugins:chmod"
+rev = "6229767"
+hash = "87472b05a8c420100f6a2b9cde1e7746"
+
+[[plugin.deps]]
+use = "saumyajyoti/omp"
+rev = "32ae96c"
+hash = "ca913db57342496f96c533725a64ccc4"
+
+[[plugin.deps]]
+use = "shafayetejaman/sduf"
+rev = "f43ba4a"
+hash = "5f9b8fcd37fc225437a213c9674a0ffa"
+
+[[plugin.deps]]
+use = "GianniBYoung/rsync"
+rev = "b5c657a"
+hash = "72828957273094ed0ef52792e3290900"
+
+[[plugin.deps]]
+use = "yazi-rs/plugins:toggle-pane"
+rev = "6229767"
+hash = "5b2fbef7d1513ce38ff72623a071a5e"
 
 [flavor]
 deps = []

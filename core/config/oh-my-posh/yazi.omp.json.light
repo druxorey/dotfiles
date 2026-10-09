@@ -1,0 +1,82 @@
+{
+    "$schema": "https://raw.githubusercontent.com/JanDeDobbeleer/oh-my-posh/main/themes/schema.json",
+    "blocks": [
+        {
+            "type": "prompt",
+            "alignment": "left",
+            "segments": [
+                {
+                    "leading_diamond": "\ue0b6",
+                    "template": " {{ if .Env.SSH_CONNECTION }}{{ .UserName }}@{{ .HostName }}{{ else }}󰇥{{ end }} ",
+                    "foreground": "#FFFBEB",
+                    "background": "#047FB4",
+                    "type": "os",
+                    "style": "diamond"
+                },
+                {
+                    "powerline_symbol": "\ue0b4",
+                    "template": "  \uf413 {{ .Path }} ",
+                    "foreground": "#FFFBEB",
+                    "background": "#CB3A2A",
+                    "type": "path",
+                    "style": "powerline",
+                    "options": {
+                        "folder_separator_icon": "/",
+                        "hide_root_location": true,
+                        "max_depth": 15,
+                        "style": "agnoster_short"
+                    }
+                },
+                {
+                    "powerline_symbol": "\ue0b4",
+                    "template": " \ue725 ({{ .UpstreamIcon }} {{ .HEAD }}{{ if gt .StashCount 0 }} \ueb4b {{ .StashCount }}{{ end }}) ",
+                    "foreground": "#FFFBEB",
+                    "background": "#BF185A",
+                    "type": "git",
+                    "style": "powerline",
+                    "options": {
+                        "branch_icon": "",
+                        "fetch_status": false,
+                        "fetch_upstream_icon": true
+                    }
+                },
+                {
+                    "powerline_symbol": "\ue0b4",
+                    "template": " \ue718 {{ if .PackageManagerIcon }}{{ .PackageManagerIcon }} {{ end }}{{ .Full }} ",
+                    "foreground": "#FFFBEB",
+                    "background": "#198D0C",
+                    "type": "node",
+                    "style": "powerline"
+                },
+                {
+                    "powerline_symbol": "\ue0b4",
+                    "foreground": "#FFFBEB",
+                    "background": "#9E841A",
+                    "type": "python",
+                    "style": "powerline",
+                    "options": {
+                        "prefix": " \ue235 "
+                    }
+                }
+            ]
+        },
+        {
+            "type": "prompt",
+            "alignment": "left",
+            "segments": [
+                {
+                    "template": " ~ ",
+                    "foreground": "#1F1F1F",
+                    "type": "status",
+                    "style": "plain",
+					"options": {
+						"always_enabled": true
+					}
+                }
+            ],
+            "newline": true
+        }
+    ],
+    "version": 3,
+    "final_space": true
+}

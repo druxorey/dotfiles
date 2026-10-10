@@ -1,7 +1,8 @@
 7zip
+aichat
 alsa-utils
-ani-cli
 antigravity-ide
+atool
 bash-completion
 bat
 bat-extras
@@ -11,9 +12,9 @@ brave-origin-bin
 brightnessctl
 btop
 btrfs-progs
+cachyos-rate-mirrors
 caligula
 cava
-cmatrix
 cmus
 cnijfilter2
 cpufetch
@@ -23,10 +24,11 @@ curl
 dav1d
 ddgr
 discord
+docker
 dosfstools
 dotool
 downgrade
-drxpkg
+drxpkg-git
 entr
 exfatprogs
 exiftool
@@ -43,6 +45,7 @@ gdb
 gimp
 git
 github-cli
+glow
 go
 gping
 gptfdisk
@@ -58,6 +61,8 @@ kitty
 lazygit
 libjxl
 libreoffice-fresh
+libsmbios
+libwebp-utils
 localsend
 luarocks
 lutgen-bin
@@ -72,8 +77,8 @@ networkmanager
 noto-fonts-cjk
 noto-fonts-emoji
 ntfs-3g
-obs-studio
 obsidian
+obs-studio
 oh-my-posh
 onefetch
 pandoc-bin
@@ -82,7 +87,6 @@ parted
 pastel
 pdfarranger
 pdftk
-peaclock
 php
 playerctl
 proton-pass-bin
@@ -95,6 +99,8 @@ python-black
 python-pip
 python-virtualenv
 rate-mirrors
+ratune-bin
+rawtherapee
 rclone
 reflector
 rich-cli
@@ -104,7 +110,6 @@ rust
 rust-analyzer
 samba
 selenium
-sheets-bin
 shellcheck
 sigil
 silicon
@@ -124,8 +129,8 @@ texlive-latexrecommended
 texlive-mathscience
 texlive-pictures
 texlive-xetex
-the_silver_searcher
 thefuck
+the_silver_searcher
 timeshift
 tldr
 tmux

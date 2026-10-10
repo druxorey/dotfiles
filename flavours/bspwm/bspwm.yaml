@@ -14,4 +14,4 @@ routes:
   - source: "~/.config/zathura/"
   - source: "/etc/tlp.d/"
   - source: "/etc/X11/xorg.conf.d/"
-  - source: "/var/spool/cron/"
+  - source: "/var/spool/cron/druxorey"

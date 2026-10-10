@@ -22,7 +22,7 @@ return {
 			},
 		},
 		spec = {
-			{ mode = { "n", "v" }, { "<leader>a", group = "Ai", icon = "󱜙 " } },
+			{ mode = { "n", "v" }, { "<leader>a", group = "Cortana", icon = "󱜙 " } },
 			{ mode = { "n", "v" }, { "<leader>g", group = "Git", icon = "󰊢 " } },
 			{ mode = { "n", "v" }, { "<leader>s", group = "Search" } },
 			{ mode = { "n", "v" }, { "<leader>f", group = "File" } },

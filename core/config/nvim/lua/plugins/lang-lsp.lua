@@ -87,7 +87,7 @@ return {
 			vim.lsp.config("bashls", {
 				settings = {
 					bashIde = {
-						shellcheckArguments = "--exclude=SC2155,SC2086,SC2181,SC1090",
+						shellcheckArguments = "--exclude=SC1090,SC2034,SC2086,SC2155",
 					},
 				},
 			})

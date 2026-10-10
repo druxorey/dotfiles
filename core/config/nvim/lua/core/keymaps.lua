@@ -149,10 +149,9 @@ vim.keymap.set("n", "<leader>fF", function() require("telescope.builtin").find_f
 vim.keymap.set("n", "<leader>fr", function() require("telescope.builtin").oldfiles() end, { desc = "Find Recent" })
 vim.keymap.set("n", "<leader>fn", function() require("utils.keymaps").create_new_file() end, { desc = "Create New File" })
 
--- AI Assistant Mappings
-vim.keymap.set({ "n", "x" }, "<leader>ai", function() require("utils.ai").ask_ai() end, { desc = "Ask Ai" })
-vim.keymap.set("n", "<leader>ac", function() require("utils.git_ai").git_ai_commit() end, { desc = "Generate Ai Commit" })
-vim.keymap.set("n", "<leader>ab", function() require("utils.git_ai").git_ai_branch() end, { desc = "Generate Ai Branch" })
+-- Cortana AI Mappings
+vim.keymap.set({ "n", "x" }, "<leader>ai", function() require("utils.cortana").cortana() end, { desc = "Cortana Chat" })
+vim.keymap.set("n", "<leader>ac", function() require("utils.cortana_commit").cortana_commit() end, { desc = "Cortana Commit" })
 
 -- Git Mappings
 vim.keymap.set("n", "<leader>gc", "<cmd>Git commit<cr>", { noremap = true, silent = true, desc = "Git Commit" })
@@ -164,7 +163,7 @@ vim.keymap.set("n", "<leader>gs", "<cmd>Telescope git_status<cr>", { noremap = t
 vim.keymap.set("n", "<leader>gf", function() require("snacks").picker.git_log_file() end, { desc = "Git Current File History" })
 vim.keymap.set({ "n", "x" }, "<leader>gB", function() require("snacks").gitbrowse() end, { desc = "Git Browse" })
 
--- Git Ai, Hunks & Blame
+-- Git Hunks & Blame
 vim.keymap.set("n", "<leader>ghb", function() require("gitsigns").blame_line({ full = true }) end, { desc = "Blame Line" })
 vim.keymap.set("n", "<leader>ghB", function() require("gitsigns").blame() end, { desc = "Blame Buffer" })
 vim.keymap.set("n", "<leader>ghd", function() require("gitsigns").diffthis() end, { desc = "Diff This" })

@@ -78,6 +78,26 @@
   url: https://translate.google.com/?sl=es&tl=en&op=translate
 - name: Google YouTube
   url: https://www.youtube.com/
+- name: Jellyfin
+  url: http://192.168.1.17:8096/web/#/home
+- name: Transmission Dev
+  url: http://192.168.1.12:9091/transmission/web/
+- name: Transmission Buho
+  url: http://192.168.1.13:9091/transmission/web/
+- name: AriaNg
+  url: http://192.168.1.15/#!/downloading
+- name: Prowlarr
+  url: http://192.168.1.18:9696/
+- name: Navidrome
+  url: http://192.168.1.23:4533/app/
+- name: Lidarr
+  url: http://192.168.1.20:8686/
+- name: Comunicación de Datos, secciones C1 y C2-Classroom
+  url: https://classroom.google.com/c/Nzk3MzUzMDc4ODQ2
+- name: Laboratorio_3.pdf - Google Drive
+  url: https://drive.google.com/file/d/1cTT96Xsxj82W3nlU_28jS3a01yNHwy_K/view
+- name: Laboratorio #6 - Recuperación - Classroom
+  url: https://classroom.google.com/c/Nzk3Mzc4NDU3NTY0/a/ODg3OTAxMDU1Njg3/details
 - name: Arch - Wiki
   url: https://wiki.archlinux.org/title/Main_page
 - name: CommandLineFu
@@ -148,3 +168,5 @@
   url: https://lingojam.com/ZalgoText
 - name: iLovePDF
   url: https://www.ilovepdf.com/es
+- name: Pinterest
+  url: https://es.pinterest.com/

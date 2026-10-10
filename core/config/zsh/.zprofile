@@ -30,8 +30,9 @@ export GIT_EDITOR="nvim"
 export PIP_REQUIRE_VIRTUALENV=true
 export LANG="en_US.UTF-8"
 export LC_ALL="en_US.UTF-8"
+export SSH_AUTH_SOCK="$XDG_RUNTIME_DIR/ssh-agent.socket"
 
-#* =============================== path export ============================== *#
+#* ========================== environment variables ========================= *#
 
 export CARGO_HOME="$XDG_DATA_HOME"/cargo
 export PYTHON_HISTORY="$XDG_DATA_HOME/python/history"
@@ -49,6 +50,7 @@ export NUGET_PACKAGES="$HOME/.local/share/nuget"
 
 #* =============================== fzf options ============================== *#
 
+export HISTORY_IGNORE="(ls|cd|pwd|exit|sudo reboot|history|cd -|cd ..)"
 export FZF_DEFAULT_OPTS="
 	--color=fg:8,bg:-1,hl:12,fg+:7,bg+:15,hl+:4
 	--color=info:5,prompt:4,pointer:4,marker:1,spinner:6,header:1"
@@ -58,6 +60,6 @@ export FZF_CTRL_T_OPTS="
 	--preview 'bat -n --color=always {}'
 	--bind 'ctrl-/:change-preview-window(down|hidden|)'"
 
-#* =============================== fzf options ============================== *#
+#* =================================== path ================================= *#
 
 export PATH="$HOME/.local/bin:$CARGO_HOME/bin:$GOPATH/bin:$PATH"

@@ -14,14 +14,15 @@
 # Supported types:
 #   - push: Mirror local to remote. Files in remote missing locally are deleted.
 #   - pull: Mirror remote to local. Files locally missing in remote are deleted.
-#   - sync: Safe bidirectional merge. Updates newer files, NEVER deletes files.
+#   - sync: Stateful bidirectional sync. Propagates deletions and updates newer files.
 
 declare -r FORMAT_SUCCESS="\e[1;32m[SUCCESS]\e[0m"
 declare -r FORMAT_WARNING="\e[1;33m[WARNING]\e[0m"
 declare -r FORMAT_FAILURE="\e[1;31m[FAILURE]\e[0m"
 
 declare -g  IS_DRY_RUN="false"
-declare -g  CONFIG_FILE="$HOME/.config/sys-backup.conf"
+declare -g  CONFIG_FILE="$HOME/.config/sys-backup/config"
+declare -g  STATE_DIR="$HOME/.config/sys-backup/state"
 declare -gA OBSCURED_PASSWORDS
 
 [[ -f $CONFIG_FILE ]] && source "$CONFIG_FILE"
@@ -34,7 +35,7 @@ function help() {
 
 ${HELP_BOLD}DESCRIPTION:${HELP_RESET}
   Backs up local directories to an SMB server, supporting one-way mirroring
-  (push/pull) and safe non-destructive bidirectional synchronization.
+  (push/pull) and stateful bidirectional synchronization (sync).
 
 ${HELP_BOLD}OPTIONS:${HELP_RESET}
   -d  Dry-run simulation mode. Shows what would be copied without
@@ -72,6 +73,8 @@ function loadConfiguration() {
 		printf "%b %s\n" "$FORMAT_FAILURE" "No backup tasks defined in 'BACKUPS' array in '$CONFIG_FILE'." >&2
 		exit 1
 	fi
+
+	mkdir -p "$STATE_DIR"
 }
 
 
@@ -105,7 +108,7 @@ function performBackup() {
 	local -i exitStatus=0
 
 	if [[ $backupType == "push" ]]; then
-		printf "%s\n" "Starting push mirror of '$localPath' to '$remotePath'..."
+		printf "\n%s\n\n" " - Starting push mirror of '$localPath' to '$remotePath'..."
 
 		# Mirror local to remote. Files on remote not present in local are deleted.
 		rclone --config /dev/null sync "$localPath" :smb:"$remotePath" \
@@ -116,7 +119,7 @@ function performBackup() {
 		exitStatus=$?
 
 	elif [[ $backupType == "pull" ]]; then
-		printf "%s\n" "Starting pull mirror of '$remotePath' to '$localPath'..."
+		printf "\n%s\n\n" " - Starting pull mirror of '$remotePath' to '$localPath'..."
 
 		# Mirror remote to local. Files on local not present in remote are deleted.
 		rclone --config /dev/null sync :smb:"$remotePath" "$localPath" \
@@ -127,28 +130,66 @@ function performBackup() {
 		exitStatus=$?
 
 	elif [[ $backupType == "sync" ]]; then
-		printf "%s\n" "Starting safe bidirectional merge between '$localPath' and '$remotePath'..."
+		printf "\n%s\n\n" " - Starting stateful bidirectional sync between '$localPath' and '$remotePath'"
 
-		# Non-destructive bidirectional sync:
-		# Phase 1: Copy newer or missing files from local to remote (never deletes).
-		printf "%s\n" "Phase 1/2: Copying local changes to remote..."
-		rclone --config /dev/null copy "$localPath" :smb:"$remotePath" \
-			--update \
-			--smb-host "$IP_SERVER" \
-			--smb-user "$user" \
-			--smb-pass "$pass" \
+		# Sanitize path to form a unique, persistent state file per backup job
+		local stateId="$(echo "${credProfile}__${localPath}" | tr -cs 'a-zA-Z0-9._-' '_')"
+		local stateFile="$STATE_DIR/${stateId}.state"
+
+		local currentFiles=$(mktemp "${STATE_DIR}/curr.XXXXXX")
+		local deletedFiles=$(mktemp "${STATE_DIR}/del.XXXXXX")
+		trap 'rm -f "$currentFiles" "$deletedFiles"' RETURN
+
+		# Scan current local files
+		rclone --config /dev/null lsf -R --files-only "$localPath" | LC_ALL=C sort > "$currentFiles"
+
+		# If previous state exists, detect what was deleted locally since last run
+		if [[ -f $stateFile ]]; then
+			printf "%s\n" "Analyzing local deletions compared to previous state..."
+			LC_ALL=C comm -23 "$stateFile" "$currentFiles" > "$deletedFiles"
+
+			while IFS= read -r relFile; do
+				[[ -z $relFile ]] && continue
+				printf "%s\n" "Propagating local deletion to remote: $relFile"
+				rclone --config /dev/null deletefile :smb:"${remotePath%/}/$relFile" \
+					--smb-host "$IP_SERVER" \
+					--smb-user "$user" \
+					--smb-pass "$pass" \
+					"${rcloneOpts[@]}"
+			done < "$deletedFiles"
+		else
+			printf "%s\n" "No prior state file found for '$localPath'. Establishing new state baseline..."
+		fi
+
+		local -a syncOpts=(
+			"--update"
+			"--modify-window=2s"
 			"${rcloneOpts[@]}"
+			"--smb-host" "$IP_SERVER"
+			"--smb-user" "$user"
+			"--smb-pass" "$pass"
+		)
+
+		# Phase 1: Upload newer local files to remote
+		printf "%s\n" "Phase 1/2: Copying local changes to remote..."
+		rclone --config /dev/null copy "$localPath" :smb:"$remotePath" "${syncOpts[@]}"
 		local -i statusPush=$?
 
-		# Phase 2: Copy newer or missing files from remote to local (never deletes).
+		if ((statusPush != 0)); then
+			printf "%b %s\n" "$FORMAT_FAILURE" "Phase 1 failed. Aborting Phase 2 to prevent overwriting local files." >&2
+			return 1
+		fi
+
+		# Phase 2: Download newer or missing remote files to local
 		printf "%s\n" "Phase 2/2: Copying remote changes to local..."
-		rclone --config /dev/null copy :smb:"$remotePath" "$localPath" \
-			--update \
-			--smb-host "$IP_SERVER" \
-			--smb-user "$user" \
-			--smb-pass "$pass" \
-			"${rcloneOpts[@]}"
+		rclone --config /dev/null copy :smb:"$remotePath" "$localPath" "${syncOpts[@]}"
 		local -i statusPull=$?
+
+		# Update persistent state only if both phases succeeded and it's not a dry run
+		if [[ $IS_DRY_RUN != "true" && $statusPush -eq 0 && $statusPull -eq 0 ]]; then
+			printf "%s\n" "Saving updated synchronization state to '$stateFile'..."
+			rclone --config /dev/null lsf -R --files-only "$localPath" | LC_ALL=C sort > "$stateFile"
+		fi
 
 		if ((statusPush != 0 || statusPull != 0)); then
 			exitStatus=1

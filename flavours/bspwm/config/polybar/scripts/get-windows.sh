@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 function main() {
 	local desktopStatus=$(bspc query -T -d)
@@ -18,11 +18,7 @@ function main() {
 		windows=2
 	fi
 
-	case "$1" in
-		left)  printf "" ;;
-		right) printf "" ;;
-		icon)  printf "%s" "$windows" ;;
-	esac
+	printf "%s" "$windows"
 
 	return 0
 }

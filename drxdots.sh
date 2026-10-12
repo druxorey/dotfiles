@@ -27,7 +27,7 @@ ${FORMAT_BOLD}COMMANDS:${FORMAT_RESET}
   config  [FLAVOUR]  Configures user preferences (Git, NAS, secrets).
 
 ${FORMAT_BOLD}FLAVOURS:${FORMAT_RESET}
-  bspwm, cinnamon, kde, mangowm, minimal (core only)
+  bspwm, kde, minimal (core only)
 
 ${FORMAT_BOLD}OPTIONS:${FORMAT_RESET}
   -d                Show changes without modifying repository files (dry-run).

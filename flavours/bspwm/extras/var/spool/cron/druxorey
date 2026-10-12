@@ -1,3 +1,4 @@
 0 22 * * * DISPLAY=:0.0 /usr/bin/redshift -O 4000
 0 22 * * * /home/druxorey/.local/bin/sys-backup
+0 22 * * * /home/druxorey/.local/bin/sys-sync-playlists
 0 22 * * 0-4 sudo smbios-battery-ctl --set-charging-mode=standard

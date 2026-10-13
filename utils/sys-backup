@@ -100,17 +100,17 @@ function performBackup() {
 	local user="${SMB_USERS[$credProfile]}"
 	local pass="${OBSCURED_PASSWORDS[$credProfile]}"
 
-	if [[ -z $user ]] || [[ -z $pass ]]; then
+	if [[ -z $user || -z $pass ]]; then
 		printf "%b %s\n" "$FORMAT_FAILURE" "Credentials not found for profile '$credProfile' (Task: $localPath -> $remotePath)" >&2
 		return 1
 	fi
 
 	local -i exitStatus=0
+	local dateStamp=$(date '+%Y-%m-%d')
 
 	if [[ $backupType == "push" ]]; then
 		printf "\n%s\n\n" " - Starting push mirror of '$localPath' to '$remotePath'..."
 
-		# Mirror local to remote. Files on remote not present in local are deleted.
 		rclone --config /dev/null sync "$localPath" :smb:"$remotePath" \
 			--smb-host "$IP_SERVER" \
 			--smb-user "$user" \
@@ -121,7 +121,6 @@ function performBackup() {
 	elif [[ $backupType == "pull" ]]; then
 		printf "\n%s\n\n" " - Starting pull mirror of '$remotePath' to '$localPath'..."
 
-		# Mirror remote to local. Files on local not present in remote are deleted.
 		rclone --config /dev/null sync :smb:"$remotePath" "$localPath" \
 			--smb-host "$IP_SERVER" \
 			--smb-user "$user" \
@@ -130,71 +129,36 @@ function performBackup() {
 		exitStatus=$?
 
 	elif [[ $backupType == "sync" ]]; then
-		printf "\n%s\n\n" " - Starting stateful bidirectional sync between '$localPath' and '$remotePath'"
+		printf "\n%s\n\n" " - Starting native bidirectional sync between '$localPath' and '$remotePath'..."
 
-		# Sanitize path to form a unique, persistent state file per backup job
-		local stateId="$(echo "${credProfile}__${localPath}" | tr -cs 'a-zA-Z0-9._-' '_')"
-		local stateFile="$STATE_DIR/${stateId}.state"
+		local stateId=$(printf "%s__%s" "$credProfile" "$localPath" | tr -cs 'a-zA-Z0-9._-' '_')
+		local baselineInitFlag="$STATE_DIR/${stateId}.bisync_init"
 
-		local currentFiles=$(mktemp "${STATE_DIR}/curr.XXXXXX")
-		local deletedFiles=$(mktemp "${STATE_DIR}/del.XXXXXX")
-		trap 'rm -f "$currentFiles" "$deletedFiles"' RETURN
-
-		# Scan current local files
-		rclone --config /dev/null lsf -R --files-only "$localPath" | LC_ALL=C sort > "$currentFiles"
-
-		# If previous state exists, detect what was deleted locally since last run
-		if [[ -f $stateFile ]]; then
-			printf "%s\n" "Analyzing local deletions compared to previous state..."
-			LC_ALL=C comm -23 "$stateFile" "$currentFiles" > "$deletedFiles"
-
-			while IFS= read -r relFile; do
-				[[ -z $relFile ]] && continue
-				printf "%s\n" "Propagating local deletion to remote: $relFile"
-				rclone --config /dev/null deletefile :smb:"${remotePath%/}/$relFile" \
-					--smb-host "$IP_SERVER" \
-					--smb-user "$user" \
-					--smb-pass "$pass" \
-					"${rcloneOpts[@]}"
-			done < "$deletedFiles"
-		else
-			printf "%s\n" "No prior state file found for '$localPath'. Establishing new state baseline..."
-		fi
-
-		local -a syncOpts=(
-			"--update"
-			"--modify-window=2s"
+		local -a bisyncOpts=(
 			"${rcloneOpts[@]}"
 			"--smb-host" "$IP_SERVER"
 			"--smb-user" "$user"
 			"--smb-pass" "$pass"
+			"--modify-window=2s"
+			"--exclude" "venv/**"
+			"--exclude" ".venv/**"
+			"--exclude" "__pycache__/**"
+			"--exclude" "*.pyc"
+			"--exclude" ".git/*.lock"
 		)
 
-		# Phase 1: Upload newer local files to remote
-		printf "%s\n" "Phase 1/2: Copying local changes to remote..."
-		rclone --config /dev/null copy "$localPath" :smb:"$remotePath" "${syncOpts[@]}"
-		local -i statusPush=$?
-
-		if ((statusPush != 0)); then
-			printf "%b %s\n" "$FORMAT_FAILURE" "Phase 1 failed. Aborting Phase 2 to prevent overwriting local files." >&2
-			return 1
+		# First execution requires --resync to construct the mutual baseline
+		if [[ ! -f $baselineInitFlag ]]; then
+			printf "%s\n" "No previous bisync baseline found for '$localPath'. Running with --resync..."
+			bisyncOpts+=("--resync")
 		fi
 
-		# Phase 2: Download newer or missing remote files to local
-		printf "%s\n" "Phase 2/2: Copying remote changes to local..."
-		rclone --config /dev/null copy :smb:"$remotePath" "$localPath" "${syncOpts[@]}"
-		local -i statusPull=$?
+		rclone --config /dev/null bisync "$localPath" :smb:"$remotePath" "${bisyncOpts[@]}"
+		exitStatus=$?
 
-		# Update persistent state only if both phases succeeded and it's not a dry run
-		if [[ $IS_DRY_RUN != "true" && $statusPush -eq 0 && $statusPull -eq 0 ]]; then
-			printf "%s\n" "Saving updated synchronization state to '$stateFile'..."
-			rclone --config /dev/null lsf -R --files-only "$localPath" | LC_ALL=C sort > "$stateFile"
-		fi
-
-		if ((statusPush != 0 || statusPull != 0)); then
-			exitStatus=1
-		else
-			exitStatus=0
+		# Update baseline flag only if bisync succeeded and not in dry-run
+		if ((exitStatus == 0)) && [[ $IS_DRY_RUN != "true" ]]; then
+			touch "$baselineInitFlag"
 		fi
 
 	else

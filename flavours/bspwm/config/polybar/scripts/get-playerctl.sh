@@ -29,6 +29,7 @@ function main() {
 
 	local title=$(playerctl -p "$activePlayer" metadata title 2>/dev/null)
 	local artist=$(playerctl -p "$activePlayer" metadata artist 2>/dev/null)
+	artist="${artist%%;*}"
 
 	[[ -z $title ]] && title="Unknown"
 	artist="${artist:+-  $artist}"

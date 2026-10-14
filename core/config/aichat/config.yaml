@@ -5,33 +5,28 @@ left_prompt: '{color.purple}{?session {session}/}{?role {role}}{!role cortana}{c
 clients:
   - type: gemini
     models:
-      - name: gemini-3.8-flash
+      - name: gemini-3.6-flash
         max_input_tokens: 1048576
       - name: gemini-3.5-flash-lite
         max_input_tokens: 1048576
       - name: gemini-2.5-flash-lite
+        max_input_tokens: 1048576
 
   - type: openai-compatible
     name: ollama
     api_base: http://localhost:11434/v1
     models:
       - name: cortana
-        max_input_tokens: 131072
+        max_input_tokens: 4096
       - name: cortana-science
-        max_input_tokens: 131072
+        max_input_tokens: 4096
       - name: cortana-code
-        max_input_tokens: 32768
-      - name: shell
-        max_input_tokens: 32768
+        max_input_tokens: 8192
+      - name: cortana-shell
+        max_input_tokens: 4096
       - name: commit
-        max_input_tokens: 32768
+        max_input_tokens: 4096
       - name: dict
-        max_input_tokens: 131072
+        max_input_tokens: 2048
       - name: translator
-        max_input_tokens: 32768
-      - name: qwen2.5:1.5b
-        max_input_tokens: 32768
-      - name: qwen2.5-coder:3B
-        max_input_tokens: 32768
-      - name: llama3.2:3B
-        max_input_tokens: 131072
+        max_input_tokens: 2048

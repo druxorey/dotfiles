@@ -3,7 +3,6 @@
 declare -r FORMAT_SUCCESS="\e[1;32m[SUCCESS]\e[0m"
 declare -r FORMAT_WARNING="\e[1;33m[WARNING]\e[0m"
 declare -r FORMAT_FAILURE="\e[1;31m[FAILURE]\e[0m"
-declare -r FORMAT_INFO="\e[1;34m[INFO]\e[0m"
 
 declare -r REPO_URL="https://github.com/druxorey/dotfiles.git"
 
@@ -26,8 +25,7 @@ ${FORMAT_BOLD}COMMANDS:${FORMAT_RESET}
   install [FLAVOUR]  Installs system completely without prompts (yay, packages, configs, services).
   config  [FLAVOUR]  Configures user preferences (Git, NAS, secrets).
 
-${FORMAT_BOLD}FLAVOURS:${FORMAT_RESET}
-  bspwm, kde, minimal (core only)
+${FORMAT_BOLD}FLAVOURS:${FORMAT_RESET} bspwm, kde, minimal (core only)
 
 ${FORMAT_BOLD}OPTIONS:${FORMAT_RESET}
   -d                Show changes without modifying repository files (dry-run).
@@ -77,7 +75,7 @@ function ensureRepository() {
 		backup)
 			local dirContents=$(ls -A 2>/dev/null)
 			if [[ -z "$dirContents" ]]; then
-				printf "%b Empty directory detected. Initializing dotfiles repository...\n" "$FORMAT_INFO"
+				printf "%b Empty directory detected. Initializing dotfiles repository...\n" "$"
 				if ! git clone "$REPO_URL" .; then
 					printf "%b Failed to clone dotfiles repository into current directory.\n" "$FORMAT_FAILURE" >&2
 					return 1
@@ -148,7 +146,8 @@ function getTargetPath() {
 		*".obsidian"*)   echo "$parent/config/obsidian" ;;
 		*".config/"*)    echo "$parent/config/${src#*.config/}" ;;
 		*".local/"*)     echo "$parent/local/${src#*.local/}" ;;
-		"$HOME/"*)       local tmp="${src#\~/}"; echo "$parent/home/${tmp#$HOME/}" ;;
+		"$HOME/"*)       local tmp="${src#$HOME/}"; echo "$parent/home/${tmp#/}" ;;
+		"~/"*)           echo "$parent/home/${src#\~/}" ;;
 		"~"*)            echo "$parent/home/${src#\~}" ;;
 		*)               echo "$parent/extras/${src#/}" ;;
 	esac
@@ -197,7 +196,7 @@ function backupBookmarks() {
 function backupItem() {
 	[[ -z "$SOURCE_PATH" ]] && return 0
 	
-	if [[ "$CURRENT_SECTION" != "core" ]] && [[ "$CURRENT_SECTION" != "$FLAVOUR" ]]; then
+	if [[ "$CURRENT_SECTION" != "core" ]] && [[ "$CURRENT_SECTION" != "minimal" ]] && [[ "$CURRENT_SECTION" != "$FLAVOUR" ]]; then
 		SOURCE_PATH=""
 		EXCLUDES=()
 		return 0
@@ -338,21 +337,22 @@ function backupUtils() {
 function backupPackages() {
 	local sysPackagesFile="$HOME/.local/share/packages.list"
 	local corePackagesFile="core/core.packages"
+	local minimalPackagesFile="flavours/minimal/minimal.packages"
 
 	if [[ ! -f "$sysPackagesFile" ]]; then
 		printf "\n\e[0;33m[SKIP]\e[0m System packages list not found: %s\n" "$sysPackagesFile"
 		return 0
 	fi
 
-	if [[ -z "$FLAVOUR" ]]; then
-		printf "\n\e[0;33m[SKIP]\e[0m No active flavour detected or specified for package assignment.\n"
-		return 0
+	# Determine target packages file (defaults to minimal)
+	local targetPackagesFile="$minimalPackagesFile"
+	if [[ -n "$FLAVOUR" && "$FLAVOUR" != "core" && "$FLAVOUR" != "minimal" ]]; then
+		targetPackagesFile="flavours/$FLAVOUR/$FLAVOUR.packages"
 	fi
 
-	local flavourPackagesFile="flavours/$FLAVOUR/$FLAVOUR.packages"
-	if [[ ! -f "$flavourPackagesFile" ]]; then
-		mkdir -p "$(dirname "$flavourPackagesFile")"
-		touch "$flavourPackagesFile"
+	if [[ ! -f "$targetPackagesFile" ]]; then
+		mkdir -p "$(dirname "$targetPackagesFile")"
+		touch "$targetPackagesFile"
 	fi
 
 	declare -A coreMap=()
@@ -364,14 +364,23 @@ function backupPackages() {
 		done < "$corePackagesFile"
 	fi
 
-	declare -A flavourMap=()
+	declare -A minimalMap=()
+	if [[ -f "$minimalPackagesFile" ]]; then
+		while IFS= read -r pkg || [[ -n "$pkg" ]]; do
+			pkg=$(cleanValue "$pkg")
+			[[ -z "$pkg" || "$pkg" =~ ^# ]] && continue
+			minimalMap["$pkg"]=1
+		done < "$minimalPackagesFile"
+	fi
+
+	declare -A targetMap=()
 	while IFS= read -r pkg || [[ -n "$pkg" ]]; do
 		pkg=$(cleanValue "$pkg")
 		[[ -z "$pkg" || "$pkg" =~ ^# ]] && continue
 		# Clean any stray syntax if previously corrupted
 		[[ "$pkg" =~ ^(declare|new_packages|\(|\)|#) ]] && continue
-		flavourMap["$pkg"]=1
-	done < "$flavourPackagesFile"
+		targetMap["$pkg"]=1
+	done < "$targetPackagesFile"
 
 	# Sourcing the file populates the bash array new_packages
 	local -a new_packages=()
@@ -391,7 +400,8 @@ function backupPackages() {
 	fi
 
 	# - Discard if in core.packages
-	# - Discard if already in flavour.packages
+	# - Discard if in minimal.packages
+	# - Discard if already in target packages file (e.g. flavour.packages)
 	# - Retain only truly new packages
 	local -a trulyNewPackages=()
 	for pkg in "${sourcePackages[@]}"; do
@@ -401,35 +411,36 @@ function backupPackages() {
 		[[ "$pkg" =~ ^(declare|new_packages|\(|\)|#) ]] && continue
 
 		[[ -n "${coreMap["$pkg"]}" ]] && continue
-		[[ -n "${flavourMap["$pkg"]}" ]] && continue
+		[[ -n "${minimalMap["$pkg"]}" ]] && continue
+		[[ -n "${targetMap["$pkg"]}" ]] && continue
 
 		trulyNewPackages+=("$pkg")
-		flavourMap["$pkg"]=1
+		targetMap["$pkg"]=1
 	done
 
 	local count=${#trulyNewPackages[@]}
 	if [[ "$count" -eq 0 ]]; then
 		backupIndex=$((backupIndex + 1))
-		printf "\r\e[1;32m ✔ [\e[0m%02d\e[1;32m] Packages up to date:\e[0m %s (0 new)" "$backupIndex" "$flavourPackagesFile"
+		printf "\r\e[1;32m ✔ [\e[0m%02d\e[1;32m] Packages up to date:\e[0m %s (0 new)" "$backupIndex" "$targetPackagesFile"
 		tput el
 		return 0
 	fi
 
 	if [[ "$IS_DRY_RUN" -eq 1 ]]; then
-		printf "\e[1;34m[DRY-RUN]\e[0m Add %d new packages to %s: %s\n" "$count" "$flavourPackagesFile" "${trulyNewPackages[*]}"
+		printf "\e[1;34m[DRY-RUN]\e[0m Add %d new packages to %s: %s\n" "$count" "$targetPackagesFile" "${trulyNewPackages[*]}"
 		return 0
 	fi
 
 	for pkg in "${trulyNewPackages[@]}"; do
-		echo "$pkg" >> "$flavourPackagesFile"
+		echo "$pkg" >> "$targetPackagesFile"
 	done
 
 	# Clean out any stray lines or empty lines, keep pure list of sorted packages
-	local tempClean=$(grep -v -E '^(declare|new_packages|\(|\)|#|[[:space:]]*$)' "$flavourPackagesFile" | sort -u)
-	echo "$tempClean" > "$flavourPackagesFile"
+	local tempClean=$(grep -v -E '^(declare|new_packages|\(|\)|#|[[:space:]]*$)' "$targetPackagesFile" | sort -u)
+	echo "$tempClean" > "$targetPackagesFile"
 
 	backupIndex=$((backupIndex + 1))
-	printf "\r\e[1;32m ✔ [\e[0m%02d\e[1;32m] Successfully backed up:\e[0m %s (+%d new packages)" "$backupIndex" "$flavourPackagesFile" "$count"
+	printf "\r\e[1;32m ✔ [\e[0m%02d\e[1;32m] Successfully backed up:\e[0m %s (+%d new packages)" "$backupIndex" "$targetPackagesFile" "$count"
 	tput el
 	return 0
 }
@@ -464,12 +475,17 @@ function backupDotfiles() {
 
 	parseConfig "core/core.yaml"
 	
-	if [[ -n "$FLAVOUR" ]]; then
+	local minimalYaml="flavours/minimal/minimal.yaml"
+	if [[ -f "$minimalYaml" ]]; then
+		parseConfig "$minimalYaml"
+	fi
+
+	if [[ -n "$FLAVOUR" && "$FLAVOUR" != "minimal" && "$FLAVOUR" != "core" ]]; then
 		local flavourYaml="flavours/$FLAVOUR/$FLAVOUR.yaml"
 		if [[ -f "$flavourYaml" ]]; then
 			parseConfig "$flavourYaml"
 		else
-			printf "[INFO] Flavour configuration not found: %s. Skipping flavour backup.\n" "$flavourYaml"
+			printf "Flavour configuration not found: %s. Skipping flavour backup.\n" "$flavourYaml"
 		fi
 	fi
 	

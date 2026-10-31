@@ -1,0 +1,4 @@
+name: minimal
+routes:
+  - source: "~/.config/kitty/"
+  - source: "~/.config/mpv/"

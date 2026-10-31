@@ -7,11 +7,9 @@ routes:
   - source: "~/.config/cmus/rc"
   - source: "~/.config/fastfetch/"
   - source: "~/.config/feh/"
-  - source: "~/.config/kitty/"
   - source: "~/.config/aichat/"
     exclude:
       - "sessions"
-  - source: "~/.config/mpv/"
   - source: "~/.config/nvim/"
   - source: "~/.config/oh-my-posh/"
   - source: "~/.config/tmux/"

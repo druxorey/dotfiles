@@ -5,31 +5,28 @@ declare -i MIN_LENGTH_ARTIST=20
 declare -i MAX_TOTAL_LENGTH=73
 
 function main() {
-	local playerStatus="" activePlayer=""
 
-	for player in $(playerctl --list-all 2>/dev/null); do
-		if [[ $(playerctl -p "$player" status 2>/dev/null) == "Playing" ]]; then
-			activePlayer="$player"
-			playerStatus="Playing"
-			break
-		fi
-	done
-
-	if [[ -z $activePlayer ]]; then
-		activePlayer=$(playerctl --list-all 2>/dev/null | head -n 1)
-		if [[ -n $activePlayer ]]; then
-			playerStatus=$(playerctl -p "$activePlayer" status 2>/dev/null)
-		fi
+	if pgrep -x lofi > /dev/null; then
+		printf "󰋋 Lofi Radio\n"
+		return 0
 	fi
 
-	if [[ -z $playerStatus ]]; then
+	local cmusOutput=$(cmus-remote -Q 2>/dev/null)
+
+	if [[ -z "$cmusOutput" ]]; then
 		printf " \n"
-		return
+		return 0
 	fi
 
-	local title=$(playerctl -p "$activePlayer" metadata title 2>/dev/null)
-	local artist=$(playerctl -p "$activePlayer" metadata artist 2>/dev/null)
-	artist="${artist%%;*}"
+	local playerStatus=""
+	local title=""
+	local artist=""
+
+	eval "$(awk '
+		/^status / {print "playerStatus=\"" $2 "\""}
+		/^tag artist / {sub(/^tag artist /, ""); print "artist=\"" $0 "\""}
+		/^tag title / {sub(/^tag title /, ""); print "title=\"" $0 "\""}
+	' <<< "$cmusOutput")"
 
 	[[ -z $title ]] && title="Unknown"
 	artist="${artist:+-  $artist}"
@@ -65,8 +62,8 @@ function main() {
 	fi
 
 	case "$playerStatus" in
-		Playing) printf "    %s  %s\n" "$title" "$artist" ;;
-		Paused)  printf "    %s  %s\n" "$title" "$artist" ;;
+		playing) printf "    %s  %s\n" "$title" "$artist" ;;
+		paused)  printf "    %s  %s\n" "$title" "$artist" ;;
 		*)       printf "    Stopped\n" ;;
 	esac
 }

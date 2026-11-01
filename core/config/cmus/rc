@@ -13,6 +13,7 @@ set lib_sort=title album albumartist date discnumber tracknumber filename play_c
 set pl_sort=album tracknumber
 set play_library=false
 set play_sorted=true
+set follow=true
 set shuffle=tracks
 set start_view=playlist
 bind -f common 0 view settings

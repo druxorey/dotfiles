@@ -1,8 +1,9 @@
-bluetooth
-NetworkManager
-ufw
-tlp
-smb
-nmb
-cups
-ipp-usb
+NetworkManager.service
+bluetooth.service
+ufw.service
+smb.service
+nmb.service
+cups.service
+ipp-usb.service
+docker.service
+tailscaled.service

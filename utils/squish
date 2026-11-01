@@ -57,25 +57,26 @@ function main() {
 		printf "%b No output name was specified, it will be used: %s\n" "$FORMAT_WARNING" "$outputFile"
 	fi
 
-	local vcodec="libx265"
-	local preset="slow"
-	local -i crf=17
+	local vcodec="hevc_vaapi"
+	local -i quality=22
 	local acodec="copy"
 	local audioBitrate="128k"
 
 	case $compressionLevel in
-		0) ;;
-		1) crf=23; acodec="aac" ; audioBitrate="192k" ;;
-		2) crf=28; acodec="aac" ; audioBitrate="128k" ;;
-		3) crf=33; acodec="aac" ; audioBitrate="96k"  ; preset="slower" ;;
+		0) quality=18 ;;
+		1) quality=23; acodec="aac" ; audioBitrate="192k" ;;
+		2) quality=28; acodec="aac" ; audioBitrate="128k" ;;
+		3) quality=33; acodec="aac" ; audioBitrate="96k"  ;;
 		*) printf "%b Compression level '%s' is invalid. Valid options are: [0..3].\n" "$FORMAT_FAILURE" "$compressionLevel" >&2 && exit 1 ;;
 	esac
 
 	local -a ffmpegCMD=(
-		ffmpeg -hide_banner -y -i "$inputFile"
+		ffmpeg -hide_banner -y
+		-hwaccel vaapi -hwaccel_device /dev/dri/renderD128 -hwaccel_output_format vaapi
+		-i "$inputFile"
 		-map 0:v:0 -map 0:a -map 0:s? -map 0:t?
 		-fps_mode cfr
-		-c:v "$vcodec" -preset "$preset" -crf "$crf" -pix_fmt yuv420p10le
+		-c:v "$vcodec" -compression_level 1 -rc_mode CQP -global_quality "$quality"
 		-c:a "$acodec"
 		-c:s copy -c:t copy -map_metadata 0
 	)

@@ -5,48 +5,41 @@ declare -r FORMAT_WARNING="\e[1;33m[WARNING]\e[0m"
 declare -r FORMAT_ERROR="\e[1;31m[ERROR]\e[0m"
 
 declare -r ROFI_CONFIG="$HOME/.config/rofi/modules/panel_wallpaper.rasi"
+declare -r WALLPAPERS_PATH="$HOME/Pictures/Wallpapers"
+declare -r SYMLINK_ACTUAL="$HOME/.local/share/wallpaper_actual"
 
-declare -r DARK_WALLPAPERS_PATH="$HOME/Pictures/Wallpapers/Dracula"
-declare -r LIGHT_WALLPAPERS_PATH="$HOME/Pictures/Wallpapers/Alucard"
-declare -r ACTUAL_WALLPAPER_PATH="$HOME/.local/share/wallpaper_actual.png"
-declare -r DARK_LINK="$HOME/.local/share/wallpaper_dark.png"
-declare -r LIGHT_LINK="$HOME/.local/share/wallpaper_light.png"
+main() {
+    local theme=$(cat "$HOME/.cache/actual_theme" 2>/dev/null)
 
-function main() {
-	local wallpapersPath=$LIGHT_WALLPAPERS_PATH
-	local message="Wallpapers for Alucard"
-	local targetLink=$LIGHT_LINK
+    case "$theme" in
+        dark)  local dir="Dracula"; local prefix="D" ;;
+        *)     local dir="Alucard"; local prefix="A" ;;
+    esac
 
-	if [[ $(cat "$HOME/.cache/actual_theme") == "dark" ]]; then
-		wallpapersPath=$DARK_WALLPAPERS_PATH
-		message="Wallpapers for Dracula"
-		targetLink=$DARK_LINK
-	fi
+    local themePath="$WALLPAPERS_PATH/$dir"
+    printf "Loading wallpapers from: %s\n" "$themePath"
 
-	printf "Loading wallpapers from: %s\n" "$wallpapersPath"
+    local selection=$(for img in "$WALLPAPERS_PATH/.Thumbnails/$prefix"*.webp; do
+        [ -e "$img" ] || continue
+        echo -en "$(basename "$img" .webp).jxl\0icon\x1f$img\n"
+    done | rofi -dmenu -m -1 -show-icons -mesg "Wallpapers for $dir" -config "$ROFI_CONFIG")
 
-	local selection=$(for img in "$wallpapersPath"/*.{jpg,jpeg,png}; do
-		[ -e "$img" ] || continue
-		echo -en "$(basename "$img")\0icon\x1f$img\n"
-	done | rofi -dmenu -m -1 -show-icons -mesg "$message" -config $ROFI_CONFIG)
+    [[ -z "$selection" ]] && { printf "%b No wallpaper selected\n" "$FORMAT_WARNING"; return 0; }
 
-	if [ -n "$selection" ]; then
-		ln -sf "$wallpapersPath/$selection" "$targetLink"
-		ln -sf "$targetLink" "$ACTUAL_WALLPAPER_PATH"
+    local id=$(echo "$selection" | grep -oP '\d+')
 
-		if feh --bg-fill "$ACTUAL_WALLPAPER_PATH"; then
-			printf "%b Wallpaper set to: %s\n" "$FORMAT_SUCCESS" "$selection"
-			notify-send "New wallpaper: $selection" -i "$ACTUAL_WALLPAPER_PATH" --app-name "Wallpaper Manager" -u low
-		else
-			printf "%b Failed to set wallpaper: %s\n" "$FORMAT_ERROR" "$selection"
-			notify-send "Failed to set wallpaper: $selection" --app-name "Wallpaper Manager" -u critical
-			return 1
-		fi
-	else
-		printf "%b No wallpaper selected\n" "$FORMAT_WARNING"
-	fi
+    ln -sf "$WALLPAPERS_PATH/Dracula/D$id.jxl" "$HOME/.local/share/wallpaper_dark"
+    ln -sf "$WALLPAPERS_PATH/Alucard/A$id.jxl" "$HOME/.local/share/wallpaper_light"
+    ln -sf "$themePath/$selection" "$SYMLINK_ACTUAL"
 
-	return 0
+    if feh --bg-fill "$SYMLINK_ACTUAL"; then
+        printf "%b Wallpaper set to: %s\n" "$FORMAT_SUCCESS" "$selection"
+        notify-send "New wallpaper: $selection" -i "$SYMLINK_ACTUAL" --app-name "Wallpaper Manager" -u low
+    else
+        printf "%b Failed to set wallpaper: %s\n" "$FORMAT_ERROR" "$selection"
+        notify-send "Failed to set wallpaper" -u critical
+        return 1
+    fi
 }
 
 main "$@"

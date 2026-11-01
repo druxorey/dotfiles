@@ -4,7 +4,7 @@ declare -r FORMAT_SUCCESS="\e[1;32m[SUCCESS]\e[0m"
 declare -r FORMAT_ERROR="\e[1;31m[ERROR]\e[0m"
 
 declare -r CACHE_FILE=~/.cache/actual_theme
-declare -r ACTUAL_WALLPAPER_PATH="$HOME/.local/share/wallpaper_actual.png"
+declare -r SYMLINK_ACTUAL="$HOME/.local/share/wallpaper_actual"
 
 declare -A APP_ROUTES
 
@@ -14,8 +14,7 @@ APP_ROUTES[rofi]="$HOME/.config/rofi/shared"
 APP_ROUTES[bspwm]="$HOME/.config/bspwm"
 APP_ROUTES[dunst]="$HOME/.config/dunst"
 APP_ROUTES[ohmyposh]="$HOME/.config/oh-my-posh/"
-APP_ROUTES[nvim_theme]="$HOME/.config/nvim/lua/plugins"
-APP_ROUTES[nvim_lualine]="$HOME/.config/nvim/lua/plugins"
+APP_ROUTES[nvim]="$HOME/.config/nvim/lua/core"
 APP_ROUTES[tmux]="$HOME/.config/tmux"
 APP_ROUTES[zathura]="$HOME/.config/zathura"
 APP_ROUTES[yazi]="$HOME/.config/yazi"
@@ -28,8 +27,7 @@ APP_FILE[rofi]="colorscheme.rasi"
 APP_FILE[bspwm]="bspwmrc"
 APP_FILE[dunst]="dunstrc"
 APP_FILE[ohmyposh]="theme.omp.json"
-APP_FILE[nvim_theme]="colorscheme.lua"
-APP_FILE[nvim_lualine]="lazy-lualine.lua"
+APP_FILE[nvim]="colorscheme.lua"
 APP_FILE[tmux]="tmux.conf"
 APP_FILE[zathura]="zathurarc"
 APP_FILE[yazi]="theme.toml"
@@ -80,7 +78,8 @@ function main() {
 
 	printf "Updating wallpaper link for %s mode\n" "$mode"
 
-	if ln -sf "$HOME/.local/share/wallpaper_$mode.png" "$ACTUAL_WALLPAPER_PATH"; then
+	ln -sf "$HOME/.local/share/wallpaper_$mode" "$SYMLINK_ACTUAL"
+    if feh --bg-fill "$SYMLINK_ACTUAL"; then
 		printf "%b Wallpaper link updated.\n" "$FORMAT_SUCCESS"
 	else
 		printf "%b Failed to update wallpaper link.\n" "$FORMAT_ERROR"

@@ -14,7 +14,7 @@
 /! ========================================================================== */
 
 * {
-    font: "Noto Sans Nerd Font Medium 11";
+	font: "Noto Sans Nerd Font Medium 11";
 
 	drx-color-base: #191A21;
 	drx-color-surface: #21222C;
@@ -26,9 +26,9 @@
 	drx-color-deactivate: #6C6F89;
 
 	drx-color-comment: #6272A4;
-    drx-color-accent: #BD93F9;
-    drx-color-hover: #D6ACFF;
-    drx-color-urgent: #ff5555;
+	drx-color-accent: #BD93F9;
+	drx-color-hover: #D6ACFF;
+	drx-color-urgent: #FF5555;
 
 	drx-border-big: 10px;
 	drx-border-small: 6px;

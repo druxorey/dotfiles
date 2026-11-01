@@ -16,6 +16,8 @@ function main() {
 	displayNames[1]="󰥔   Normal"
 	displayNames[2]="󱐋   Performance"
 	displayNames[3]="󰺵   Game Mode"
+	displayNames[4]="󰚥   Desktop Limit (80%)"
+	displayNames[5]="󰂄   Night Full Charge (100%)"
 
 	local battery=$(upower -i /org/freedesktop/UPower/devices/battery_BAT0)
 	local batteryHoursLeft=$(echo "$battery" | grep "time to" | awk '{print $4, $5}')
@@ -36,6 +38,25 @@ function main() {
 	esac
 
 	local rofiOption=$(printf "%s\n" "${displayNames[@]}" | rofi -dmenu -m -1 -a "$selectedPlan" -mesg "$message" -config $ROFI_CONFIG)
+
+	case "$rofiOption" in
+		"${displayNames[4]}")
+			if sudo smbios-battery-ctl --set-charging-mode=custom --set-custom-charge-interval=50 80; then
+				notify-send -u low "Modo Batería" "Umbral activado (50%-80%)" --app-name "Energy Manager"
+			else
+				notify-send -u critical "Modo Batería" "Error al aplicar el umbral" --app-name "Energy Manager"
+			fi
+			exit 0
+			;;
+		"${displayNames[5]}")
+			if sudo smbios-battery-ctl --set-charging-mode=standard; then
+				notify-send -u normal "Modo Batería" "Carga completa (100%) lista para la noche" --app-name "Energy Manager"
+			else
+				notify-send -u critical "Modo Batería" "Error al activar modo 100%" --app-name "Energy Manager"
+			fi
+			exit 0
+			;;
+	esac
 
 	local tlpConfigFile="$TLP_PATH/tlp.d/01-normal.conf"
 	local powerPlan="normal"

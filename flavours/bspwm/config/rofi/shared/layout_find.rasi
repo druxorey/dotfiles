@@ -16,8 +16,8 @@
 @import "layout_default.rasi"
 
 configuration {
-	kb-row-up: "K,Up";
-	kb-row-down: "J,Down";
+    kb-row-up: "Up,Control+k";
+    kb-row-down: "Down,Control+j";
 }
 
 module {

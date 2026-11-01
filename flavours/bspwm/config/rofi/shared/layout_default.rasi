@@ -18,6 +18,8 @@
 configuration {
 	me-select-entry: "MousePrimary";
 	me-accept-entry: "!MousePrimary";
+	kb-remove-to-eol: "";
+    kb-accept-entry: "Return,KP_Enter";
 
 	disable-history: false;
 	case-sensitive: false;

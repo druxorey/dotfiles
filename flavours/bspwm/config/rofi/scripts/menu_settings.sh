@@ -6,12 +6,30 @@ declare -r FORMAT_WARNING="\e[1;33m[WARNING]\e[0m"
 declare -r ROFI_CONFIG="$HOME/.config/rofi/modules/menu_settings.rasi"
 declare -r SCRIPTS_PATH="$HOME/.config/rofi/scripts"
 
+function getAirplaneStatus() {
+    local wifi=$(nmcli radio wifi)
+    local btBlocked=$(rfkill list bluetooth | grep -i "Soft blocked" | awk '{print $3}')
+    if [[ "$wifi" == "disabled" && "$btBlocked" == "yes" ]]; then
+        printf "Off"
+    else
+        printf "On"
+    fi
+}
+
+
+function getNotificationStatus() {
+    if [ "$(dunstctl is-paused)" = "true" ]; then
+        printf "On"
+    else
+        printf "Off"
+    fi
+}
+
+
 function toggleAirplaneMode() {
 	printf "Checking network status...\n"
-	wifi_status=$(nmcli radio wifi)
-	bluetooth_status=$(rfkill list bluetooth | grep -i "Soft blocked" | awk '{print $3}')
 
-	if [[ "$wifi_status" == "disabled" && "$bluetooth_status" == "yes" ]]; then
+	if [[ "$(getAirplaneStatus)" == "Off" ]]; then
 		notify-send "Deactivated" --app-name "Airplane Mode" -u low 
 		nmcli radio wifi on
 		rfkill unblock bluetooth
@@ -36,12 +54,13 @@ function main() {
 
 	menuNames[0]="󰖩   Wifi"
 	menuNames[1]="   Bluetooth"
-	menuNames[2]="󰀝   Airplane Mode"
-	menuNames[3]="   Notifications"
+	menuNames[2]="󰀝   Toggle $(getAirplaneStatus) Airplane Mode"
+	menuNames[3]="   Toggle $(getNotificationStatus) Notifications"
 	menuNames[4]="󰹑   Display"
 	menuNames[5]="󰂄   Energy"
-	menuNames[6]=$([[ "$actualTheme" == "dark" ]] && printf "   Light Mode" || printf "   Dark Mode")
+	menuNames[6]="$([[ $actualTheme == 'dark' ]] && printf '   Light Mode' || printf '   Dark Mode')"
 	menuNames[7]="   Wallpaper"
+	menuNames[8]="   Shortcuts"
 
 	menuCommands[0]="sh $SCRIPTS_PATH/panel_wifi.sh"
 	menuCommands[1]="blueman-manager"
@@ -51,6 +70,7 @@ function main() {
 	menuCommands[5]="sh $SCRIPTS_PATH/panel_energy.sh"
 	menuCommands[6]="sh $SCRIPTS_PATH/toggle_theme.sh"
 	menuCommands[7]="sh $SCRIPTS_PATH/panel_wallpaper.sh"
+	menuCommands[8]="sh $SCRIPTS_PATH/panel_shortcuts.sh"
 
 	local selectedIndex=$(printf "%s\n" "${menuNames[@]}" | rofi -dmenu -format i -m -1 -config $ROFI_CONFIG)
 	echo $selectedIndex

@@ -1,29 +1,46 @@
 #!/usr/bin/env bash
 
 declare -r FORMAT_SUCCESS="\e[1;32m[SUCCESS]\e[0m"
-declare -r FORMAT_WARNING="\e[1;33m[WARNING]\e[0m"
 declare -r FORMAT_FAILURE="\e[1;31m[FAILURE]\e[0m"
 
 declare -r SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 declare -r REPO_DIR="$(cd "$SCRIPT_DIR/../.." && pwd)"
+declare -r FLAVOUR_NAME="${SCRIPT_DIR##*/}"
 
 function setupPermissions() {
 	printf "Configuring bspwm script permissions...\n"
 
-	chmod +x "$HOME/.config/bspwm/bspwmrc"* 2>/dev/null || true
-	chmod +x "$HOME/.config/sxhkd/sxhkdrc"* 2>/dev/null || true
-	chmod +x "$HOME/.config/autorandr/preswitch" 2>/dev/null || true
-	chmod +x "$HOME/.config/autorandr/postswitch" 2>/dev/null || true
-	chmod +x "$HOME/.config/rofi/utilities/get_shortcuts.py" 2>/dev/null || true
+	local target
+	for target in \
+		"$HOME/.config/bspwm/bspwmrc"* \
+		"$HOME/.config/sxhkd/sxhkdrc"* \
+		"$HOME/.config/autorandr/preswitch" \
+		"$HOME/.config/autorandr/postswitch" \
+		"$HOME/.config/rofi/utilities/get_shortcuts.py"; do
+		if [[ -f $target ]]; then
+			chmod +x "$target" || return 1
+		fi
+	done
 
-	find "$HOME/.config/polybar/scripts" "$HOME/.config/rofi/scripts" "$HOME/.config/dunst/scripts" -type f -name "*.sh" -exec chmod +x {} + 2>/dev/null || true
+	local -a scriptDirs=()
+	local scriptDir
+	for scriptDir in "$HOME/.config/polybar/scripts" "$HOME/.config/rofi/scripts" "$HOME/.config/dunst/scripts"; do
+		if [[ -d $scriptDir ]]; then
+			scriptDirs+=("$scriptDir")
+		fi
+	done
+
+	if ((${#scriptDirs[@]} > 0)); then
+		find "${scriptDirs[@]}" -type f -name "*.sh" -exec chmod +x {} + || return 1
+	fi
 
 	printf "%b Configured bspwm script permissions\n" "$FORMAT_SUCCESS"
 	return 0
 }
 
-
 function main() {
+	local opt
+
 	while getopts "h" opt; do
 		case $opt in
 			h) printf "\e[1;34mUSAGE:\e[0m %s\n" "${0##*/}" && return 0 ;;
@@ -32,15 +49,13 @@ function main() {
 	done
 	shift $((OPTIND - 1))
 
-	printf "Starting bspwm Flavour Installation...\n"
-
-	"$REPO_DIR/cmd/ensure-sudo.sh" || return 1
-	"$REPO_DIR/cmd/install-packages.sh" "$SCRIPT_DIR/bspwm.packages" || return 1
-	"$REPO_DIR/cmd/deploy-configs.sh" "$SCRIPT_DIR" || return 1
+	printf "Installing '%s'...\n" "$FLAVOUR_NAME"
+	bash "$REPO_DIR/cmd/install-packages.sh" "$SCRIPT_DIR/$FLAVOUR_NAME.packages" || return 1
+	bash "$REPO_DIR/cmd/deploy-configs.sh" "$SCRIPT_DIR" || return 1
 	setupPermissions || return 1
-	"$REPO_DIR/cmd/enable-services.sh" "$SCRIPT_DIR/bspwm.services" || return 1
+	bash "$REPO_DIR/cmd/enable-services.sh" "$SCRIPT_DIR/$FLAVOUR_NAME.services" || return 1
 
-	printf "%b bspwm flavour installation completed successfully.\n" "$FORMAT_SUCCESS"
+	printf "%b '%s' installation completed.\n" "$FORMAT_SUCCESS" "$FLAVOUR_NAME"
 	return 0
 }
 

@@ -1,13 +1,15 @@
 #!/usr/bin/env bash
 
 declare -r FORMAT_SUCCESS="\e[1;32m[SUCCESS]\e[0m"
-declare -r FORMAT_WARNING="\e[1;33m[WARNING]\e[0m"
 declare -r FORMAT_FAILURE="\e[1;31m[FAILURE]\e[0m"
 
 declare -r SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 declare -r REPO_DIR="$(cd "$SCRIPT_DIR/../.." && pwd)"
+declare -r FLAVOUR_NAME="${SCRIPT_DIR##*/}"
 
 function main() {
+	local opt
+
 	while getopts "h" opt; do
 		case $opt in
 			h) printf "\e[1;34mUSAGE:\e[0m %s\n" "${0##*/}" && return 0 ;;
@@ -16,14 +18,12 @@ function main() {
 	done
 	shift $((OPTIND - 1))
 
-	printf "Starting KDE Flavour Installation...\n"
+	printf "Installing '%s'...\n" "$FLAVOUR_NAME"
+	bash "$REPO_DIR/cmd/install-packages.sh" "$SCRIPT_DIR/$FLAVOUR_NAME.packages" || return 1
+	bash "$REPO_DIR/cmd/deploy-configs.sh" "$SCRIPT_DIR" || return 1
+	bash "$REPO_DIR/cmd/enable-services.sh" "$SCRIPT_DIR/$FLAVOUR_NAME.services" || return 1
 
-	"$REPO_DIR/cmd/ensure-sudo.sh" || return 1
-	"$REPO_DIR/cmd/install-packages.sh" "$SCRIPT_DIR/kde.packages" || return 1
-	"$REPO_DIR/cmd/deploy-configs.sh" "$SCRIPT_DIR" || return 1
-	"$REPO_DIR/cmd/enable-services.sh" "$SCRIPT_DIR/kde.services" || return 1
-
-	printf "%b KDE flavour installation completed successfully.\n" "$FORMAT_SUCCESS"
+	printf "%b '%s' installation completed.\n" "$FORMAT_SUCCESS" "$FLAVOUR_NAME"
 	return 0
 }
 

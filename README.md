@@ -2,7 +2,7 @@
 
 <div align="center">
 
-_A minimalist repository of my dotfiles for arch linux_
+_A minimalist repository of my dotfiles for Arch Linux_
 
 [![stars](https://img.shields.io/github/stars/druxorey/dotfiles?color=8BE9FD&labelColor=191A21&style=for-the-badge)](https://github.com/druxorey/dotfiles/stargazers)
 [![size](https://img.shields.io/github/repo-size/druxorey/dotfiles?label=Size&color=50FA7B&labelColor=191A21&style=for-the-badge)](https://github.com/druxorey/dotfiles)
@@ -15,34 +15,7 @@ _A minimalist repository of my dotfiles for arch linux_
 
 This repository contains the configuration files, scripts, and themes that make up my daily computing environment. The core of this setup is built on **Arch Linux** and **BSPWM**, an extremely fast and minimal tiling window manager, controlled entirely via keybindings with **SXHKD**, allowing a highly productive, keyboard-driven workflow.
 
-The entire aesthetic of this rice is unified by the **Dracula** color palette for the dark theme and **Alucard** for it's light variant, ensuring a consistent and elegant look across all applications.
-
-## Installation
-
-Bootstrapping a new Arch Linux installation can be tedious, that's why I created the [`drxboot.sh`](drxboot.sh) script to automate the entire process.
-
-This script features a terminal-based UI (using `dialog`) that handles system updates, installs essential packages (from Pacman and the AUR), enables necessary system services, and configures the ZSH shell. It allows four distinct installation profiles:
-
-- **Server:** A basic installation that sets up essential tools with a minimal footprint. Perfect for headless environments without GUI bloat.
-	
-- **Minimal:** A richer CLI environment that includes everything from the Server profile, plus additional terminal tools, ZSH configuration, and basic dotfiles syncing.
-	
-- **Desktop:** The complete GUI experience. Installs everything in the Minimal profile alongside the graphical interface (Xorg, BSPWM, Polybar, Kitty, Rofi) and all desktop customizations.
-	
-- **Custom:** An interactive wizard that lets you hand-pick exactly which Pacman/AUR packages to install, choose whether to copy dotfiles, enable specific services, or set up ZSH manually.
-
-To execute the script without saving the file locally:
-
-```bash
-bash <(curl -s https://druxorey.github.io/dotfiles/drxboot.sh)
-```
-
-Alternatively, to download and execute the installation wizard directly, run:
-
-```bash
-curl -O https://druxorey.github.io/dotfiles/drxboot.sh
-bash drxboot.sh
-```
+The entire aesthetic of this rice is unified by the **Dracula** color palette for the dark theme and **Alucard** for its light variant, ensuring a consistent and elegant look across all applications.
 
 ## Showcase
 
@@ -50,115 +23,125 @@ Here is a glimpse of how the desktop looks in action. More screenshots showcasin
 
 ![Desktop Screenshot](assets/rice-2026-01-25.webp)
 
+## Installation
 
-## Overview
+Everything is installed with [`drxdots`](drxdots), a single Bash script that updates the system, installs the packages (from Pacman and the AUR), deploys the dotfiles, enables the services and configures ZSH.
 
-This environment relies on several powerful tools configured to work together:
+### Quick start
 
-- **Polybar:** A highly customizable status bar. I have configured it with custom scripts to display system modules, music status (Cmus), active processes, and Bluetooth connections in a clean, minimalist way.
-	
-- **Rofi:** I have heavily customized Rofi with different modules to act as a general system menu, Wi-Fi manager, power menu, wallpaper selector, quick search utility and **a custom theme-switcher**, toggling between the Dracula (dark) and Alucard (light) color schemes.
-	
-- **Kitty:** My primary terminal emulator. It is GPU-accelerated, highly configurable, visually integrated with the overall theme, and supports native image rendering.
-	
-- **Neovim:** My primary text editor, heavily customized for programming, markdown writing, and task management. This setup is built on top of the powerful **LazyVim** framework.
-		
-- **Yazi:** A blazing fast terminal file manager written in Rust, integrated with various plugins for previews and server management.
-	
-- **Obsidian:** Used for note-taking and knowledge management, completely themed to match the Dracula/Alucard aesthetic.
+Run the interactive wizard without saving the script:
 
-## Keybindings
+```bash
+bash <(curl -fsSL https://druxorey.me/dotfiles/drxdots)
+```
 
-This setup is designed to be highly keyboard-centric. Below are some of the most important keybindings configured in `sxhkd`.
+Or install a flavour without any prompt:
 
-<table align="center">
-	<tr>
-		<th colspan="2" align="center">Applications</th>
-		<th colspan="2" align="center">Menus & Prompts (Rofi)</th>
-	</tr>
-	<tr>
-		<td><code>Super + Return</code></td>
-		<td>Open Terminal (Kitty)</td>
-		<td><code>Super + Space</code></td>
-		<td>General System Menu</td>
-	</tr>
-	<tr>
-		<td><code>Super + b</code></td>
-		<td>Open Browser (Brave)</td>
-		<td><code>Super + Home</code></td>
-		<td>Application Launcher</td>
-	</tr>
-	<tr>
-		<td><code>Super + e</code></td>
-		<td>Terminal File Manager (Yazi)</td>
-		<td><code>Super + p</code></td>
-		<td>Music Manager / Player</td>
-	</tr>
-	<tr>
-		<td><code>Super + Alt + e</code></td>
-		<td>GUI File Manager (Thunar)</td>
-		<td><code>Super + Insert</code></td>
-		<td>Quick Search Manager</td>
-	</tr>
-	<tr>
-		<td><code>Super + c</code></td>
-		<td>Text Editor (Neovim)</td>
-		<td><code>Super + v</code></td>
-		<td>Clipboard Manager</td>
-	</tr>
-	<tr>
-		<td><code>Super + o</code></td>
-		<td>Open Obsidian</td>
-		<td><code>Super + Shift + Esc</code></td>
-		<td>Reload sxhkd config</td>
-	</tr>
-	<tr>
-		<th colspan="2" align="center">System & Media</th>
-		<th colspan="2" align="center">Window Management</th>
-	</tr>
-	<tr>
-		<td><code>Print</code></td>
-		<td>Screenshot (Flameshot)</td>
-		<td><code>Super + w</code></td>
-		<td>Close Window</td>
-	</tr>
-	<tr>
-		<td><code>Super + Print</code></td>
-		<td>Color Picker</td>
-		<td><code>Super + m</code></td>
-		<td>Tiled / Monocle Layout</td>
-	</tr>
-	<tr>
-		<td><code>Media Keys</code></td>
-		<td>Volume & Playback Control</td>
-		<td><code>Super + , / .</code></td>
-		<td>Switch BSPWM Layout</td>
-	</tr>
-	<tr>
-		<td><code>Brightness Keys</code></td>
-		<td>Adjust Screen Light</td>
-		<td><code>Super + Tab</code></td>
-		<td>Focus Next Window</td>
-	</tr>
-	<tr>
-		<td><code>Super + F1-F12</code></td>
-		<td>Quick Access Websites</td>
-		<td><code>Super + [1-0]</code></td>
-		<td>Focus Desktop 1-10</td>
-	</tr>
-</table>
+```bash
+bash <(curl -fsSL https://druxorey.me/dotfiles/drxdots) install bspwm
+```
 
-For the complete list of shortcuts, check the full [sxhkdrc](config/sxhkd/sxhkdrc) file,
+### Flavours
 
-## Scripts
+| Flavour   | Installs                       | What it is                                     |
+| --------- | ------------------------------ | ---------------------------------------------- |
+| `core`    | `core`                         | Terminal only (servers, VMs without GUI)       |
+| `minimal` | `core` + `minimal`             | Terminal plus lightweight graphical essentials |
+| `bspwm`   | `core` + `minimal` + `bspwm`   | X11 BSPWM, Polybar, Rofi...                    |
+| `kde`     | `core` + `minimal` + `kde`     | Wayland KDE Plasma desktop                     |
+| `mangowm` | `core` + `minimal` + `mangow`  | Wayland MangoWM window manager                 |
 
-To maintain and manage this environment, I have developed several custom tools. These scripts are hosted in my [drxutils repository](https://github.com/druxorey/drxutils "null"). Here are the most important ones:
+For every flavour, in this order, `drxdots` runs its `<flavour>-install.sh`, which:
 
-1. `sysupdate`: A system maintenance script. Running this script automates the update of Pacman packages, AUR packages (via `yay`), Yazi plugins, and Discord (Vencord). It also performs system cleanup by clearing old cache files (respecting a whitelist) and emptying the trash bin. Finally, it pulls the latest version of the `drxutils` repository and compiles any updated Go projects automatically.
+1. Installs its package list (`<flavour>.packages`) with `yay`, installing `yay` first if it is missing.
+2. Deploys its dotfiles (see [Repository structure](#repository-structure)).
+3. Applies anything specific modification to that flavour.
+4. Enables its systemd services (`<flavour>.services`).
 
-2. `dotbak`: My personal backup utility. It uses `rsync` to safely copy all my active configuration files from `~/.config` and other system locations directly into this local dotfiles repository directory. It even parses and backs up my Brave browser bookmarks into a clean YAML format.
+> [!WARNING]
+> Deploying **overwrites** any existing file with the same name in your `~/.config`, `~/.local`, home directory and your user crontab. Back up your own configuration before installing on a machine you already use.
 
-3. `packages`: A package manager helper written in Go. This CLI tool allows me to add, search, and remove packages from [`drxboot.packages`](drxboot.packages). It automatically queries `pacman` and the AUR to verify if a package exists, and then categorizes it into `Server`, `Minimal`, or `Desktop` environments. This generated list is what `drxboot.sh` uses during a fresh installation.
+### Interactive wizard
+
+Running `drxdots` without arguments opens a `dialog` interface that asks, in order:
+
+1. **CachyOS repositories** (only on vanilla Arch): adds the optimized CachyOS repositories using the official CachyOS script. It also replaces `pacman` with the CachyOS fork.
+2. **Extra kernels**: `linux`, `linux-lts`, `linux-zen`, `linux-hardened` and, on CachyOS, its own kernels. The matching headers are installed too.
+3. **Flavour:** the list is built from the `flavours/` folder.
+4. **NFS / SMB shares**: add mount points by placing them at `/mnt/<name>` through `/etc/fstab`.
+5. **Git identity and SSH key**: sets your name, email and signing key in `~/.gitconfig` and can generate an `ed25519` SSH key if you do not have one.
+
+The unattended `install <FLAVOUR>` mode skips all of this: it installs the flavour with the defaults configurations and nothing else.
+
+## Repository structure
+
+```text
+dotfiles/
+├── drxdots           The script wizard, installation and backup
+├── cmd/              Small single-purpose tools that drxdots calls
+├── core/             The base flavour
+├── flavours/         The other flavours: minimal, bspwm, kde, mangowm
+├── utils/            My personal scripts, installed to ~/.local/bin by core
+└── assets/           Repository screenshots
+```
+
+Every flavour has the same layout:
+
+```text
+flavours/bspwm/
+├── bspwm-install.sh      What to run to install this flavour
+├── bspwm.packages        Packages to install (one per line, # for comments)
+├── bspwm.services        systemd services to enable
+├── bspwm.yaml            Which files `drxdots backup` copies into this flavour
+├── config/               Deployed to ~/.config
+├── home/                 Deployed to ~
+├── local/                Deployed to ~/.local
+└── extras/
+    ├── etc/              Deployed to /etc (with sudo)
+    └── var/spool/cron/   Installed as your user crontab
+```
+
+### The tools in `cmd/`
+
+Each tool can be run on its own. Use `-h` on any of them to see its options.
+
+| Tool                     | What it does                                                                           |
+| ------------------------ | -------------------------------------------------------------------------------------- |
+| `ensure-yay.sh`          | Installs `yay` if it is missing                                                        |
+| `add-cachy-repos.sh`     | Adds the CachyOS repositories to vanilla Arch                                          |
+| `install-packages.sh`    | Installs the packages listed in one or more `.packages` files                          |
+| `deploy-configs.sh`      | Copies `config/`, `home/`, `local/` and `extras/` of a flavour to the system           |
+| `deploy-utils.sh`        | Installs the scripts in `utils/` into `~/.local/bin`                                   |
+| `setup-zsh.sh`           | Sets `ZDOTDIR`, installs the ZSH plugins and makes ZSH your default shell              |
+| `enable-services.sh`     | Enables (and starts) the services listed in `.services` files                          |
+| `configure-fstab-nas.sh` | Adds NFS/SMB shares to `/etc/fstab`, keeping its credentials in a root-only file        |
+| `configure-git-ssh.sh`   | Sets your Git identity in `~/.gitconfig` and generate an SSH key                   |
+| `backup-dotfiles.sh`     | Copies your current system configuration into this repository                                  |
+
+## Backing up your changes
+
+`drxdots backup` copies your current system configuration back into the repository, so the repository always reflects your real setup:
+
+```bash
+./drxdots backup -d          # dry run: show what would change, modify nothing
+./drxdots backup             # copy everything
+./drxdots backup -f bspwm    # force a flavour instead of auto-detecting it
+```
+
+It decides what to copy from the `core/core.yaml`, `flavours/minimal/minimal.yaml` and `<flavour>.yaml` files. Each one lists the paths to back up; a path ending in `/` is a directory, and `exclude` skips what you do not want:
+
+```yaml
+name: core
+routes:
+  - source: ~/.config/nvim/
+    exclude:
+      - "*.log"
+  - source: ~/.zshrc
+```
+
+The flavour is detected from your desktop session (KDE, Cinnamon, BSPWM or MangoWM) unless you force it with `-f`. Besides the files, the backup also adds new packages from `~/.local/share/packages.list` (Linking with my package manager [drxpkg](https://github.com/druxorey/drxpkg)) to the package lists, saves your `~/.local/bin` into `utils/`, converts the Brave bookmarks to YAML and blanks out your Git name, email and signing key in `core/home/.gitconfig` before anything is committed. It needs `rsync`, and `drxdots` installs it for you if it is missing.
+
+If you run it from outside the repository, it clones the repository into `./dotfiles` and backs up there. In both cases the changes are only written to the files: review, commit and push them yourself.
 
 ## License
 

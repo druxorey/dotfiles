@@ -1,7 +1,9 @@
 #!/usr/bin/env bash
 
 declare -r FORMAT_SUCCESS="\e[1;32m[SUCCESS]\e[0m"
+declare -r FORMAT_WARNING="\e[1;33m[WARNING]\e[0m"
 declare -r FORMAT_FAILURE="\e[1;31m[FAILURE]\e[0m"
+declare -r FORMAT_PROMPTS="--header.foreground 4 --cursor.foreground 5"
 
 declare -r TEMPLATES_PATH="$HOME/.local/share/crater"
 declare -rA EXTENSION_MAP=(
@@ -31,74 +33,355 @@ function help() {
 	echo -e "${BOLD}USAGE:${RESET} ${0##*/} [OPTIONS] <FILE_TYPE> [OUTPUT_NAME]
 
 ${BOLD}DESCRIPTION:${RESET}
-  Creates template-based files and project structures.
+  Creates template-based files and project structures with dynamic placeholder replacement.
 
 ${BOLD}ARGUMENTS:${RESET}
-  FILE_TYPE    Language identifier (e.g., bash, c, cpp, go, python, rust, latex).
+  FILE_TYPE    Language identifier (e.g., bash, c, cpp, go, python, rust, latex, tex).
   OUTPUT_NAME  Destination file or directory name (default: 'default').
 
 ${BOLD}OPTIONS:${RESET}
-  -i INDEX     Select template non-interactively by index.
   -l           List all supported categories and available templates.
-  -p           Print template content to stdout instead of copying.
   -h           Display this help message."
 	exit 0
 }
 
 
-function listTemplates() {
-	if [[ ! -d $TEMPLATES_PATH ]]; then
-		printf "%b Templates directory '%s' not found.\n" "$FORMAT_FAILURE" "$TEMPLATES_PATH" >&2
-		return 1
-	fi
-
-	local categoryDir
-	local -a items=()
-	local -i count=0
-
-	for categoryDir in "$TEMPLATES_PATH"/*; do
-		[[ ! -d $categoryDir ]] && continue
-
-		local ext="${categoryDir##*/}"
-		printf "\e[1;32m[%s]\e[0m\n" "$ext"
-
-		items=()
-		for item in "$categoryDir"/*; do
-			[[ -e $item ]] && items+=("$item")
-		done
-
-		if ((${#items[@]} == 0)); then
-			printf "  (No templates found)\n"
-		else
-			for ((i = 0; i < ${#items[@]}; i++)); do
-				local name="${items[i]##*/}"
-				if [[ -d ${items[i]} ]]; then
-					printf "  [%d] \e[1;34m%s/\e[0m\n" "$i" "$name"
-				else
-					printf "  [%d] %s\n" "$i" "$name"
-				fi
-			done
-		fi
-		printf "\n"
-		((count++))
+function getValidDirectoryItems() {
+	local dirPath="$1"
+	local pathsRef="$2"
+	local namesRef="$3"
+	local -n _gdiPaths="$pathsRef"
+	local -n _gdiNames="$namesRef"
+	_gdiPaths=()
+	_gdiNames=()
+	local item
+	for item in "$dirPath"/*; do
+		[[ -e $item ]] || continue
+		local itemName="${item##*/}"
+		[[ $itemName == "Assets" ]] && continue
+		_gdiPaths+=("$item")
+		_gdiNames+=("$itemName")
 	done
-
-	if ((count == 0)); then
-		printf "No template categories found in '%s'.\n" "$TEMPLATES_PATH"
-	fi
-
-	return 0
 }
 
 
-function printTemplate() {
-	local srcPath="$1"
-	if [[ -d $srcPath ]]; then
-		printf "%b Cannot print directory template '%s' to standard output.\n" "$FORMAT_FAILURE" "${srcPath##*/}" >&2
-		return 1
+function selectTemplateFromDir() {
+	local dirPath="$1"
+	local headerPrompt="$2"
+	local outPathRef="$3"
+	local -n _stOutPath="$outPathRef"
+
+	local -a paths=()
+	local -a names=()
+
+	getValidDirectoryItems "$dirPath" paths names
+
+	if ((${#names[@]} == 0)); then
+		printf "%b No templates found in '%s'.\n" "$FORMAT_FAILURE" "$templateDir" >&2
+		exit 1
 	fi
-	cat "$srcPath"
-	return 0
+
+	local selectedName=$(gum choose ${FORMAT_PROMPTS} --header "$headerPrompt" "${names[@]}")
+	if [[ -z $selectedName ]]; then
+		printf "%b Selection cancelled.\n" "$FORMAT_FAILURE" >&2
+		exit 1
+	fi
+
+	local i
+	for i in "${!names[@]}"; do
+		if [[ "${names[i]}" == "$selectedName" ]]; then
+			_stOutPath="${paths[i]}"
+			return
+		fi
+	done
+}
+
+
+function hasPlaceholder() {
+	local srcPath="$1"
+	local tag="$2"
+	find "$srcPath" -name "*${tag}*" | grep -q . || grep -rIq "$tag" "$srcPath" 2>/dev/null
+}
+
+
+function getAcademicPeriod() {
+	local -i year=$(date +%Y)
+	local -i month=$(date +%-m)
+	
+	if ((month >= 11)); then
+		printf "%02d-2\n" "$((year % 100))"
+	elif ((month < 4)); then
+		printf "%02d-2\n" "$(((year - 1) % 100))"
+	else
+		printf "%02d-1\n" "$((year % 100))"
+	fi
+}
+
+
+function detectPlaceholders() {
+	local srcPath="$1"
+	local flagsName="$2"
+	local -n _dpFlags="$flagsName"
+
+	_dpFlags['needCourse']=false
+	_dpFlags['needTypeTag']=false
+	_dpFlags['needIndex']=false
+	_dpFlags['needTitle']=false
+	_dpFlags['hasAny']=false
+
+	local hasCourse=false
+	local hasTypeTag=false
+	local hasIndex=false
+	local hasTitle=false
+	local hasPeriod=false
+	local hasDate=false
+
+	hasPlaceholder "$srcPath" '{{CRATER_COURSE}}' && hasCourse=true
+	hasPlaceholder "$srcPath" '{{CRATER_TYPE_TAG}}' && hasTypeTag=true
+	hasPlaceholder "$srcPath" '{{CRATER_INDEX}}' && hasIndex=true
+	hasPlaceholder "$srcPath" '{{CRATER_TITLE}}' && hasTitle=true
+	hasPlaceholder "$srcPath" '{{CRATER_PERIOD}}' && hasPeriod=true
+	hasPlaceholder "$srcPath" '{{CRATER_DATE}}' && hasDate=true
+
+	[[ $hasCourse == true ]] && _dpFlags['needCourse']=true
+	[[ $hasTypeTag == true ]] && _dpFlags['needTypeTag']=true
+	[[ $hasIndex == true ]] && _dpFlags['needIndex']=true
+	[[ $hasTitle == true ]] && _dpFlags['needTitle']=true
+
+	if [[ ${_dpFlags['needCourse']} == true || ${_dpFlags['needTypeTag']} == true || \
+		  ${_dpFlags['needIndex']} == true  || ${_dpFlags['needTitle']} == true   || \
+		  $hasPeriod == true || $hasDate == true ]]; then
+		_dpFlags['hasAny']=true
+	fi
+}
+
+
+function promptTemplateVariables() {
+	local mapName="$1"
+	local flagsName="$2"
+	local -n _ptvMap="$mapName"
+	local -n _ptvFlags="$flagsName"
+
+	local course=''
+	local typeTag=''
+	local index=''
+	local title=''
+	local dateStr=$(date +%Y-%m-%d)
+
+	if [[ ${_ptvFlags['needCourse']} == true || ${_ptvFlags['needTypeTag']} == true || ${_ptvFlags['needIndex']} == true || ${_ptvFlags['needTitle']} == true ]]; then
+		gum style --foreground 212 --bold "Template Configuration:"
+	fi
+
+	if [[ ${_ptvFlags['needCourse']} == true ]]; then
+		course=$(gum input ${FORMAT_PROMPTS} --prompt "Course code: " --placeholder "SO, ABD, MDII..." --header "Enter subject abbreviation") || exit 1
+		course="${course// /}"
+		[[ -z $course ]] && course="TMP"
+	fi
+
+	if [[ ${_ptvFlags['needTypeTag']} == true ]]; then
+		local typeChoice=$(gum choose ${FORMAT_PROMPTS} --header "Select assignment type:" "Laboratory" "Pre-Laboratory" "Project") || exit 1
+		case "$typeChoice" in
+			"Laboratory") typeTag='L' ;;
+			"Pre-Laboratory") typeTag='R' ;;
+			"Project") typeTag='P' ;;
+		esac
+	fi
+
+	if [[ ${_ptvFlags['needIndex']} == true ]]; then
+		while true; do
+			index=$(gum input ${FORMAT_PROMPTS} --prompt "Assignment index [1-9]: " --placeholder "1") || exit 1
+			[[ $index =~ ^[1-9]$ ]] && break
+		done
+	fi
+
+	if [[ ${_ptvFlags['needTitle']} == true ]]; then
+		title=$(gum input ${FORMAT_PROMPTS} --prompt "Assignment title (optional): " --placeholder "e.g., Memory Manager") || exit 1
+	fi
+
+	local period=$(getAcademicPeriod)
+
+	_ptvMap['CRATER_COURSE']="$course"
+	_ptvMap['CRATER_PERIOD']="$period"
+	_ptvMap['CRATER_TYPE_TAG']="$typeTag"
+	_ptvMap['CRATER_INDEX']="$index"
+	_ptvMap['CRATER_TITLE']="$title"
+	_ptvMap['CRATER_DATE']="$dateStr"
+}
+
+
+function expandTemplateString() {
+	local str="$1"
+	local mapName="$2"
+	local -n _etsMap="$mapName"
+
+	local course="${_etsMap['CRATER_COURSE']:-}"
+	local period="${_etsMap['CRATER_PERIOD']:-}"
+	local typeTag="${_etsMap['CRATER_TYPE_TAG']:-}"
+	local index="${_etsMap['CRATER_INDEX']:-}"
+	local title="${_etsMap['CRATER_TITLE']:-default}"
+	local dateString="${_etsMap['CRATER_DATE']:-}"
+
+	local result="$str"
+
+	result="${result//\{\{CRATER_COURSE\}\}/$course}"
+	result="${result//\{\{CRATER_PERIOD\}\}/$period}"
+	result="${result//\{\{CRATER_TYPE_TAG\}\}/$typeTag}"
+	result="${result//\{\{CRATER_INDEX\}\}/$index}"
+	result="${result//\{\{CRATER_DATE\}\}/$dateString}"
+
+	if [[ -n $title ]]; then
+		result="${result//\{\{CRATER_TITLE\}\}/$title}"
+	else
+		result="${result// - \{\{CRATER_TITLE\}\}/}"
+		result="${result//\{\{CRATER_TITLE\}\}/}"
+	fi
+
+	result="${result//  / }"
+	result="${result// - ./.}"
+
+	printf "%s" "$result"
+}
+
+
+function escapeSedReplacement() {
+	local str="$1"
+	str="${str//\\/\\\\}"
+	str="${str//&/\\&}"
+	str="${str//|/\\|}"
+	printf "%s" "$str"
+}
+
+
+function processContentReplacements() {
+	local targetDir="$1"
+	local mapName="$2"
+	local -n _pcrMap="$mapName"
+
+	local course="${_pcrMap['CRATER_COURSE']:-}"
+	local period="${_pcrMap['CRATER_PERIOD']:-}"
+	local typeTag="${_pcrMap['CRATER_TYPE_TAG']:-}"
+	local index="${_pcrMap['CRATER_INDEX']:-}"
+	local title="${_pcrMap['CRATER_TITLE']:-}"
+	local dateStr="${_pcrMap['CRATER_DATE']:-}"
+
+	local escCourse=$(escapeSedReplacement "$course")
+	local escPeriod=$(escapeSedReplacement "$period")
+	local escTypeTag=$(escapeSedReplacement "$typeTag")
+	local escIndex=$(escapeSedReplacement "$index")
+	local escTitle=$(escapeSedReplacement "$title")
+	local escDate=$(escapeSedReplacement "$dateStr")
+
+	local file
+	while IFS= read -r -d '' file; do
+		grep -qI . "$file" 2>/dev/null || continue
+
+		sed -i "s|{{CRATER_COURSE}}|$escCourse|g" "$file"
+		sed -i "s|{{CRATER_PERIOD}}|$escPeriod|g" "$file"
+		sed -i "s|{{CRATER_TYPE_TAG}}|$escTypeTag|g" "$file"
+		sed -i "s|{{CRATER_INDEX}}|$escIndex|g" "$file"
+		sed -i "s|{{CRATER_DATE}}|$escDate|g" "$file"
+
+		if [[ -n $title ]]; then
+			sed -i "s|{{CRATER_TITLE}}|$escTitle|g" "$file"
+		else
+			sed -i "s| - {{CRATER_TITLE}}||g" "$file"
+			sed -i "s|{{CRATER_TITLE}}||g" "$file"
+		fi
+	done < <(find "$targetDir" -type f -print0)
+}
+
+
+function processFilenameRenames() {
+	local targetDir="$1"
+	local mapName="$2"
+
+	local item
+	while IFS= read -r -d '' item; do
+		local parentDir="${item%/*}"
+		local baseName="${item##*/}"
+
+		local newBaseName=$(expandTemplateString "$baseName" "$mapName")
+
+		if [[ $baseName != "$newBaseName" ]]; then
+			local newPath="$parentDir/$newBaseName"
+			if [[ -e $newPath ]]; then
+				printf "%b Target path '%s' already exists. Skipping rename for '%s'.\n" "$FORMAT_WARNING" "$newPath" "$baseName" >&2
+			else
+				mv "$item" "$newPath"
+			fi
+		fi
+	done < <(find "$targetDir" -depth \( -name '*{{CRATER_*' \) -print0)
+}
+
+
+function printFile() {
+	local filePath="$1"
+	if command -v bat &>/dev/null; then
+		bat -S "$filePath"
+	else
+		cat "$filePath"
+	fi
+}
+
+
+function listTemplates() {
+	[[ ! -d $TEMPLATES_PATH ]] && printf "%b Templates directory '%s' not found.\n" "$FORMAT_FAILURE" "$TEMPLATES_PATH" >&2 && return 1
+
+	local categoryDir
+	local -a categories=()
+
+	for categoryDir in "$TEMPLATES_PATH"/*; do
+		[[ ! -d $categoryDir ]] && continue
+		local categoryName="${categoryDir##*/}"
+		[[ $categoryName == "Assets" ]] && continue
+		categories+=("$categoryName")
+	done
+
+	if ((${#categories[@]} == 0)); then
+		printf "%b No template categories found in '%s'.\n" "$FORMAT_FAILURE" "$TEMPLATES_PATH" >&2
+		exit 1
+	fi
+
+	local selectedCategory=$(gum choose ${FORMAT_PROMPTS} --header "Select template category:" "${categories[@]}")
+	[[ -z $selectedCategory ]] && return 0
+
+	local selectedDir="$TEMPLATES_PATH/$selectedCategory"
+	local selectedPath=""
+	selectTemplateFromDir "$selectedDir" "Select template to view:" selectedPath
+	local status=$?
+
+	if ((status == 1)); then
+		printf "%b No templates found in category '%s'.\n" "$FORMAT_WARNING" "$selectedCategory" >&2
+		return 0
+	elif ((status == 2)); then
+		return 0
+	fi
+
+	if [[ -f $selectedPath ]]; then
+		printFile "$selectedPath"
+	elif [[ -d $selectedPath ]]; then
+		local -a innerFiles=()
+		local f
+		while IFS= read -r -d '' f; do
+			grep -qI . "$f" 2>/dev/null && innerFiles+=("$f")
+		done < <(find "$selectedPath" -type f -print0)
+
+		if ((${#innerFiles[@]} == 0)); then
+			printf "%b Directory is empty or contains no readable text files.\n" "$FORMAT_WARNING" >&2
+			return 0
+		elif ((${#innerFiles[@]} == 1)); then
+			printFile "${innerFiles[0]}"
+		else
+			local -a relativeFileNames=()
+			for f in "${innerFiles[@]}"; do
+				relativeFileNames+=("${f#$selectedPath/}")
+			done
+			local selectedFileRel=$(gum choose ${FORMAT_PROMPTS} --header "Select file inside '${selectedPath##*/}' to view:" "${relativeFileNames[@]}") || exit 1
+			[[ -z $selectedFileRel ]] && return 0
+
+			printFile "$selectedPath/$selectedFileRel"
+		fi
+	fi
 }
 
 
@@ -106,114 +389,131 @@ function copyTemplate() {
 	local srcPath="$1"
 	local destName="$2"
 	local ext="$3"
-	local destPath
+
+	local -A varsMap=()
+	local -A reqFlags=()
+	local hasVars=false
+
+	if [[ $ext == "tex" ]]; then
+		detectPlaceholders "$srcPath" reqFlags
+		if [[ ${reqFlags['hasAny']} == true ]]; then
+			promptTemplateVariables varsMap reqFlags
+			hasVars=true
+		fi
+	fi
+
+	local sourceToCopy="$srcPath"
+	local destPath=''
 
 	if [[ -d $srcPath ]]; then
-		destPath="$destName"
-	else
-		if [[ $destName == *."$ext" ]]; then
-			destPath="$destName"
+		local -a innerPaths=()
+		local -a innerNames=()
+		getValidDirectoryItems "$srcPath" innerPaths innerNames
+
+		if ((${#innerPaths[@]} == 1)); then
+			sourceToCopy="${innerPaths[0]}"
+		fi
+	fi
+
+	if [[ -f $sourceToCopy ]]; then
+		local fileBase="${sourceToCopy##*/}"
+		if [[ $destName == "default" ]]; then
+			if [[ $hasVars == true ]]; then
+				destPath="./$(expandTemplateString "$fileBase" varsMap)"
+			else
+				destPath="./default.$ext"
+			fi
 		else
-			destPath="$destName.$ext"
+			destPath="$destName"; [[ $destPath != *."$ext" ]] && destPath+=".$ext"
+		fi
+	else
+		local dirBase="${sourceToCopy##*/}"
+		if [[ $destName == "default" ]]; then
+			if [[ $hasVars == true ]]; then
+				destPath="./$(expandTemplateString "$dirBase" varsMap)"
+			else
+				destPath="./$dirBase"
+			fi
+		else
+			destPath="$destName"
 		fi
 	fi
 
 	if [[ -e $destPath ]]; then
-		printf "%b Target '%s' already exists. Aborting to avoid overwrite.\n" "$FORMAT_FAILURE" "$destPath" >&2
-		return 1
+		printf "%b Target '%s' already exists. Aborting to avoid overwrite.\n" "$FORMAT_WARNING" "$destPath" >&2
+		exit 1
 	fi
 
-	cp -rp "$srcPath" "$destPath" || {
+	cp -rp "$sourceToCopy" "$destPath" || {
 		printf "%b Failed to copy template to '%s'.\n" "$FORMAT_FAILURE" "$destPath" >&2
-		return 1
+		exit 1
 	}
 
+	if [[ $hasVars == true ]]; then
+		if [[ -d $destPath ]]; then
+			processContentReplacements "$destPath" varsMap
+			processFilenameRenames "$destPath" varsMap
+		else
+			local parentDir="${destPath%/*}"
+			local baseName="${destPath##*/}"
+			local fileDir="${parentDir:-.}"
+
+			processContentReplacements "$destPath" varsMap
+			local newBaseName=$(expandTemplateString "$baseName" varsMap)
+			if [[ $baseName != "$newBaseName" ]]; then
+				local newFinalPath="$fileDir/$newBaseName"
+				if [[ -e $newFinalPath ]]; then
+					printf "%b Destination '%s' already exists. Cannot rename '%s'.\n" "$FORMAT_WARNING" "$newFinalPath" "$destPath" >&2
+				else
+					mv "$destPath" "$newFinalPath"
+					destPath="$newFinalPath"
+				fi
+			fi
+		fi
+	fi
+
 	printf "%b Created '%s' from template '%s'.\n" "$FORMAT_SUCCESS" "$destPath" "${srcPath##*/}"
-	return 0
 }
 
 
 function main() {
-	local optIndex=''
-	local flagPrint=false
-
-	while getopts "i:lph" opt; do
+	while getopts "lh" opt; do
 		case $opt in
-			i) optIndex="$OPTARG" ;;
 			l) listTemplates ; return $? ;;
-			p) flagPrint=true ;;
 			h) help ;;
-			*) printf "%b Try '%s -h' for more information.\n" "$FORMAT_FAILURE" "${0##*/}" >&2 && return 1 ;;
+			*) printf "%b Try '%s -h' for more information.\n" "$FORMAT_FAILURE" "${0##*/}" >&2 && exit 1 ;;
 		esac
 	done
 	shift $((OPTIND - 1))
 
+	if ! command -v gum &>/dev/null; then
+		printf "%b 'gum' is required but not installed. Please install it first.\n" "$FORMAT_FAILURE" >&2
+		exit 1
+	fi
+
 	local fileType="$1"
 	local outputName="${2:-default}"
 
-	[[ -z $fileType ]] && printf "%b File type is required.\n" "$FORMAT_FAILURE" >&2 && return 1
-	[[ ! -d $TEMPLATES_PATH ]] && printf "%b Templates directory '%s' not found.\n" "$FORMAT_FAILURE" "$TEMPLATES_PATH" >&2 && return 1
+	[[ -z $fileType ]] && printf "%b File type is required.\n" "$FORMAT_FAILURE" >&2 && exit 1
+	[[ ! -d $TEMPLATES_PATH ]] && printf "%b Templates directory '%s' not found.\n" "$FORMAT_FAILURE" "$TEMPLATES_PATH" >&2 && exit 1
 
 	local ext="${EXTENSION_MAP[$fileType]:-}"
 	if [[ -z $ext ]]; then
 		printf "%b Unsupported file type '%s'.\n" "$FORMAT_FAILURE" "$fileType" >&2
-		return 1
+		exit 1
 	fi
 
 	local templateDir="$TEMPLATES_PATH/$ext"
 	if [[ ! -d $templateDir ]]; then
 		printf "%b Template category directory '%s' does not exist.\n" "$FORMAT_FAILURE" "$templateDir" >&2
-		return 1
+		exit 1
 	fi
 
-	local -a templates=()
-	for item in "$templateDir"/*; do
-		[[ -e $item ]] && templates+=("$item")
-	done
+	local selectedPath=""
+	selectTemplateFromDir "$templateDir" "Select template for '$fileType':" selectedPath
+	copyTemplate "$selectedPath" "$outputName" "$ext"
 
-	local -i totalTemplates=${#templates[@]}
-	if ((totalTemplates == 0)); then
-		printf "%b No templates found in '%s'.\n" "$FORMAT_FAILURE" "$templateDir" >&2
-		return 1
-	fi
-
-	local -i selectedIndex=-1
-
-	if [[ -n $optIndex ]]; then
-		if [[ ! $optIndex =~ ^[0-9]+$ ]] || ((optIndex < 0 || optIndex >= totalTemplates)); then
-			printf "%b Invalid index '%s'. Available range: 0 to %d.\n" "$FORMAT_FAILURE" "$optIndex" $((totalTemplates - 1)) >&2
-			return 1
-		fi
-		selectedIndex=$optIndex
-	elif ((totalTemplates == 1)); then
-		selectedIndex=0
-	else
-		printf "Available templates for '%s':\n" "$fileType"
-		for i in "${!templates[@]}"; do
-			local name="${templates[i]##*/}"
-			if [[ -d ${templates[i]} ]]; then
-				printf "  [%d] \e[1;34m%s/\e[0m\n" "$i" "$name"
-			else
-				printf "  [%d] %s\n" "$i" "$name"
-			fi
-		done
-
-		printf "Enter template index [0-%d]: " $((totalTemplates - 1))
-		local userInput
-		read -r userInput
-
-		if [[ ! $userInput =~ ^[0-9]+$ ]] || ((userInput < 0 || userInput >= totalTemplates)); then
-			printf "%b Invalid selection '%s'.\n" "$FORMAT_FAILURE" "$userInput" >&2
-			return 1
-		fi
-		selectedIndex=$userInput
-	fi
-
-	if [[ $flagPrint == true ]]; then
-		printTemplate "${templates[selectedIndex]}"
-	else
-		copyTemplate "${templates[selectedIndex]}" "$outputName" "$ext"
-	fi
+	return 0
 }
 
 main "$@"
